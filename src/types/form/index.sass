@@ -1,0 +1,241 @@
+// Field
+.form-field
+  margin-bottom: 10px
+
+// Label
+.form-label-text
+  font-weight: 700
+
+.form-required
+  color: #cf4f43
+
+// Columns
+.form-columns
+  .form-label-text + .form-columns-wrapper
+    margin-top: 10px
+    padding-top: 10px
+    padding-left: 20px
+    border-top: 1px solid black
+
+.form-columns-wrapper
+  display: flex
+  flex-flow: row nowrap
+
+.form-column
+  flex: 0 0 auto
+  max-width: 100%
+
+  &:not(:first-of-type)
+    margin-left: 30px
+
+// Computed, Data.Static, Function, Method, Value, Variable,
+.form-computed,
+.form-data.static,
+.form-function,
+.form-method,
+.form-template,
+.form-value,
+.form-variable
+  > .form-data-input-wrapper
+    display: flex
+    align-items: center
+    width: 300px
+    height: 36px
+    padding: 9px 5px
+    border: 1px solid #cccccc
+    border-radius: 4px
+    background: white
+
+// Data
+.form-data-input-wrapper
+  position: relative
+
+.form-data-input-wrapper[data-error]:before
+  position: relative
+  display: inline-flex
+  flex-flow: row nowrap
+  align-items: center
+  max-width: 300px
+  margin: 5px 0
+  padding: 5px 8px
+  border-radius: 4px
+  background: #cf4f43
+  color: white
+  content: attr(data-error)
+
+// Documents
+.form-documents
+  margin-bottom: 20px
+
+  > .form-documents-table
+    margin-top: 10px
+    padding-top: 10px
+    padding-left: 20px
+    border-top: 1px solid black
+
+// Row
+.form-row-wrapper
+  flex: 1 1 auto
+  display: flex
+  flex-flow: row nowrap
+  align-items: flex-end
+
+  > *
+    flex: 1 1 0
+
+    &.static
+      flex: 0 0 auto
+      margin-left: 0
+
+    &:not(:first-child).static
+      margin-left: 5px
+
+    &:not(:first-child):not(.static)
+      margin-left: 10px
+
+// Tabs
+.form-tabs
+  margin-top: 20px
+
+  > .ReactTabs > .ReactTabs__TabList > .ReactTabs__Tab
+    border-radius: 5px 5px 0 0
+    font-weight: 700
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+  > .react-tabs
+    [role=tab]
+      border: 1px solid rgb(71, 70, 70)
+      border-top: 5px solid #5f6a27
+
+    [role=tab]:hover
+      flex: 0 0 auto
+      border-top: 5px solid #364e72
+
+    [role=tab][aria-selected=true]
+      flex: 0 0 auto
+      border-top: 5px solid #b67721
+
+    [role=tablist]
+      display: flex
+      flex-flow: row nowrap
+      max-width: 100%
+
+.still-here-still-selling-fake-classes
+  .form-computed, .form-function, .form-variable, .form-value
+    margin-bottom: 10px
+
+  .form-label-text
+    font-weight: 700
+
+
+  .form-list
+    flex: 1 1 auto
+
+    > .form-list-action
+      margin: 24px
+      font-size: 1.7em
+
+  .form-list-label
+    flex: 1 1 auto
+    margin: 0
+    align-self: center
+
+  .form-type
+    .form-label-text
+      position: static
+
+  .form-label
+    flex: 0 0 100%
+    display: flex
+    align-items: center
+    position: relative
+    margin-bottom: 24px
+
+    &:last-child
+      margin-bottom: 0
+
+    &.inline
+      display: inline-block
+      margin: 0 15px 24px
+
+      > .form-label-text
+        display: inline
+        position: static
+        margin-right: 5px
+        padding: 0
+
+      > .form-input-wrapper
+        display: inline
+        padding: 0
+        background: 0
+
+    &.currency .form-input-wrapper
+      position: relative
+      
+      &::before
+        position: absolute
+        top: 10px
+        left: 10px
+        content: '$'
+        font-size: 1.2em
+
+      .form-input
+        padding: 10px 10px 10px 24px
+
+
+  .form-input-wrapper
+    display: flex
+    align-items: center
+    width: 100%
+    background: #f7f5f5
+    color: #474646
+
+  .form-date-field
+    width: 100%
+    border: none
+
+    &.react-date-field--theme-default
+      border: none
+
+    > input
+      padding: 12px
+      background: inherit
+      font-size: 1.2em
+
+  .form-select
+    width: 100%
+    font-size: 1.2em
+
+    &.is-disabled
+      .Select-placeholder
+        position: static
+
+      .Select-input
+        display: none
+
+    .Select-control
+      height: auto
+      border: none
+      border-radius: 0px
+      background-color: transparent
+
+    .Select-placeholder, .Select-value
+      display: flex
+      align-items: center
+      height: auto
+      line-height: inherit
+      padding: 10px
+    
+    .Select-input
+      height: auto
+      padding: 0
+
+      input
+        height: auto
+        padding: 10px
+
+    &.Select--multi .Select-value
+      display: inline-flex
+
