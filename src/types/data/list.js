@@ -21,6 +21,7 @@ export default function(register) {
     validate: validateList,
     getDefaultValue: getDefaultListValue,
     toString: listToString,
+    hasValue: listHasValue,
     useLabel: () => false
   }, {
     getSchema(options) {
@@ -87,6 +88,15 @@ function listToString(value, options) {
   return value
     .map(subValue => listField.toString(subValue))
     .join(', ');
+}
+
+function listHasValue(value, options) {
+  if (value.size == 0) {
+    return false;
+  }
+
+  const listField = options.get('listField');
+  return value.every(listField.hasValue);
 }
 
 function validateList(value, options) {
