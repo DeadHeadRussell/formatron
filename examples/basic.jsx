@@ -60,9 +60,8 @@ class Example extends React.Component {
       schema={exampleSchema}
       model={this.state.model}
       onSubmit={this.onSubmit}
-    >
-      <button>Submit</button>
-    </Form>;
+      actions={[<button>Submit</button>]}
+    />;
   }
 }
 
