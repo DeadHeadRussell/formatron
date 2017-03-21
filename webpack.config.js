@@ -1,28 +1,28 @@
 'use strict';
 
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path');
 const webpack = require('webpack');
 
-const src = path.join(__dirname, 'src');
-const dst = path.join(__dirname, 'build');
+const entryPath = path.join(__dirname, 'example/app.jsx')
+const outputPath = path.join(__dirname, 'build')
 
 const config = {
-  target: 'web',
-
-  entry: path.join(src, 'index.js'),
+  entry: [
+    'webpack-dev-server/client?http://localhost:8080',
+    entryPath
+  ],
 
   output: {
-    path: dst,
-    publicPath: '',
+    path: outputPath,
     filename: '[name].js',
-    pathInfo: true
   },
 
   module: {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel',
+      loader: 'babel-loader',
       query: {
         presets: ['stage-2', 'es2015', 'react'],
         plugins: [
@@ -36,13 +36,13 @@ const config = {
     }, {
       test: /\.sass$/,
       exclude: /node_modules/,
-      loader: 'style!css!sass'
+      loader: 'style-loader!css-loader!sass-loader'
     }, {
       test: /\.css$/,
-      loader: 'style!css'
+      loader: 'style-loader!css-loader'
     }, {
       test: /\.(woff|ttf|eot|svg|png|jpg)$/,
-      loader: 'url'
+      loader: 'url-loader'
     }],
     noParse: [
       /[\/\\]libphonenumber\.js$/
@@ -50,11 +50,15 @@ const config = {
   },
 
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['.js', '.jsx']
   },
 
   plugins: [
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new HtmlWebpackPlugin({
+      template: 'example/index.html',
+      inject: 'body'
+    })
   ],
 
   watchOptions: {
@@ -63,4 +67,3 @@ const config = {
 };
 
 module.exports = config;
-
