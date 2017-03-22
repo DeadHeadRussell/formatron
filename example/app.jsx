@@ -1,7 +1,8 @@
 import Immutable from 'immutable';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
-import {create, Form, Types} from 'formatron';
+import {create, Form, Types} from '../src/index';
 
 const exampleSchema = create('example', {
   data: [
@@ -46,7 +47,7 @@ class Example extends React.Component {
           to: {
             value: ''
           }
-        ]
+        }
       })
     };
   }
@@ -65,3 +66,7 @@ class Example extends React.Component {
   }
 }
 
+ReactDOM.render(
+  <Example />,
+  document.getElementById('example-app')
+);
