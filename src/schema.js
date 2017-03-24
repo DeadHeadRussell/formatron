@@ -123,27 +123,6 @@ class Schema {
           (model, value, ref) => this.setDataValue(model, ref, value),
           model
         )
-      )
-      .set('__uploads', changes
-        .filter(value =>
-          (Map.isMap(value) && value.get('file')) ||
-          (List.isList(value) && value.find(att => Map.isMap(att) && att.get('file')))
-        )
-        .map((value, ref) => {
-          const field = this.getDataField(ref);
-          const path = field.path.push(ref);
-
-          if (Map.isMap(value)) {
-            return path;
-          }
-
-          return value
-            .map((att, i) => ({att, i}))
-            .filter(({att}) => att.get('file'))
-            .map(({i}) => path.push(i));
-        })
-        .flatten(true)
-        .toSet()
       );
   }
 
