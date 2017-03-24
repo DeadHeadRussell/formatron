@@ -45,7 +45,7 @@ class Example extends React.Component {
         title: 'Default Title',
         path: {
           to: {
-            value: ''
+            nested: ''
           }
         }
       })
