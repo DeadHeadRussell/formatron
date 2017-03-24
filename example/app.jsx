@@ -54,6 +54,7 @@ class Example extends React.Component {
 
   onSubmit(newModel) {
     this.setState({model: newModel});
+    console.log(newModel.toJS());
   }
 
   render() {
