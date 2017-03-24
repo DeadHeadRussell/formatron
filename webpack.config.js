@@ -9,7 +9,6 @@ const outputPath = path.join(__dirname, 'build')
 
 const config = {
   entry: [
-    'webpack-dev-server/client?http://localhost:8080',
     entryPath
   ],
 
