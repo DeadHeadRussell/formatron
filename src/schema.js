@@ -51,7 +51,7 @@ class ISchema {
 // Caching is added below. No cache busting though.
 
 class Schema {
-  constructor(name, {data, form, table, label}) {
+  constructor(name, {displayName, data, form, table, label}) {
     this.getDataField = this.getDataField.bind(this);
     this.getDataValue = this.getDataValue.bind(this);
     this.getDataLabel = this.getDataLabel.bind(this);
@@ -59,6 +59,7 @@ class Schema {
     data.forEach(field => field.schema = this);
 
     this.name = name;
+    this.displayName = displayName || name;
     this.data = List(data);
     this.form = form;
     this.table = List(table);

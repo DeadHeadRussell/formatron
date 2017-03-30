@@ -17,6 +17,15 @@ const config = {
     filename: '[name].js',
   },
 
+  externals: {
+    'react': {
+      commonjs: 'react',
+      commonjs2: 'react',
+      amd: 'react',
+      root: 'React'
+    }
+  },
+
   module: {
     loaders: [{
       test: /\.jsx?$/,
