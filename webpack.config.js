@@ -5,7 +5,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const entryPath = path.join(__dirname, 'example/app.jsx')
-const outputPath = path.join(__dirname, 'build')
+const outputPath = path.join(__dirname, 'dist')
 
 const config = {
   entry: [
