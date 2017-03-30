@@ -13,7 +13,7 @@ const ButtonComponent = ({options, callbacks}) => {
   const args = options.get('args', List()).toArray();
 
   return <button
-    className='form-button action-button'
+    className='form-button'
     type='button'
     onClick={() => callbacks.onButtonClick(...args)}
   >

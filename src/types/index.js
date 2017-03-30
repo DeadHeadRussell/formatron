@@ -5,6 +5,12 @@ import {createFormType} from './form';
 import {createTableType} from './table';
 
 /**
+ * A set of standard validation errors that user registered types can use.
+ * Eg: required, invalidOption
+ */
+export {validationErrors} from './data';
+
+/**
  * The sole label type. We might want to split this up into multiple types
  * (ala data, form, and table) so that more than just template parsing is
  * possible.
