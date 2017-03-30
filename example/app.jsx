@@ -1,39 +1,11 @@
-import Immutable from 'immutable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {create, Form, Types} from '../src/index';
+import {Form} from '~/index';
 
-const exampleSchema = create('example', {
-  data: [
-    Types.data.text.create('title', {
-      required: true,
-      textType: 'singleline'
-    }),
-    Types.data.number.create('count', {
-      required: true,
-      numberType: 'integer'
-    }),
-    Types.data.text.create('nested', {}, ['path', 'to'])
-  ],
-  form: Types.form.columns.create({
-    label: 'Example Form',
-    columns: [[
-      Types.form.data.create({
-        label: 'Title',
-        ref: 'title'
-      }),
-      Types.form.data.create({
-        label: 'Count',
-        ref: 'count'
-      }),
-      Types.form.data.create({
-        label: 'Nested',
-        ref: 'nested'
-      })
-    ]]
-  })
-});
+import './types/linked';
+
+import exampleSchema, {createExample} from './schema/example';
 
 class Example extends React.Component {
   constructor(props) {
@@ -41,14 +13,7 @@ class Example extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      model: Immutable.fromJS({
-        title: 'Default Title',
-        path: {
-          to: {
-            nested: ''
-          }
-        }
-      })
+      model: createExample()
     };
   }
 
@@ -71,3 +36,4 @@ ReactDOM.render(
   <Example />,
   document.getElementById('example-app')
 );
+
