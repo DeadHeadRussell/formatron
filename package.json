@@ -5,7 +5,8 @@
   "main": "./dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot --inline --content-base example/ --port 8080"
+    "start": "webpack-dev-server --env.dev --hot --inline --content-base example/ --port 8080",
+    "build": "webpack --env.prod"
   },
   "author": "Andrew Russell",
   "license": "MIT",
