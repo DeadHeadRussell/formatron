@@ -1,14 +1,14 @@
+import {List} from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Label from '~/components/label';
-import {FormPropTypes, numericalDisplay, truthyDisplay} from './';
+import {FormPropTypes, compareAll, numericalDisplay, truthyDisplay} from './';
 
 export default function(register) {
   register('computed', {
     parseOptions(options, parseField) {
       return options
-        .update('left', parseField)
-        .update('right', parseField);
+        .update('args', args => args.map(parseField))
     },
 
     Component: ComputedComponent,
@@ -17,16 +17,17 @@ export default function(register) {
 }
 
 const ops = {
-  '+': (left, right) => left + right,
-  '-': (left, right) => left - right,
-  '*': (left, right) => left * right,
-  '/': (left, right) => left / right,
-  '^': Math.pow.bind(Math),
-  '>': (left, right) => left > right,
-  '<': (left, right) => left < right,
-  '>=': (left, right) => left >= right,
-  '<=': (left, right) => left <= right,
-  '=': (left, right) => left == right
+  '+': args => args.reduce((a, b) => a + b),
+  '-': args => args.reduce((a, b) => a - b),
+  '*': args => args.reduce((a, b) => a * b),
+  '/': args => args.reduce((a, b) => a / b),
+  '^': args => args.reduce((a, b) => Math.pow(a, b)),
+  '>': compareAll((a, b) => a > b),
+  '<': compareAll((a, b) => a < b),
+  '>=': compareAll((a, b) => a >= b),
+  '<=': compareAll((a, b) => a <= b),
+  '=': compareAll((a, b) => a == b),
+  '!=': compareAll((a, b) => a != b)
 };
 
 const displays = {
@@ -56,8 +57,9 @@ ComputedComponent.propTypes = {
   options: ImmutablePropTypes.contains({
     label: React.PropTypes.string,
     op: React.PropTypes.string.isRequired,
-    left: FormPropTypes.value.isRequired,
-    right: FormPropTypes.value.isRequired
+    args: ImmutablePropTypes.listOf(
+      FormPropTypes.value.isRequired
+    ).isRequired
   }).isRequired,
   getters: React.PropTypes.objectOf(React.PropTypes.func)
 };
@@ -68,9 +70,8 @@ function getComputedDisplayValue(options, getters) {
 }
 
 function getComputedValue(options, getters) {
-  return ops[options.get('op')](
-    options.get('left').getValue(getters),
-    options.get('right').getValue(getters)
+  return ops[options.get('op')](options.get('args')
+    .map(arg => arg.getValue(getters))
   );
 }
 

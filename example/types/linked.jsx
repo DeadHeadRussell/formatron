@@ -14,7 +14,20 @@ const models = {
   0: [
     createPerson(0, 'Billy'),
     createPerson(1, 'Bob'),
-    createPerson(2, 'Jimmy')
+    createPerson(2, 'Jimmy'),
+    createPerson(3, 'Joey'),
+    createPerson(4, 'Jenny'),
+    createPerson(5, 'Jessie'),
+    createPerson(6, 'Jessica'),
+    createPerson(7, 'Jennifer'),
+    createPerson(8, 'Jorge'),
+    createPerson(9, 'Jo'),
+    createPerson(10, 'Joe'),
+    createPerson(11, 'Jimbo'),
+    createPerson(12, 'Jambo'),
+    createPerson(13, 'Jumbo'),
+    createPerson(14, 'Jembo'),
+    createPerson(15, 'Jombo')
   ],
   1: [
     createTask(0, 'Clean', 3),

@@ -12,6 +12,10 @@ export default create('example', {
       required: true,
       numberType: 'integer'
     }),
+    Types.data.number.create('count2', {
+      required: true,
+      numberType: 'float'
+    }),
     Types.data.text.create('nested', {}, ['path', 'to']),
     Types.data.linked.create('person', {
       schemaId: 0
@@ -36,6 +40,26 @@ export default create('example', {
         ref: 'count'
       }),
       Types.form.data.create({
+        label: 'Lower Count',
+        ref: 'count2'
+      }),
+      Types.form.condition.create({
+        op: '>',
+        args: [
+          Types.form.data.create({ref: 'count'}),
+          Types.form.value.create({value: 0}),
+          Types.form.data.create({ref: 'count2'})
+        ],
+        trueType: Types.form.computed.create({
+          op: '*',
+          args: [
+            Types.form.data.create({ref: 'count'}),
+            Types.form.value.create({value: -10}),
+            Types.form.data.create({ref: 'count2'})
+          ]
+        })
+      }),
+      Types.form.data.create({
         label: 'Nested',
         ref: 'nested'
       }),
@@ -47,10 +71,13 @@ export default create('example', {
         label: 'Tasks',
         ref: 'tasks'
       }),
+      /*
+       * There are example refs that should be made to work for list values.
+       *
       Types.form.data.create({
         label: 'Time for First Task (hrs)',
         editable: false,
-        ref: ['tasks', '0', 'hours']
+        ref: ['tasks', 0, 'hours']
       }),
       Types.form.computed.create({
         label: 'One of the tasks takes 3 hrs',
@@ -60,6 +87,7 @@ export default create('example', {
           ref: ['tasks', 'q:hours=3', 'hours']
         })
       })
+      */
     ]]
   })
 });

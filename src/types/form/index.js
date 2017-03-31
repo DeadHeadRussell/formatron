@@ -66,6 +66,21 @@ export const FormPropTypes = {
   display: createChainableTypeChecker(createFormTypeChecker('display'))
 };
 
+export function compareAll(cmp) {
+  return args => {
+    const previousValue = args.reduce((previousValue, value) => {
+      if (typeof previousValue == 'undefined') {
+        return undefined;
+      }
+      return cmp(previousValue, value) ?
+        value : undefined;
+    });
+
+    return typeof previousValue == 'undefined' ?
+      false : true;
+  };
+}
+
 export function numericalDisplay(value) {
   return Number.isFinite(value) ?
     value :
