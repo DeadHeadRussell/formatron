@@ -6,3 +6,5 @@ export {Types};
 export {default as Form} from './components/form';
 export {default as Label} from './components/label';
 
+import './index.sass';
+

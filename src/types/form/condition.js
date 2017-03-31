@@ -1,14 +1,14 @@
+import {List} from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Label from '~/components/label';
-import {FormPropTypes} from './';
+import {FormPropTypes, compareAll} from './';
 
 export default function(register) {
   register('condition', {
     parseOptions(options, parseField) {
       return options
-        .update('left', parseField)
-        .update('right', parseField)
+        .update('args', args => args.map(parseField))
         .update('trueType', parseField)
         .update('falseType', field => field && parseField(field));
     },
@@ -19,14 +19,14 @@ export default function(register) {
 }
 
 const ops = {
-  '=': (left, right) => left == right,
-  '!=': (left, right) => left != right,
-  '>': (left, right) => left > right,
-  '>=': (left, right) => left >= right,
-  '<': (left, right) => left < right,
-  '<=': (left, right) => left <= right,
-  '&&': (left, right) => left && right,
-  '||': (left, right) => left || right
+  '=': compareAll((a, b) => a == b),
+  '!=': compareAll((a, b) => a != b),
+  '>': compareAll((a, b) => a > b),
+  '>=': compareAll((a, b) => a >= b),
+  '<': compareAll((a, b) => a < b),
+  '<=': compareAll((a, b) => a <= b),
+  '&&': args => args.every(arg => !!arg),
+  '||': args => args.some(arg => !!arg)
 };
 
 const ConditionComponent = ({options, getters, callbacks}) => {
@@ -45,8 +45,9 @@ ConditionComponent.propTypes = {
   options: ImmutablePropTypes.contains({
     label: React.PropTypes.string,
     op: React.PropTypes.string.isRequired,
-    left: FormPropTypes.value.isRequired,
-    right: FormPropTypes.value.isRequired,
+    args: ImmutablePropTypes.listOf(
+      FormPropTypes.value.isRequired
+    ).isRequired,
     trueType: FormPropTypes.display.isRequired,
     falseType: FormPropTypes.display
   }).isRequired,
@@ -55,9 +56,8 @@ ConditionComponent.propTypes = {
 };
 
 function getConditionValue(options, getters) {
-  return ops[options.get('op')](
-    options.get('left').getValue(getters),
-    options.get('right').getValue(getters)
+  return ops[options.get('op')](options.get('args')
+    .map(arg => arg.getValue(getters))
   );
 }
 
