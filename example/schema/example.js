@@ -36,30 +36,6 @@ export default create('example', {
         ref: 'title'
       }),
       Types.form.data.create({
-        label: 'Count',
-        ref: 'count'
-      }),
-      Types.form.data.create({
-        label: 'Lower Count',
-        ref: 'count2'
-      }),
-      Types.form.condition.create({
-        op: '>',
-        args: [
-          Types.form.data.create({ref: 'count'}),
-          Types.form.value.create({value: 0}),
-          Types.form.data.create({ref: 'count2'})
-        ],
-        trueType: Types.form.computed.create({
-          op: '*',
-          args: [
-            Types.form.data.create({ref: 'count'}),
-            Types.form.value.create({value: -10}),
-            Types.form.data.create({ref: 'count2'})
-          ]
-        })
-      }),
-      Types.form.data.create({
         label: 'Nested',
         ref: 'nested'
       }),
@@ -71,6 +47,11 @@ export default create('example', {
         label: 'Tasks',
         ref: 'tasks'
       }),
+      Types.form.property.create({
+        label: '# Tasks',
+        obj: Types.form.data.create({ref: 'tasks'}),
+        property: 'size'
+      })
       /*
        * There are example refs that should be made to work for list values.
        *
@@ -88,6 +69,35 @@ export default create('example', {
         })
       })
       */
+    ], [
+      Types.form.header.create({
+        label: 'Counts'
+      }),
+      Types.form.data.create({
+        label: 'Count',
+        ref: 'count'
+      }),
+      Types.form.data.create({
+        label: 'Lower Count',
+        ref: 'count2'
+      }),
+      Types.form.condition.create({
+        op: '>',
+        args: [
+          Types.form.data.create({ref: 'count'}),
+          Types.form.value.create({value: 0}),
+          Types.form.data.create({ref: 'count2'})
+        ],
+        trueType: Types.form.computed.create({
+          label: 'Some arbitrary computation',
+          op: '*',
+          args: [
+            Types.form.data.create({ref: 'count'}),
+            Types.form.value.create({value: -10}),
+            Types.form.data.create({ref: 'count2'})
+          ]
+        })
+      })
     ]]
   })
 });
