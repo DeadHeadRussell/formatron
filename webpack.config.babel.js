@@ -1,23 +1,12 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
-import {NoEmitOnErrorsPlugin} from 'webpack';
 
-const entryPath = path.join(__dirname, 'example/app.jsx')
 const outputPath = path.join(__dirname, 'dist')
 
 // We will probably want to make separate configs for dev and prod, but for
 // now, this fits our needs.
 function buildConfig(config) {
   return {
-    entry: [
-      entryPath
-    ],
-
-    output: {
-      path: outputPath,
-      filename: '[name].js',
-    },
-
     module: {
       loaders: [{
         test: /\.jsx?$/,
@@ -53,14 +42,6 @@ function buildConfig(config) {
       extensions: ['.js', '.jsx']
     },
 
-    plugins: [
-      new NoEmitOnErrorsPlugin(),
-      new HtmlWebpackPlugin({
-        template: 'example/index.html',
-        inject: 'body'
-      })
-    ],
-
     watchOptions: {
       poll: 1000
     },
@@ -69,19 +50,50 @@ function buildConfig(config) {
   };
 }
 
+const prodConfig = buildConfig({
+  entry: [
+    path.join(__dirname, 'src', 'index.js')
+  ],
+
+  output: {
+    library: 'formatron',
+    libraryTarget: 'umd',
+    path: outputPath,
+    filename: 'formatron.js',
+  },
+
+  externals: {
+    react: {
+      commonjs: 'react',
+      commonjs2: 'react',
+      amd: 'react',
+      root: 'React'
+    }
+  }
+});
+
+const exampleConfig = buildConfig({
+  entry: [
+    path.join(__dirname, 'example', 'app.jsx')
+  ],
+
+  output: {
+    path: outputPath,
+    filename: '[name].js'
+  },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'example/index.html',
+      inject: 'body'
+    })
+  ]
+});
+
 module.exports = function(env) {
   if (env && env.prod) {
-    return buildConfig({
-      externals: {
-        react: {
-          commonjs: 'react',
-          commonjs2: 'react',
-          amd: 'react',
-          root: 'React'
-        }
-      }
-    });
+    return prodConfig;
   }
-  return buildConfig({});
+  return [prodConfig, exampleConfig];
 };
 

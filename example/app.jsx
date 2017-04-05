@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {Form} from '~/index';
+import {Form} from '../dist/formatron';
 
 import './types/linked';
 
