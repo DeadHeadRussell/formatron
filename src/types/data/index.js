@@ -110,7 +110,10 @@ export function createDataType(typeName, functions, schemaFunctions) {
     function validate(value) {
       try {
         if (typeof value === 'undefined') {
-          throw new Error(validationErrors.undefinedValue);
+          if (!options.get('generated')) {
+            throw new Error(validationErrors.undefinedValue);
+          }
+          return;
         }
 
         if (!hasValue(value)) {
@@ -141,13 +144,6 @@ export function createDataType(typeName, functions, schemaFunctions) {
         return functions.toConditionString(name, value, options);
       }
       return `${name} = ${toString(value)}`;
-    }
-
-    function generateValue() {
-      if (functions.generateValue) {
-        return functions.generateValue(options);
-      }
-      throw new Error(`"generateValue" is not implemented for "${typeName}", "${name}"`);
     }
 
     function getSchema() {

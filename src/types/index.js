@@ -63,7 +63,6 @@ registerTableTypes(registerType.bind(null, TABLE));
  *   - functions.validate
  *   - functions.toString
  *   - functions.toConditionString
- *   - functions.generateValue
  *   - schemaFunctions
  *   - schemaFunctions.getSchema
  *   - schemaFunctions.getModel
