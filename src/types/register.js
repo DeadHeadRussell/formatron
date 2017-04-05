@@ -18,6 +18,7 @@ import registerFunctionType from './form/function';
 import registerMethodType from './form/method';
 import registerPropertyType from './form/property';
 import registerRowType from './form/row';
+import registerSwitchType from './form/switch';
 import registerTabsType from './form/tabs';
 import registerFormTemplateType from './form/template';
 import registerValueType from './form/value';
@@ -49,6 +50,7 @@ export function registerFormTypes(register) {
   registerMethodType(register);
   registerPropertyType(register);
   registerRowType(register);
+  registerSwitchType(register);
   registerTabsType(register);
   registerFormTemplateType(register);
   registerValueType(register);

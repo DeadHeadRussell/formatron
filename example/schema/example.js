@@ -49,6 +49,25 @@ export default create('example', {
         label: 'Person',
         ref: 'person'
       }),
+      Types.form.switch.create({
+        switch: Types.form.data.create({ref: 'person'}),
+        cases: [{
+          case: Types.form.value.create({value: 1}),
+          display: Types.form.value.create({value: 'Woo, person #1!!'})
+        }, {
+          case: Types.form.value.create({value: 4}),
+          display: Types.form.value.create({value: 'Awww, person #4 :('})
+        }]
+      }),
+      Types.form.switch.create({
+        switch: Types.form.data.create({ref: 'person'}),
+        cases: [{
+          case: Types.form.value.create({value: 0}),
+          display: Types.form.value.create({value: 'case'})
+        }],
+        defaultCase: Types.form.value.create({value: 'default'})
+      })
+    ], [
       Types.form.data.create({
         label: 'Tasks',
         ref: 'tasks'
