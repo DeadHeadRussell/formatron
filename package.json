@@ -2,10 +2,10 @@
   "name": "formatron",
   "version": "0.0.6",
   "description": "A library that generates forms based on JSON schema.",
-  "main": "./dist/main.js",
+  "main": "./dist/formatron.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --env.dev --hot --inline --content-base example/ --port 8080",
+    "start": "webpack --env.prod && webpack-dev-server --env.dev --hot --inline --content-base example/ --port 8080",
     "build": "webpack --env.prod"
   },
   "author": "Andrew Russell",
