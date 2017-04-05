@@ -150,9 +150,9 @@ export function createDataType(typeName, functions, schemaFunctions) {
       throw new Error(`"generateValue" is not implemented for "${typeName}", "${name}"`);
     }
 
-    function getSchema(model) {
+    function getSchema() {
       if (schemaFunctions) {
-        return schemaFunctions.getSchema(options, model, schema);
+        return schemaFunctions.getSchema(options, schema);
       }
       throw new Error(`"getSchema" is not implemented for "${typeName}", "${name}"`);
     }

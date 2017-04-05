@@ -32,11 +32,7 @@ export default function(register) {
       if (!list) {
         return null;
       }
-
-      const listField = options.get('listField');
-      return list
-        .map(value => listField.getModel(value))
-        .filter(value => value);
+      return list;
     }
   });
 }
