@@ -1,4 +1,4 @@
-import {List} from 'immutable';
+import {List, Map} from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Label from '~/components/label';
