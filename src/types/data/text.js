@@ -9,7 +9,6 @@ export default function(register) {
   register('text', {
     component: TextComponent,
     validate: validateText,
-    generateValue: generateTextValue,
     toString: textToString,
     getDefaultValue: getDefaultTextValue,
     hasValue: textHasValue
@@ -166,27 +165,6 @@ function validateText(value, options) {
     default:
       return;
   }
-}
-
-// TODO: Move this functionality out of the library or somehow allow the user
-// to customize this algorithm.
-function generateTextValue() {
-  function s4n(num) {
-    return List()
-      .set(num - 1, 0)
-      .map(s4)
-      .join('');
-  }
-
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-
-  return List([2, 1, 1, 1, 3])
-    .map(s4n)
-    .join('-');
 }
 
 function getDefaultTextValue() {

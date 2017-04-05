@@ -156,8 +156,7 @@ class Schema extends ISchema {
       const {field, value} = this.getDataFieldAndValue(model, ref);
       const values = field.options.get('generated') ?
         [
-          value,
-          field.generateValue()
+          value
         ] :
         [
           value,
