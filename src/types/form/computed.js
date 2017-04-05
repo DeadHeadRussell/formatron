@@ -8,7 +8,13 @@ export default function(register) {
   register('computed', {
     parseOptions(options, parseField) {
       return options
-        .update('args', args => args.map(parseField))
+        .update('args', args => {
+          if (Map.isMap(args)) {
+            return parseField(args);
+          } else {
+            return args.map(parseField);
+          }
+        });
     },
 
     Component: ComputedComponent,
@@ -57,9 +63,12 @@ ComputedComponent.propTypes = {
   options: ImmutablePropTypes.contains({
     label: React.PropTypes.string,
     op: React.PropTypes.string.isRequired,
-    args: ImmutablePropTypes.listOf(
+    args: React.PropTypes.oneOfType([
+      ImmutablePropTypes.listOf(
+        FormPropTypes.value.isRequired
+      ).isRequired,
       FormPropTypes.value.isRequired
-    ).isRequired
+    ]).isRequired,
   }).isRequired,
   getters: React.PropTypes.objectOf(React.PropTypes.func)
 };
@@ -70,8 +79,11 @@ function getComputedDisplayValue(options, getters) {
 }
 
 function getComputedValue(options, getters) {
-  return ops[options.get('op')](options.get('args')
-    .map(arg => arg.getValue(getters))
-  );
+  const args = options.get('args');
+  const values = List.isList(args) ?
+    args.map(arg => arg.getValue(getters)) :
+    args.getValue(getters);
+
+  return ops[options.get('op')](values);
 }
 

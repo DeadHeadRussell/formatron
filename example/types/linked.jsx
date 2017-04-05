@@ -46,7 +46,7 @@ Types.registerType(Types.DATA, 'linked', {
   validate: validateLinked,
   toString: linkedToString
 }, {
-  getschema: getLinkedSchema,
+  getSchema: getLinkedSchema,
   getModel: getLinkedModel
 });
 

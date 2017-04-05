@@ -120,7 +120,6 @@ function createFormTypeChecker(formType) {
     const value = props[propName];
     const type = typeof value;
     if (type != 'object' || !value[formType]) {
-      console.log(value);
       return new Error(
         `Invalid ${location} \`${propFullName}\` of type \'${type}\` ` +
         `supplied to \`${componentName}\`, expected a \`${formType}FormType\`.`

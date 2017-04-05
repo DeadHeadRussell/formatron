@@ -57,10 +57,12 @@ export default create('example', {
         label: '# Tasks',
         obj: Types.form.data.create({ref: 'tasks'}),
         property: 'size'
-      })
-      /*
-       * There are example refs that should be made to work for list values.
-       *
+      }),
+      Types.form.computed.create({
+        op: '+',
+        args: Types.form.data.create({ref: ['tasks', 'm:hours']}),
+        label: 'Total Time'
+      }),
       Types.form.data.create({
         label: 'Time for First Task (hrs)',
         editable: false,
@@ -68,13 +70,14 @@ export default create('example', {
       }),
       Types.form.computed.create({
         label: 'One of the tasks takes 3 hrs',
-        op: '=',
-        left: Types.form.value.create(3),
-        right: Types.form.data.create({
-          ref: ['tasks', 'q:hours=3', 'hours']
-        })
+        op: '!=',
+        args: [
+          Types.form.value.create({value: null}),
+          Types.form.data.create({
+            ref: ['tasks', 'q:hours=3']
+          })
+        ]
       })
-      */
     ], [
       Types.form.header.create({
         label: 'Counts'

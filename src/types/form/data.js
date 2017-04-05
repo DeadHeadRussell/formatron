@@ -59,15 +59,23 @@ const DataComponent = ({options, getters, callbacks}) => {
   }
 };
 
+const refValueType = React.PropTypes.oneOfType([
+  React.PropTypes.string.isRequired,
+  React.PropTypes.number.isRequired
+]);
+
+const refType = React.PropTypes.oneOfType([
+  refValueType.isRequired,
+  ImmutablePropTypes.listOf(
+    refValueType.isRequired
+  ).isRequired
+]);
+
+
 DataComponent.propTypes = {
   options: ImmutablePropTypes.contains({
     label: React.PropTypes.string,
-    ref: React.PropTypes.oneOfType([
-      React.PropTypes.string.isRequired,
-      ImmutablePropTypes.listOf(
-        React.PropTypes.string.isRequired
-      ).isRequired
-    ]).isRequired,
+    ref: refType.isRequired,
     editable: React.PropTypes.bool,
     useLabel: React.PropTypes.bool
   }).isRequired,
