@@ -1,3 +1,4 @@
+import {Map} from 'immutable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -26,6 +27,10 @@ class Example extends React.Component {
     return <Form
       schema={exampleSchema}
       model={this.state.model}
+      disabled={Map({
+        disabledValue: 1,
+        notDisabledValue: undefined
+      })}
       onSubmit={this.onSubmit}
       actions={[<button>Submit</button>]}
     />;

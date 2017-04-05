@@ -121,7 +121,12 @@ class Schema {
       )
       .update(model => disabledValues
         .reduce(
-          (model, value, ref) => this.setDataValue(model, ref, value),
+          (model, value, ref) => {
+            if (typeof value != 'undefined') {
+              return this.setDataValue(model, ref, value);
+            }
+            return model
+          },
           model
         )
       );

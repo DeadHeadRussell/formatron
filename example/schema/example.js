@@ -26,6 +26,12 @@ export default create('example', {
       listOptions: {
         schemaId: 1
       }
+    }),
+    Types.data.number.create('disabledValue', {
+      numberType: 'integer'
+    }),
+    Types.data.number.create('notDisabledValue', {
+      numberType: 'integer'
     })
   ],
   form: Types.form.columns.create({
@@ -97,6 +103,16 @@ export default create('example', {
             Types.form.data.create({ref: 'count2'})
           ]
         })
+      })
+    ], [
+      Types.form.header.create({label: 'Disabled Test'}),
+      Types.form.data.create({
+        ref: 'disabledValue',
+        label: 'Disabled'
+      }),
+      Types.form.data.create({
+        ref: 'notDisabledValue',
+        label: 'Not Disabled'
       })
     ]]
   })
