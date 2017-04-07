@@ -102,7 +102,14 @@ const exampleConfig = buildConfig({
       template: 'example/index.html',
       inject: 'body'
     })
-  ]
+  ],
+
+  resolve: {
+    alias: {
+      formatron: path.resolve(__dirname, 'src')
+    },
+    extensions: ['.js', '.jsx'],
+  },
 });
 
 module.exports = function(env) {

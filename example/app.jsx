@@ -2,7 +2,7 @@ import {Map} from 'immutable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {Form} from '../dist/formatron';
+import {Form} from 'formatron';
 
 import './types/linked';
 
