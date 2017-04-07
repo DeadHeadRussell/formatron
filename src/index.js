@@ -1,4 +1,4 @@
-export {default as create} from './schema';
+export {default as create, createListSchema as createList} from './schema';
 export {default as parseTemplate} from './template';
 import * as Types from './types';
 export {Types};

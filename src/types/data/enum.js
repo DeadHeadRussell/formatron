@@ -1,4 +1,5 @@
 import {List, Map} from 'immutable';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Select from 'react-select';
 
@@ -40,7 +41,7 @@ const MultiEnumComponent = ({name, value, options, disabled, onChange, onBlur}) 
     value={multiValueToOptions(value)}
     disabled={disabled}
     multi={true}
-    options={getSelectOptions(options)}
+    options={getSelectOptions(options).toJS()}
     onChange={options => onChange(optionsToMultiValue(options))}
     onBlur={onBlur}
   />;
@@ -80,7 +81,7 @@ const SingleEnumComponent = ({name, value, options, disabled, onChange, onBlur})
     name={name}
     value={singleValueToOption(value)}
     disabled={disabled}
-    options={getSelectOptions(options)}
+    options={getSelectOptions(options).toJS()}
     onChange={option => onChange(optionToSingleValue(option))}
     onBlur={onBlur}
   />;

@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import Immutable, {List, Map, Set} from 'immutable';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import spinner from './loading.png';

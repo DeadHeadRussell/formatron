@@ -1,4 +1,5 @@
 import CurrencyInput from 'react-currency-input';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import {validationErrors} from './';

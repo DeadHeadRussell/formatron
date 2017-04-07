@@ -6,8 +6,8 @@ export default function createSchema(name, values) {
   return new Schema(name, values);
 }
 
-export function createListSchema(field, options) {
-  return new ListSchema(field, options);
+export function createListSchema(options) {
+  return new ListSchema(options);
 }
 
 // TODO: Ugh, there's a few things going on here. Too much functionality in one
@@ -25,6 +25,7 @@ export function createListSchema(field, options) {
 // This class isn't really used. Its more of a reference of required functions
 // for schema implementations. Since its this messy, it probably could use a
 // rework.
+// (update) it is now used, but this is still a bad setup.
 class ISchema {
   getDataField() {
     throw new Error('Unimplemented');
@@ -45,7 +46,7 @@ class ISchema {
       if (field.getSchema) {
         const schema = field.getSchema();
         if (schema) {
-          return schema.getDataField(ref.rest());
+          return schema.getDataField(rest);
         }
         return null;
       } else {
@@ -92,7 +93,7 @@ class ISchema {
     if (rest.size == 0) {
       return model.setIn(path, value);
     } else {
-      // (russell): This is not good, not good at all...
+      // XXX: (russell) This is not good, not good at all...
       if (field.type == Types.data.linked) {
         throw new Error('Cannot set value through a linked type reference');
       }
@@ -290,6 +291,9 @@ class Schema extends ISchema {
     }
 
     const field = this.data.find(field => field.name == ref.first());
+    if (!field) {
+      throw new Error(`Could not find field to set a value for ref "${ref.first()}" on "${model}"`);
+    }
     const path = field.path.push(field.name);
     return this._setDataValue(model, field, path, value, ref.first(), ref.rest());
   }
@@ -308,6 +312,9 @@ class Schema extends ISchema {
     }
 
     const field = this.data.find(field => field.name == ref.first());
+    if (!field) {
+      throw new Error(`Could not find field to get a value for ref "${ref.first()}" on "${model}"`);
+    }
     const value = model.getIn(field.path.push(field.name));
     return this._getDataFieldAndValue(field, value, ref.rest());
   }
@@ -326,8 +333,6 @@ class Schema extends ISchema {
   }
 }
 
-// This class does not allow indexing through a list. The list must currently
-// be the last part of the ref list.
 class ListSchema extends ISchema {
   constructor(options) {
     super();
@@ -400,10 +405,33 @@ class ListSchema extends ISchema {
 
     const field = this.getListRefField(listRef);
     const index = this.getListRefIndex(list, listRef);
-    if (index < 0) {
-      throw new Error(`Attempt to set an invalid index in a list (ref=${ref})`);
+
+    // TODO: Maybe move this to its own functions? Or try to simplify the state logic?
+    if (this.isQueryListRef(listRef)) {
+      if (ref.size == 1) {
+        if (index >= 0) {
+          if (!value) {
+            return list.remove(index);
+          } else {
+            return list.set(index, value);
+          }
+        } else {
+          if (typeof value != 'undefined' && value !== null) {
+            return list.push(value);
+          } else if (!value) {
+            return list;
+          }
+        }
+      } else {
+        if (index >= 0) {
+          return this._setDataValue(list, field, path, value, ref.first(), ref.rest());
+        } else {
+          throw new Error(`Attempt to set an invalid index in a list (ref=${ref})`);
+        }
+      }
+    } else {
+      return this._setDataValue(list, field, path, value, ref.first(), ref.rest());
     }
-    return this._setDataValue(model, field, path, value, ref.first(), ref.rest());
   }
 
   isValidListRef(refValue) {
@@ -424,11 +452,33 @@ class ListSchema extends ISchema {
   }
 
   isSingularListRef(listRef) {
-    return Number.isInteger(listRef) || listRef[0] == 'q';
+    return this.isIndexListRef(listRef) || this.isQueryListRef(listRef);
+  }
+
+  isMultiListRef(listRef) {
+    return this.isFilterListRef(listRef) ||
+      this.isMapListRef(listRef) ||
+      this.isAllListRef(listRef);
+  }
+
+  isIndexListRef(listRef) {
+    return Number.isInteger(listRef);
+  }
+
+  isQueryListRef(listRef) {
+    return typeof listRef == 'string' && listRef[0] == 'q';
+  }
+
+  isFilterListRef(listRef) {
+    return typeof listRef == 'string' && listRef[0] == 'f';
   }
 
   isMapListRef(listRef) {
     return typeof listRef == 'string' && listRef[0] == 'm';
+  }
+
+  isAllListRef(listRef) {
+    return typeof listRef == 'string' && listRef[0] == 'a';
   }
 
   getListRefValue(list, listRef) {
@@ -509,7 +559,21 @@ class ListSchema extends ISchema {
 
   getListRefField(listRef) {
     if (this.isSingularListRef(listRef)) {
-      return this.options.get('listField');
+      const listFilters = this.options.get('filters', List());
+      const refFilter = this.isQueryListRef(listRef) ?
+        listRef.slice(2) :
+        null;
+
+      const filters = refFilter ?
+        listFilters.push(refFilter) :
+        listFilters;
+
+      const listField = this.options.get('listField');
+      return listField.type.create(
+        listField.name,
+        listField.options.set('filters', filters),
+        listField.path
+      );
     } else if (this.isMapListRef(listRef)) {
       const [mapRef] = listRef.slice(2).split('=');
 
@@ -521,6 +585,11 @@ class ListSchema extends ISchema {
         listType: mappedField.type.name,
         listOptions: mappedField.options
       });
+    } else if (this.isFilterListRef(listRef)) {
+      const refFilter = listRef.slice(2);
+      return Types.data.list.create('filteredList', this.options
+        .update('filters', List(), filters => filters.push(refFilter))
+      );
     } else {
       return Types.data.list.create('selfList', this.options);
     }

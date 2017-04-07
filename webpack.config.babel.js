@@ -64,10 +64,25 @@ const prodConfig = buildConfig({
 
   externals: {
     react: {
-      commonjs: 'react',
+      root: 'React',
       commonjs2: 'react',
+      commonjs: 'react',
       amd: 'react',
-      root: 'React'
+      umd: 'react'
+    },
+    immutable: {
+      root: 'Immutable',
+      commonjs2: 'immutable',
+      commonjs: 'immutable',
+      amd: 'immutable',
+      umd: 'immutable'
+    },
+    moment: {
+      root: 'moment',
+      commonjs2: 'moment',
+      commonjs: 'moment',
+      amd: 'moment',
+      umd: 'moment'
     }
   }
 });

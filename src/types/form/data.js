@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Label from '~/components/label';
@@ -32,7 +33,7 @@ const DataComponent = ({options, getters, callbacks}) => {
     </div>;
   }
 
-  const classes = classNames('form-data', field.type);
+  const classes = classNames('form-data', field.type.name);
 
   const children = [
     <Label key='label' required={field.options.get('required')}>{options.get('label')}</Label>,
