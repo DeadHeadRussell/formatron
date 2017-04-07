@@ -1,3 +1,4 @@
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Label from '~/components/label';

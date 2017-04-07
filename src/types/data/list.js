@@ -1,5 +1,6 @@
 import Immutable, {List} from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import React from 'react';
 
 import {createListSchema} from '~/schema';
 import * as Types from '../';

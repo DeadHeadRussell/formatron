@@ -1,3 +1,4 @@
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 export default function(register) {

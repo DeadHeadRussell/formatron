@@ -4,7 +4,7 @@ import './index.sass';
 
 export const validationErrors = {
   required: 'This field is required',
-  undefinedValue: 'This field as an undefined value',
+  undefinedValue: 'This field has an undefined value',
   invalidOption: 'The value selected does not exist',
   integer: 'This field must be an integer',
   finite: 'This field must be a finite number',
@@ -69,7 +69,6 @@ export function createDataType(typeName, functions, schemaFunctions) {
       validate,
       toString,
       toConditionString,
-      generateValue,
 
       getSchema,
       getModel
@@ -117,7 +116,7 @@ export function createDataType(typeName, functions, schemaFunctions) {
         }
 
         if (!hasValue(value)) {
-          if (options.get('required')) {
+          if (!options.get('generated') && options.get('required')) {
             throw new Error(validationErrors.required);
           }
           return;
@@ -133,6 +132,10 @@ export function createDataType(typeName, functions, schemaFunctions) {
     }
 
     function toString(value) {
+      if (typeof value == 'undefined') {
+        value = getDefaultValue();
+      }
+
       if (functions.toString) {
         return functions.toString(value, options, schema);
       }
@@ -140,6 +143,10 @@ export function createDataType(typeName, functions, schemaFunctions) {
     }
 
     function toConditionString(value) {
+      if (typeof value == 'undefined') {
+        value = getDefaultValue();
+      }
+
       if (functions.toConditionString) {
         return functions.toConditionString(name, value, options);
       }

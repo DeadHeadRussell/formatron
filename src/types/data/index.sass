@@ -1,11 +1,3 @@
-.form-attachment
-  > div
-    display: flex
-    align-items: center
-    margin: 5px 0 15px
-    padding: 0 15px
-    background: white
-
 .form-data.bool
   display: inline-flex
   flex-flow: row nowrap
@@ -19,8 +11,9 @@
   position: relative
 
   &:before
-    position: relative;
-    left: 17px
+    position: absolute;
+    top: 9px
+    left: 8px
     z-index: 2
     content: '$'
 
@@ -50,12 +43,15 @@
   &.date,
   &.select,
   &.currency,
+  &.masked,
   &.number,
   &.text
     width: 300px
     height: 36px
+    min-height: 36px
 
   &.currency,
+  &.masked,
   &.number,
   &.text
     padding: 10px
@@ -82,6 +78,9 @@
       margin: 2px 2px 0 4px
 
   &.select
+    &.multi
+      height: auto
+
     .Select-clear
       padding-right: 5px
       font-size: 26px
@@ -90,6 +89,7 @@
       display: none
 
     .Select-menu-outer
+      z-index: 20
       max-height: 400px
 
       > .Select-menu
@@ -117,29 +117,6 @@
     > .form-label-text
       margin-right: 10px
       font-weight: 500
-
-.form-letter
-  width: 800px
-
-.form-linked
-  display: flex
-  flex-flow: row nowrap
-  align-items: center
-  width: 300px
-  height: 36px
-  border: 1px solid #cccccc
-  border-radius: 4px
-  background: white
-
-  > .action-link
-    margin: 0 0 0 10px
-
-  > .form-data-input.select
-    height: 34px
-
-    > .Select-control
-      height: 34px
-      border: none
 
 .form-list
   > .form-list-item

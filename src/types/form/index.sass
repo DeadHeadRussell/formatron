@@ -2,6 +2,12 @@
 .form-field
   margin-bottom: 10px
 
+.form-condition,
+.form-row-wrapper,
+.form-switch
+  > .form-field
+    margin-bottom: 0
+
 // Label
 .form-label-text
   font-weight: 700
@@ -23,6 +29,7 @@
 
 .form-column
   flex: 0 0 auto
+  min-width: 300px
   max-width: 100%
 
   &:not(:first-of-type)
@@ -64,16 +71,6 @@
   color: white
   content: attr(data-error)
 
-// Documents
-.form-documents
-  margin-bottom: 20px
-
-  > .form-documents-table
-    margin-top: 10px
-    padding-top: 10px
-    padding-left: 20px
-    border-top: 1px solid black
-
 // Header
 .form-header
   margin-bottom: 10px
@@ -81,17 +78,24 @@
   border-bottom: 1px solid black
 
 // Row
+.form-row
+  .form-label-text + .form-row-wrapper
+    margin-top: 10px
+    padding-top: 10px
+    padding-left: 20px
+    border-top: 1px solid black
+
 .form-row-wrapper
   flex: 1 1 auto
   display: flex
   flex-flow: row nowrap
-  align-items: flex-end
+  justify-content: flex-start
+  align-items: center
 
   > *
-    flex: 1 1 0
+    flex: 0 0 auto
 
     &.static
-      flex: 0 0 auto
       margin-left: 0
 
     &:not(:first-child).static

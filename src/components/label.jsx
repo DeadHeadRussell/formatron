@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function Label({required, children}) {
   return children ? (
     <span className='form-label-text'>
