@@ -1,5 +1,7 @@
 import Immutable, {List, Map} from 'immutable';
 
+import * as Types from '../';
+
 export default function(register) {
   register('range', {
     parseOptions(options, name) {

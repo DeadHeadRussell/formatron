@@ -1,3 +1,5 @@
+import Immutable from 'immutable';
+
 export function createTableType(typeName, functions) {
   return {
     get name() {
@@ -12,6 +14,8 @@ export function createTableType(typeName, functions) {
   }
 
   function create(label, options) {
+    options = Immutable.fromJS(options);
+
     return {
       get typeName() {
         return typeName;

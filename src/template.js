@@ -4,6 +4,7 @@ const templateSingleRegex = /{{[^}]*}}/g;
 const templateArrayRegex = /{\[[^}\]]*\]}/g;
 
 export default function parseTemplate(template, getValue, options = {}) {
+  // TODO: Why is this even here...
   const format = options.type == 'html' ?
     text => text.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;') :
     text => text;
