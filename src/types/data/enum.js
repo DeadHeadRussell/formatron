@@ -1,11 +1,10 @@
 import {List, Map} from 'immutable';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Select from 'react-select';
+
+import Select from '~/components/tetheredSelect';
 
 import {validationErrors} from './';
-
-import 'react-select/dist/react-select.css';
 
 export default function(register) {
   register('enum', {

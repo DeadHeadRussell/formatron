@@ -8,24 +8,21 @@ import registerRangeType from './data/range';
 //import registerSectionType from './data/section';
 import registerTextType from './data/text';
 
-import registerButtonType from './form/button';
-import registerColumnsType from './form/columns';
-import registerComputedType from './form/computed';
-import registerConditionType from './form/condition';
-import registerDataType from './form/data';
-import registerHeaderType from './form/header';
-import registerFunctionType from './form/function';
-import registerMethodType from './form/method';
-import registerPropertyType from './form/property';
-import registerRowType from './form/row';
-import registerSwitchType from './form/switch';
-import registerTabsType from './form/tabs';
-import registerFormTemplateType from './form/template';
-import registerValueType from './form/value';
-import registerVariableType from './form/variable';
-
-import registerRefType from './table/ref';
-import registerTableTemplateType from './table/template';
+import registerButtonType from './view/button';
+import registerColumnsType from './view/columns';
+import registerComputedType from './view/computed';
+import registerConditionType from './view/condition';
+import registerDataType from './view/data';
+import registerHeaderType from './view/header';
+import registerFunctionType from './view/function';
+import registerMethodType from './view/method';
+import registerPropertyType from './view/property';
+import registerRowType from './view/row';
+import registerSwitchType from './view/switch';
+import registerTabsType from './view/tabs';
+import registerTemplateType from './view/template';
+import registerValueType from './view/value';
+import registerVariableType from './view/variable';
 
 export function registerDataTypes(register) {
   registerBoolType(register);
@@ -39,7 +36,7 @@ export function registerDataTypes(register) {
   registerTextType(register);
 }
 
-export function registerFormTypes(register) {
+export function registerViewTypes(register) {
   registerButtonType(register);
   registerColumnsType(register);
   registerComputedType(register);
@@ -52,13 +49,8 @@ export function registerFormTypes(register) {
   registerRowType(register);
   registerSwitchType(register);
   registerTabsType(register);
-  registerFormTemplateType(register);
+  registerTemplateType(register);
   registerValueType(register);
   registerVariableType(register);
-}
-
-export function registerTableTypes(register) {
-  registerRefType(register);
-  registerTableTemplateType(register);
 }
 

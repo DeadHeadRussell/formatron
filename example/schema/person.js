@@ -13,7 +13,9 @@ export default create('person', {
       textType: 'singleline'
     })
   ],
-  label: Types.label.create('{{name}} ({{id}})')
+  label: Types.view.template.create({
+    template: '{{name}} ({{id}})'
+  })
 });
 
 export function createPerson(id, name) {

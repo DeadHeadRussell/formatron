@@ -10,15 +10,16 @@ export default function(register) {
   });
 }
 
-const HeaderComponent = ({options}) => {
+const HeaderComponent = ({options, getters}) => {
   return <div className='form-header'>
-    <Label>{options.get('label')}</Label>
+    <Label getters={getters}>{options.get('label')}</Label>
   </div>;
 };
 
 HeaderComponent.propTypes = {
   options: ImmutablePropTypes.contains({
     label: React.PropTypes.string.isRequired,
-  }).isRequired
+  }).isRequired,
+  getters: React.PropTypes.objectOf(React.PropTypes.func),
 };
 

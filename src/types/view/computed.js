@@ -19,7 +19,8 @@ export default function(register) {
     },
 
     Component: ComputedComponent,
-    getValue: getComputedValue
+    getValue: getComputedValue,
+    getDisplayValue: getComputedDisplayValue
   });
 }
 
@@ -53,7 +54,7 @@ const displays = {
 
 const ComputedComponent = ({options, getters}) => {
   return <div className='form-computed'>
-    <Label>{options.get('label')}</Label>
+    <Label getters={getters}>{options.get('label')}</Label>
     <div className='form-data-input-wrapper'>
       {getComputedDisplayValue(options, getters)}
     </div>

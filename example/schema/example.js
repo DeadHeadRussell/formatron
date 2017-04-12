@@ -1,4 +1,4 @@
-import Immutable from 'immutable';
+import Immutable, {List, Map} from 'immutable';
 
 import {create, Types} from '~/index';
 
@@ -16,6 +16,7 @@ export default create('example', {
       required: true,
       numberType: 'float'
     }),
+    Types.data.bool.create('checked'),
     Types.data.text.create('nested', {}, ['path', 'to']),
     Types.data.linked.create('person', {
       schemaId: 0
@@ -32,112 +33,175 @@ export default create('example', {
     }),
     Types.data.number.create('notDisabledValue', {
       numberType: 'integer'
+    }),
+    Types.data.enum.create('enum', {
+      values: [
+        'One',
+        'Two',
+        'Blue',
+        'Shoe',
+        'Three',
+        'Four',
+        'What a',
+        'Chore'
+      ]
+    }),
+    Types.data.date.create('date', {
+      dateType: 'date'
     })
   ],
-  form: Types.form.columns.create({
+  form: Types.view.columns.create({
     label: 'Example Form',
     columns: [[
-      Types.form.data.create({
-        label: 'Title',
-        ref: 'title'
+      Types.view.data.create({
+        label: 'Date',
+        ref: 'date'
       }),
-      Types.form.data.create({
-        label: 'Nested',
-        ref: 'nested'
-      }),
-      Types.form.data.create({
-        label: 'Person',
-        ref: 'person'
-      }),
-      Types.form.switch.create({
-        switch: Types.form.data.create({ref: 'person'}),
-        cases: [{
-          case: Types.form.value.create({value: 1}),
-          display: Types.form.value.create({value: 'Woo, person #1!!'})
-        }, {
-          case: Types.form.value.create({value: 4}),
-          display: Types.form.value.create({value: 'Awww, person #4 :('})
-        }]
-      }),
-      Types.form.switch.create({
-        switch: Types.form.data.create({ref: 'person'}),
-        cases: [{
-          case: Types.form.value.create({value: 0}),
-          display: Types.form.value.create({value: 'case'})
-        }],
-        defaultCase: Types.form.value.create({value: 'default'})
-      })
-    ], [
-      Types.form.data.create({
-        label: 'Tasks',
-        ref: 'tasks'
-      }),
-      Types.form.property.create({
-        label: '# Tasks',
-        obj: Types.form.data.create({ref: 'tasks'}),
-        property: 'size'
-      }),
-      Types.form.computed.create({
-        op: '+',
-        args: Types.form.data.create({ref: ['tasks', 'm:hours']}),
-        label: 'Total Time'
-      }),
-      Types.form.data.create({
-        label: 'Time for First Task (hrs)',
-        editable: false,
-        ref: ['tasks', 0, 'hours']
-      }),
-      Types.form.computed.create({
-        label: 'One of the tasks takes 3 hrs',
-        op: '!=',
-        args: [
-          Types.form.value.create({value: null}),
-          Types.form.data.create({
-            ref: ['tasks', 'q:hours=3']
+      Types.view.columns.create({
+        label: 'Some Data',
+        columns: [[
+          Types.view.data.create({
+            label: 'Title',
+            ref: 'title'
+          }),
+          Types.view.data.create({
+            label: 'Nested',
+            ref: 'nested'
+          }),
+          Types.view.data.create({
+            label: 'Person',
+            ref: 'person'
+          }),
+          Types.view.switch.create({
+            switch: Types.view.data.create({ref: 'person'}),
+            cases: [{
+              case: Types.view.value.create({value: 1}),
+              display: Types.view.value.create({value: 'Woo, person #1!!'})
+            }, {
+              case: Types.view.value.create({value: 4}),
+              display: Types.view.value.create({value: 'Awww, person #4 :('})
+            }]
+          }),
+          Types.view.switch.create({
+            switch: Types.view.data.create({ref: 'person'}),
+            cases: [{
+              case: Types.view.value.create({value: 0}),
+              display: Types.view.value.create({value: 'case'})
+            }],
+            defaultCase: Types.view.value.create({value: 'default'})
           })
-        ]
-      })
-    ], [
-      Types.form.header.create({
-        label: 'Counts'
-      }),
-      Types.form.data.create({
-        label: 'Count',
-        ref: 'count'
-      }),
-      Types.form.data.create({
-        label: 'Lower Count',
-        ref: 'count2'
-      }),
-      Types.form.condition.create({
-        op: '>',
-        args: [
-          Types.form.data.create({ref: 'count'}),
-          Types.form.value.create({value: 0}),
-          Types.form.data.create({ref: 'count2'})
-        ],
-        trueType: Types.form.computed.create({
-          label: 'Some arbitrary computation',
-          op: '*',
-          args: [
-            Types.form.data.create({ref: 'count'}),
-            Types.form.value.create({value: -10}),
-            Types.form.data.create({ref: 'count2'})
-          ]
-        })
-      })
-    ], [
-      Types.form.header.create({label: 'Disabled Test'}),
-      Types.form.data.create({
-        ref: 'disabledValue',
-        label: 'Disabled'
-      }),
-      Types.form.data.create({
-        ref: 'notDisabledValue',
-        label: 'Not Disabled'
+        ], [
+          Types.view.data.create({
+            label: 'Tasks',
+            ref: 'tasks'
+          }),
+          Types.view.property.create({
+            label: '# Tasks',
+            obj: Types.view.data.create({ref: 'tasks'}),
+            property: 'size'
+          }),
+          Types.view.computed.create({
+            op: '+',
+            args: Types.view.data.create({ref: ['tasks', 'm:hours']}),
+            label: 'Total Time'
+          }),
+          Types.view.data.create({
+            label: 'Time for First Task (hrs)',
+            editable: false,
+            ref: ['tasks', 0, 'hours']
+          }),
+          Types.view.computed.create({
+            label: 'One of the tasks takes 3 hrs',
+            op: '!=',
+            args: [
+              Types.view.value.create({value: null}),
+              Types.view.data.create({
+                ref: ['tasks', 'q:hours=3']
+              })
+            ]
+          })
+        ], [
+          Types.view.header.create({
+            label: 'Counts'
+          }),
+          Types.view.data.create({
+            label: 'Count',
+            ref: 'count'
+          }),
+          Types.view.data.create({
+            label: 'Lower Count',
+            ref: 'count2'
+          }),
+          Types.view.condition.create({
+            op: '>',
+            args: [
+              Types.view.data.create({ref: 'count'}),
+              Types.view.value.create({value: 0}),
+              Types.view.data.create({ref: 'count2'})
+            ],
+            trueType: Types.view.computed.create({
+              label: 'Some arbitrary computation',
+              op: '*',
+              args: [
+                Types.view.data.create({ref: 'count'}),
+                Types.view.value.create({value: -10}),
+                Types.view.data.create({ref: 'count2'})
+              ]
+            })
+          })
+        ], [
+          Types.view.header.create({label: 'Disabled Test'}),
+          Types.view.data.create({
+            ref: 'disabledValue',
+            label: 'Disabled'
+          }),
+          Types.view.data.create({
+            ref: 'notDisabledValue',
+            label: 'Not Disabled'
+          })
+        ]]
       })
     ]]
-  })
+  }),
+  table: [
+    Types.view.data.create({
+      label: 'Title',
+      ref: 'title'
+    }),
+    Types.view.data.create({
+      label: 'Checked',
+      ref: 'checked'
+    }),
+    Types.view.data.create({
+      label: 'Person',
+      ref: 'person'
+    }),
+    Types.view.data.create({
+      label: 'Enum',
+      ref: 'enum'
+    }),
+    Types.view.data.create({
+      label: 'Date',
+      ref: 'date'
+    }),
+    Types.view.data.create({
+      label: 'Count',
+      ref: 'count'
+    }),
+    Types.view.data.create({
+      label: 'Count 2',
+      ref: 'count2'
+    }),
+    Types.view.computed.create({
+      label: 'Something',
+      op: '*',
+      args: [
+        Types.view.data.create({ref: 'count'}),
+        Types.view.value.create({value: -10}),
+        Types.view.data.create({ref: 'count2'})
+      ]
+    })
+  ]
 });
 
 export function createExample() {
@@ -149,5 +213,15 @@ export function createExample() {
       }
     }
   });
+}
+
+export function createExamples() {
+  return List()
+    .set(9999, 0)
+    .map((_, i) => Map({
+      title: `Title ${i + 1}`,
+      count: i,
+      count2: -i
+    }));
 }
 

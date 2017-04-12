@@ -52,7 +52,7 @@ class TabsComponent extends React.Component {
     );
 
     return <div className='form-tabs'>
-      <Label>{this.props.options.get('label')}</Label>
+      <Label getters={this.props.getters}>{this.props.options.get('label')}</Label>
       <Tabs
         selectedIndex={selected}
         onSelect={index => window.location.hash = tabs.getIn([index, 'label'])}

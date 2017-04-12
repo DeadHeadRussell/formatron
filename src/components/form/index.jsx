@@ -3,27 +3,14 @@ import Immutable, {List, Map, Set} from 'immutable';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
-import spinner from './loading.png';
+import Loading from '../loading';
 
 import './index.sass';
 
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
-    this.getChange = this.getChange.bind(this);
-    this.getError = this.getError.bind(this);
-    this.isDisabled = this.isDisabled.bind(this);
-    this.onClick = this.onClick.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onReset = this.onReset.bind(this);
-
     this.state = this.createInitialState();
-
-    this.renderCallbacks = {
-      onChange: this.onFieldChange.bind(this),
-      onBlur: this.onBlur.bind(this),
-      onButtonClick: this.onButtonClick.bind(this)
-    };
   }
 
   createInitialState() {
@@ -62,11 +49,11 @@ export default class Form extends React.Component {
     return validationErrors.size == 0;
   }
 
-  getChange(ref) {
+  getChange = ref => {
     return this.state.change.get(ref);
   }
 
-  getError(model, ref) {
+  getError = (model, ref) => {
     if (this.state.blurs.get(ref)) {
       const errors = this.props.schema.validateSingle(model, ref);
       return errors
@@ -77,20 +64,20 @@ export default class Form extends React.Component {
     return null;
   }
 
-  isDisabled(ref) {
+  isDisabled = ref => {
     return this.props.loading ||
       this.props.disabled === true ||
       (this.props.disabled && this.props.disabled.get(ref));
   }
 
-  onClick(e) {
+  onClick = e => {
     // This is here so that the buttons on any date picker fields do not submit
     // the form when pressed.
     // TODO: This still fails when enter is pressed on the time field.
     this.clickTarget = e.target;
   }
 
-  onSubmit(model, e) {
+  onSubmit = (model, e) => {
     e.preventDefault();
 
     if (!this.props.onSubmit) {
@@ -109,32 +96,40 @@ export default class Form extends React.Component {
     }
   }
 
-  onReset(e) {
+  onReset = e => {
     this.setState(this.createInitialState());
   }
 
-  onBlur(ref) {
-    if (this.state.dirty.get(ref) || this.state.changes.get(ref)) {
-      this.setState({blurs: this.state.blurs.set(ref, true)});
-    }
-  }
+  createRenderCallbacks(model) {
+    return {
+      onBlur: ref => {
+        if (this.state.dirty.get(ref) || this.state.changes.get(ref)) {
+          this.setState({blurs: this.state.blurs.set(ref, true)});
+        }
+      },
 
-  onButtonClick(...args) {
-    if (this.props.onButtonClick) {
-      this.props.onButtonClick(...args);
-    }
-  }
+      onButtonClick: (...args) => {
+        if (this.props.onButtonClick) {
+          this.props.onButtonClick(...args);
+        }
+      },
 
-  onFieldChange(ref, value) {
-    this.setState({
-      changes: this.state.changes.set(ref, value),
-      dirty: this.state.dirty.set(ref, true)
-    });
+      onChange: (ref, value) => {
+        this.setState({
+          changes: this.state.changes.set(ref, value),
+          dirty: this.state.dirty.set(ref, true)
+        });
 
-    if (this.props.onChange) {
-      // TODO: Should this be resolved instead?
-      this.props.onChange(ref, value);
-    }
+        if (this.props.onChange) {
+          this.props.onChange(this.props.schema.resolveChanges(
+            model,
+            Map().set(ref, value),
+            Map(),
+            Map()
+          ));
+        }
+      }
+    };
   }
 
   render() {
@@ -201,14 +196,14 @@ export default class Form extends React.Component {
           getError: this.getError.bind(this, model),
           getDisabled: this.isDisabled
         },
-        this.renderCallbacks
-      );
+        this.createRenderCallbacks(model)
+      )
   }
 
   renderAction() {
     return <div className={this.props.actionsClassName}>
       {this.props.loading ? (
-        <div className='form-loading'><img src={spinner} /></div>
+        <Loading />
       ) : (
         this.props.actions
       )}

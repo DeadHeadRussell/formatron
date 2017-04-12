@@ -12,13 +12,14 @@ export default function(register) {
     },
 
     Component: PropertyComponent,
+    getDisplayValue: getPropertyValue,
     getValue: getPropertyValue
   });
 }
 
 const PropertyComponent = ({options, getters}) => {
   return <div className='form-property'>
-    <Label>{options.get('label')}</Label>
+    <Label getters={getters}>{options.get('label')}</Label>
     <div className='form-data-input-wrapper'>
       {getPropertyValue(options, getters)}
     </div>

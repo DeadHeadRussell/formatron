@@ -17,12 +17,20 @@ export function createTableType(typeName, functions) {
     options = Immutable.fromJS(options);
 
     return {
+      get label() {
+        return label;
+      },
+
       get typeName() {
         return typeName;
       },
 
       getHeaderCell() {
         return label;
+      },
+
+      getCell(getters) {
+        return functions.getCell(options, getters);
       },
 
       getRowCell(getters) {

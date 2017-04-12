@@ -10,7 +10,7 @@ export default function(register) {
   });
 }
 
-const ButtonComponent = ({options, callbacks}) => {
+const ButtonComponent = ({options, getters, callbacks}) => {
   const args = options.get('args', List()).toArray();
 
   return <button
@@ -18,7 +18,7 @@ const ButtonComponent = ({options, callbacks}) => {
     type='button'
     onClick={() => callbacks.onButtonClick(...args)}
   >
-    <Label>{options.get('label')}</Label>
+    <Label getters={getters}>{options.get('label')}</Label>
   </button>;
 };
 
@@ -27,6 +27,7 @@ ButtonComponent.propTypes = {
     label: React.PropTypes.string,
     args: ImmutablePropTypes.list
   }),
+  getters: React.PropTypes.objectOf(React.PropTypes.func),
   callbacks: React.PropTypes.objectOf(React.PropTypes.func)
 };
 
