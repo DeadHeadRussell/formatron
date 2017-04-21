@@ -13,7 +13,8 @@ export default function(register) {
     },
 
     Component: FunctionComponent,
-    getValue: getFunctionValue
+    getValue: getFunctionValue,
+    getDisplayValue: getFunctionValue
   });
 }
 
@@ -31,7 +32,7 @@ const displays = {
 
 const FunctionComponent = ({options, getters}) => {
   return <div className='form-function'>
-    <Label>{options.get('label')}</Label>
+    <Label getters={getters}>{options.get('label')}</Label>
     <div className='form-data-input-wrapper'>
       {getFunctionValue(options, getters)}
     </div>

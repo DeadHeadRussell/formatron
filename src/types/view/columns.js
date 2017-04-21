@@ -20,7 +20,7 @@ export default function(register) {
 
 const ColumnsComponent = ({options, getters, callbacks}) => {
   return <div className='form-columns'>
-    <Label>{options.get('label')}</Label>
+    <Label getters={getters}>{options.get('label')}</Label>
     <div className='form-columns-wrapper'>
       {options.get('columns').map((column, i) => <div key={i} className='form-column'>
         {column.map((field, i) =>

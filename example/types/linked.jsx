@@ -1,6 +1,4 @@
-import Select from 'react-select';
-
-import {create, Types} from '~/index';
+import {create, Select, Types} from 'formatron';
 
 import person, {createPerson} from '../schema/person';
 import task, {createTask} from '../schema/task';

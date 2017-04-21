@@ -14,13 +14,14 @@ export default function(register) {
     },
 
     Component: MethodComponent,
+    getDisplayValue: getMethodValue,
     getValue: getMethodValue
   });
 }
 
 const MethodComponent = ({options, getters}) => {
   return <div className='form-method'>
-    <Label>{options.get('label')}</Label>
+    <Label getters={getters}>{options.get('label')}</Label>
     <div className='form-data-input-wrapper'>
       {getMethodValue(options, getters)}
     </div>

@@ -26,7 +26,7 @@ const SwitchComponent = ({options, getters, callbacks}) => {
   const display = getSwitchValue(options, getters);
 
   return <div className='form-switch'>
-    <Label>{options.get('label')}</Label>
+    <Label getters={getters}>{options.get('label')}</Label>
     {display ?
       <display.Component getters={getters} callbacks={callbacks} /> :
       null}

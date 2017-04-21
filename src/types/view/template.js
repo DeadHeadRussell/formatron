@@ -8,6 +8,7 @@ import {FormPropTypes} from './';
 export default function(register) {
   register('template', {
     Component: TemplateComponent,
+    getDisplayValue: getTemplateValue,
     getValue: getTemplateValue
   });
 }
@@ -16,7 +17,7 @@ const TemplateComponent = ({options, getters}) => {
   const value = getTemplateValue(options, getters);
 
   return <div className='form-template'>
-    <Label>{options.get('label')}</Label>
+    {getters.getSize() != 'small' ? <Label getters={getters}>{options.get('label')}</Label> : null}
     <div className='form-data-input-wrapper'>
       {value}
     </div>

@@ -5,6 +5,7 @@
     [
       "babel-root-import",
       {"rootPathSuffix": "src"}
-    ]
+    ],
+    "transform-class-properties"
   ]
 }

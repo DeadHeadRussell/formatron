@@ -19,7 +19,8 @@ function buildConfig(config) {
             [
               'babel-root-import',
               {'rootPathSuffix': 'src'}
-            ]
+            ],
+            'transform-class-properties'
           ]
         }
       }, {
@@ -106,7 +107,9 @@ const exampleConfig = buildConfig({
 
   resolve: {
     alias: {
-      formatron: path.resolve(__dirname, 'src')
+      formatron: path.resolve(__dirname, 'src'),
+      react: path.resolve(__dirname, 'node_modules', 'react'),
+      'react-dom': path.resolve(__dirname, 'node_modules', 'react-dom'),
     },
     extensions: ['.js', '.jsx'],
   },
@@ -116,6 +119,6 @@ module.exports = function(env) {
   if (env && env.prod) {
     return prodConfig;
   }
-  return [prodConfig, exampleConfig];
+  return [exampleConfig];
 };
 

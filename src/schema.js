@@ -76,6 +76,9 @@ class ISchema {
       // Should this happen before the above if statement?
       if (field.getModel && field.getSchema) {
         const schema = field.getSchema();
+        if (!field.hasValue(value)) {
+          value = field.getDefaultValue();
+        }
         const nextModel = field.getModel(value);
         if (schema) {
           return schema.getDataFieldAndValue(nextModel, rest);
@@ -111,11 +114,6 @@ class ISchema {
   }
 }
 
-// TODO: Add caching to data and field getters based on id. Invalidate
-// whenever the related model and any dependant models get updated.
-//
-// Caching is added below. No cache busting though.
-
 class Schema extends ISchema {
   constructor(name, {displayName, data, form, table, label}) {
     super();
@@ -138,6 +136,7 @@ class Schema extends ISchema {
   createGetters(model, otherGetters = {}) {
     return {
       getName: () => this.name,
+      getSize: () => 'normal',
       getModel: () => model,
       getDataField: this.getDataField,
       getDataValue: ref => this.getDataValue(model, ref),
@@ -240,6 +239,45 @@ class Schema extends ISchema {
   }
 
   getColumns() {
+    // TODO: This is dumb.
+    return this.table
+      .map(column => ({
+        label: column.label,
+
+        getCell: (row, options) => {
+          return column.getDisplay(this.createGetters(row, {
+            prefersQuick() {
+              return options.preferQuick
+            }
+          }));
+        },
+
+        getEditableCell: (row, options, callbacks) => {
+          return <column.Component
+            getters={this.createGetters(row, {
+              getChange() {
+                return null;
+              },
+              getError() {
+                return null;
+              },
+              getDisabled() {
+                return false;
+              },
+              getSize() {
+                return 'small';
+              },
+              prefersQuick() {
+                return options.preferQuick
+              }
+            })}
+            callbacks={callbacks}
+          />;
+        }
+      }));
+  }
+
+  getColumnsOld() {
     return this.table.map((column, i) => ({
       id: '' + i,
       label: column.getHeaderCell()
@@ -266,13 +304,15 @@ class Schema extends ISchema {
   }
 
   getLabel(model) {
+    // TODO: Either remove this cache from the library and add in a way for the
+    // users to handle the caching, or provide cache busting methods.
     if (!model) {
       return '';
     }
 
     if (!this.labelsCache.get(model.get('id'))) {
       this.labelsCache = this.labelsCache
-        .set(model.get('id'), this.label.render(this.getDataLabel.bind(this, model)));
+        .set(model.get('id'), this.label.getValue(this.createGetters(model)));
     }
     return this.labelsCache.get(model.get('id'));
   }
@@ -507,9 +547,9 @@ class ListSchema extends ISchema {
           [null, listRef.slice(2)];
 
         return list.find(ref ?
-            this.refTester(field, schema, ref, value) :
-            this.valueTester(value)
-          );
+          this.refTester(field, schema, ref, value) :
+          this.valueTester(value)
+        );
       }
 
       case 'm': {

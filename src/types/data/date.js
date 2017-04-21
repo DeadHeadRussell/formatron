@@ -1,9 +1,9 @@
 import moment from 'moment';
 import React from 'react';
-import {Calendar, DateField, TransitionView} from 'react-date-picker';
+import {Calendar, TransitionView} from 'react-date-picker';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
-import 'react-date-picker/index.css';
+import DateField from '~/components/tetheredDateField';
 
 export default function(register) {
   register('date', {

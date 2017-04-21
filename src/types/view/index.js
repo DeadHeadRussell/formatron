@@ -2,7 +2,7 @@ import Immutable, {Iterable, List, Map} from 'immutable';
 
 import './index.sass';
 
-export function createFormType(typeName, functions) {
+export function createViewType(typeName, functions) {
   return {
     get name() {
       return typeName;
@@ -44,6 +44,10 @@ export function createFormType(typeName, functions) {
         return !!functions.Component;
       },
 
+      get label() {
+        return options.get('label') || '';
+      },
+
       Component(props) {
         return <div className='form-field'>
           <functions.Component options={options} {...props} />
@@ -55,6 +59,14 @@ export function createFormType(typeName, functions) {
           return functions.getValue(options, getters);
         } else {
           throw new Error(`"getValue" is not implemented for "${typeName}", "${options.get('label', '')}"`);
+        }
+      },
+
+      getDisplay(getters) {
+        if (functions.getDisplayValue) {
+          return functions.getDisplayValue(options, getters);
+        } else {
+          throw new Error(`"getDisplay" is not implemented for "${typeName}", "${options.get('label', '')}"`);
         }
       }
     };

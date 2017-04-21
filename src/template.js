@@ -1,5 +1,7 @@
 import {fromJS} from 'immutable';
 
+// TODO: Do we need to properly parse the templates instead of doing a dumb
+// regex check that will match anywhere in a string?
 const templateSingleRegex = /{{[^}]*}}/g;
 const templateArrayRegex = /{\[[^}\]]*\]}/g;
 

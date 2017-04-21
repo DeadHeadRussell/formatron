@@ -35,7 +35,7 @@ const ConditionComponent = ({options, getters, callbacks}) => {
   const falseType = options.get('falseType');
 
   return <div className='form-condition'>
-    <Label>{options.get('label')}</Label>
+    <Label getters={getters}>{options.get('label')}</Label>
     {getConditionValue(options, getters) ?
       <trueType.Component getters={getters} callbacks={callbacks} /> :
       falseType && <falseType.Component getters={getters} callbacks={callbacks} />}

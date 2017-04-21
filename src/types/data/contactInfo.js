@@ -116,7 +116,9 @@ const ContactInfoComponent = ({name, value, options, disabled, onChange, onBlur}
           const SubComponent = field.get('field').Component;
 
           return <label className='form-data'>
-            <Label>{label}</Label>
+            <Label getters={{
+              getSize: () => 'contactInfo'
+            }}>{label}</Label>
             <SubComponent
               value={value.get(fieldName)}
               disabled={disabled}

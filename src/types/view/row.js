@@ -16,7 +16,7 @@ export default function(register) {
 
 const RowComponent = ({options, getters, callbacks}) => {
   return <div className='form-row'>
-    <Label>{options.get('label')}</Label>
+    <Label getters={getters}>{options.get('label')}</Label>
     <div className='form-row-wrapper'>
       {options.get('properties').map((field, i) =>
         <field.Component key={i} getters={getters} callbacks={callbacks} />

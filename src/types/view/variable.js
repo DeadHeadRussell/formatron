@@ -7,6 +7,7 @@ import {FormPropTypes} from './';
 export default function(register) {
   register('variable', {
     Component: VariableComponent,
+    getDisplayValue: getVariableDisplayValue,
     getValue: getVariableValue
   });
 }
@@ -19,10 +20,12 @@ const display = {
   now: () => (new Date()).toLocaleString()
 };
 
-const VariableComponent = ({options}) => {
+const VariableComponent = ({options, getters}) => {
   return <div className='form-variable'>
-    <Label>{options.get('label')}</Label>
-    <div className='form-data-input-wrapper'>{display[options.get('name')]()}</div>
+    <Label getters={getters}>{options.get('label')}</Label>
+    <div className='form-data-input-wrapper'>
+      {getVariableDisplayValue(options)}
+    </div>
   </div>;
 };
 
@@ -30,8 +33,13 @@ VariableComponent.propTypes = {
   options: ImmutablePropTypes.contains({
     label: React.PropTypes.string,
     name: React.PropTypes.string.isRequired
-  }).isRequired
+  }).isRequired,
+  getters: React.PropTypes.objectOf(React.PropTypes.func)
 };
+
+function getVariableDisplayValue(options) {
+  return display[options.get('name')]();
+}
 
 function getVariableValue(options) {
   return variables[options.get('name')]();

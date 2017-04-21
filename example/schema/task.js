@@ -17,7 +17,9 @@ export default create('task', {
       numberType: 'float'
     })
   ],
-  label: Types.label.create('{{name}}')
+  label: Types.view.template.create({
+    template: '{{name}}'
+  })
 });
 
 export function createTask(id, name, hours) {

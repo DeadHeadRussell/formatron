@@ -13,30 +13,26 @@ export default function(register) {
     },
 
     Component: DataComponent,
-    getValue: getDataValue
+    getValue: getDataValue,
+    getDisplayValue: getDataDisplayValue
   });
 }
 
 const DataComponent = ({options, getters, callbacks}) => {
-  const {field, value} = getters.getDataFieldAndValue(options.get('ref'));
-
-  if (!field) {
-    throw new Error(`Invalid ref in data form field: ref = ${options.get('ref')}, label = ${options.get('label')}`);
-  }
-
   if (!options.get('editable', true)) {
     return <div className='form-data static'>
-      <Label>{options.get('label')}</Label>
+      <Label getters={getters}>{options.get('label')}</Label>
       <div className='form-data-input-wrapper'>
-        {field.toString(value)}
+        {getDataDisplayValue(options, getters)}
       </div>
     </div>;
   }
 
+  const {field, value} = getters.getDataFieldAndValue(options.get('ref'));
   const classes = classNames('form-data', field.type.name);
 
   const children = [
-    <Label key='label' required={field.options.get('required')}>{options.get('label')}</Label>,
+    <Label key='label' getters={getters} required={field.options.get('required')}>{options.get('label')}</Label>,
     <div
       key='display'
       className='form-data-input-wrapper'
@@ -72,7 +68,6 @@ const refType = React.PropTypes.oneOfType([
   ).isRequired
 ]);
 
-
 DataComponent.propTypes = {
   options: ImmutablePropTypes.contains({
     label: React.PropTypes.string,
@@ -83,6 +78,14 @@ DataComponent.propTypes = {
   getters: React.PropTypes.objectOf(React.PropTypes.func),
   callbacks: React.PropTypes.objectOf(React.PropTypes.func)
 };
+
+function getDataDisplayValue(options, getters) {
+  const label = getters.getDataLabel(options.get('ref'));
+  if (!label && options.get('defaultValue')) {
+    return options.get('defaultValue').getDisplay(getters);
+  }
+  return label;
+}
 
 function getDataValue(options, getters) {
   const {field, value} = getters.getDataFieldAndValue(options.get('ref'));
