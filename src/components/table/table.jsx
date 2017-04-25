@@ -12,7 +12,8 @@ import BaseTable from './base';
 
 export default class SchemaTable extends BaseTable {
   static propTypes = {
-    height: React.PropTypes.number
+    height: React.PropTypes.number,
+    onButtonClick: React.PropTypes.func
   }
 
   reduce(renderers, value) {
@@ -31,7 +32,10 @@ export default class SchemaTable extends BaseTable {
   columnRenderer(column) {
     return this.reduce(
       this.props.columnRenderers,
-      column => <Column {...this.getColumnProps(column)}/>
+      column => <Column
+        key={column.label}
+        {...this.getColumnProps(column)}
+      />
     )(column);
   }
 
@@ -107,10 +111,23 @@ export default class SchemaTable extends BaseTable {
   cellRenderer(column) {
     return this.reduce(
       this.props.cellRenderers,
-      (column, {rowData, isScrolling}) => column
-        .getCell(rowData, {
-          preferQuick: isScrolling
-        })
+      (column, {rowData, isScrolling}) => {
+        const cellValue = column
+          .getCell(rowData, {
+            preferQuick: isScrolling
+          });
+        if (typeof cellValue == 'function') {
+          return cellValue({
+            onButtonClick: (...args) => {
+              if (this.props.onButtonClick) {
+                const index = rowData.get(this.naturalIndex);
+                this.props.onButtonClick(index, rowData, ...args);
+              }
+            }
+          });
+        }
+        return cellValue;
+      }
     ).bind(null, column);
   }
 

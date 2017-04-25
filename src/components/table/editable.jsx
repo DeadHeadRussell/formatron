@@ -40,7 +40,8 @@ export default function editableTable(Table) {
 
         onButtonClick: (...args) => {
           if (this.props.onButtonClick) {
-            this.props.onButtonClick(index, ...args);
+            const index = model.get(this.naturalIndex);
+            this.props.onButtonClick(index, model, ...args);
           }
         },
 

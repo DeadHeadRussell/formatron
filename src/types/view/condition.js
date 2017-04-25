@@ -15,6 +15,7 @@ export default function(register) {
     },
 
     Component: ConditionComponent,
+    getDisplayValue: getConditionDisplay,
     getValue: getConditionValue
   });
 }
@@ -55,6 +56,15 @@ ConditionComponent.propTypes = {
   getters: React.PropTypes.objectOf(React.PropTypes.func),
   callbacks: React.PropTypes.objectOf(React.PropTypes.func)
 };
+
+function getConditionDisplay(options, getters) {
+  const trueType = options.get('trueType');
+  const falseType = options.get('falseType');
+
+  return getConditionValue(options, getters) ?
+    trueType.getDisplay(getters) :
+    falseType && falseType.getDisplay(getters);
+}
 
 function getConditionValue(options, getters) {
   return ops[options.get('op')](options.get('args')

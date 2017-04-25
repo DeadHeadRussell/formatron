@@ -6,7 +6,8 @@ import Label from '~/components/label';
 
 export default function(register) {
   register('button', {
-    Component: ButtonComponent
+    Component: ButtonComponent,
+    getDisplayValue: getButtonDisplay
   });
 }
 
@@ -30,4 +31,12 @@ ButtonComponent.propTypes = {
   getters: React.PropTypes.objectOf(React.PropTypes.func),
   callbacks: React.PropTypes.objectOf(React.PropTypes.func)
 };
+
+function getButtonDisplay(options, getters) {
+  return callbacks => <ButtonComponent
+    options={options}
+    getters={getters}
+    callbacks={callbacks}
+  />;
+}
 

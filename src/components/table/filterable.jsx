@@ -66,6 +66,7 @@ export default function filterableTable(Table) {
     getToolbarButtons = buttons => {
       return buttons
         .push(<button
+          key='filter-toggle'
           type='button'
           className='table-filterable-filter'
           onClick={this.toggleFilter}
