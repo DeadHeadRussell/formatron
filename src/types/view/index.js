@@ -54,6 +54,13 @@ export function createViewType(typeName, functions) {
         </div>;
       },
 
+      getTableSizing() {
+        if (functions.getTableSizing) {
+          return functions.getTableSizing(options);
+        }
+        return undefined;
+      },
+
       getValue(getters) {
         if (functions.getValue) {
           return functions.getValue(options, getters);

@@ -153,9 +153,9 @@ export function createDataType(typeName, functions, schemaFunctions) {
       return `${name} = ${toString(value)}`;
     }
 
-    function getSchema() {
+    function getSchema(value) {
       if (schemaFunctions) {
-        return schemaFunctions.getSchema(options, schema);
+        return schemaFunctions.getSchema(options, value, schema);
       }
       throw new Error(`"getSchema" is not implemented for "${typeName}", "${name}"`);
     }

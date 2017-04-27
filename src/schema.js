@@ -75,11 +75,11 @@ class ISchema {
     } else {
       // Should this happen before the above if statement?
       if (field.getModel && field.getSchema) {
-        const schema = field.getSchema();
         if (!field.hasValue(value)) {
           value = field.getDefaultValue();
         }
         const nextModel = field.getModel(value);
+        const schema = field.getSchema(nextModel);
         if (schema) {
           return schema.getDataFieldAndValue(nextModel, rest);
         }
@@ -103,8 +103,8 @@ class ISchema {
 
       if (field.getModel && field.getSchema) {
         const oldValue = this.getDataValue(model, first);
-        const schema = field.getSchema();
         const nextModel = field.getModel(oldValue);
+        const schema = field.getSchema(nextModel);
         return model.setIn(path, schema.setDataValue(nextModel, rest, value));
       } else {
         throw new Error(`Cannot reference "${field.name}" of data type "${field.type}"`);
@@ -121,6 +121,7 @@ class Schema extends ISchema {
     this.getDataValue = this.getDataValue.bind(this);
     this.getDataLabel = this.getDataLabel.bind(this);
 
+    // TODO: This probably shouldn't be done...
     data.forEach(field => field.schema = this);
 
     this.name = name;
@@ -242,7 +243,25 @@ class Schema extends ISchema {
     // TODO: This is dumb.
     return this.table
       .map(column => ({
-        label: column.label,
+        get label() {
+          if (column.typeName == 'button') {
+            return '';
+          }
+          return column.label;
+        },
+
+        get key() {
+          return column.label;
+        },
+
+        getSizing: () => {
+          const sizing = column.getTableSizing();
+          return sizing || {
+            width: 100,
+            grow: 1,
+            shrink: 1
+          };
+        },
 
         getCell: (row, options) => {
           return column.getDisplay(this.createGetters(row, {
@@ -527,27 +546,26 @@ class ListSchema extends ISchema {
     }
 
     const field = this.options.get('listField');
-    const schema = field.getSchema && field.getSchema();
 
     switch (listRef[0]) {
       case 'f': {
-        const [ref, value] = schema ?
+        const [ref, value] = listRef.includes('=') ?
           listRef.slice(2).split('=') :
           [null, listRef.slice(2)];
 
         return list.filter(ref ?
-          this.refTester(field, schema, ref, value) :
+          this.refTester(field, ref, value) :
           this.valueTester(value)
         );
       }
 
       case 'q': {
-        const [ref, value] = schema ?
+        const [ref, value] = listRef.includes('=') ?
           listRef.slice(2).split('=') :
           [null, listRef.slice(2)];
 
         return list.find(ref ?
-          this.refTester(field, schema, ref, value) :
+          this.refTester(field, ref, value) :
           this.valueTester(value)
         );
       }
@@ -555,8 +573,8 @@ class ListSchema extends ISchema {
       case 'm': {
         const ref = listRef.slice(2);
         return list.map(value => {
-          const schema = field.getSchema();
           const model = field.getModel(value);
+          const schema = field.getSchema(model);
           return schema.getDataValue(model, ref);
         });
       }
@@ -566,9 +584,10 @@ class ListSchema extends ISchema {
     }
   }
 
-  refTester(field, schema, ref, value) {
+  refTester(field, ref, value) {
     return listValue => {
       const model = field.getModel(listValue);
+      const schema = field.getSchema(model);
       return schema.getDataValue(model, ref) == value;
     };
   }

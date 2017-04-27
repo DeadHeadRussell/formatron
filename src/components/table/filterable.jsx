@@ -1,10 +1,28 @@
 import {Map} from 'immutable';
 import DebounceInput from 'react-debounce-input';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import BaseTable from './base';
 
 export default function filterableTable(Table) {
-  class FilterableTable extends BaseTable {
+  return class FilterableTable extends BaseTable {
+    static propTypes = {
+      showButton: React.PropTypes.bool,
+      filtering: React.PropTypes.bool,
+      onFilter: React.PropTypes.func,
+      filters: ImmutablePropTypes.mapOf(
+        React.PropTypes.string.isRequired,
+        ImmutablePropTypes.contains({
+          value: React.PropTypes.any.isRequired,
+          column: React.PropTypes.string.isRequired
+        }).isRequired
+      )
+    }
+
+    static defaultProps = {
+      showButton: true
+    }
+
     constructor(props) {
       super(props);
       this.toggleFilter = this.toggleFilter.bind(this);
@@ -30,29 +48,20 @@ export default function filterableTable(Table) {
     onFilterChange(column) {
       return e => {
         const filterValue = e.target.value;
-        if (filterValue) {
-          this.setState({
-            filters: this.state.filters
-              .set(column.label, Map({
-                value: filterValue,
-                column
-              }))
-          });
-        } else {
-          this.setState({
-            filters: this.state.filters.remove(column.label)
-          });
-        }
+        this.props.onFilter ?
+          this.props.onFilter(column, filterValue) :
+          this.onFilter(column, filterValue);
       };
+    }
+
+    getHeaderRowHeight = height => {
+      return height + 41;
     }
 
     headerRowRenderer = renderer => {
       return props => renderer({
         ...props,
-        style: {
-          ...props.style,
-          height: '75px'
-        }
+        extraHeaderRowHeight: 41
       });
     }
 
@@ -64,15 +73,19 @@ export default function filterableTable(Table) {
     }
 
     getToolbarButtons = buttons => {
-      return buttons
-        .push(<button
-          key='filter-toggle'
-          type='button'
-          className='table-filterable-filter'
-          onClick={this.toggleFilter}
-        >
-          Filter
-        </button>);
+      if (this.props.showButton) {
+        return buttons
+          .push(<button
+            key='filter-toggle'
+            type='button'
+            className='table-filterable-filter'
+            onClick={this.toggleFilter}
+          >
+            Filter
+          </button>);
+      } else {
+        return buttons;
+      }
     }
 
     rowsModifier = rows => {
@@ -81,18 +94,47 @@ export default function filterableTable(Table) {
     }
 
     inputFilterRenderer(column) {
-      return <DebounceInput
-        className='form-filter-input'
-        value={this.state.filters.getIn([column.label, 'value'], '')}
-        debounceTimeout={100}
-        onChange={this.onFilterChange(column)}
-        onClick={e => e.stopPropagation()}
-        onKeyDown={e => e.stopPropagation()}
-      />;
+      if (column.label) {
+        return <DebounceInput
+          className='form-filter-input'
+          value={this.getFilters().getIn([column.label, 'value'], '')}
+          debounceTimeout={100}
+          onChange={this.onFilterChange(column)}
+          onClick={e => e.stopPropagation()}
+          onKeyDown={e => e.stopPropagation()}
+        />;
+      } else {
+        return null;
+      }
+    }
+
+    isFiltering() {
+      return this.props.filtering || this.state.filtering;
+    }
+
+    getFilters() {
+      return this.props.filters || this.state.filters;
+    }
+
+    onFilter(column, filterValue) {
+      if (filterValue) {
+        this.setState({
+          filters: this.state.filters
+            .set(column.label, Map({
+              value: filterValue,
+              column
+            }))
+        });
+      } else {
+        this.setState({
+          filters: this.state.filters
+            .remove(column.label)
+        });
+      }
     }
 
     filterModel = model => {
-      return this.state.filters
+      return this.getFilters()
         .every((filter, label) => {
           const rowValue = filter.get('column').getCell(model, {
             preferQuick: true
@@ -109,8 +151,9 @@ export default function filterableTable(Table) {
     }
 
     render() {
-      if (this.state.filtering) {
+      if (this.isFiltering()) {
         const mergedProps = this.mergeProps({
+          getHeaderRowHeight: this.getHeaderRowHeight,
           headerRowRenderer: this.headerRowRenderer,
           headerRenderer: this.headerRenderer,
           getToolbarButtons: this.getToolbarButtons,
@@ -130,12 +173,6 @@ export default function filterableTable(Table) {
         />;
       }
     }
-  }
-
-  FilterableTable.propTypes = {
-    onFilter: React.PropTypes.func
   };
-
-  return FilterableTable;
 }
 

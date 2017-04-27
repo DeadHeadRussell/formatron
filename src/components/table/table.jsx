@@ -5,6 +5,7 @@ import defaultHeaderRenderer from 'react-virtualized/dist/commonjs/Table/default
 import defaultHeaderRowRenderer from 'react-virtualized/dist/commonjs/Table/defaultHeaderRowRenderer';
 import defaultRowRenderer from 'react-virtualized/dist/commonjs/Table/defaultRowRenderer';
 import Table from 'react-virtualized/dist/commonjs/Table';
+import WindowScroller from 'react-virtualized/dist/commonjs/WindowScroller';
 
 import Loading from '~/components/loading';
 
@@ -12,8 +13,22 @@ import BaseTable from './base';
 
 export default class SchemaTable extends BaseTable {
   static propTypes = {
-    height: React.PropTypes.number,
-    onButtonClick: React.PropTypes.func
+    size: React.PropTypes.oneOfType([
+      React.PropTypes.oneOf(['window', 'auto']).isRequired,
+      React.PropTypes.shape({
+        width: React.PropTypes.number.isRequired,
+        height: React.PropTypes.number.isRequired
+      }).isRequired
+    ]),
+    onButtonClick: React.PropTypes.func,
+    headerRowHeight: React.PropTypes.number,
+    toolbarRowHeight: React.PropTypes.number
+  }
+
+  static defaultProps = {
+    size: 'auto',
+    headerRowHeight: 40,
+    toolbarRowHeight: 30
   }
 
   reduce(renderers, value) {
@@ -42,31 +57,82 @@ export default class SchemaTable extends BaseTable {
   getColumnProps(column) {
     return this.reduce(
       this.props.getColumnProps,
-      column => ({
-        label: column.label,
-        dataKey: column.label,
-        width: 100,
-        flexGrow: 1,
-        flexShrink: 1,
-        cellDataGetter: () => null,
-        cellRenderer: this.cellRenderer(column),
-        headerRenderer: this.headerRenderer(column)
-      })
+      column => {
+        const sizing = column.getSizing();
+        return {
+          label: column.label,
+          dataKey: column.key,
+          width: sizing.width,
+          flexGrow: sizing.grow,
+          flexShrink: sizing.shrink,
+          cellDataGetter: () => null,
+          cellRenderer: this.cellRenderer(column),
+          headerRenderer: this.headerRenderer(column)
+        };
+      }
     )(column);
   }
 
-  headerRowRenderer(models) {
+  getLocalHeaderRowHeight(buttons, props) {
+    const toolbarFactor = buttons.size > 0 ?
+      1 : 0;
+
+    const extraHeight = props ? (
+      (props.extraHeaderRowHeight || 0) +
+      (props.extraToolbarRowHeight || 0)
+    ) : 0;
+
+    return this.props.headerRowHeight +
+      (this.props.toolbarRowHeight * toolbarFactor) +
+      extraHeight;
+  }
+
+  headerRowHeight() {
     const buttons = this.reduce(
       this.props.getToolbarButtons,
       List()
     );
 
     return this.reduce(
+      this.props.getHeaderRowHeight,
+      this.getLocalHeaderRowHeight(buttons)
+    );
+  }
+
+  headerRowRenderer() {
+    const buttons = this.reduce(
+      this.props.getToolbarButtons,
+      List()
+    );
+
+    // The toolbar buttons currently mess up the height calculations.
+    return this.reduce(
       this.props.headerRowRenderers,
-      props => (models.size) > 0 ? (
-        <div>
-          <div>{buttons}</div>
-          {defaultHeaderRowRenderer(props)}
+      props => (this.props.models.size) > 0 ? (
+        <div
+          className='formatron-table-header'
+          style={{
+            width: props.style.width,
+            height: this.getLocalHeaderRowHeight(buttons, props)
+          }}>
+          {buttons.size > 0 ? (
+            <div
+              className='formatron-table-toolbar'
+              style={{
+                width: props.style.width,
+                height: this.props.toolbarRowHeight +
+                  (props.extraToolbarRowHeight || 0)
+              }}
+            >{buttons}</div>
+          ) : null}
+          {defaultHeaderRowRenderer({
+            ...props,
+            style: {
+              ...props.style,
+              height: this.props.headerRowHeight +
+                (props.extraHeaderRowHeight || 0)
+            }
+          })}
         </div>
       ) : <div />
     );
@@ -92,7 +158,13 @@ export default class SchemaTable extends BaseTable {
   rowRenderer() {
     return this.reduce(
       this.props.rowRenderers,
-      props => defaultRowRenderer(props)
+      props => defaultRowRenderer({
+        ...props,
+        className: props.className + ((props.index % 2 == 0) ?
+          ' formatron-table-row-even' :
+          ' formatron-table-row-odd'
+        )
+      })
     );
   }
 
@@ -138,33 +210,53 @@ export default class SchemaTable extends BaseTable {
     ).bind(null, column);
   }
 
+  renderTable(props, models) {
+    return <Table
+      {...props}
+      ref={table => this.table = table}
+      className='form table'
+
+      headerHeight={this.headerRowHeight()}
+      headerRowRenderer={this.headerRowRenderer()}
+
+      rowHeight={40}
+      rowCount={models.size}
+      rowRenderer={this.rowRenderer()}
+      rowGetter={this.rowGetter(models)}
+      noRowsRenderer={this.noRowsRenderer()}
+
+      sort={this.props.sort}
+      sortBy={this.props.sortBy}
+      sortDirection={this.props.sortDirection}
+    >
+      {this.columnsRenderer()}
+    </Table>;
+  }
+
   render() {
     const models = this.rowsModifier(this.props.models);
 
     // This has the `form` class since CSS classes are a mess (#26).
-    return <AutoSizer>
-      {({width, height}) => <Table
-        ref={table => this.table = table}
-        className='form table'
-        width={width}
-        height={this.props.height || height}
-
-        headerHeight={40}
-        headerRowRenderer={this.headerRowRenderer(this.props.models)}
-
-        rowHeight={40}
-        rowCount={models.size}
-        rowRenderer={this.rowRenderer()}
-        rowGetter={this.rowGetter(models)}
-        noRowsRenderer={this.noRowsRenderer()}
-
-        sort={this.props.sort}
-        sortBy={this.props.sortBy}
-        sortDirection={this.props.sortDirection}
-      >
-        {this.columnsRenderer()}
-      </Table>}
-    </AutoSizer>;
+    return this.props.size == 'auto' ? (
+      <AutoSizer>
+        {props => this.renderTable(props, models)}
+      </AutoSizer>
+    ) : this.props.size == 'window' ? (
+      <AutoSizer>
+        {({width}) => <WindowScroller key={width}>
+          {props => this.renderTable({
+            ...props,
+            width,
+            autoHeight: true
+          }, models)}
+        </WindowScroller>}
+      </AutoSizer>
+    ) : (
+      this.renderTable({
+        width: this.props.size.width,
+        height: this.props.size.height
+      }, models)
+    );
   }
 }
 

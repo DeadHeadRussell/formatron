@@ -39,9 +39,13 @@ DateComponent.propTypes = {
 };
 
 function formatDateValue(value) {
-  return value ?
-    new Date(value * 1000) :
-    '';
+  if (typeof value == 'string') {
+    return moment(value);
+  } else if (Number.isFinite(value)) {
+    return moment(value * 1000);
+  } else {
+    return '';
+  }
 }
 
 function getDateFormat(dateType) {
@@ -65,11 +69,12 @@ function valueToDate(value) {
 }
 
 function dateToString(value, options) {
-  if (!Number.isFinite(value)) {
+  const date = formatDateValue(value);
+  if (date === '') {
     return '';
   }
 
   const formatString = getDateFormat(options.get('dateType'));
-  return moment(value * 1000).format(formatString);
+  return date.format(formatString);
 }
 

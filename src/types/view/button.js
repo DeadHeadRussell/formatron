@@ -7,7 +7,8 @@ import Label from '~/components/label';
 export default function(register) {
   register('button', {
     Component: ButtonComponent,
-    getDisplayValue: getButtonDisplay
+    getDisplayValue: getButtonDisplay,
+    getTableSizing: getButtonSizing
   });
 }
 
@@ -38,5 +39,16 @@ function getButtonDisplay(options, getters) {
     getters={getters}
     callbacks={callbacks}
   />;
+}
+
+function getButtonSizing(options) {
+  if (options.get('width')) {
+    return {
+      width: options.get('width'),
+      grow: 0,
+      shrink: 0
+    };
+  }
+  return undefined;
 }
 
