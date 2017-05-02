@@ -6,8 +6,8 @@ export default function createSchema(name, values) {
   return new Schema(name, values);
 }
 
-export function createListSchema(options) {
-  return new ListSchema(options);
+export function createListSchema(typeName, listField, options) {
+  return new ListSchema(typeName, listField, options);
 }
 
 // TODO: Ugh, there's a few things going on here. Too much functionality in one
@@ -393,8 +393,10 @@ class Schema extends ISchema {
 }
 
 class ListSchema extends ISchema {
-  constructor(options) {
+  constructor(typeName, listField, options) {
     super();
+    this.typeName = typeName;
+    this.listField = listField;
     this.options = options;
   }
 
@@ -545,8 +547,6 @@ class ListSchema extends ISchema {
       return list.get(listRef);
     }
 
-    const field = this.options.get('listField');
-
     switch (listRef[0]) {
       case 'f': {
         const [ref, value] = listRef.includes('=') ?
@@ -554,7 +554,7 @@ class ListSchema extends ISchema {
           [null, listRef.slice(2)];
 
         return list.filter(ref ?
-          this.refTester(field, ref, value) :
+          this.refTester(this.listField, ref, value) :
           this.valueTester(value)
         );
       }
@@ -565,7 +565,7 @@ class ListSchema extends ISchema {
           [null, listRef.slice(2)];
 
         return list.find(ref ?
-          this.refTester(field, ref, value) :
+          this.refTester(this.listField, ref, value) :
           this.valueTester(value)
         );
       }
@@ -573,8 +573,8 @@ class ListSchema extends ISchema {
       case 'm': {
         const ref = listRef.slice(2);
         return list.map(value => {
-          const model = field.getModel(value);
-          const schema = field.getSchema(model);
+          const model = this.listField.getModel(value);
+          const schema = this.listField.getSchema(model);
           return schema.getDataValue(model, ref);
         });
       }
@@ -602,14 +602,13 @@ class ListSchema extends ISchema {
     }
 
     if (listRef[0] == 'q') {
-      const field = this.options.get('listField');
-      const schema = field.getSchema && field.getSchema();
+      const schema = this.listField.getSchema && this.listField.getSchema();
       const [ref, value] = schema ?
         listRef.slice(2).split('=') :
         [null, listRef.slice(2)];
 
       return list.findIndex(ref ?
-        this.refTester(field, schema, ref, value) :
+        this.refTester(this.listField, schema, ref, value) :
         this.valueTester(value)
       );
     }
@@ -627,17 +626,16 @@ class ListSchema extends ISchema {
         listFilters.push(refFilter) :
         listFilters;
 
-      const listField = this.options.get('listField');
-      return listField.type.create(
-        listField.name,
-        listField.options.set('filters', filters),
-        listField.path
+      return this.listField.type.create(
+        this.listField.name,
+        this.listField.options
+          .set('filters', filters),
+        this.listField.path
       );
     } else if (this.isMapListRef(listRef)) {
       const [mapRef] = listRef.slice(2).split('=');
 
-      const field = this.options.get('listField');
-      const schema = field.getSchema();
+      const schema = this.listField.getSchema();
       const mappedField = schema.getDataField(mapRef);
 
       return Types.data.list.create('mappedList', {
@@ -646,11 +644,11 @@ class ListSchema extends ISchema {
       });
     } else if (this.isFilterListRef(listRef)) {
       const refFilter = listRef.slice(2);
-      return Types.data.list.create('filteredList', this.options
+      return Types.data[this.typeName].create('filteredList', this.options
         .update('filters', List(), filters => filters.push(refFilter))
       );
     } else {
-      return Types.data.list.create('selfList', this.options);
+      return Types.data[this.typeName].create('selfList', this.options);
     }
   }
 }

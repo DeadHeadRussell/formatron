@@ -10,7 +10,8 @@ export default function(register) {
       return options
         .update('properties', props => props.map(parseField));
     },
-    Component: RowComponent
+    Component: RowComponent,
+    getDisplayValue: getRowDisplay
   });
 }
 
@@ -35,4 +36,12 @@ RowComponent.propTypes = {
   getters: React.PropTypes.objectOf(React.PropTypes.func),
   callbacks: React.PropTypes.objectOf(React.PropTypes.func)
 };
+
+function getRowDisplay(options, getters) {
+  return callbacks => <RowComponent
+    options={options}
+    getters={getters}
+    callbacks={callbacks}
+  />;
+}
 

@@ -7,20 +7,19 @@ import BaseTable from './base';
 export default function filterableTable(Table) {
   return class FilterableTable extends BaseTable {
     static propTypes = {
-      showButton: React.PropTypes.bool,
+      showFilterButton: React.PropTypes.bool,
+      showFilterFields: React.PropTypes.bool,
       filtering: React.PropTypes.bool,
       onFilter: React.PropTypes.func,
       filters: ImmutablePropTypes.mapOf(
-        React.PropTypes.string.isRequired,
-        ImmutablePropTypes.contains({
-          value: React.PropTypes.any.isRequired,
-          column: React.PropTypes.string.isRequired
-        }).isRequired
+        React.PropTypes.any.isRequired,
+        React.PropTypes.string.isRequired
       )
     }
 
     static defaultProps = {
-      showButton: true
+      showFilterButton: true,
+      showFilterFields: true
     }
 
     constructor(props) {
@@ -73,7 +72,7 @@ export default function filterableTable(Table) {
     }
 
     getToolbarButtons = buttons => {
-      if (this.props.showButton) {
+      if (this.props.showFilterButton) {
         return buttons
           .push(<button
             key='filter-toggle'
@@ -120,10 +119,7 @@ export default function filterableTable(Table) {
       if (filterValue) {
         this.setState({
           filters: this.state.filters
-            .set(column.label, Map({
-              value: filterValue,
-              column
-            }))
+            .set(column.label, filterValue)
         });
       } else {
         this.setState({
@@ -134,31 +130,44 @@ export default function filterableTable(Table) {
     }
 
     filterModel = model => {
+      const columns = this.props.schema.getColumns();
       return this.getFilters()
-        .every((filter, label) => {
-          const rowValue = filter.get('column').getCell(model, {
-            preferQuick: true
-          });
+        .every((filterValue, label) => {
+          const column = columns.find(column => column.label == label);
+          if (!column) {
+            return true;
+          }
+
+          const rowValue = column.getCell(model, {preferQuick: false});
+
+          if (typeof filterValue == 'function') {
+            return filterValue(rowValue, model);
+          }
 
           if (rowValue !== null && typeof rowValue != 'undefined') {
             const valueString = rowValue.toString().toLowerCase();
-            const filterString = filter.get('value').toLowerCase();
+            const filterString = filterValue.toLowerCase();
             return valueString.indexOf(filterString) != -1;
-          } else {
-            return false;
           }
+
+          return false;
         });
     }
 
     render() {
       if (this.isFiltering()) {
-        const mergedProps = this.mergeProps({
+        const newProps = this.props.showFilterFields ? {
           getHeaderRowHeight: this.getHeaderRowHeight,
           headerRowRenderer: this.headerRowRenderer,
           headerRenderer: this.headerRenderer,
           getToolbarButtons: this.getToolbarButtons,
           rowsModifier: this.rowsModifier
-        });
+        } : {
+          getToolbarButtons: this.getToolbarButtons,
+          rowsModifier: this.rowsModifier
+        };
+
+        const mergedProps = this.mergeProps(newProps);
 
         return <Table
           ref={table => this.table = table}

@@ -44,6 +44,7 @@ const DataComponent = ({options, getters, callbacks}) => {
         disabled={!!getters.getDisabled(options.get('ref'))}
         onChange={newValue => callbacks.onChange(options.get('ref'), newValue)}
         onBlur={() => callbacks.onBlur(options.get('ref'))}
+        onButtonClick={(...args) => callbacks.onButtonClick(options.get('ref'), ...args)}
         parseTemplate={(template, options) => parseTemplate(template, getters.getDataLabel, options)}
       />
     </div>

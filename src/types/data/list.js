@@ -26,7 +26,7 @@ export default function(register) {
     useLabel: () => false
   }, {
     getSchema(options) {
-      return createListSchema(options);
+      return createListSchema('list', options.get('listField'), options);
     },
 
     getModel(options, list) {
