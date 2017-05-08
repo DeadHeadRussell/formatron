@@ -77,7 +77,7 @@ export default function filterableTable(Table) {
           .push(<button
             key='filter-toggle'
             type='button'
-            className='table-filterable-filter'
+            className='table-button table-filterable-filter'
             onClick={this.toggleFilter}
           >
             Filter
@@ -96,7 +96,7 @@ export default function filterableTable(Table) {
       if (column.label) {
         return <DebounceInput
           className='form-filter-input'
-          value={this.getFilters().getIn([column.label, 'value'], '')}
+          value={this.getFilters().get(column.label, '')}
           debounceTimeout={100}
           onChange={this.onFilterChange(column)}
           onClick={e => e.stopPropagation()}

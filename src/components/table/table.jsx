@@ -14,12 +14,15 @@ import BaseTable from './base';
 export default class SchemaTable extends BaseTable {
   static propTypes = {
     size: React.PropTypes.oneOfType([
-      React.PropTypes.oneOf(['window', 'auto']).isRequired,
+      React.PropTypes.oneOf(['window', 'auto', 'fit']).isRequired,
       React.PropTypes.shape({
         width: React.PropTypes.number.isRequired,
-        height: React.PropTypes.number.isRequired
+        height: React.PropTypes.number
       }).isRequired
     ]),
+    maxHeight: React.PropTypes.number,
+    rowHeight: React.PropTypes.number,
+    style: React.PropTypes.object,
     onButtonClick: React.PropTypes.func,
     headerRowHeight: React.PropTypes.number,
     toolbarRowHeight: React.PropTypes.number
@@ -27,8 +30,18 @@ export default class SchemaTable extends BaseTable {
 
   static defaultProps = {
     size: 'auto',
+    rowHeight: 40,
+    style: {},
     headerRowHeight: 40,
     toolbarRowHeight: 30
+  }
+
+  getRows() {
+    return this.models;
+  }
+
+  getColumns() {
+    return this.columns;
   }
 
   reduce(renderers, value) {
@@ -37,9 +50,12 @@ export default class SchemaTable extends BaseTable {
   }
 
   columnsRenderer() {
+    const columns = this.props.schema.getColumns();
+    this.columns = columns;
+
     return this.reduce(
       this.props.columnsRenderers,
-      this.props.schema.getColumns()
+      columns
         .map(column => this.columnRenderer(column))
     );
   }
@@ -210,16 +226,31 @@ export default class SchemaTable extends BaseTable {
     ).bind(null, column);
   }
 
+  getTableHeight() {
+    const headerHeight = this.headerRowHeight();
+
+    const gridHeight = this.props.models.size > 0 ?
+      this.props.models.size * this.props.rowHeight :
+      30;
+
+    return gridHeight + headerHeight;
+  }
+
   renderTable(props, models) {
+    const height = props.height || 0;
+    const maxHeight = this.props.maxHeight || Infinity;
+
     return <Table
       {...props}
       ref={table => this.table = table}
       className='form table'
+      style={this.props.style}
+      height={Math.min(height, maxHeight)}
 
       headerHeight={this.headerRowHeight()}
       headerRowRenderer={this.headerRowRenderer()}
 
-      rowHeight={40}
+      rowHeight={this.props.rowHeight}
       rowCount={models.size}
       rowRenderer={this.rowRenderer()}
       rowGetter={this.rowGetter(models)}
@@ -235,6 +266,7 @@ export default class SchemaTable extends BaseTable {
 
   render() {
     const models = this.rowsModifier(this.props.models);
+    this.models = models;
 
     // This has the `form` class since CSS classes are a mess (#26).
     return this.props.size == 'auto' ? (
@@ -251,10 +283,17 @@ export default class SchemaTable extends BaseTable {
           }, models)}
         </WindowScroller>}
       </AutoSizer>
+    ) : this.props.size == 'fit' ? (
+      <AutoSizer>
+        {({width}) => this.renderTable({
+          width,
+          height: this.getTableHeight()
+        }, models)}
+      </AutoSizer>
     ) : (
       this.renderTable({
         width: this.props.size.width,
-        height: this.props.size.height
+        height: this.props.size.height || this.getTableHeight()
       }, models)
     );
   }

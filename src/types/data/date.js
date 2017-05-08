@@ -40,7 +40,7 @@ DateComponent.propTypes = {
 
 function formatDateValue(value) {
   if (typeof value == 'string') {
-    return moment(value);
+    return moment.utc(value);
   } else if (Number.isFinite(value)) {
     return moment(value * 1000);
   } else {

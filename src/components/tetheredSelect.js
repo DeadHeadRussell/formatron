@@ -20,6 +20,9 @@ export default class TetheredSelect extends Select {
       null;
 
     return <TetheredComponent
+      classes={{
+        element: 'element-top'
+      }}
       renderElementTo='body'
       attachment='top left'
       targetAttachment='top left'

@@ -53,6 +53,14 @@ export default class BaseTable extends PureComponent {
     return this.table && this.table.forceUpdateGrid();
   }
 
+  getRows() {
+    return this.table && this.table.getRows();
+  }
+
+  getColumns() {
+    return this.table && this.table.getColumns();
+  }
+
   mergeProps(newProps) {
     const propNames = {
       columnsRenderer: 'columnsRenderers',

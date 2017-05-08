@@ -33,6 +33,9 @@ export default class TetheredDateField extends DateField {
     };
 
     return <TetheredComponent
+      classes={{
+        element: 'element-top'
+      }}
       renderElementTo='body'
       attachment='top left'
       targetAttachment='top left'
