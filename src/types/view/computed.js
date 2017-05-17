@@ -84,7 +84,7 @@ function getComputedValue(options, getters) {
   const args = options.get('args');
   const values = List.isList(args) ?
     args.map(arg => arg.getValue(getters)) :
-    args.getValue(getters);
+    args.getValue(getters) || List();
 
   return ops[options.get('op')](values);
 }

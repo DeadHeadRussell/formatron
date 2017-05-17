@@ -13,9 +13,12 @@ export default function(register) {
 }
 
 const ValueComponent = ({options, getters}) => {
+  const value = options.get('value');
   return <div className='form-value'>
     <Label getters={getters}>{options.get('label')}</Label>
-    <div className='form-data-input-wrapper'>{options.get('value')}</div>
+    {value !== null ? (
+      <div className='form-data-input-wrapper'>{options.get('value')}</div>
+    ) : null}
   </div>;
 };
 

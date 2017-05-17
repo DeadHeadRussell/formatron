@@ -21,7 +21,7 @@ export default class TetheredSelect extends Select {
 
     return <TetheredComponent
       classes={{
-        element: 'element-top'
+        element: 'tether-element-top'
       }}
       renderElementTo='body'
       attachment='top left'
