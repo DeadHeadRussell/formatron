@@ -177,8 +177,8 @@ export default class Form extends React.Component {
         {validationErrors.size > 0 ? (
           <div className='form-error container'>
             <p className='form-error-message'>The following fields have an error:</p>
-            {validationErrors.map(validationError => <p className='form-error-validation'>
-              {List.isList(validationError.ref) ? 
+            {validationErrors.map((validationError, i) => <p key={i} className='form-error-validation'>
+              {List.isList(validationError.ref) ?
                 validationError.ref.join(', ') :
                 validationError.ref}
             </p>)}
@@ -239,4 +239,3 @@ Form.propTypes = {
   actionsClassName: React.PropTypes.string,
   actions: React.PropTypes.arrayOf(React.PropTypes.element)
 };
-
