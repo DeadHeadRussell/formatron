@@ -509,7 +509,7 @@ class ListSchema extends ISchema {
     }
 
     const fn = refValue[0];
-    return ['f', 'a', 'q', 'm'].includes(fn);
+    return ['f', 'a', 'q', 'm', 'l'].includes(fn);
   }
 
   isSingularListRef(listRef) {
@@ -519,6 +519,7 @@ class ListSchema extends ISchema {
   isMultiListRef(listRef) {
     return this.isFilterListRef(listRef) ||
       this.isMapListRef(listRef) ||
+      this.isLabelListRef(listRef) ||
       this.isAllListRef(listRef);
   }
 
@@ -536,6 +537,10 @@ class ListSchema extends ISchema {
 
   isMapListRef(listRef) {
     return typeof listRef == 'string' && listRef[0] == 'm';
+  }
+
+  isLabelListRef(listRef) {
+    return typeof listRef == 'string' && listRef[0] == 'l';
   }
 
   isAllListRef(listRef) {
@@ -576,6 +581,14 @@ class ListSchema extends ISchema {
           const model = this.listField.getModel(value);
           const schema = this.listField.getSchema(model);
           return schema.getDataValue(model, ref);
+        });
+      }
+
+      case 'l': {
+        return list.map(value => {
+          const model = this.listField.getModel(value);
+          const schema = this.listField.getSchema(model);
+          return schema.getLabel(model);
         });
       }
 
