@@ -30,7 +30,7 @@ class ExampleForm extends React.Component {
         notDisabledValue: undefined
       })}
       onSubmit={this.onSubmit}
-      actions={[<button>Submit</button>]}
+      actions={[<button key='submit'>Submit</button>]}
     />;
   }
 }
@@ -73,7 +73,7 @@ class ExampleTable extends React.Component {
         editable={this.state.editable}
         onSubmit={this.saveModel}
         getToolbarButtons={List([buttons => buttons
-          .unshift(<button onClick={this.toggleEditable}>
+          .unshift(<button key='editable' onClick={this.toggleEditable}>
             {this.state.editable ? 'Make Uneditable' : 'Make Editable'}
           </button>)])
         }

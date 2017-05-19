@@ -8,6 +8,9 @@ export default create('example', {
       required: true,
       textType: 'singleline'
     }),
+    Types.data.text.create('tel', {
+      textType: 'tel'
+    }),
     Types.data.number.create('count', {
       required: true,
       numberType: 'integer'
@@ -56,6 +59,10 @@ export default create('example', {
       Types.view.data.create({
         label: 'Date',
         ref: 'date'
+      }),
+      Types.view.data.create({
+        label: 'Tel',
+        ref: 'tel'
       }),
       Types.view.columns.create({
         label: 'Some Data',
