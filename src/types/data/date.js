@@ -21,10 +21,7 @@ class DateComponent extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState({
-      ...this.state,
-      input: createInitialState(props).input
-    });
+    this.setState({input: createInitialState(props).input});
   }
 
   render() {
@@ -111,10 +108,7 @@ class DateComponent extends React.Component {
   }
 
   handleInputChange = (event) => {
-    this.setState({
-      ...this.state,
-      input: event.target.value
-    });
+    this.setState({input: event.target.value});
   }
 }
 
@@ -132,12 +126,7 @@ function createInitialState(props) {
 }
 
 function unixToDatetime(unixTime) {
-  if (unixTime === undefined || unixTime === null) {
-    // Return an invalid moment object, meaning no date is selected.
-    return moment(null);
-  } else {
-    return moment(unixTime * 1000);
-  }
+  moment(unixTime === null ? null : unixTime * 1000)
 }
 
 function datetimeToUnix(datetime) {
