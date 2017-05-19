@@ -100,6 +100,10 @@ export function compareAll(cmp) {
   };
 }
 
+export function textDisplay(value) {
+  return value || '';
+}
+
 export function numericalDisplay(value) {
   return Number.isFinite(value) ?
     value :

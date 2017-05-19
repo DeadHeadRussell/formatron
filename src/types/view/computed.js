@@ -25,11 +25,11 @@ export default function(register) {
 }
 
 const ops = {
-  '+': args => args.reduce((a, b) => a + b),
-  '-': args => args.reduce((a, b) => a - b),
-  '*': args => args.reduce((a, b) => a * b),
-  '/': args => args.reduce((a, b) => a / b),
-  '^': args => args.reduce((a, b) => Math.pow(a, b)),
+  '+': args => args.reduce((a, b) => a + b) || 0,
+  '-': args => args.reduce((a, b) => a - b) || 0,
+  '*': args => args.reduce((a, b) => a * b) || 0,
+  '/': args => args.reduce((a, b) => a / b) || 0,
+  '^': args => args.reduce((a, b) => Math.pow(a, b), 1),
   '>': compareAll((a, b) => a > b),
   '<': compareAll((a, b) => a < b),
   '>=': compareAll((a, b) => a >= b),
