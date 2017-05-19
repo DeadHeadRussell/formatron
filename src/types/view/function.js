@@ -1,9 +1,10 @@
 import {List} from 'immutable';
+import moment from 'moment';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Label from '~/components/label';
-import {FormPropTypes, numericalDisplay} from './';
+import {FormPropTypes, numericalDisplay, textDisplay} from './';
 
 export default function(register) {
   register('function', {
@@ -21,13 +22,15 @@ export default function(register) {
 const fns = {
   ceil: value => Math.ceil(value),
   floor: value => Math.floor(value),
-  round: value => Math.round(value)
+  round: value => Math.round(value),
+  formatDate: (value, format) => moment(value * 1000).format(format)
 };
 
 const displays = {
   ceil: numericalDisplay,
   floor: numericalDisplay,
-  round: numericalDisplay
+  round: numericalDisplay,
+  formatDate: textDisplay
 };
 
 const FunctionComponent = ({options, getters}) => {
