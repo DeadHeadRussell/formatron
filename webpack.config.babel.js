@@ -26,7 +26,7 @@ function buildConfig(config) {
       }, {
         test: /\.sass$/,
         exclude: /node_modules/,
-        loader: 'style-loader!css-loader!sass-loader'
+        loader: 'style-loader!css-loader!postcss-loader!sass-loader'
       }, {
         test: /\.css$/,
         loader: 'style-loader!css-loader'

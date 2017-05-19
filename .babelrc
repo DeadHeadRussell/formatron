@@ -6,6 +6,10 @@
       "babel-root-import",
       {"rootPathSuffix": "src"}
     ],
-    "transform-class-properties"
+    "transform-class-properties",
+    [
+      "import-rename",
+      {"^(.*)\\.sass$": "$1.css"}
+    ]
   ]
 }
