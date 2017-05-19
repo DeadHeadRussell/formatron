@@ -23,7 +23,7 @@ export default function(register) {
 }
 
 const SwitchComponent = ({options, getters, callbacks}) => {
-  const display = getSwitchValue(options, getters);
+  const display = getSwitchCase(options, getters);
 
   return <div className='form-switch'>
     <Label getters={getters}>{options.get('label')}</Label>
@@ -49,7 +49,7 @@ SwitchComponent.propTypes = {
   callbacks: React.PropTypes.objectOf(React.PropTypes.func)
 };
 
-function getSwitchValue(options, getters) {
+function getSwitchCase(options, getters) {
   const switchValue = options.get('switch').getValue(getters);
   const caseObj = options.get('cases')
     .find(caseObj => caseObj.get('case').getValue(getters) == switchValue);
@@ -62,6 +62,14 @@ function getSwitchValue(options, getters) {
     return options.get('defaultCase');
   }
 
+  return null;
+}
+
+function getSwitchValue(options, getters) {
+  const switchCase = getSwitchCase(options, getters);
+  if (switchCase) {
+    return switchCase.getValue(getters);
+  }
   return null;
 }
 
