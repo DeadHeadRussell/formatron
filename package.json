@@ -11,7 +11,10 @@
     "build:lib:js": "babel src --out-dir lib",
     "build:lib:css": "node-sass --output lib src",
     "build:lib:assets": "cp src/components/loading/loading.png lib/components/loading",
-    "build:dist": "webpack --env.prod"
+    "build:dist": "webpack --env.prod",
+    "preversion": "echo 'tests go here'",
+    "version": "npm run build",
+    "postversion": "git push && git push --tags"
   },
   "author": "Andrew Russell",
   "license": "MIT",
