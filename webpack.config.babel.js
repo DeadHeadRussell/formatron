@@ -97,7 +97,7 @@ const prodConfig = buildConfig({
 
 const exampleConfig = buildConfig({
   entry: [
-    path.join(__dirname, 'example', 'app.jsx')
+    path.join(__dirname, 'example', 'example.jsx')
   ],
 
   output: {
