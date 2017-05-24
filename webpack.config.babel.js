@@ -13,6 +13,7 @@ function buildConfig(config) {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
+          babelrc: false,
           presets: ['stage-2', 'es2015', 'react'],
           plugins: [
             'react-require',
