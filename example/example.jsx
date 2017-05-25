@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 
 import {Form, Table} from 'formatron';
 
+import './example.sass';
 import './types/linked';
 
 import exampleSchema, {createExample, createExamples} from './schema/example';
@@ -113,4 +114,3 @@ ReactDOM.render(
   <Example />,
   document.getElementById('example-app')
 );
-

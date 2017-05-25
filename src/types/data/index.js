@@ -86,6 +86,9 @@ export function createDataType(typeName, functions, schemaFunctions) {
     }
 
     function Component(props) {
+      if (props.value === undefined) {
+        console.error(`prop.value is undefined for ${type.name} and ${name}`);
+      }
       const SubComponent = functions.component;
       return <div className='data-field'>
         <SubComponent {...props} name={name} options={options} schema={schema} />
@@ -168,4 +171,3 @@ export function createDataType(typeName, functions, schemaFunctions) {
     }
   }
 }
-

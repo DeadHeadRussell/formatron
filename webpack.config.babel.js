@@ -32,7 +32,13 @@ function buildConfig(config) {
         test: /\.css$/,
         loader: 'style-loader!css-loader'
       }, {
-        test: /\.(woff|ttf|eot|svg|png|jpg)$/,
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+      }, {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader'
+      }, {
+        test: /\.(svg|png|jpg)$/,
         loader: 'url-loader'
       }],
       noParse: [
@@ -91,7 +97,7 @@ const prodConfig = buildConfig({
 
 const exampleConfig = buildConfig({
   entry: [
-    path.join(__dirname, 'example', 'app.jsx')
+    path.join(__dirname, 'example', 'example.jsx')
   ],
 
   output: {
@@ -113,7 +119,7 @@ const exampleConfig = buildConfig({
       'react-dom': path.resolve(__dirname, 'node_modules', 'react-dom'),
     },
     extensions: ['.js', '.jsx'],
-  },
+  }
 });
 
 module.exports = function(env) {
@@ -122,4 +128,3 @@ module.exports = function(env) {
   }
   return [exampleConfig];
 };
-

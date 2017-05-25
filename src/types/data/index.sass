@@ -50,6 +50,7 @@
     height: 36px
     min-height: 36px
 
+  &.date,
   &.currency,
   &.masked,
   &.number,
@@ -63,19 +64,9 @@
     padding-left: 17px
 
   &.date
-    display: flex
-    border: 1px solid #cccccc
-    border-radius: 4px
-
-    > input
-      height: 100%
-      padding: 10px
-      border-radius: 4px
-      font: inherit
-
-    > .react-date-field__calendar-icon
-      order: -1
-      margin: 2px 2px 0 4px
+    position: relative
+    left: -13px
+    padding-left: 34px
 
   &.select
     &.multi
@@ -103,6 +94,26 @@
     border-radius: 4px
     font: inherit
     resize: vertical
+
+.form-data-input-date-wrapper:before
+  position: relative
+  left: 13px
+  color: #1385e5
+  font-family: FontAwesome
+  z-index: 1
+  content: '\f073'
+
+.m-datetime-picker.form-data-datetime-picker
+  box-shadow: rgba(0, 0, 0, 0.118) 0px 1px 6px, rgba(0, 0, 0, 0.118) 0px 1px 4px
+  border-radius: 2px
+  border: 0
+  line-height: initial
+
+  .options
+    margin-bottom: 13px
+
+  table
+    line-height: 21px
 
 .form-contact-info
   width: 390px
@@ -152,4 +163,3 @@
     margin: 0 10px
     font-size: 1.5em
     font-weight: 700
-

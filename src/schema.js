@@ -88,7 +88,7 @@ class ISchema {
         throw new Error(`Cannot reference "${field.name}" of data type "${field.type}"`);
       }
     }
-  
+
     throw new Error('Unimplemented');
   }
 
@@ -110,7 +110,7 @@ class ISchema {
         throw new Error(`Cannot reference "${field.name}" of data type "${field.type}"`);
       }
     }
-  
+
   }
 }
 
@@ -130,7 +130,7 @@ class Schema extends ISchema {
     this.form = form;
     this.table = List(table);
     this.label = label;
-    
+
     this.labelsCache = Map();
   }
 
@@ -340,7 +340,7 @@ class Schema extends ISchema {
     if (!model) {
       throw new Error('Invalid arguments to setDataValue: null model');
     }
-   
+
     if (!ref || (List.isList(ref) && ref.size == 0)) {
       throw new Error(`Invalid arguments to setDataValue: ${model.get('id')} ${ref.toJS()}`);
     }
@@ -428,7 +428,7 @@ class ListSchema extends ISchema {
     if (!ref || (List.isList(ref) && ref.size == 0)) {
       return null;
     }
-    
+
     if (!List.isList(ref)) {
       ref = List([ref]);
     }
@@ -665,4 +665,3 @@ class ListSchema extends ISchema {
     }
   }
 }
-
