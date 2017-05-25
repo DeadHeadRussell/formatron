@@ -98,11 +98,7 @@ class DateComponent extends React.Component {
     const value = this.props.value;
     const type = this.props.options.get('dateType');
     if (value !== null) return unixToDatetime(value, type);
-    const datetime = moment();
-    datetime.hour(0);
-    datetime.second(0);
-    datetime.minute(0);
-    return datetime;
+    return moment();
   }
 
   renderPicker() {

@@ -50,7 +50,7 @@ export default create('example', {
       ]
     }),
     Types.data.date.create('date', {
-      dateType: 'time'
+      dateType: 'date'
     })
   ],
   form: Types.view.columns.create({
