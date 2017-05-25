@@ -176,7 +176,7 @@ function stringToDatetime(str, type) {
   if (type === 'time' && isNaN(str)) {
     return moment(str, getDateFormat(type));
   } else {
-    return moment(new Date(str));
+    return moment(str);
   }
 }
 
