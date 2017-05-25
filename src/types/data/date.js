@@ -1,8 +1,12 @@
-import moment from 'moment';
-import React from 'react';
 import DatetimePicker from 'yet-another-datetime-picker';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import React from 'react';
 import TetheredComponent from 'react-tether';
+import debounce from 'debounce';
+import moment from 'moment';
+
+const SECS_IN_DAY = 24 * 60 * 60;
+const MS_IN_DAY = SECS_IN_DAY * 1000;
 
 export default function(register) {
   register('date', {
@@ -13,54 +17,112 @@ export default function(register) {
   });
 }
 
+const propTypes = {
+  name: React.PropTypes.string.isRequired,
+  value: React.PropTypes.number,
+  options: ImmutablePropTypes.map.isRequired,
+  disabled: React.PropTypes.bool.isRequired,
+  onChange: React.PropTypes.func.isRequired,
+  onBlur: React.PropTypes.func.isRequired
+};
+
 class DateComponent extends React.Component {
   constructor(props) {
     super(props);
     this.blurTimeout = 0;
-    this.state = createInitialState(props);
+    this.state = this.createInitialState(props);
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({input: createInitialState(props).input});
+  // Debounce greatly improves time picker slider performance.
+  componentWillReceiveProps = debounce((props) => {
+    this.setState({input: this.createInitialState(props).input});
+  }, 15);
+
+  handleFocus = () => {
+    clearTimeout(this.blurTimeout);
+    this.setState({showPicker: true});
   }
 
-  render() {
-    const {options, disabled} = this.props;
-    return (
-      <div
-        className='form-data-input-date-wrapper'
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-      >
-        <input
-          className='form-data-input date'
-          type='text'
-          value={this.state.input}
-          onChange={this.handleInputChange}
-          placeholder={options.get('placeholder')}
-          disabled={disabled}
-        />
-        {this.state.showPicker && !disabled ? this.renderPicker() : null}
-      </div>
-    );
+  handleBlur = () => {
+    this.saveInput();
+    // Wait for possible focus event before handling the blur event.
+    this.blurTimeout = setTimeout(() => {
+      this.setState({showPicker: false});
+      this.props.onBlur();
+    });
+  }
+
+  saveInput = () => {
+    const unixTimestamp = this.getInputUnixTime();
+    this.props.onChange(unixTimestamp);
+  }
+
+  handlePickerChange = (datetime) => {
+    const type = this.props.options.get('dateType');
+    const unixTimestamp = datetimeToUnix(datetime, type);
+    this.props.onChange(unixTimestamp);
+  }
+
+  handleInputChange = (event) => {
+    this.setState({input: event.target.value});
+  }
+
+  createInitialState(props) {
+    const type = props.options.get('dateType');
+    const datetime = unixToDatetime(props.value, type);
+    return {
+      showPicker: false,
+      input: this.getInputFromDatetime(datetime)
+    };
+  }
+
+  getInputFromDatetime(datetime) {
+    if (datetime.isValid()) {
+      const type = this.props.options.get('dateType');
+      return datetimeToString(datetime, type);
+    }
+    return '';
+  }
+
+  getInputUnixTime() {
+    if (!this.state.input) return null;
+    const type = this.props.options.get('dateType');
+    const datetime = stringToDatetime(this.state.input, type);
+    if (datetime.isValid()) {
+      return datetimeToUnix(datetime, type);
+    }
+    return null;
+  }
+
+  getPickerDatetime() {
+    const value = this.props.value;
+    const type = this.props.options.get('dateType');
+    if (value !== null) return unixToDatetime(value, type);
+    const datetime = moment();
+    datetime.hour(0);
+    datetime.second(0);
+    datetime.minute(0);
+    return datetime;
   }
 
   renderPicker() {
-    const {options, value} = this.props;
-    let datetime = unixToDatetime(value);
-    if (!datetime.isValid()) datetime = moment();
+    const {options} = this.props;
     return (
       <TetheredComponent
-        classes={{element: 'tether-element-top'}}
         renderElementTo='body'
         attachment='top left'
+        targetAttachment='bottom left'
+        constraints={[{
+          to: 'scrollParent',
+          attachment: 'together'
+        }]}
       >
         <div className='tether-target' />
         <DatetimePicker
           className='form-data-datetime-picker'
           onFocusCapture={this.handleFocus}
           onBlur={this.handleBlur}
-          moment={datetime}
+          moment={this.getPickerDatetime()}
           onChange={this.handlePickerChange}
           onDone={this.handleBlur}
           type={options.get('dateType')}
@@ -74,71 +136,51 @@ class DateComponent extends React.Component {
     )
   }
 
-  handleFocus = () => {
-    clearTimeout(this.blurTimeout);
-    this.setState({showPicker: true});
-  }
-
-  handleBlur = () => {
-    // Wait for possible focus event before handling the blur event.
-    this.blurTimeout = setTimeout(() => {
-      this.setState({showPicker: false}, () => {
-        this.saveInput();
-        this.props.onBlur();
-      });
-    });
-  }
-
-  saveInput = () => {
-    let unixTimestamp = null;
-    if (this.state.input) {
-      let datetime = stringToDatetime(this.state.input);
-      if (datetime.isValid()) {
-        unixTimestamp = datetimeToUnix(datetime);
-      }
-    }
-    if (unixTimestamp !== this.props.value) {
-      this.props.onChange(unixTimestamp);
-    }
-  }
-
-  handlePickerChange = (datetime) => {
-    const unixTimestamp = datetimeToUnix(datetime);
-    this.props.onChange(unixTimestamp);
-  }
-
-  handleInputChange = (event) => {
-    this.setState({input: event.target.value});
+  render() {
+    const {options, disabled} = this.props;
+    return (
+      <div className='form-data-input-date-wrapper'>
+        <input
+          className='form-data-input date'
+          type='text'
+          value={this.state.input}
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
+          onChange={this.handleInputChange}
+          placeholder={options.get('placeholder')}
+          disabled={disabled}
+        />
+        {this.state.showPicker && !disabled ? this.renderPicker() : null}
+      </div>
+    );
   }
 }
 
-function createInitialState(props) {
-  let input = '';
-  let datetime = unixToDatetime(props.value);
-  if (datetime.isValid()) {
-    const type = props.options.get('dateType');
-    input = datetimeToString(datetime, type);
+DateComponent.propTypes = propTypes;
+
+function unixToDatetime(unixTime, type) {
+  if (unixTime === null) return moment(null);
+  if (type === 'time') {
+    // Add time to start of day.
+    const now = Date.now();
+    const startOfDay = now - now % MS_IN_DAY;
+    return moment(startOfDay + unixTime * 1000);
   }
-  return {
-    showPicker: false,
-    input
-  };
+  return moment(unixTime * 1000);
 }
 
-function unixToDatetime(unixTime) {
-  moment(unixTime === null ? null : unixTime * 1000)
-}
-
-function datetimeToUnix(datetime) {
-  return datetime.valueOf() / 1000;
+function datetimeToUnix(datetime, type) {
+  const unix = datetime.valueOf() / 1000;
+  // Offset time from start of day.
+  if (type === 'time') return (unix + SECS_IN_DAY) % SECS_IN_DAY;
+  return unix;
 }
 
 function stringToDatetime(str, type) {
   if (type === 'time' && isNaN(str)) {
-    // Time strings (e.g. '12:30 pm') can't be parsed w/o specifying a format.
     return moment(str, getDateFormat(type));
   } else {
-    return moment(str);
+    return moment(new Date(str));
   }
 }
 
@@ -157,12 +199,3 @@ function getDateFormat(type) {
       return 'YYYY-MM-DD hh:mm a';
   }
 }
-
-DateComponent.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  value: React.PropTypes.number,
-  options: ImmutablePropTypes.map.isRequired,
-  disabled: React.PropTypes.bool.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onBlur: React.PropTypes.func.isRequired
-};
