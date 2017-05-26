@@ -52,24 +52,29 @@
     padding: 9px 5px
     border: 1px solid #cccccc
     border-radius: 4px
-    background: white
+    background: #fbfbfb
 
 // Data
 .form-data-input-wrapper
   position: relative
 
-.form-data-input-wrapper[data-error]:before
-  position: relative
-  display: inline-flex
-  flex-flow: row nowrap
-  align-items: center
-  max-width: 300px
-  margin: 5px 0
-  padding: 5px 8px
-  border-radius: 4px
-  background: #cf4f43
-  color: white
-  content: attr(data-error)
+.form-data-input-wrapper[data-error]
+  .form-data-input
+    border: 1px solid #cf4f43
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1)
+    outline: none
+
+  &:after
+    position: relative
+    display: inline-flex
+    flex-flow: row nowrap
+    align-items: center
+    max-width: 300px
+    padding-top: 5px
+    border-radius: 4px
+    color: #cf4f43
+    font-size: 0.9em
+    content: attr(data-error)
 
 // Header
 .form-header

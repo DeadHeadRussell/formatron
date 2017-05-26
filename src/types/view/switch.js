@@ -18,7 +18,8 @@ export default function(register) {
     },
 
     Component: SwitchComponent,
-    getValue: getSwitchValue
+    getValue: getSwitchValue,
+    getDisplayValue: getSwitchDisplay
   });
 }
 
@@ -69,6 +70,14 @@ function getSwitchValue(options, getters) {
   const switchCase = getSwitchCase(options, getters);
   if (switchCase) {
     return switchCase.getValue(getters);
+  }
+  return null;
+}
+
+function getSwitchDisplay(options, getters) {
+  const switchCase = getSwitchCase(options, getters);
+  if (switchCase) {
+    return switchCase.getDisplay(getters);
   }
   return null;
 }

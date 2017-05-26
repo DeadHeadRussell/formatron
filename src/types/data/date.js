@@ -12,7 +12,7 @@ export default function(register) {
   register('date', {
     component: DateComponent,
     toString: (value, options) => {
-      return datetimeToString(value, options.get('dateType'));
+      return unixToString(value, options.get('dateType'));
     }
   });
 }
@@ -67,6 +67,14 @@ class DateComponent extends React.Component {
     this.setState({input: event.target.value});
   }
 
+  handleEnter = (event) => {
+    if (event.which == 13) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.handleBlur();
+    }
+  }
+
   createInitialState(props) {
     const type = props.options.get('dateType');
     const datetime = unixToDatetime(props.value, type);
@@ -95,8 +103,8 @@ class DateComponent extends React.Component {
   }
 
   getPickerDatetime() {
-    const value = this.props.value;
     const type = this.props.options.get('dateType');
+    const value = this.props.value;
     if (value !== null) return unixToDatetime(value, type);
     return moment();
   }
@@ -105,11 +113,17 @@ class DateComponent extends React.Component {
     const {options} = this.props;
     return (
       <TetheredComponent
+        classes={{
+          element: 'tether-element-top'
+        }}
         renderElementTo='body'
         attachment='top left'
         targetAttachment='bottom left'
         constraints={[{
           to: 'scrollParent',
+          attachment: 'together'
+        }, {
+          to: 'window',
           attachment: 'together'
         }]}
       >
@@ -121,6 +135,7 @@ class DateComponent extends React.Component {
           moment={this.getPickerDatetime()}
           onChange={this.handlePickerChange}
           onDone={this.handleBlur}
+          onKeyPress={this.handleEnter}
           type={options.get('dateType')}
           prevMonthIcon='fa fa-angle-left'
           nextMonthIcon='fa fa-angle-right'
@@ -129,7 +144,7 @@ class DateComponent extends React.Component {
           timeIcon='fa fa-clock-o'
         />
       </TetheredComponent>
-    )
+    );
   }
 
   render() {
@@ -143,6 +158,7 @@ class DateComponent extends React.Component {
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           onChange={this.handleInputChange}
+          onKeyPress={this.handleEnter}
           placeholder={options.get('placeholder')}
           disabled={disabled}
         />
@@ -181,7 +197,15 @@ function stringToDatetime(str, type) {
 }
 
 function datetimeToString(datetime, type) {
-  return datetime.format(getDateFormat(type));
+  if (datetime.isValid()) {
+    return datetime.format(getDateFormat(type));
+  } else {
+    return '';
+  }
+}
+
+function unixToString(unixTime, type) {
+  return datetimeToString(unixToDatetime(unixTime, type), type);
 }
 
 function getDateFormat(type) {
@@ -195,3 +219,4 @@ function getDateFormat(type) {
       return 'YYYY-MM-DD hh:mm a';
   }
 }
+

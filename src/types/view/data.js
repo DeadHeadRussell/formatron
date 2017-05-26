@@ -19,29 +19,26 @@ export default function(register) {
 }
 
 const DataComponent = ({options, getters, callbacks}) => {
-  if (!options.get('editable', true)) {
-    return <div className='form-data static'>
-      <Label getters={getters}>{options.get('label')}</Label>
-      <div className='form-data-input-wrapper'>
-        {getDataDisplayValue(options, getters)}
-      </div>
-    </div>;
-  }
-
   const {field, value} = getters.getDataFieldAndValue(options.get('ref'));
   const classes = classNames('form-data', field.type.name);
+
+  const modifiedValue = (!field.hasValue(value) && options.get('defaultValue')) ?
+    options.get('defaultValue').getValue(getters) :
+    value;
+
+  const isDisabled = !!getters.getDisabled(options.get('ref')) || !options.get('editable', true);
 
   const children = [
     <Label key='label' getters={getters} required={field.options.get('required')}>{options.get('label')}</Label>,
     <div
       key='display'
-      className='form-data-input-wrapper'
+      className={classNames('form-data-input-wrapper', {disabled: isDisabled})}
       data-error={getters.getError(options.get('ref'))}
     >
       <field.Component
         schemaName={getters.getName()}
-        value={value}
-        disabled={!!getters.getDisabled(options.get('ref'))}
+        value={modifiedValue}
+        disabled={isDisabled}
         onChange={newValue => callbacks.onChange(options.get('ref'), newValue)}
         onBlur={() => callbacks.onBlur(options.get('ref'))}
         onButtonClick={(...args) => callbacks.onButtonClick(options.get('ref'), ...args)}
