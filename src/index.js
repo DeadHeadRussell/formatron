@@ -10,6 +10,5 @@ export {default as Table} from './components/table';
 import * as Tables from './components/table';
 export {Tables};
 
-import 'font-awesome-webpack-2';
 import 'react-virtualized/styles.css';
 import './index.sass';

@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 
 import {Form, Table} from 'formatron';
 
+import 'font-awesome-webpack-2';
+
 import './example.sass';
 import './types/linked';
 
