@@ -26,8 +26,8 @@ export default function exportableTable(Table) {
               element: 'element-top'
             }}
             renderElementTo='body'
-            attachment='top middle'
-            targetAttachment='bottom middle'
+            attachment='top center'
+            targetAttachment='bottom center'
             constraints={[{
               to: 'window',
               attachment: 'together',
@@ -49,14 +49,16 @@ export default function exportableTable(Table) {
                   'initial' : 'none'
               }}
             >
-              {this.props.exportTypes.map(type => <button
-                key={type}
-                type='button'
-                className='table-button table-exportable-export-type'
-                onClick={this.export.bind(this, type)}
-              >
-                {type}
-              </button>)}
+              <div className='table-exportable-export-list'>
+                {this.props.exportTypes.map(type => <button
+                  key={type}
+                  type='button'
+                  className='table-button table-exportable-export-type'
+                  onClick={this.export.bind(this, type)}
+                >
+                  {type}
+                </button>)}
+              </div>
             </div>
           </TetheredComponent>);
       } else {

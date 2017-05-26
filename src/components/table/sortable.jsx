@@ -5,9 +5,17 @@ import BaseTable from './base';
 export default function sortableTable(Table) {
   return class SortableTable extends BaseTable {
     static propTypes = {
+      initialSort: React.PropTypes.shape({
+        sortBy: React.PropTypes.string,
+        sortDirection: React.PropTypes.string
+      }),
       onSort: React.PropTypes.func,
       sortBy: React.PropTypes.string,
       sortDirection: React.PropTypes.string
+    };
+
+    static defaultProps = {
+      initialSort: {}
     };
 
     constructor(props) {
@@ -18,8 +26,8 @@ export default function sortableTable(Table) {
 
     createInitialState() {
       return {
-        sortBy: undefined,
-        sortDirection: undefined
+        sortBy: this.props.initialSort.sortBy,
+        sortDirection: this.props.initialSort.sortDirection
       };
     }
 
@@ -27,7 +35,8 @@ export default function sortableTable(Table) {
       if (this.props.onSort) {
         this.props.onSort(props);
       } else {
-        if (this.state.sortDirection == SortDirection.DESC) {
+        if (this.state.sortBy == this.props.sortBy &&
+            this.state.sortDirection == SortDirection.DESC) {
           this.setState(this.createInitialState());
         } else {
           this.setState(props);
