@@ -331,7 +331,7 @@ class Schema extends ISchema {
 
     if (!this.labelsCache.get(model.get('id'))) {
       this.labelsCache = this.labelsCache
-        .set(model.get('id'), this.label.getValue(this.createGetters(model)));
+        .set(model.get('id'), this.label.getDisplay(this.createGetters(model)));
     }
     return this.labelsCache.get(model.get('id'));
   }
