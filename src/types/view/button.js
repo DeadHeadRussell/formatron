@@ -15,18 +15,25 @@ export default function(register) {
 const ButtonComponent = ({options, getters, callbacks}) => {
   const args = options.get('args', List()).toArray();
 
+  const label = typeof options.get('label') == 'string' ?
+    options.get('label') :
+    options.get('label')(getters.getModel());
+
   return <button
     className='form-button'
     type='button'
     onClick={() => callbacks.onButtonClick(...args)}
   >
-    <Label getters={getters}>{options.get('label')}</Label>
+    <Label getters={getters}>{label}</Label>
   </button>;
 };
 
 ButtonComponent.propTypes = {
   options: ImmutablePropTypes.contains({
-    label: React.PropTypes.string,
+    label: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.func
+    ]),
     args: ImmutablePropTypes.list
   }),
   getters: React.PropTypes.objectOf(React.PropTypes.func),

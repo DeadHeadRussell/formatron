@@ -10,21 +10,27 @@ import './index.sass';
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.createInitialState();
+    this.state = this.createInitialState(props.model);
   }
 
-  createInitialState() {
+  createInitialState(model) {
     return {
       changes: Map(),
       blurs: Map(),
       dirty: Map(),
-      errors: null
+      errors: null,
+      getters: {
+        getChange: this.getChange,
+        getError: this.getError.bind(this, model),
+        getDisabled: this.isDisabled
+      },
+      renderCallbacks: this.createRenderCallbacks(model, this.state)
     };
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.model && !newProps.model.equals(this.props.model)) {
-      this.setState(this.createInitialState());
+      this.setState(this.createInitialState(newProps.model));
     }
   }
 
@@ -53,9 +59,9 @@ export default class Form extends React.Component {
     return this.state.change.get(ref);
   }
 
-  getError = (model, ref) => {
+  getError = ref => {
     if (this.state.blurs.get(ref)) {
-      const errors = this.props.schema.validateSingle(model, ref);
+      const errors = this.props.schema.validateSingle(this.props.model, ref);
       return errors
         .filter(error => error.ref == ref)
         .map(error => error.value)
@@ -97,10 +103,10 @@ export default class Form extends React.Component {
   }
 
   onReset = e => {
-    this.setState(this.createInitialState());
+    this.setState(this.createInitialState(this.props.model));
   }
 
-  createRenderCallbacks(model) {
+  createRenderCallbacks(model, oldState) {
     return {
       onBlur: ref => {
         if (this.state.dirty.get(ref) || this.state.changes.get(ref)) {
@@ -190,14 +196,7 @@ export default class Form extends React.Component {
 
   renderInputs(model) {
     return this.props.schema
-      .renderForm(model,
-        {
-          getChange: this.getChange,
-          getError: this.getError.bind(this, model),
-          getDisabled: this.isDisabled
-        },
-        this.createRenderCallbacks(model)
-      )
+      .renderForm(model, this.state.getters, this.state.renderCallbacks);
   }
 
   renderAction() {

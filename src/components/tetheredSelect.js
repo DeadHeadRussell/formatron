@@ -1,7 +1,5 @@
-import Select from 'react-select';
+import Select from 'react-virtualized-select';
 import TetheredComponent from 'react-tether';
-
-import 'react-select/dist/react-select.css';
 
 export default class TetheredSelect extends Select {
   constructor(props) {

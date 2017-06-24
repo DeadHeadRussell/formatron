@@ -159,7 +159,7 @@ function numberToString(value, options) {
 
     case 'raw':
     default:
-      return value.toLocaleString('en-us');
+      return `${value}`;
   }
 }
 

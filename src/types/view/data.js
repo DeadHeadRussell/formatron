@@ -87,6 +87,10 @@ function getDataDisplayValue(options, getters) {
 
 function getDataValue(options, getters) {
   const {field, value} = getters.getDataFieldAndValue(options.get('ref'));
+  if (!field) {
+    return undefined;
+  }
+
   if (!field.hasValue(value) && options.get('defaultValue')) {
     return options.get('defaultValue').getValue(getters);
   }

@@ -44,9 +44,9 @@ class DateComponent extends React.Component {
   }
 
   handleBlur = () => {
-    this.saveInput();
     // Wait for possible focus event before handling the blur event.
     this.blurTimeout = setTimeout(() => {
+      this.saveInput();
       this.setState({showPicker: false});
       this.props.onBlur();
     });
@@ -60,11 +60,18 @@ class DateComponent extends React.Component {
   handlePickerChange = (datetime) => {
     const type = this.props.options.get('dateType');
     const unixTimestamp = datetimeToUnix(datetime, type);
-    this.props.onChange(unixTimestamp);
+    this.setState({input: this.getInputFromDatetime(datetime)});
+    //this.props.onChange(unixTimestamp);
   }
 
   handleInputChange = (event) => {
     this.setState({input: event.target.value});
+  }
+
+  handleClearInput = () => {
+    clearTimeout(this.blurTimeout);
+    this.setState({input: null});
+    this.handleBlur();
   }
 
   handleEnter = (event) => {
@@ -102,7 +109,15 @@ class DateComponent extends React.Component {
     return null;
   }
 
+  getInputDatetime() {
+    if (!this.state.input) return moment();
+    const type = this.props.options.get('dateType');
+    return stringToDatetime(this.state.input, type);
+  }
+
   getPickerDatetime() {
+    return this.getInputDatetime();
+
     const type = this.props.options.get('dateType');
     const value = this.props.value;
     if (value !== null) return unixToDatetime(value, type);
@@ -162,6 +177,11 @@ class DateComponent extends React.Component {
           placeholder={options.get('placeholder')}
           disabled={disabled}
         />
+        {this.state.input ? (
+          <button className='form-data-datetime-clear' onClick={this.handleClearInput}>
+            <span>{"\u00D7"}</span>
+          </button>
+        ) : null}
         {this.state.showPicker && !disabled ? this.renderPicker() : null}
       </div>
     );
@@ -173,24 +193,24 @@ DateComponent.propTypes = propTypes;
 function unixToDatetime(unixTime, type) {
   if (unixTime === null) return moment(null);
   if (type === 'time') {
-    // Add time to start of day.
-    const now = Date.now();
-    const startOfDay = now - now % MS_IN_DAY;
-    return moment(startOfDay + unixTime * 1000);
+    return moment.utc(unixTime * 1000);
   }
   return moment(unixTime * 1000);
 }
 
 function datetimeToUnix(datetime, type) {
   const unix = datetime.valueOf() / 1000;
-  // Offset time from start of day.
-  if (type === 'time') return (unix + SECS_IN_DAY) % SECS_IN_DAY;
+  if (type === 'time') {
+    return datetime.hours() * 3600 + datetime.minutes() * 60 + datetime.seconds();
+  }
   return unix;
 }
 
 function stringToDatetime(str, type) {
   if (type === 'time' && isNaN(str)) {
-    return moment(str, getDateFormat(type));
+    const today = moment.utc(str, getDateFormat(type));
+    const unixTime = datetimeToUnix(today, type);
+    return unixToDatetime(unixTime, type);
   } else {
     return moment(str);
   }

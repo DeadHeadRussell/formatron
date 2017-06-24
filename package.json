@@ -40,6 +40,7 @@
     "react-tabs": "^0.7.0",
     "react-tether": "^0.5.6",
     "react-virtualized": "^9.7.2",
+    "react-virtualized-select": "^3.0.1",
     "yet-another-datetime-picker": "^0.4.6"
   },
   "devDependencies": {

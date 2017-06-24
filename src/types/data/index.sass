@@ -105,6 +105,9 @@
     font: inherit
     resize: vertical
 
+.form-data-input-date-wrapper
+  position: relative
+
 .form-data-input-date-wrapper:before
   position: absolute
   top: 9px
@@ -118,6 +121,19 @@
   position: absolute
   top: 0px
   left: 2px
+
+.form-data-datetime-clear
+  position: absolute
+  top: 0
+  right: 0
+  height: 100%
+  border: none
+  background: transparent
+  font-size: 22px
+  cursor: pointer
+
+  &:hover
+    color: #c32
 
 .m-datetime-picker.form-data-datetime-picker
   margin-top: 36px

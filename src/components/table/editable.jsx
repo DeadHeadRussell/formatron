@@ -27,7 +27,7 @@ export default function editableTable(Table) {
     }
 
     createRenderCallbacks(column, model) {
-      const index = model.get('id');
+      const index = model.get('id', null);
 
       let callbacks;
       return callbacks = {
@@ -116,7 +116,7 @@ export default function editableTable(Table) {
         const model = getter(props);
         return this.props.schema.resolveChanges(
           model,
-          this.state.changes.get(model.get('id'), Map()),
+          this.state.changes.get(model.get('id', null), Map()),
           Map(),
           Map()
         );

@@ -152,6 +152,10 @@ class Schema extends ISchema {
     return <this.form.Component getters={getters} callbacks={callbacks} />;
   }
 
+  getViewTypeValue(model, viewType) {
+    return viewType.getValue(this.createGetters(model));
+  }
+
   resolveChanges(model, changes, defaultValues, disabledValues) {
     const getDefaultValue = ref => {
       const {field, value} = this.getDataFieldAndValue(model, ref);
