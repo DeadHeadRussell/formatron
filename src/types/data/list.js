@@ -1,103 +1,123 @@
-import Immutable, {List} from 'immutable';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import React from 'react';
+import {List} from 'immutable';
 
-import {createListSchema} from '~/schema';
-import * as Types from '../';
+import DataViewType from '~/types/view/data';
 
-export default function(register) {
-  register('list', {
-    parseOptions(options, name) {
-      const listSubType = Types.data[options.get('listType')];
+import DataType, {ImmutableDataType} from './';
+import ValidationError from './validationError';
 
-      if (!listSubType) {
-        throw new Error(`Invalid list type "${options.get('listType')}" supplied to "${name}"`);
-      }
+export default class ImmutableListType extends ImmutableDataType {
+  static typeName = 'list';
 
-      return options
-        .set('listField', listSubType.create(`${name}.list`, options.get('listOptions')));
-    },
-
-    component: ListComponent,
-    validate: validateList,
-    getDefaultValue: getDefaultListValue,
-    toString: listToString,
-    hasValue: listHasValue,
-    useLabel: () => false
-  }, {
-    getSchema(options) {
-      return createListSchema('list', options.get('listField'), options);
-    },
-
-    getModel(options, list) {
-      if (!list) {
-        return null;
-      }
-      return list;
-    }
-  });
-}
-
-const ListComponent = ({name, value, options, disabled, onChange, onBlur}) => {
-  const listField = options.get('listField');
-
-  return <div className='form-list'>
-    {value.map((item, i) => <div key={i} className='form-list-item'>
-      <listField.Component
-        value={item}
-        disabled={disabled}
-        onChange={newItem => onChange(value.set(i, newItem))}
-        onBlur={onBlur}
-      />
-      <button
-        className='form-list-item-action'
-        type='button'
-        onClick={() => onChange(value.remove(i))}
-      >
-        ✕
-      </button>
-    </div>)}
-    <button
-      className='form-list-action'
-      type='button'
-      onClick={() => onChange(value.push(listField.getDefaultValue()))}
-    >
-      +
-    </button>
-  </div>;
-};
-
-ListComponent.propTypes = {
-  name: React.PropTypes.string.isRequired,
-  value: ImmutablePropTypes.list.isRequired,
-  options: ImmutablePropTypes.map.isRequired,
-  disabled: React.PropTypes.bool.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onBlur: React.PropTypes.func.isRequired
-};
-
-function getDefaultListValue() {
-  return List();
-}
-
-function listToString(value, options) {
-  const listField = options.get('listField');
-  return value
-    .map(subValue => listField.toString(subValue))
-    .join(', ');
-}
-
-function listHasValue(value, options) {
-  if (value.size == 0) {
-    return false;
+  static parseOptions(field, parseField) {
+    return field
+      .update('itemType', parseField);
   }
 
-  const listField = options.get('listField');
-  return value.every(listField.hasValue);
-}
+  getItemType() {
+    return this.options.get('itemType');
+  }
 
-function validateList(value, options) {
-  const listField = options.get('listField');
-  value.forEach(item => listField.validate(item));
+  hasValue(value) {
+    if (!super.hasValue(value)) {
+      return false;
+    }
+    return value && value.size > 0;
+  }
+
+  getDefaultValue() {
+    return super.getDefaultValue(List());
+  }
+
+  getFieldFromRef(ref) {
+    if (ref.isSingleRef()) {
+      return this.getItemType();
+    } else if (ref.isMapper()) {
+      const itemType = this.getItemType();
+      const newItemType = ref.view instanceof DataViewType ?
+        ref.view.getFieldAndValue(new RenderData(itemType, null)).field :
+        new DataType('mappedListItem', Map());
+
+      return new this.constructor(`mappedList(${this.getName()})`, this.options
+        .set('itemType', newItemType)
+      );
+    } else if (ref.isFilterer()) {
+      return new this.constructor(`filteredList(${this.getName()})`, this.options);
+    } else {
+      return this;
+    }
+  }
+
+  getField(refs) {
+    if (!List.isList(refs)) {
+      refs = List([refs]);
+    }
+
+    if (refs.size == 0) {
+      return null;
+    }
+
+    const field = this.getFieldFromRef(refs.first());
+    this.getNextField(field, refs.rest());
+  }
+
+  getFieldAndValue(list, ref) {
+    if (!List.isList(ref)) {
+      ref = List([ref]);
+    }
+
+    if (ref.size == 0) {
+      return {};
+    }
+
+    if (!list || !List.isList(list)) {
+      return {field: this.getField(ref)};
+    }
+
+    const firstRef = ref.first();
+    const value = firstRef.getValue(this, list);
+    const field = this.getFieldFromRef(firstRef);
+
+    return this.getNextFieldAndValue(field, value, ref.rest());
+  }
+
+  setValue(list, ref, newValue) {
+    if (!List.isList(list)) {
+      throw new Error(`Cannot set value of a non-list (${list})`);
+    }
+
+    if (!List.isList(ref)) {
+      ref = List([ref]);
+    }
+
+    if (ref.size == 0) {
+      throw new Error(`Invalid ref to set value in list "${ref}"`);
+    }
+
+    const firstRef = ref.first();
+
+    const field = this.getFieldFromRef(firstRef);
+    const oldValue = firstRef.getValue(this, list);
+
+    return firstRef.setValue(this, list, this.setNextValue(
+      field, oldValue, newValue, refs.rest()
+    ));
+  }
+
+  validate(list) {
+    return super.validate(list, () => {
+      const itemType = this.getItemType();
+      return list
+        .map((item, index) => [
+          index,
+          itemType.validate(item)
+        ])
+        .filter(([index, error]) => error)
+        .map(([index, error]) => {
+          error.addRef(index);
+          error.field = this;
+          return error;
+        });
+    });
+  }
 }
 

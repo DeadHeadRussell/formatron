@@ -1,21 +1,26 @@
+import {valueRenderers} from '~/renderers';
 import {RenderData} from '~/renderers/renderData.js';
 
 export function parseRef(field) {
+  if (typeof field == 'string') {
+    return new ImmutableRef(field);
+  }
+
   switch (field.get('type')) {
     case 'value':
-      return Ref(field.get('value'));
+      return new ImmutableRef(field.get('value'));
 
     case 'list':
       const refValue = field.get('value');
       switch (refValue.get('type')) {
         case 'find': 
-          return ListFindRef(refValue.get('finder'));
+          return new ListFindRef(refValue.get('finder'));
 
         case 'filter':
-          return ListFilterRef(refValue.get('filter'));
+          return new ListFilterRef(refValue.get('filter'));
 
         case 'map':
-          return ListMapRef(refValue.get('mapper'));
+          return new ListMapRef(refValue.get('mapper'));
 
         default:
           throw new Error(`Unknown list ref type "${refValue.get('type')}"`);
@@ -30,6 +35,14 @@ export class Ref {
   getValue() {
     throw new Error('Abstract function');
   }
+
+  getDisplay() {
+    throw new Error('go away');
+  }
+
+  toString() {
+    return this.getDisplay();
+  }
 }
 
 export class ImmutableRef extends Ref {
@@ -42,20 +55,40 @@ export class ImmutableRef extends Ref {
     return false;
   }
 
-  getValue(dataType, model) {
-    if (!model) {
-      return undefined;
+  isSingleRef() {
+    return true;
+  }
+
+  isMultiRef() {
+    return !this.isSingleRef();
+  }
+
+  getValue(dataType, dataValue) {
+    if (!dataValue) {
+      return null;
     }
 
-    if (this.ref == '') {
-      return model;
+    if (!this.ref) {
+      return dataValue;
     }
 
-    if (Immutable.isImmutable(model)) {
-      return dataType.getValue(model.get(this.ref));
+    return dataValue.get(this.ref);
+  }
+
+  setValue(dataType, dataValue, childValue) {
+    if (!dataValue) {
+      throw new Error(`Cannot set value for on a null object: (with ${this.getDisplay})`);
     }
 
-    throw new Error(`Cannot reference a non-immutable value with ${this.ref}`);
+    if (!this.ref) {
+      return dataValue;
+    }
+
+    return dataValue.set(this.ref, childValue);
+  }
+
+  getDisplay() {
+    return this.ref;
   }
 }
 
@@ -69,12 +102,12 @@ export class ImmutableListRef extends ImmutableRef {
     return true;
   }
 
-  isSingleRef() {
-    return true;
+  isFilterer() {
+    return false;
   }
 
-  isMultiRef() {
-    return !this.isSingleRef();
+  isMapper() {
+    return false;
   }
 
   checkValidData(dataType, dataValue) {
@@ -87,19 +120,50 @@ export class ImmutableListRef extends ImmutableRef {
     }
   }
 
-  getValue(dataType, list) {
-    this.checkValidData(dataType, list);
+  getDisplay() {
+    return this.view.getLabel();
+  }
 
-    const listType = dataType.getListType();
-    return list[this.constructor.method](model => {
-      const renderData = new RenderData(listType, model, {});
-      return this.view.getValue(renderData);
-    });
+  getValue(listType, list) {
+    this.checkValidData(listType, list);
+    
+    if (!this.constructor.method) {
+      return list;
+    }
+
+    const itemType = listType.getItemType();
+    return list
+      [this.constructor.method](item => {
+        const renderData = new RenderData(itemType, item);
+        return valueRenderers.getValue(this.view, renderData);
+      });
+  }
+
+  setValue(listType, list, newItem) {
+    if (List.isList(newItem)) {
+      console.warn('Setting each list item to be a list. This may be due to using multiple list refs which is currently unimplemented');
+    }
+
+    return list.map(() => newItem);
   }
 }
 
 export class ImmutableListFindRef extends ImmutableListRef {
-  static method = 'find'
+  static method = 'find';
+
+  setValue(listType, list, newItem) {
+    const index = list
+      .findIndex(item => {
+        const renderData = new RenderData(itemType, item);
+        return valueRenderers.getValue(this.view, renderData);
+      });
+
+    if (index >= 0) {
+      return list.set(index, newItem);
+    } else {
+      return list.push(newItem);
+    }
+  }
 }
 
 export class ImmutableListFilterRef extends ImmutableListRef {
@@ -108,6 +172,33 @@ export class ImmutableListFilterRef extends ImmutableListRef {
   isSingleRef() {
     return false;
   }
+
+  isFilterer() {
+    return true;
+  }
+
+  setValue(listType, list, newItem) {
+    if (List.isList(newItem)) {
+      console.warn('Setting each list item to be a list. This may be due to using multiple list refs which is currently unimplemented');
+    }
+
+    const indexes = list
+      .map((item, index) => [
+        index,
+        item
+      ])
+      .filter(([index, item]) => {
+        const renderData = new RenderData(itemType, item);
+        return valueRenderers.getValue(this.view, renderData);
+      })
+      .map(([index, item]) => index);
+
+    return list
+      .map((item, index) => indexes.includes(index) ?
+        newItem :
+        index
+      );
+  }
 }
 
 export class ImmutableListMapRef extends ImmutableListRef {
@@ -115,6 +206,14 @@ export class ImmutableListMapRef extends ImmutableListRef {
 
   isSingleRef() {
     return false;
+  }
+
+  isMapper() {
+    return true;
+  }
+
+  setValue(listType, list, newItem) {
+    throw new Error('Not yet implemented');
   }
 }
 

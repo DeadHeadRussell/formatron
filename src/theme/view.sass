@@ -1,0 +1,301 @@
+// Field
+.formatron-field
+  display: block
+  width: auto
+  margin-bottom: 10px
+
+  > .formatron-field-wrapper
+    position: relative
+
+.formatron-field-action
+  position: absolute
+  right: 0
+  top: 0
+  width: 34px
+  height: 34px
+  border: 0
+  background: transparent
+  cursor: pointer
+  color: #999
+  font: inherit
+  font-size: 18px
+
+  &:hover,
+  &:focus
+    background: rgba(0, 0, 0, 0.05)
+    color: #cf4f43
+
+// Static
+.formatron-static
+
+// Input
+.formatron-input,
+.formatron-field-wrapper > .formatron-static-value
+  display: flex
+  align-items: center
+  width: 300px
+  height: 36px
+  margin: 0
+  padding: 9px 5px
+  border: 1px solid #cccccc
+  border-radius: 4px
+  color: inherit
+  font: inherit
+  background: white
+  outline: none
+
+.formatron-input
+  cursor: text
+
+.formatron-input-inner
+  width: 100%
+  height: 100%
+  margin: 0
+  border: 0
+  outline: none
+
+.formatron-disabled > .formatron-field-wrapper
+  > .formatron-input,
+  > .formatron-static-value
+    background: #fbfbfb
+
+
+.formatron-error[data-error]
+  > .formatron-field-wrapper
+    > .formatron-input,
+    > .formatron-static-value
+      border: 1px solid #cf4f43
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1)
+      outline: none
+
+  &:after
+    position: relative
+    display: inline-flex
+    flex-flow: row nowrap
+    align-items: center
+    max-width: 300px
+    padding-top: 5px
+    border-radius: 4px
+    color: #cf4f43
+    font-size: 0.9em
+    content: attr(data-error)
+
+// Calendar
+.formatron-calendar
+  position: relative
+  padding-left: 0
+
+  .formatron-tether-target
+    position: absolute
+    bottom: -1px
+    left: 0px
+
+  &:before
+    position: relative
+    width: 34px
+    height: 34px
+    text-align: center
+    line-height: 32px
+    color: #1385e5
+    font-family: FontAwesome
+    cursor: pointer
+    content: '\f073'
+
+.m-datetime-picker.formatron-datetime-picker
+  margin-bottom: 36px
+  border: 0
+  border-radius: 2px
+  box-shadow: rgba(0, 0, 0, 0.118) 0px 1px 6px, rgba(0, 0, 0, 0.118) 0px 1px 4px
+  line-height: initial
+
+  .options
+    margin-bottom: 13px
+
+  table
+    line-height: 21px
+
+// Checkbox
+.formatron-field-checkbox
+  display: inline-flex
+  flex-flow: row nowrap
+  align-items: center
+
+  > .formatron-field-wrapper
+    order: -1
+    display: flex
+    align-items: center
+    width: auto
+    padding: 0
+    border: none
+    margin-right: 6px
+
+    > .formatron-checkbox
+      position: relative
+      width: 17px
+      height: 17px
+      padding: 0
+      border: 1px solid #ccc
+      border-radius: inherit
+      appearance: none
+
+      &:checked:after
+        position: absolute
+        left: 1px
+        content: '\2714'
+        font-size: 16px
+        line-height: 15px
+
+// Currency
+.formatron-field-currency
+  > .formatron-field-wrapper
+    position: relative
+
+    > .formatron-currency
+      padding-left: 17px
+
+    &:before
+      position: absolute;
+      top: 7px
+      left: 8px
+      content: '$'
+
+// Drop Down
+.formatron-dropdown
+  padding-left: 0
+  padding-right: 0
+
+  &.formatron-multi
+    height: auto
+
+  .Select-control
+    height: 34px
+    border: 0
+    background: inherit
+
+  .Select-clear-zone
+    @extend .formatron-field-action
+    position: relative
+
+  .Select-arrow-zone
+    display: none
+
+  .Select-menu-outer
+    z-index: 20
+    max-height: 400px
+
+    > .Select-menu
+      max-height: 398px
+
+// Label
+.formatron-label
+  font-weight: 700
+
+  &.formatron-required
+    color: #cf4f43
+
+    &:before
+      margin-right: 5px
+      content: '*'
+
+// Grid
+.formatron-grid
+  .formatron-label + .formatron-grid-outer
+    margin-top: 10px
+    padding-top: 10px
+    padding-left: 20px
+    border-top: 1px solid black
+
+  &.formatron-orientation-vertical
+    > .formatron-grid-outer
+      flex-flow: row nowrap
+
+      > .formatron-grid-inner
+        flex-flow: column nowrap
+
+        &:not(:first-of-type)
+          margin-left: 20px
+
+  &.formatron-orientation-horizontal
+    > .formatron-grid-outer
+      flex-flow: column nowrap
+
+      > .formatron-grid-inner
+        flex-flow: row nowrap
+
+.formatron-grid-outer,
+.formatron-grid-inner
+  flex: 0 0 auto
+  display: flex
+  align-items: flex-start
+
+.formatron-row-wrapper
+  flex: 1 1 auto
+  display: flex
+  flex-flow: row nowrap
+  justify-content: flex-start
+  align-items: center
+
+  > *
+    flex: 0 0 auto
+
+    &.static
+      margin-left: 0
+
+    &:not(:first-child).static
+      margin-left: 5px
+
+    &:not(:first-child):not(.static)
+      margin-left: 10px
+
+// Header
+.formatron-header
+  margin-bottom: 10px
+  border-bottom: 1px solid black
+  align-self: stretch
+
+// Table
+.formatron-table
+  max-height: 500px
+  margin-bottom: 40px
+
+// Tabs
+.formatron-tabs
+  margin-top: 20px
+
+  > .ReactTabs > .ReactTabs__TabList > .ReactTabs__Tab
+    border-radius: 5px 5px 0 0
+    font-weight: 700
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+  > .react-tabs
+    [role=tab]
+      border: 1px solid rgb(71, 70, 70)
+      border-top: 5px solid #5f6a27
+
+    [role=tab]:hover
+      flex: 0 0 auto
+      border-top: 5px solid #364e72
+
+    [role=tab][aria-selected=true]
+      flex: 0 0 auto
+      border-top: 5px solid #b67721
+
+    [role=tablist]
+      display: flex
+      flex-flow: row nowrap
+      max-width: 100%
+
+// Text
+.formatron-textarea
+  width: 600px
+  min-height: 100px
+  margin: 0
+  padding: 5px 10px
+  border: 1px solid #cccccc
+  border-radius: 4px
+  color: inherit
+  font: inherit
+  resize: vertical
+

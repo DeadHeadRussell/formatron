@@ -1,0 +1,36 @@
+import {List} from 'immutable';
+
+import ValueType from './';
+
+export default class MethodType extends ValueType {
+  static typeName = 'method';
+
+  static parseOptions(field, parseField) {
+    return super.parseOptions(field, parseField)
+      .update('obj', parseField)
+      .update('args', List(), this.parseOneOrMany(parseField));
+  }
+
+  getObj() {
+    return this.options.get('obj');
+  }
+
+  getMethod() {
+    return this.options.get('method');
+  }
+
+  getArgs() {
+    return this.options.get('args');
+  }
+
+  getValue(renderData, renderers) {
+    const obj = renderers.getValue(this.getObj(), renderData);
+    if (!obj) {
+      return null;
+    }
+
+    const values = this.getChildValues(renderData, this.getArgs(), renderers);
+    return obj[this.getMethod()](...values.toArray());
+  }
+}
+

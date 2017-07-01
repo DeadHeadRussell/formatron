@@ -1,12 +1,9 @@
-//import jsonTypeRenderers from './json';
-//import immutableTypeRenderers from './immutable';
-import reactTypeRenderers from './react';
-import RenderData from './renderData';
+import ViewType from '~/types/view';
 
 /**
  * Collection of render functions of a specific type (eg. React renderers).
  */
-class Renderers {
+export default class Renderers {
   /**
    * Creates a new renderer for a specific type
    * @param {object.string} renderers - The set of renderers for each ViewType registered.
@@ -19,41 +16,40 @@ class Renderers {
    * See {@link Renderer#renderFormField}
    */
   renderFormField(viewType, renderData) {
-    return this.renderers[viewType.name].renderFormField(viewType, renderData);
+    viewType = this.parseViewType(viewType, renderData);
+    return this.renderers[viewType.constructor.typeName].renderFormField(viewType, renderData, this);
   }
 
   /**
    * See {@link Renderer#renderStaticField}
    */
   renderStaticField(viewType, renderData) {
-  }
-
-  /**
-   * See {@link Renderer#renderTableHeader}
-   */
-  renderTableHeader(viewType, renderData) {
-    return this.renderers[viewType.name].renderTableHeader(viewType, renderData);
+    viewType = this.parseViewType(viewType, renderData);
+    return this.renderers[viewType.constructor.typeName].renderStaticField(viewType, renderData, this);
   }
 
   /**
    * See {@link Renderer#renderTableFilter}
    */
-  renderTableFilter(viewType, renderData) {
-    return this.renderers[viewType.name].renderTableFilter(viewType, renderData);
+  renderFilter(viewType, renderData) {
+    viewType = this.parseViewType(viewType, renderData);
+    return this.renderers[viewType.constructor.typeName].renderTableFilter(viewType, renderData, this);
   }
 
   /**
    * See {@link Renderer#renderTableCell}
    */
   renderTableCell(viewType, renderData) {
-    return this.renderers[viewType.name].renderTableCell(viewType, renderData);
+    viewType = this.parseViewType(viewType, renderData);
+    return this.renderers[viewType.constructor.typeName].renderTableCell(viewType, renderData, this);
   }
 
   /**
    * See {@link Renderer#renderStaticTableCell}
    */
   renderStaticTableCell(viewType, renderData) {
-    return this.renderers[viewType.name].renderStaticTableCell(viewType, renderData);
+    viewType = this.parseViewType(viewType, renderData);
+    return this.renderers[viewType.constructor.typeName].renderStaticTableCell(viewType, renderData, this);
   }
 
   /**
@@ -62,7 +58,8 @@ class Renderers {
    * @params {RenderData} renderData - The data to render.
    */
   getValue(viewType, renderData) {
-    return viewType.getValue(renderData);
+    viewType = this.parseViewType(viewType, renderData);
+    return viewType.getValue(renderData, this);
   }
 
   /**
@@ -70,13 +67,38 @@ class Renderers {
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.
    */
-  getLabel(viewType, renderData) {
-    return viewType.getLabel(renderData);
+  getDisplay(viewType, renderData) {
+    viewType = this.parseViewType(viewType, renderData);
+    return viewType.getDisplay(renderData, this);
+  }
+
+  /**
+   * Returns a map of properties to use to display a table.
+   * @params {ViewType} viewType - The view type to get the props of.
+   */
+  getTableProps(viewType, renderData) {
+    viewType = this.parseViewType(viewType, renderData);
+    return viewType.getTableProps();
+  }
+
+  /**
+   * If the view type passed in is a string and if the `viewTypes` property
+   * exists in the renderData options, attempt to look up the viewType by name.
+   */
+  parseViewType(viewType, renderData) {
+    if (typeof viewType == 'string') {
+      const viewTypes = renderData.options.viewTypes || {};
+      const lookup = viewTypes.get(viewType);
+      if (lookup) {
+        return lookup;
+      }
+    } else if (viewType instanceof ViewType) {
+      return viewType;
+    }
+
+    throw new Error(`Invalid ViewType passed: ${viewType}`);
   }
 }
 
-/**
- * A set of renderers to be used with React.js.
- */
-export const reactRenderer = new Renderers(reactTypeRenderers);
+export const valueRenderers = new Renderers();
 

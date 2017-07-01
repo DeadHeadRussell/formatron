@@ -1,0 +1,17 @@
+.formatron-loading
+  display: flex
+  flex-flow: row nowrap
+  justify-content: center
+  align-items: center
+
+  > img
+    flex: 0 0 32px
+    height: 32px
+    animation: formatron-rotating 2s linear infinite
+
+@keyframes formatron-rotating
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
+

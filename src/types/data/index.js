@@ -1,10 +1,17 @@
-import {Map} from 'immutable';
+import Immutable, {List, Map} from 'immutable';
 
-import './index.sass';
+import Type from '../type';
+import ValidationError from './validationError';
 
+/**
+ * A set of standard validation errors that registered types can use.
+ *
+ * TODO: Add a better way to modify the basic error messages other than just
+ * editing the imported object, which is baaaaad.
+ */
 export const validationErrors = {
   required: 'This field is required',
-  undefinedValue: 'This field has an undefined value',
+  undefinedValue: 'This field is in a bad state. Please change the value and try again',
   invalidOption: 'The value selected does not exist',
   integer: 'This field must be an integer',
   finite: 'This field must be a finite number',
@@ -19,14 +26,16 @@ export const validationErrors = {
 /**
  * The base data type. Every registered data type must eventually inherit from this.
  */
-export default class DataType {
+export default class DataType extends Type {
   /** The data type name. This must be overridden. */
-  static name = '';
+  static typeName = '';
 
-  /** Parses a JS or Immutable.js object into a data type. */
-  static parse = field => {
-    field = Map(field);
-    return new DataType(field.get('name'), field.get('options'));
+  static parse(field, parseField) {
+    field = Immutable.fromJS(field);
+    return new this(
+      field.get('name'),
+      this.parseOptions(field.get('options'), parseField)
+    );
   }
 
   /**
@@ -35,18 +44,37 @@ export default class DataType {
    * @param {object} options - Options to apply to this instance.
    */
   constructor(name, options) {
+    super();
     this.name = name;
-    this.options = options;
-    this.type = this.constructor.name;
-
-    if (this.constructor == DataType) {
-      throw new Error('Cannot instantiate DataType');
-    }
+    this.options = Immutable.fromJS(options || {});
   }
 
-  /** Returns the default value for this data type. */
-  getDefaultValue() {
-    return null;
+  getName() {
+    return this.name;
+  }
+
+  isRequired() {
+    return this.options.get('required', false);
+  }
+
+  isUnique() {
+    return this.options.get('unique', false);
+  }
+
+  isGenerated() {
+    return this.options.get('generated', false);
+  }
+
+  getDefaultValue(defaultValue = null) {
+    return this.options.get('defaultValue', defaultValue);
+  }
+
+  getValidator() {
+    return this.options.get('validator', () => {});
+  }
+
+  getValidationLinks() {
+    return this.options.get('validationLinks', List());
   }
 
   /**
@@ -55,7 +83,7 @@ export default class DataType {
    * @returns {bool} `true` if it is "not empty", otherwise, `false`.
    */
   hasValue(value) {
-    if (typeof value == 'undefined') {
+    if (typeof value == 'undefined' || value === null) {
       return false;
     }
     return true;
@@ -68,11 +96,10 @@ export default class DataType {
    * @params {object} value - The data value to parse.
    */
   getValue(value) {
-    const values = this.options.get('generated') ?
+    const values = this.isGenerated() ?
       [value] :
       [
         value,
-        this.options.get('defaultValue'),
         this.getDefaultValue()
       ];
 
@@ -80,12 +107,25 @@ export default class DataType {
       .find(value => typeof value != 'undefined');
   }
 
+  // TODO: For the following two functions, potentially look at the ref and
+  // throw an error if they try to reference child types when there are none?
+  getField(ref) {
+    return this;
+  }
+
+  getFieldAndValue(value, ref) {
+    return {
+      field: this,
+      value: this.getValue(value)
+    };
+  }
+
   /**
    * Returns the value parsed for human consumption.
    * @params {object} value - The data value to parse.
    * @returns {string} The parsed value.
    */
-  getLabel(value) {
+  getDisplay(value) {
     value = this.getValue(value);
     return (value && value.toString) ? value.toString() : '';
   }
@@ -93,40 +133,29 @@ export default class DataType {
   /**
    * Validates that the given value follows the rules of the data type.
    * @params {object} value - The value to validate.
-   * @returns Nothing.
-   * @throws An error if the value does not validate. The error message explains why.
+   * @returns An error if one was found, undefined otherwise.
    */
-  validate(value) {
-    if (typeof value == 'undefined') {
-      if (!this.options.get('generated')) {
-        throw new Error(validationErrors.undefinedValue);
-      }
-      return;
-    }
+  validate(value, callback) {
+    value = this.getValue(value);
 
     if (!this.hasValue(value)) {
-      if (!options.get('generated') && options.get('required')) {
-        throw new Error(validationErrors.requierd);
+      if (this.isGenerated()) {
+        return;
+      } else if (this.isRequired()) {
+        return new ValidationError(validationErrors.required, this, value);
+      } else {
+        return;
       }
-      return;
+    }
+
+    if (callback) {
+      return callback();
     }
   }
 }
 
 export class ImmutableDataType extends DataType {
-  static name = '';
-
-  constructor(name, options) {
-    super(name, options);
-
-    if (this.constructor == ImmutableDataType) {
-      throw new Error('Cannot instantiate ImmutableDataType');
-    }
-  }
-
-  getDefaultValue() {
-    throw new Error('`getDefaultValue` is not implemented');
-  }
+  static typeName = '';
 
   hasValue(value) {
     if (!super.hasValue(value)) {
@@ -154,7 +183,7 @@ export class ImmutableDataType extends DataType {
       if (field && field.getField) {
         return field.getField(refs);
       } else {
-        throw new Error(`Cannot call "getField" "${field.name}" of data type "${field.type}"`);
+        throw new Error(`Cannot call "getField" "${field.name}" of data type "${field.constructor}"`);
       }
     }
   }
@@ -173,7 +202,7 @@ export class ImmutableDataType extends DataType {
           value;
         return field.getFieldAndValue(model, refs);
       } else {
-        throw new Error(`Cannot call "getFieldAndValue" for "${field.name}" of data type "${field.type}"`);
+        throw new Error(`Cannot call "getFieldAndValue" for "${field.name}" of data type "${field.constructor}"`);
       }
     }
   }
@@ -188,11 +217,11 @@ export class ImmutableDataType extends DataType {
     } else {
       if (field.setValue) {
         const model = field.getModel ?
-          field.getModel(value) :
-          value;
+          field.getModel(oldValue) :
+          oldValue;
         return field.setDataValue(model, refs, newValue);
       } else {
-        throw new Error(`Cannot call "setValue" for "${field.name}" of data type "${field.type}"`);
+        throw new Error(`Cannot call "setValue" for "${field.name}" of data type "${field.constructor}"`);
       }
     }
   }

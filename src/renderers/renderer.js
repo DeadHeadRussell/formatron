@@ -1,4 +1,3 @@
-
 /**
  * The renderer interface.
  */
@@ -26,20 +25,12 @@ export default class Renderer {
   renderStaticField(viewType, renderData) {}
 
   /**
-   * Renders a non-interactable header field for the viewType.
-   * @params {ViewType} viewType - The view type to render.
-   * @params {RenderData} renderData - The data to render.
-   * @returns {object} The rendered table header.
-   */
-  renderTableHeader(viewType, renderData) {}
-
-  /**
    * Renders an interactable field to be used for filtering this view type.
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.
    * @returns {object} The rendered table filter element.
    */
-  renderTableFilter(viewType, renderData) {}
+  renderFilter(viewType, renderData) {}
 
   /**
    * Renders an interactable field to be used in a table for this view type.
