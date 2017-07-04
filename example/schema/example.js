@@ -118,19 +118,6 @@ export const exampleDataType = parseField(DATA, {
   }
 });
 
-/*
-  Types.data.linked.create('person', {
-    schemaId: 0
-  }),
-  Types.data.list.create('tasks', {
-    defaultValue: [null],
-    listType: 'linked',
-    listOptions: {
-      schemaId: 1
-    }
-  }),
-*/
-
 export const exampleViewTypes = Map({
   form: parseField(VIEW, {
     type: 'tabs',
@@ -139,7 +126,7 @@ export const exampleViewTypes = Map({
       display: {
         type: 'grid',
         label: 'Example Form',
-        orientation: 'vertical',
+        orientation: 'horizontal',
         children: [[{
           type: 'header',
           label: 'Contact'
@@ -254,105 +241,6 @@ export const exampleViewTypes = Map({
   })
 });
 
-/*
-          Types.view.data.create({
-            label: 'Person',
-            ref: 'person'
-          }),
-          Types.view.switch.create({
-            switch: Types.view.data.create({ref: 'person'}),
-            cases: [{
-              case: Types.view.value.create({value: 1}),
-              display: Types.view.value.create({value: 'Woo, person #1!!'})
-            }, {
-              case: Types.view.value.create({value: 4}),
-              display: Types.view.value.create({value: 'Awww, person #4 :('})
-            }]
-          }),
-          Types.view.switch.create({
-            switch: Types.view.data.create({ref: 'person'}),
-            cases: [{
-              case: Types.view.value.create({value: 0}),
-              display: Types.view.value.create({value: 'case'})
-            }],
-            defaultCase: Types.view.value.create({value: 'default'})
-          })
-        ], [
-          Types.view.data.create({
-            label: 'Tasks',
-            ref: 'tasks'
-          }),
-          Types.view.property.create({
-            label: '# Tasks',
-            obj: Types.view.data.create({ref: 'tasks'}),
-            property: 'size'
-          }),
-          Types.view.computed.create({
-            op: '+',
-            args: Types.view.data.create({ref: ['tasks', 'm:hours']}),
-            label: 'Total Time'
-          }),
-          Types.view.data.create({
-            label: 'Time for First Task (hrs)',
-            editable: false,
-            ref: ['tasks', 0, 'hours']
-          }),
-          Types.view.computed.create({
-            label: 'One of the tasks takes 3 hrs',
-            op: '!=',
-            args: [
-              Types.view.value.create({value: null}),
-              Types.view.data.create({
-                ref: ['tasks', 'q:hours=3']
-              })
-            ]
-          })
-
-
-  table: Types.view.table.parse({
-    columns: 
-    Types.view.data.create({
-      label: 'Title',
-      ref: 'title'
-    }),
-    Types.view.data.create({
-      label: 'Checked',
-      ref: 'checked'
-    }),
-    Types.view.data.create({
-      label: 'Person',
-      ref: 'person'
-    }),
-    Types.view.data.create({
-      label: 'Enum',
-      ref: 'enum'
-    }),
-    Types.view.data.create({
-      label: 'Date',
-      ref: 'date'
-    }),
-    Types.view.data.create({
-      label: 'Count',
-      ref: 'count'
-    }),
-    Types.view.data.create({
-      label: 'Count 2',
-      ref: 'count2'
-    }),
-    Types.view.computed.create({
-      label: 'Something',
-      op: '*',
-      args: [
-        Types.view.data.create({ref: 'count'}),
-        Types.view.value.create({value: -10}),
-        Types.view.data.create({ref: 'count2'})
-      ]
-    })
-  ]
-};
-
-*/
-
 export function createExamples(count) {
   return List()
     .set(count - 1, 0)
@@ -373,4 +261,3 @@ export function createExamples(count) {
       }]
     }));
 }
-

@@ -264,4 +264,3 @@ Form.propTypes = {
   actionsClassName: React.PropTypes.string,
   actions: React.PropTypes.arrayOf(React.PropTypes.element)
 };
-

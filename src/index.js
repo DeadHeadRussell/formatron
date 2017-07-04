@@ -24,4 +24,3 @@ Formatron.renderers.RenderData = RenderData;
 Formatron.renderers.Renderer = Renderer;
 
 export default Formatron;
-
