@@ -27,13 +27,25 @@ export const withFormLabel = (WrappedComponent) => {
         data-error={error}
       >
         <Label required={required}>
-          {viewType.getLabel()}
+          {viewType.getLabel(renderData)}
         </Label>
 
         <div className='formatron-field-wrapper'>
           <WrappedComponent {...props} />
         </div>
       </label>
+    );
+  };
+};
+
+export const withSimpleLabel = (WrappedComponent) => {
+  return props => {
+    const {viewType, renderData} = props;
+    return (
+      <div className={classNames('formatron-field', `formatron-field-${viewType.constructor.typeName}`)}>
+        <Label>{viewType.getLabel(renderData)}</Label>
+        <WrappedComponent {...props} />
+      </div>
     );
   };
 };
@@ -51,12 +63,12 @@ export const withStaticLabel = (WrappedComponent) => {
     return (
       <div className={classNames('formatron-static', `formatron-field-${viewType.constructor.typeName}`)}>
         <Label required={required}>
-          {viewType.getLabel()}
+          {viewType.getLabel(renderData)}
         </Label>
 
         <WrappedComponent {...props} />
       </div>
     );
   };
-}
+};
 

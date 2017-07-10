@@ -60,6 +60,14 @@ export default class Renderers {
   }
 
   /**
+   * See {@link Renderer#renderFormFilter}
+   */
+  renderFormFilter(viewType, renderData) {
+    viewType = this.parseViewType(viewType, renderData);
+    return this.renderers[viewType.constructor.typeName].renderFormFilter(viewType, renderData, this);
+  }
+
+  /**
    * See {@link Renderer#renderFilter}
    */
   renderFilter(viewType, renderData) {

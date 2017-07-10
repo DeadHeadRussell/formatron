@@ -1,7 +1,9 @@
 import Renderer from '~/renderers/renderer';
 
-import reactRenderers from './';
 import FormatronPropTypes from '~/react/propTypes';
+
+import reactRenderers from './';
+import {withSimpleLabel} from './formHelpers';
 
 export default class ReactRenderer extends Renderer {
   constructor(FormField, StaticField, TableFilter, TableCell, StaticTableCell) {
@@ -29,6 +31,20 @@ export default class ReactRenderer extends Renderer {
       renderers={renderers}
       rendererMethod='renderStaticField'
     />;
+  }
+
+  renderFormFilter(viewType, renderData, renderers) {
+    const Filter = withSimpleLabel(this.TableFilter);
+    return this.TableFilter ? (
+      <Filter
+        viewType={viewType}
+        renderData={renderData}
+        renderers={renderers}
+        rendererMethod='renderFormFilter'
+      />
+    ) : (
+      null
+    );
   }
 
   renderFilter(viewType, renderData, renderers) {

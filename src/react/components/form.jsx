@@ -155,7 +155,7 @@ export default class Form extends React.Component {
   render() {
     return (
       <form
-        key={this.props.viewName}
+        key={this.props.viewType.uniqueId}
         className={classNames('formatron-form', this.props.className)}
         onSubmit={this.onSubmit}
         onReset={this.onReset}

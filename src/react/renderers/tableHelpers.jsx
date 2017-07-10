@@ -1,4 +1,4 @@
-import {Map} from 'immutable';
+import {List, Map} from 'immutable';
 
 import Select from '~/react/components/tetheredSelect';
 
@@ -9,10 +9,12 @@ export const TableDropDownFilter = ({renderData, multi, options}) => {
   const defaultValue = multi ? [] : null;
   multi = typeof multi != 'undefined' ? multi : true;
 
+  const value = List.isList(dataValue) ? dataValue.toArray() : dataValue;
+
   return (
     <Select
       className='formatron-input formatron-dropdown formatron-multi'
-      value={typeof dataValue == 'undefined' ? defaultValue : dataValue}
+      value={typeof value == 'undefined' ? defaultValue : value}
       multi={multi}
       options={options}
       onChange={options => onChange(multi ? (

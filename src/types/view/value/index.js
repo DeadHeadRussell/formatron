@@ -1,8 +1,8 @@
 import {List} from 'immutable';
 
-import ViewType from '../';
+import {valueRenderers} from '~/renderers';
 
-let count = 0;
+import ViewType from '../';
 
 export default class ValueType extends ViewType {
   static typeName = 'value';
@@ -14,10 +14,10 @@ export default class ValueType extends ViewType {
    * @param {ViewType|List.<ViewType>} children - The child or children to parse.
    * @returns {object} The computed data.
    */
-  getChildValues(renderData, children, renderers) {
+  getChildValues(renderData, children) {
     return List.isList(children) ?
-      children.map(child => renderers.getValue(child, renderData)) :
-      renderers.getValue(children, renderData);
+      children.map(child => valueRenderers.getValue(child, renderData)) :
+      valueRenderers.getValue(children, renderData);
   }
 
   /**

@@ -30,10 +30,10 @@ const Grid = ({viewType, renderData, renderers, rendererMethod}) => {
   );
 };
 
-const TableGrid = ({viewType, renderData, renderers}) => {
+const TableGrid = ({viewType, renderData}) => {
   return (
     <p className='formatron-static-value'>
-      {viewType.getDisplay(renderData, renderers)}
+      {viewType.getDisplay(renderData)}
     </p>
   );
 };

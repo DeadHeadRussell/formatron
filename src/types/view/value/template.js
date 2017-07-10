@@ -9,7 +9,7 @@ export default class TemplateType extends ValueType {
     return this.options.get('template');
   }
 
-  getValue(renderData, renderers) {
+  getValue(renderData) {
     return parseTemplate(this.getTemplate(), renderData);
   }
 }

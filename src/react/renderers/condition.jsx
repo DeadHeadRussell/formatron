@@ -8,7 +8,7 @@ const Condition = ({viewType, renderData, renderers, rendererMethod}) => {
   const trueType = viewType.getTrueType();
   const falseType = viewType.getFalseType();
 
-  return viewType.test(renderData, renderers) ? (
+  return viewType.test(renderData) ? (
     renderers[rendererMethod](trueType, renderData)
   ) : falseType ? (
     renderers[rendererMethod](falseType, renderData)

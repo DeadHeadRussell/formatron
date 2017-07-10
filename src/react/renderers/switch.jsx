@@ -5,7 +5,7 @@ import ReactRenderer from './reactRenderer';
 import {TableSimpleFilter} from './tableHelpers';
 
 const Switch = ({viewType, renderData, renderers, renderMethod}) => {
-  const display = viewType.switch(renderData, renderers);
+  const display = viewType.switch(renderData);
   return display ?
     renderers[rendererMethod](display, renderData) :
     null;

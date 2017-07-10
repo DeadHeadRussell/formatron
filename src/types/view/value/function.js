@@ -34,14 +34,14 @@ export default class FunctionType extends ValueType {
     return this.options.get('args');
   }
 
-  getValue(renderData, renderers) {
-    const values = this.getChildValues(renderData, this.getArgs(), renderers);
+  getValue(renderData) {
+    const values = this.getChildValues(renderData, this.getArgs());
     const func = FunctionType.fns[this.getFn()];
     return func(...values.toArray());
   }
 
-  getDisplay(renderData, renderers) {
-    const value = this.getValue(renderData, renderers);
+  getDisplay(renderData) {
+    const value = this.getValue(renderData);
     const func = FunctionType.fnDisplays[this.getFn()];
     return func[value];
   }

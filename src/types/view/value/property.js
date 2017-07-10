@@ -1,3 +1,5 @@
+import {valueRenderers} from '~/renderers';
+
 import ValueType from './';
 
 export default class PropertyType extends ValueType {
@@ -16,8 +18,8 @@ export default class PropertyType extends ValueType {
     return this.options.get('property');
   }
 
-  getValue(renderData, renderers) {
-    const obj = renderers.getValue(this.getObj(), renderData);
+  getValue(renderData) {
+    const obj = valueRenderers.getValue(this.getObj(), renderData);
     return obj ?
       obj[this.getProperty()] :
       null;

@@ -25,6 +25,15 @@ export default class Renderer {
   renderStaticField(viewType, renderData) {}
 
   /**
+   * Renders an interactable field to be used for filtering this view type with
+   * an accompanying form label.
+   * @params {ViewType} viewType - The view type to render.
+   * @params {RenderData} renderData - The data to render.
+   * @returns {object} The renderer form filter element.
+   */
+  renderFormFilter(viewType, renderData) {}
+
+  /**
    * Renders an interactable field to be used for filtering this view type.
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.

@@ -1,3 +1,5 @@
+import {valueRenderers} from '~/renderers';
+
 import ValueType from './';
 
 export default class SwitchType extends ValueType {
@@ -33,11 +35,11 @@ export default class SwitchType extends ValueType {
    * @param {RenderData} renderData - The data to switch over.
    * @returns {ViewType} The resulting view type from the switch statement.
    */
-  switch(renderData, renderers) {
-    const switchValue = renderers.getValue(this.getSwitch(), renderData);
+  switch(renderData) {
+    const switchValue = valueRenderers.getValue(this.getSwitch(), renderData);
     const caseField = this.getCases()
       .find(caseField =>
-        renderers.getValue(caseField.get('case'), renderData) == switchValue
+        valueRenderers.getValue(caseField.get('case'), renderData) == switchValue
       );
 
     if (caseField) {
@@ -50,14 +52,14 @@ export default class SwitchType extends ValueType {
   getValue(renderData) {
     const display = this.switch(renderData);
     return display ?
-      renderers.getValue(display, renderData) :
+      valueRenderers.getValue(display, renderData) :
       null;
   }
 
   getDisplay(renderData) {
     const display = this.switch(renderData);
     return display ?
-      renderers.getDisplay(display, renderData) :
+      valueRenderers.getDisplay(display, renderData) :
       null;
   }
 }

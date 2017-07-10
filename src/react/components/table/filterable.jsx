@@ -85,6 +85,10 @@ export default function filterableTable(Table) {
       filters: ImmutablePropTypes.mapOf(
         React.PropTypes.any.isRequired,
         React.PropTypes.string.isRequired
+      ),
+      initialFilters: ImmutablePropTypes.mapOf(
+        React.PropTypes.any.isRequired,
+        React.PropTypes.string.isRequired
       )
     }
 
@@ -98,19 +102,34 @@ export default function filterableTable(Table) {
       super(props);
       this.toggleFilter = this.toggleFilter.bind(this);
 
-      this.state = this.createInitialState();
+      this.state = this.createInitialState(props);
     }
 
-    createInitialState() {
-      return {
-        filtering: false,
-        filters: Map()
-      };
+    componentWillReceiveProps(newProps) {
+      if (newProps.initialFilters != this.props.initialFilters) {
+        if (newProps.initialFilters && newProps.initialFilters.size > 0) {
+          this.setState(this.createInitialState(newProps));
+        }
+      }
+    }
+
+    createInitialState(props) {
+      if (props.initialFilters && props.initialFilters.size > 0) {
+        return {
+          filtering: true,
+          filters: props.initialFilters
+        };
+      } else {
+        return {
+          filtering: false,
+          filters: Map()
+        };
+      }
     }
 
     toggleFilter() {
       if (this.state.filtering) {
-        this.setState(this.createInitialState());
+        this.setState(this.createInitialState({}));
       } else {
         this.setState({filtering: true});
       }
@@ -162,8 +181,12 @@ export default function filterableTable(Table) {
     // is performing string / other value matching on potentially large numbers
     // of rows.
     rowsModifier = rows => {
+      const renderData = new RenderData(this.props.dataType, null, {
+        viewTypes: this.props.viewTypes
+      });
+
       const columnsProps = this.props.columns
-        .map(column => column.getTableProps());
+        .map(column => reactRenderers.getTableProps(column, renderData));
 
       const filters = this.getFilters()
         .map((filterValue, label) => [
@@ -173,8 +196,6 @@ export default function filterableTable(Table) {
         .filter(([filterValue, columnProps]) => !!columnProps)
         .toList()
         .toArray();
-
-      const renderData = new RenderData(this.props.dataType, null);
 
       return List()
         .withMutations(newRows => {
@@ -188,7 +209,7 @@ export default function filterableTable(Table) {
               const [filterValue, columnProps] = filters[filterIndex];
 
               renderData.dataValue = row;
-              const rowValue = columnProps.viewType.getValue(renderData);
+              const rowValue = reactRenderers.getValue(columnProps.viewType, renderData);
 
               if (typeof filterValue == 'function') {
                 if (!filterValue(rowValue, row)) {
@@ -196,7 +217,7 @@ export default function filterableTable(Table) {
                   break;
                 }
               } else if (rowValue !== null && typeof rowValue != 'undefined') {
-                if (Array.isArray(filterValue)) {
+                if (Array.isArray(filterValue) || List.isList(filterValue)) {
                   if (!filterValue.some(filterValue => columnProps.filter(filterValue, rowValue, this.props.dataType))) {
                     matches = false;
                     break;
@@ -221,7 +242,11 @@ export default function filterableTable(Table) {
     }
 
     inputFilterRenderer(column) {
-      const columnProps = column.getTableProps();
+      const renderData = new RenderData(this.props.dataType, null, {
+        viewTypes: this.props.viewTypes
+      });
+
+      const columnProps = reactRenderers.getTableProps(column, renderData);
 
       if (!columnProps.label) {
         return null;

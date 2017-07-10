@@ -1,6 +1,7 @@
 import SortDirection from 'react-virtualized/dist/commonjs/Table/SortDirection';
 
 import RenderData from '~/renderers/renderData';
+import reactRenderers from '~/react/renderers';
 
 import BaseTable from './base';
 
@@ -67,11 +68,14 @@ export default function sortableTable(Table) {
     }
 
     rowsModifier = rows => {
+      const renderData = new RenderData(this.props.dataType, null, {
+        viewTypes: this.props.viewTypes
+      });
+
       const columnProps = this.props.columns
-        .map(column => column.getTableProps())
+        .map(column => reactRenderers.getTableProps(column, renderData))
         .find(columnProps => columnProps.label == this.getSortBy());
 
-      const renderData = new RenderData(this.props.dataType, null);
       const getSortValue = function(row) {
         renderData.dataValue = row;
         return columnProps.viewType.getValue(renderData);

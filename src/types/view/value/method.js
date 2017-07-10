@@ -1,5 +1,7 @@
 import {List} from 'immutable';
 
+import {valueRenderers} from '~/renderers';
+
 import ValueType from './';
 
 export default class MethodType extends ValueType {
@@ -23,13 +25,13 @@ export default class MethodType extends ValueType {
     return this.options.get('args');
   }
 
-  getValue(renderData, renderers) {
-    const obj = renderers.getValue(this.getObj(), renderData);
+  getValue(renderData) {
+    const obj = valueRenderers.getValue(this.getObj(), renderData);
     if (!obj) {
       return null;
     }
 
-    const values = this.getChildValues(renderData, this.getArgs(), renderers);
+    const values = this.getChildValues(renderData, this.getArgs());
     return obj[this.getMethod()](...values.toArray());
   }
 }

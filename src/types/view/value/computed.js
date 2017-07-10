@@ -46,14 +46,14 @@ export default class ComputedType extends ValueType {
     return this.options.get('args');
   }
 
-  getValue(renderData, renderers) {
-    const values = this.getChildValues(renderData, this.getArgs(), renderers);
+  getValue(renderData) {
+    const values = this.getChildValues(renderData, this.getArgs());
     const func = ComputedType.ops[this.getOp()];
     return func(values);
   }
 
-  getDisplay(renderData, renderers) {
-    const value = this.getValue(renderData, renderers);
+  getDisplay(renderData) {
+    const value = this.getValue(renderData);
     const func = ComputedType.opDisplays[this.getOp()];
     return func(value);
   }

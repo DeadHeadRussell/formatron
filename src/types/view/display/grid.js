@@ -1,5 +1,7 @@
 import {List} from 'immutable';
 
+import {valueRenderers} from '~/renderers';
+
 import DisplayType from './';
 
 export default class GridType extends DisplayType {
@@ -20,16 +22,16 @@ export default class GridType extends DisplayType {
     return this.options.get('children');
   }
 
-  getDisplay(renderData, renderers) {
+  getDisplay(renderData) {
     // TODO: Refine the shit out of this.
     return this.getChildren()
       .map(viewType => List.isList(viewType) ? (
         viewType
           .map(viewType =>
-            renderers.getDisplay(viewType, renderData)
+            valueRenderers.getDisplay(viewType, renderData)
           )
       ) : (
-        renderers.getDisplay(viewType, renderData)
+        valueRenderers.getDisplay(viewType, renderData)
       ))
       .filter(value => value)
       .join(', ');

@@ -14,6 +14,14 @@ export default class ButtonType extends ViewType {
     return this.options.get('args', List());
   }
 
+  getValue(renderData) {
+    return this.getLabel(renderData);
+  }
+
+  getDisplay(renderData) {
+    return this.getValue(renderData);
+  }
+
   getTableProps() {
     return super.getTableProps('');
   }

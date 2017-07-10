@@ -51,7 +51,7 @@ const FormatronMaskedInput = ({field, value, disabled, placeholder, onChange, on
     className='formatron-input formatron-text formatron-masked'
     mask={field.getMask()}
     disabled={!!disabled}
-    value={value}
+    value={value || ''}
     placeholder={placeholder}
     onChange={e => onChange(e.target.value)}
     onBlur={onBlur}
@@ -63,7 +63,7 @@ const TextInput = ({field, value, disabled, placeholder, onChange, onBlur}) => (
     className='formatron-input formatron-text'
     type={field.getType()}
     disabled={disabled}
-    value={value}
+    value={value || ''}
     placeholder={placeholder}
     onChange={e => onChange(e.target.value)}
     onBlur={onBlur}
@@ -74,7 +74,7 @@ const TextArea = ({field, value, disabled, placeholder, onChange, onBlur}) => (
   <textarea
     className='formatron-textarea formatron-text'
     disabled={disabled}
-    value={value}
+    value={value || ''}
     placeholder={placeholder}
     onChange={e => onChange(e.target.value)}
     onBlur={onBlur}

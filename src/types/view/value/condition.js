@@ -1,5 +1,7 @@
 import {compareAll} from '../utils';
 
+import {valueRenderers} from '~/renderers';
+
 import ValueType from './';
 
 export default class ConditionType extends ValueType {
@@ -44,28 +46,28 @@ export default class ConditionType extends ValueType {
    * @param {RenderData} renderData - The data to test.
    * @returns {bool} `true` if the render data matches the conditions in the options.
    */
-  test(renderData, renderers) {
+  test(renderData) {
     const func = ConditionType.ops[this.getOp()];
-    const values = this.getChildValues(renderData, this.getArgs(), renderers);
+    const values = this.getChildValues(renderData, this.getArgs());
     return func(values);
   }
 
-  getValue(renderData, renderers) {
+  getValue(renderData) {
     const trueType = this.getTrueType();
     const falseType = this.getFalseType();
 
-    return this.test(renderData, renderers) ?
-      renderers.getValue(trueType, renderData) :
-      falseType && renderers.getValue(falseType, renderData);
+    return this.test(renderData) ?
+      valueRenderers.getValue(trueType, renderData) :
+      falseType && valueRenderers.getValue(falseType, renderData);
   }
 
-  getDisplay(renderData, renderers) {
+  getDisplay(renderData) {
     const trueType = this.getTrueType();
     const falseType = this.getFalseType();
 
-    return this.test(renderData, renderers) ?
-      renderers.getDisplay(trueType, renderData) :
-      falseType && renderers.getDisplay(falseType, renderData);
+    return this.test(renderData) ?
+      valueRenderers.getDisplay(trueType, renderData) :
+      falseType && valueRenderers.getDisplay(falseType, renderData);
   }
 }
 

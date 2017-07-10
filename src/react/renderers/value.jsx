@@ -5,9 +5,9 @@ import ReactRenderer from './reactRenderer';
 import {TableSimpleFilter} from './tableHelpers';
 
 export const valueLabelRenderer = ViewType => {
-  return ({viewType, renderData, renderers}) => (
+  return ({viewType, renderData}) => (
     <p className='formatron-static-value'>
-      {viewType.getDisplay(renderData, renderers)}
+      {viewType.getDisplay(renderData)}
     </p>
   );
 }
