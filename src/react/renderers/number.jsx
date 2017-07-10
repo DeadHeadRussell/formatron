@@ -3,7 +3,7 @@ import NumberInputType from '~/types/view/data/number';
 
 import {withDataRenderer, withStaticRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from './propTypes';
+import FormatronPropTypes from '~/react/propTypes';
 import ReactRenderer from './reactRenderer';
 import {TableRangeFilter} from './tableHelpers';
 

@@ -3,7 +3,7 @@ import LinkType from '~/types/view/data/link';
 
 import {withDataRenderer, withStaticRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from './propTypes';
+import FormatronPropTypes from '~/react/propTypes';
 import ReactRenderer from './reactRenderer';
 
 const LinkFilter = ({renderData}) => (

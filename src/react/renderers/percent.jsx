@@ -3,7 +3,7 @@ import PercentType from '~/types/view/data/percent';
 
 import {withDataRenderer, withDisplayRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from './propTypes';
+import FormatronPropTypes from '~/react/propTypes';
 import ReactRenderer from './reactRenderer';
 import {TableRangeFilter} from './tableHelpers';
 

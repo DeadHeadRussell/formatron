@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 
-import FormatronPropTypes from '~/react/renderers/propTypes';
+import FormatronPropTypes from '~/react/propTypes';
 
 export default function Label({required, children}) {
   return children ? (

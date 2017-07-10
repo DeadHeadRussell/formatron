@@ -7,7 +7,7 @@ import DropDownType from '~/types/view/data/dropDown';
 
 import {withDataRenderer, withStaticRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from './propTypes';
+import FormatronPropTypes from '~/react/propTypes';
 import ReactRenderer from './reactRenderer';
 import {TableDropDownFilter} from './tableHelpers';
 

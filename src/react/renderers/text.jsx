@@ -5,7 +5,7 @@ import TextInputType from '~/types/view/data/text';
 
 import {withDataRenderer, withDisplayRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from './propTypes';
+import FormatronPropTypes from '~/react/propTypes';
 import ReactRenderer from './reactRenderer';
 
 const TextFilter = ({viewType, renderData}) => (

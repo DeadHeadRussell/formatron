@@ -1,9 +1,7 @@
-import React from 'react';
-
 import Renderer from '~/renderers/renderer';
 
 import reactRenderers from './';
-import FormatronPropTypes from './propTypes';
+import FormatronPropTypes from '~/react/propTypes';
 
 export default class ReactRenderer extends Renderer {
   constructor(FormField, StaticField, TableFilter, TableCell, StaticTableCell) {

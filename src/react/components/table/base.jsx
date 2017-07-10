@@ -2,7 +2,7 @@ import {List, Map} from 'immutable';
 import React, {PureComponent} from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
-import FormatronPropTypes from '~/react/renderers/propTypes';
+import FormatronPropTypes from '~/react/propTypes';
 import ListType from '~/types/data/list';
 
 const renderersPropType = ImmutablePropTypes.listOf(

@@ -5,7 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Loading from '~/react/components/loading';
 import reactRenderers from '~/react/renderers';
-import FormatronPropTypes from '~/react/renderers/propTypes';
+import FormatronPropTypes from '~/react/propTypes';
 import RenderData from '~/renderers/renderData';
 
 export default class Form extends React.Component {
