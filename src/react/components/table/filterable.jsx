@@ -242,11 +242,11 @@ export default function filterableTable(Table) {
     }
 
     inputFilterRenderer(column) {
-      const renderData = new RenderData(this.props.dataType, null, {
+      const propsRenderData = new RenderData(this.props.dataType, null, {
         viewTypes: this.props.viewTypes
       });
 
-      const columnProps = reactRenderers.getTableProps(column, renderData);
+      const columnProps = reactRenderers.getTableProps(column, propsRenderData);
 
       if (!columnProps.label) {
         return null;
@@ -256,6 +256,7 @@ export default function filterableTable(Table) {
         this.props.dataType.getField(column.getRef()) :
         null;
       const dataValue = this.getFilters().get(columnProps.label, '');
+
       const renderData = new RenderData(dataType, dataValue, {
         onChange: this.onFilterChange(columnProps)
       });
