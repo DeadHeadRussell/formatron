@@ -28,7 +28,7 @@ export default class BaseTable extends PureComponent {
 
     viewTypes: Map(),
     models: List()
-  }
+  };
 
   static propTypes = {
     columnsRenderers: renderersPropType,
@@ -54,7 +54,22 @@ export default class BaseTable extends PureComponent {
       ImmutablePropTypes.map.isRequired
     ),
     loading: React.PropTypes.bool
-  }
+  };
+
+  static propNames = {
+    columnsRenderer: 'columnsRenderers',
+    columnRenderer: 'columnRenderers',
+    getColumnProps: 'getColumnProps',
+    getToolbarButtons: 'getToolbarButtons',
+    getHeaderRowHeight: 'getHeaderRowHeight',
+    headerRowRenderer: 'headerRowRenderers',
+    rowsModifier: 'rowsModifiers',
+    rowGetter: 'rowGetters',
+    rowRenderer: 'rowRenderers',
+    noRowsRenderer: 'noRowsRenderers',
+    cellRenderer: 'cellRenderers',
+    headerRenderer: 'headerRenderers'
+  };
 
   forceUpdateGrid() {
     return this.table && this.table.forceUpdateGrid();
@@ -64,32 +79,13 @@ export default class BaseTable extends PureComponent {
     return this.table && this.table.getRows();
   }
 
-  getColumns() {
-    return this.table && this.table.getColumns();
-  }
-
   mergeProps(newProps) {
-    const propNames = {
-      columnsRenderer: 'columnsRenderers',
-      columnRenderer: 'columnRenderers',
-      getColumnProps: 'getColumnProps',
-      getToolbarButtons: 'getToolbarButtons',
-      getHeaderRowHeight: 'getHeaderRowHeight',
-      headerRowRenderer: 'headerRowRenderers',
-      rowsModifier: 'rowsModifiers',
-      rowGetter: 'rowGetters',
-      rowRenderer: 'rowRenderers',
-      noRowsRenderer: 'noRowsRenderers',
-      cellRenderer: 'cellRenderers',
-      headerRenderer: 'headerRenderers'
-    };
-
     return {
       ...this.props,
       ...Map(newProps)
-        .mapEntries(([key, value]) => propNames[key] ? [
-          propNames[key],
-          this.props[propNames[key]].push(value)
+        .mapEntries(([key, value]) => BaseTable.propNames[key] ? [
+          BaseTable.propNames[key],
+          this.props[BaseTable.propNames[key]].push(value)
         ] : [
           key,
           value

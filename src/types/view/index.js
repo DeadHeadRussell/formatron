@@ -2,6 +2,8 @@ import Immutable, {Map} from 'immutable';
 
 import Type from '../type';
 
+let viewIds = 0;
+
 /**
  * The base view type. Every registered view type must eventually inherit from this.
  */
@@ -23,7 +25,8 @@ export default class ViewType extends Type {
    */
   constructor(options) {
     super();
-    this.options = Immutable.fromJS(options);
+    this.options = Immutable.fromJS(options || {});
+    this.uniqueId = viewIds++;
   }
 
   /**
@@ -60,8 +63,11 @@ export default class ViewType extends Type {
    *
    * @returns {object}
    */
-  getTableProps() {
-    const label = this.options.get('label') || '';
+  getTableProps(label) {
+    label = typeof label != 'undefined' ?
+      label :
+      (this.options.get('label') || '');
+
     if (typeof label != 'string') {
       throw new Error(`Error ${this.constructor.name}: labels must only be plain strings when used with tables.`);
     }
@@ -69,12 +75,19 @@ export default class ViewType extends Type {
     const defaultFlex = this.options.has('width') ? 0 : 1;
 
     return {
-      label: this.getLabel(),
-      dataKey: this.getLabel(),
+      viewType: this,
+      label: label,
+      dataKey: label,
       width: this.options.get('width', 100),
       flexGrow: this.options.get('flexGrow', defaultFlex),
-      flexShrink: this.options.get('flexShrink', defaultFlex)
+      flexShrink: this.options.get('flexShrink', defaultFlex),
+      filterType: 'equals',
+      filter: this.filter.bind(this)
     };
+  }
+
+  filter(filterValue, rowValue) {
+    return filterValue == rowValue;
   }
 }
 

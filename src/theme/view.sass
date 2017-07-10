@@ -44,7 +44,7 @@
   background: white
   outline: none
 
-.formatron-input
+.formatron-input:not([type=checkbox])
   cursor: text
 
 .formatron-input-inner
@@ -53,6 +53,8 @@
   margin: 0
   border: 0
   outline: none
+  background: none
+  font: inherit
 
 .formatron-disabled > .formatron-field-wrapper
   > .formatron-input,
@@ -129,21 +131,21 @@
     border: none
     margin-right: 6px
 
-    > .formatron-checkbox
-      position: relative
-      width: 17px
-      height: 17px
-      padding: 0
-      border: 1px solid #ccc
-      border-radius: inherit
-      appearance: none
+.formatron-checkbox
+  position: relative
+  width: 17px
+  height: 17px
+  padding: 0
+  border: 1px solid #ccc
+  border-radius: inherit
+  appearance: none
 
-      &:checked:after
-        position: absolute
-        left: 1px
-        content: '\2714'
-        font-size: 16px
-        line-height: 15px
+  &:checked:after
+    position: absolute
+    left: 1px
+    content: '\2714'
+    font-size: 16px
+    line-height: 15px
 
 // Currency
 .formatron-field-currency
@@ -172,6 +174,10 @@
     border: 0
     background: inherit
 
+  .Select-input,
+  .Select-value
+    cursor: text
+
   .Select-clear-zone
     @extend .formatron-field-action
     position: relative
@@ -182,9 +188,19 @@
   .Select-menu-outer
     z-index: 20
     max-height: 400px
+    cursor: pointer
 
     > .Select-menu
       max-height: 398px
+
+.formatron-tethered-select-menu
+  position: relative
+  left: -2px
+  border: 0
+  border-radius: 2px
+  box-shadow: rgba(0, 0, 0, 0.118) 0px 1px 6px, rgba(0, 0, 0, 0.118) 0px 1px 4px
+  background: white
+  cursor: pointer
 
 // Label
 .formatron-label
@@ -205,7 +221,7 @@
     padding-left: 20px
     border-top: 1px solid black
 
-  &.formatron-orientation-vertical
+  &.formatron-orientation-horizontal
     > .formatron-grid-outer
       flex-flow: row nowrap
 
@@ -215,12 +231,15 @@
         &:not(:first-of-type)
           margin-left: 20px
 
-  &.formatron-orientation-horizontal
+  &.formatron-orientation-vertical
     > .formatron-grid-outer
       flex-flow: column nowrap
 
       > .formatron-grid-inner
         flex-flow: row nowrap
+
+        > :not(:first-of-type)
+          margin-left: 10px
 
 .formatron-grid-outer,
 .formatron-grid-inner

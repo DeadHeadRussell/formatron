@@ -19,13 +19,10 @@ export {sortableTable};
 export {viewableTable};
 export {Table};
 
-export default Table;
-
-/*
 export default exportableTable(
   sortableTable(
     editableTable(
-      editableColumnsTable(
+      //editableColumnsTable(
         filterableTable(
           viewableTable(
             Table
@@ -33,6 +30,6 @@ export default exportableTable(
         )
       )
     )
-  )
+  //)
 );
-*/
+

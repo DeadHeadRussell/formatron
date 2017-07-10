@@ -43,5 +43,12 @@ const StaticLink = withStaticRenderer(({value}) => (
 const LinkField = withFormLabel(Link);
 const StaticLinkField = withStaticLabel(StaticLink);
 
-export default ReactRenderer.register(LinkType, LinkField, StaticLinkField, LinkFilter, Link, StaticLink);
+export default ReactRenderer.register(
+  LinkType,
+  LinkField,
+  StaticLinkField,
+  LinkFilter,
+  Link,
+  StaticLink
+);
 

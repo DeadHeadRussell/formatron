@@ -19,6 +19,7 @@ export function withDataRenderer(WrappedComponent) {
 
     return <WrappedComponent
       viewType={viewType}
+      renderData={renderData}
       field={field}
       value={value}
       disabled={disabled}
@@ -36,6 +37,7 @@ export function withStaticRenderer(WrappedComponent) {
     const {field, value} = viewType.getFieldAndValue(renderData);
     return <WrappedComponent
       viewType={viewType}
+      renderData={renderData}
       field={field}
       value={value}
     />;
@@ -52,6 +54,7 @@ export function withDisplayRenderer(WrappedComponent) {
 
     return <WrappedComponent
       viewType={viewType}
+      renderData={renderData}
       field={field}
       value={value}
     />;

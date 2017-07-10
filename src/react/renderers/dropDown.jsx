@@ -9,8 +9,9 @@ import {withDataRenderer, withStaticRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
 import FormatronPropTypes from './propTypes';
 import ReactRenderer from './reactRenderer';
+import {TableDropDownFilter} from './tableHelpers';
 
-const DropDownFilter = ({renderData}) => (
+const DropDownFilter = ({viewType, renderData}) => (
   <TableDropDownFilter
     renderData={renderData}
     options={viewType.getOptions(renderData.dataType).toJS()}
@@ -19,7 +20,7 @@ const DropDownFilter = ({renderData}) => (
 
 const MultiDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => {
   return <Select
-    className='formatron-dropdown formatron-multi'
+    className='formatron-input formatron-dropdown formatron-multi'
     value={value ? value.toJS() : []}
     disabled={disabled}
     multi={true}
@@ -93,5 +94,12 @@ const StaticDropDown = withStaticRenderer(({field, value}) => (
 const DropDownField = withFormLabel(DropDown);
 const StaticDropDownField = withStaticLabel(StaticDropDown);
 
-export default ReactRenderer.register(DropDownType, DropDownField, StaticDropDownField, DropDownFilter, DropDown, StaticDropDown);
+export default ReactRenderer.register(
+  DropDownType,
+  DropDownField,
+  StaticDropDownField,
+  DropDownFilter,
+  DropDown,
+  StaticDropDown
+);
 

@@ -5,6 +5,7 @@ import {withDataRenderer, withStaticRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
 import FormatronPropTypes from './propTypes';
 import ReactRenderer from './reactRenderer';
+import {TableRangeFilter} from './tableHelpers';
 
 const NumberInput = ({field, value, disabled, placeholder, onChange, onBlur}) => (
   <input
@@ -45,12 +46,11 @@ function inputToNumber(input) {
   return null;
 }
 
-const NumberFilter = ({renderData}) => (
-  <NumberInput
-    field={renderData.dataType}
-    value={renderData.dataValue}
-    onChange={renderData.options.onChange}
-    onBlur={renderData.options.onBlur}
+const NumberFilter = ({viewType, renderData}) => (
+  <TableRangeFilter
+    viewType={viewType}
+    renderData={renderData}
+    Component={NumberInput}
   />
 );
 
@@ -65,5 +65,12 @@ const StaticNumber = withStaticRenderer(({value}) => (
 const NumberField = withFormLabel(NumberComponent);
 const StaticNumberField = withStaticLabel(StaticNumber);
 
-export default ReactRenderer.register(NumberInputType, NumberField, StaticNumberField, NumberFilter, NumberComponent, StaticNumber);
+export default ReactRenderer.register(
+  NumberInputType,
+  NumberField,
+  StaticNumberField,
+  NumberFilter,
+  NumberComponent,
+  StaticNumber
+);
 

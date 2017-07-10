@@ -8,7 +8,14 @@ import {TableDropDownFilter} from './tableHelpers';
 const CheckboxFilter = ({renderData}) => (
   <TableDropDownFilter
     renderData={renderData}
-    options={['Yes', 'No']}
+    multi={false}
+    options={[{
+      value: 1,
+      label: 'Yes'
+    }, {
+      value: 0,
+      label: 'No'
+    }]}
   />
 );
 
@@ -28,11 +35,19 @@ const StaticCheckbox = withStaticRenderer(({value}) => (
     className='formatron-input formatron-checkbox'
     type='checkbox'
     checked={!!value}
+    readOnly={true}
   />
 ));
 
 const CheckboxField = withFormLabel(Checkbox);
 const StaticCheckboxField = withStaticLabel(StaticCheckbox);
 
-export default ReactRenderer.register(CheckboxType, CheckboxField, StaticCheckboxField, CheckboxFilter, Checkbox, StaticCheckbox);
+export default ReactRenderer.register(
+  CheckboxType,
+  CheckboxField,
+  StaticCheckboxField,
+  CheckboxFilter,
+  Checkbox,
+  StaticCheckbox
+);
 

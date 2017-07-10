@@ -21,6 +21,12 @@ export default class DataType extends ViewType {
       .update('ref', this.parseOneOrMany(parseRef));
   }
 
+  constructor(options) {
+    super(options);
+    this.options = this.options
+      .update('ref', this.constructor.parseOneOrMany(parseRef));
+  }
+
   /**
    * Returns the reference to the underlying data. Defaults to an empty 
    * @returns {Ref}
@@ -73,6 +79,19 @@ export default class DataType extends ViewType {
   getFieldAndValue(renderData) {
     const {dataType, dataValue} = renderData;
     return dataType.getFieldAndValue(dataValue, this.getRef());
+  }
+
+  /**
+   * Filters the value by calling the underlying field's filter function. If
+   * the field is not found, call the super's filter function instead.
+   */
+  filter(filterValue, rowValue, dataType) {
+    const field = dataType.getField(this.getRef());
+    if (!field) {
+      return super.filter(filterValue, rowValue, row, dataType);
+    }
+
+    return field.filter(filterValue, rowValue);
   }
 }
 

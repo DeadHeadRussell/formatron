@@ -63,5 +63,9 @@ class FormatronTabs extends React.Component {
   }
 }
 
-export default ReactRenderer.register(TabsType, FormatronTabs, FormatronTabs);
+export default ReactRenderer.register(
+  TabsType,
+  FormatronTabs,
+  FormatronTabs
+);
 

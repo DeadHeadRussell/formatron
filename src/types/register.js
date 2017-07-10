@@ -1,5 +1,6 @@
 import BoolType from './data/bool';
 import DateType from './data/date';
+import DictType from './data/dict';
 import EnumType from './data/enum';
 import ListType from './data/list';
 import MapType from './data/map';
@@ -34,6 +35,7 @@ import VariableType from './view/value/variable';
 export function registerDataTypes(register) {
   register(BoolType);
   register(DateType);
+  register(DictType);
   register(EnumType);
   register(ListType);
   register(MapType);

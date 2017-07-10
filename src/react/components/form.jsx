@@ -11,48 +11,46 @@ import RenderData from '~/renderers/renderData';
 export default class Form extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {changes: Map()};
-    this.state = this.createInitialState(props.model);
+    this.state = this.createInitialState(props);
   }
 
-  createInitialState(model) {
+  createInitialState(props) {
     return {
       changes: Map(),
       blurs: Map(),
       dirty: Map(),
       errors: Map(),
-      model: this.cacheModel(model)
+      model: this.cacheModel(props)
     };
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.model && !newProps.model.equals(this.props.model)) {
-      this.setState(this.createInitialState(newProps.model));
+    if (newProps.model && newProps.model != this.props.model) {
+      this.setState(this.createInitialState(newProps));
     }
   }
 
-  cacheModel(model) {
-    return this.props.dataType
-      .getValue(model)
-      .update(this.updateModel(model, this.props.defaultValue))
-      .update(this.updateModel(model, this.state.changes))
-      .update(this.updateModel(model, this.props.disabled));
-  }
+  cacheModel(props) {
+    return props.dataType
+      .getValue(props.model)
+      .update(updateValues(props.model, props.defaultValue))
+      .update(updateValues(props.model, props.disabled));
 
-  updateModel = (model, values) => {
-    if (!values || !Immutable.isImmutable(values)) {
-      return model => model;
-    } else {
-      return model => values
-        .reduce(
-          (model, value, ref) => {
-            if (typeof value != 'undefined') {
-              return this.props.dataType.setValue(model, ref, value);
-            }
-            return model;
-          },
-          model
-        );
+    function updateValues(model, values) {
+      if (!values || !Immutable.isImmutable(values)) {
+        return model => model;
+      } else {
+        return model => values
+          .reduce(
+            (model, value, ref) => {
+              if (typeof value != 'undefined') {
+                return props.dataType.setValue(model, ref, value);
+              }
+              return model
+            },
+            model
+          );
+      }
     }
   }
 
@@ -151,7 +149,7 @@ export default class Form extends React.Component {
   }
 
   onReset = e => {
-    this.setState(this.createInitialState(this.props.model));
+    this.setState(this.createInitialState(this.props));
   }
 
   render() {
@@ -188,15 +186,15 @@ export default class Form extends React.Component {
         }
 
         {validationErrors.size > 0 ? (
-          <div className='formatron-form-errors'>
-            <p className='formatron-form-error'>The following fields have an error:</p>
+          <div className='formatron-form-error'>
+            <p className='formatron-form-validation-error'>The following fields have an error:</p>
             {validationErrors
               .map((error, ref) => {
                 const refValue = ref
                   .map(ref => ref.getDisplay())
                   .join(', ');
                 return (
-                  <p key={refValue} className='formatron-form-error formatron-validation-error'>
+                  <p key={refValue} className='formatron-form-validation-error'>
                     {refValue}
                   </p>
                 );

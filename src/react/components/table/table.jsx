@@ -1,5 +1,6 @@
-import {List} from 'immutable';
+import {List, Map} from 'immutable';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
+import defaultCellRangeRenderer from 'react-virtualized/dist/commonjs/Grid/defaultCellRangeRenderer';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import defaultHeaderRenderer from 'react-virtualized/dist/commonjs/Table/defaultHeaderRenderer';
 import defaultHeaderRowRenderer from 'react-virtualized/dist/commonjs/Table/defaultHeaderRowRenderer';
@@ -40,12 +41,13 @@ export default class SchemaTable extends BaseTable {
     toolbarRowHeight: 30
   }
 
-  getRows() {
-    return this.models;
+  constructor(props) {
+    super(props);
+    this.cellCache = Map();
   }
 
-  getColumns() {
-    return this.props.columns;
+  getRows() {
+    return this.models;
   }
 
   reduce(renderers, value) {
@@ -65,7 +67,6 @@ export default class SchemaTable extends BaseTable {
     return this.reduce(
       this.props.columnRenderers,
       column => <Column
-        key={column.label}
         {...this.getColumnProps(column)}
       />
     )(column);
@@ -197,18 +198,25 @@ export default class SchemaTable extends BaseTable {
   cellRenderer(column) {
     return this.reduce(
       this.props.cellRenderers,
-      (column, {rowData, isScrolling}) => {
-        const renderData = new RenderData(this.props.dataType, rowData, {
-          viewTypes: this.props.viewTypes,
-          onButtonClick: (...args) => {
-            if (this.props.onButtonClick) {
-              const index = rowData.get(this.naturalIndex);
-              this.props.onButtonClick(index, rowData, ...args);
+      (column, {rowData}) => {
+        const key = `${column.uniqueId}-${rowData.get(BaseTable.naturalIndex)}`;
+        if (!this.cellCache.has(key)) {
+          const renderData = new RenderData(this.props.dataType, rowData, {
+            viewTypes: this.props.viewTypes,
+            onButtonClick: (...args) => {
+              if (this.props.onButtonClick) {
+                const index = rowData.get(this.naturalIndex);
+                this.props.onButtonClick(index, rowData, ...args);
+              }
             }
-          }
-        });
+          });
 
-        return reactRenderers.renderStaticTableCell(column, renderData)
+          this.cellCache = this.cellCache
+            .set(key, reactRenderers
+              .renderStaticTableCell(column, renderData)
+            );
+        }
+        return this.cellCache.get(key);
       }
     ).bind(null, column);
   }
@@ -241,6 +249,14 @@ export default class SchemaTable extends BaseTable {
       style={this.props.style}
       height={Math.min(height, maxHeight)}
 
+      cellRangeRenderer={props => defaultCellRangeRenderer({
+        ...props,
+        // Fake that we aren't scrolling so that their internal cache does not
+        // conflict with our cell caching. This will otherwise cause issues
+        // when a table's natural order is changed (eg, sorting, filtering).
+        isScrolling: false
+      })}
+
       headerHeight={this.headerRowHeight()}
       headerRowRenderer={this.headerRowRenderer()}
 
@@ -262,7 +278,6 @@ export default class SchemaTable extends BaseTable {
     const models = this.rowsModifier(this.props.models);
     this.models = models;
 
-    // This has the `form` class since CSS classes are a mess (#26).
     return this.props.size == 'auto' ? (
       <AutoSizer>
         {props => this.renderTable(props, models)}

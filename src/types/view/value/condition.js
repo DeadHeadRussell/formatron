@@ -54,7 +54,7 @@ export default class ConditionType extends ValueType {
     const trueType = this.getTrueType();
     const falseType = this.getFalseType();
 
-    return this.test(renderData) ?
+    return this.test(renderData, renderers) ?
       renderers.getValue(trueType, renderData) :
       falseType && renderers.getValue(falseType, renderData);
   }
@@ -63,7 +63,7 @@ export default class ConditionType extends ValueType {
     const trueType = this.getTrueType();
     const falseType = this.getFalseType();
 
-    return this.test(renderData) ?
+    return this.test(renderData, renderers) ?
       renderers.getDisplay(trueType, renderData) :
       falseType && renderers.getDisplay(falseType, renderData);
   }

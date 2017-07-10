@@ -9,5 +9,9 @@ const Header = ({viewType}) => (
   </div>
 );
 
-export default ReactRenderer.register(HeaderType, Header, Header);
+export default ReactRenderer.register(
+  HeaderType,
+  Header,
+  Header
+);
 

@@ -20,13 +20,17 @@ const FormatronTable = withStaticLabel(({viewType, renderData}) => {
         columns={viewType.getColumns()}
         models={value}
         editable={editable}
-        onChange={(index, subValue) => onChange(value.set(index, subValue))}
-        onBlur={onBlur}
+        onChange={(index, subValue) => onChange(ref, value.set(index, subValue))}
+        onBlur={() => onBlur(ref)}
         size='auto'
       />
     </div>
   );
 });
 
-export default ReactRenderer.register(TableType, FormatronTable, FormatronTable);
+export default ReactRenderer.register(
+  TableType,
+  FormatronTable,
+  FormatronTable
+);
 

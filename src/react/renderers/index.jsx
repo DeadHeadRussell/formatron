@@ -1,61 +1,55 @@
 import Renderers from '~/renderers';
 
-import registerButtonRenderer from './button';
-import registerCalendarRenderer from './calendar';
-import registerCheckboxRenderer from './checkbox';
-import registerComputedRenderer from './computed';
-import registerConditionRenderer from './condition';
-import registerCurrencyRenderer from './currency';
-import registerDropDownRenderer from './dropDown';
-import registerFunctionRenderer from './function';
-import registerGridRenderer from './grid';
-import registerHeaderRenderer from './header';
-import registerLinkRenderer from './link';
-import registerMethodRenderer from './method';
-import registerNumberRenderer from './number';
-import registerPercentRenderer from './percent';
-import registerPropertyRenderer from './property';
-import registerStaticRenderer from './static';
-import registerSwitchRenderer from './switch';
-import registerTableRenderer from './table';
-import registerTabsRenderer from './tabs';
-import registerTemplateRenderer from './template';
-import registerTextRenderer from './text';
-import registerValueRenderer from './value';
-import registerVariableRenderer from './variable';
-
-function createReactTypeRenderers() {
-  const types = {};
-
-  registerButtonRenderer(types);
-  registerCalendarRenderer(types);
-  registerCheckboxRenderer(types);
-  registerComputedRenderer(types);
-  registerConditionRenderer(types);
-  registerCurrencyRenderer(types);
-  registerDropDownRenderer(types);
-  registerFunctionRenderer(types);
-  registerGridRenderer(types);
-  registerHeaderRenderer(types);
-  registerLinkRenderer(types);
-  registerMethodRenderer(types);
-  registerNumberRenderer(types);
-  registerPercentRenderer(types);
-  registerPropertyRenderer(types);
-  registerStaticRenderer(types);
-  registerSwitchRenderer(types);
-  registerTableRenderer(types);
-  registerTabsRenderer(types);
-  registerTemplateRenderer(types);
-  registerTextRenderer(types);
-  registerValueRenderer(types);
-  registerVariableRenderer(types);
-
-  return types;
-}
+import registerButton from './button';
+import registerCalendar from './calendar';
+import registerCheckbox from './checkbox';
+import registerComputed from './computed';
+import registerCondition from './condition';
+import registerCurrency from './currency';
+import registerDropDown from './dropDown';
+import registerFunction from './function';
+import registerGrid from './grid';
+import registerHeader from './header';
+import registerLink from './link';
+import registerMethod from './method';
+import registerNumber from './number';
+import registerPercent from './percent';
+import registerProperty from './property';
+import registerStatic from './static';
+import registerSwitch from './switch';
+import registerTable from './table';
+import registerTabs from './tabs';
+import registerTemplate from './template';
+import registerText from './text';
+import registerValue from './value';
+import registerVariable from './variable';
 
 /**
  * A set of renderers to be used with React.js.
  */
-export default new Renderers(createReactTypeRenderers());
+export default new Renderers();
+
+registerButton();
+registerCalendar();
+registerCheckbox();
+registerComputed();
+registerCondition();
+registerCurrency();
+registerDropDown();
+registerFunction();
+registerGrid();
+registerHeader();
+registerLink();
+registerMethod();
+registerNumber();
+registerPercent();
+registerProperty();
+registerStatic();
+registerSwitch();
+registerTable();
+registerTabs();
+registerTemplate();
+registerText();
+registerValue();
+registerVariable();
 

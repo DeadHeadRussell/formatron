@@ -69,5 +69,12 @@ class CurrencyInput extends React.Component {
   }
 }
 
-export default ReactRenderer.register(CurrencyType, CurrencyField, StaticCurrencyField, CurrencyFilter, Currency, StaticCurrency);
+export default ReactRenderer.register(
+  CurrencyType,
+  CurrencyField,
+  StaticCurrencyField,
+  CurrencyFilter,
+  Currency,
+  StaticCurrency
+);
 

@@ -5,6 +5,7 @@ import {withDataRenderer, withDisplayRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
 import FormatronPropTypes from './propTypes';
 import ReactRenderer from './reactRenderer';
+import {TableRangeFilter} from './tableHelpers';
 
 const PercentInput = ({field, value, disabled, placeholder, onChange, onBlur}) => (
   <input
@@ -49,11 +50,10 @@ const PercentField = withFormLabel(Percent);
 const StaticPercentField = withStaticLabel(StaticPercent);
 
 const PercentFilter = ({renderData}) => (
-  <PercentInput
-    field={renderData.dataType}
-    value={renderData.dataValue}
-    onChange={renderData.options.onChange}
-    onBlur={renderData.options.onBlur}
+  <TableRangeFilter
+    viewType={viewType}
+    renderData={renderData}
+    Component={PercentInput}
   />
 );
 
@@ -65,5 +65,12 @@ const StaticPercent = withDisplayRenderer(({value}) => (
   <p className='formatron-static-value'>{value}</p>
 ));
 
-export default ReactRenderer.register(PercentType, PercentField, StaticPercentField, PercentFilter, Percent, StaticPercent);
+export default ReactRenderer.register(
+  PercentType,
+  PercentField,
+  StaticPercentField,
+  PercentFilter,
+  Percent,
+  StaticPercent
+);
 

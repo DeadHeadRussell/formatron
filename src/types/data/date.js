@@ -59,9 +59,9 @@ export default class DateType extends DataType {
 
   datetimeToUnix = value => {
     if (this.getType() == 'time') {
-      return datetime.hours() * 3600 + datetime.minutes() * 60 + datetime.seconds();
+      return value.hours() * 3600 + value.minutes() * 60 + value.seconds();
     } else {
-      return datetime.valueOf() / 1000;
+      return value.valueOf() / 1000;
     }
   }
 
@@ -92,6 +92,10 @@ export default class DateType extends DataType {
     }
   }
 
+  stringToString = value => {
+    return this.datetimeToString(this.stringToDatetime(value));
+  }
+
   conversions = {
     unix: {
       unix: value => value,
@@ -106,8 +110,23 @@ export default class DateType extends DataType {
     string: {
       unix: this.stringToUnix,
       datetime: this.stringToDatetime,
-      string: value => value
+      string: this.stringToString
     }
+  }
+
+  filter(filterValue, rowValue) {
+    const lowerInput = this.convert(filterValue.get('lower'), 'unix');
+    const upperInput = this.convert(filterValue.get('upper'), 'unix');
+
+    const lower = Number.isFinite(lowerInput) ?
+      lowerInput :
+      -Infinity;
+
+    const upper = Number.isFinite(upperInput) ?
+      upperInput :
+      Infinity;
+
+    return rowValue >= lower && rowValue <= upper;
   }
 }
 

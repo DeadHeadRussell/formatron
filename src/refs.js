@@ -1,8 +1,45 @@
+import {List} from 'immutable';
+
 import {valueRenderers} from '~/renderers';
-import {RenderData} from '~/renderers/renderData.js';
+import RenderData from '~/renderers/renderData.js';
+import * as Types from '~/types';
 
 export function parseRef(field) {
+  if (field instanceof Ref) {
+    return field;
+  }
+
   if (typeof field == 'string') {
+    // Quick hack. Remove soon.
+    if (field[1] == ':') {
+      const [ref, value] = field.slice(2).split('=');
+
+      const mappyViewType = new Types.view.data({
+        label: field,
+        ref: parseRef(ref)
+      });
+      const truthyViewType = new Types.view.condition({
+        label: field,
+        op: '=',
+        args: [
+          mappyViewType,
+          new Types.view.value({value: value})
+        ],
+        trueType: new Types.view.value({value: true}),
+        falseType: new Types.view.value({value: false})
+      });
+
+      if (field[0] == 'q') {
+        return new ImmutableListFindRef(truthyViewType);
+      } else if (field[0] == 'f') {
+        return new ImmutableListFilterRef(truthyViewType);
+      } else if (field[0] == 'm') {
+        return new ImmutableListMapRef(mappyViewType);
+      }
+
+      throw new Error(`Invalid hacky ref type: "${field}"`);
+    }
+
     return new ImmutableRef(field);
   }
 
@@ -14,13 +51,25 @@ export function parseRef(field) {
       const refValue = field.get('value');
       switch (refValue.get('type')) {
         case 'find': 
-          return new ListFindRef(refValue.get('finder'));
+          return new ImmutableListFindRef(
+            Types.parseField(
+              Types.VIEW,
+              refValue.get('finder')
+            ));
 
         case 'filter':
-          return new ListFilterRef(refValue.get('filter'));
+          return new ImmutableListFilterRef(
+            Types.parseField(
+              Types.VIEW,
+              refValue.get('filter')
+            ));
 
         case 'map':
-          return new ListMapRef(refValue.get('mapper'));
+          return new ImmutableListMapRef(
+            Types.parseField(
+              Types.VIEW,
+              refValue.get('mapper')
+            ));
 
         default:
           throw new Error(`Unknown list ref type "${refValue.get('type')}"`);
@@ -111,7 +160,7 @@ export class ImmutableListRef extends ImmutableRef {
   }
 
   checkValidData(dataType, dataValue) {
-    if (!dataType instanceof ImmutableListType) {
+    if (!dataType instanceof Types.data.list) {
       throw new Error(`Cannot reference a list with a non-list based data type "${dataType}"`);
     }
 
@@ -152,6 +201,7 @@ export class ImmutableListFindRef extends ImmutableListRef {
   static method = 'find';
 
   setValue(listType, list, newItem) {
+    const itemType = listType.getItemType();
     const index = list
       .findIndex(item => {
         const renderData = new RenderData(itemType, item);
@@ -181,6 +231,8 @@ export class ImmutableListFilterRef extends ImmutableListRef {
     if (List.isList(newItem)) {
       console.warn('Setting each list item to be a list. This may be due to using multiple list refs which is currently unimplemented');
     }
+
+    const itemType = listType.getItemType();
 
     const indexes = list
       .map((item, index) => [

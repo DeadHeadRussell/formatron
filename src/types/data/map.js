@@ -2,7 +2,7 @@ import {List, Map} from 'immutable';
 
 import {parseRef} from '~/refs';
 
-import {ImmutableDataType} from './';
+import DataType, {ImmutableDataType} from './';
 import ValidationError from './validationError';
 
 export default class ImmutableMapType extends ImmutableDataType {
@@ -11,8 +11,13 @@ export default class ImmutableMapType extends ImmutableDataType {
   static parseOptions(field, parseField) {
     return super.parseOptions(field, parseField)
       .update('data', data => data
-        .map(fieldData => fieldData
-          .update('field', parseField)
+        .map(fieldData => fieldData.get('type') ?
+          Map({
+            path: List([fieldData.get('name')]),
+            field: parseField(fieldData)
+          }) :
+          fieldData
+            .update('field', parseField)
         )
       );
   }
@@ -22,7 +27,14 @@ export default class ImmutableMapType extends ImmutableDataType {
   }
 
   getData() {
-    return this.options.get('data');
+    return this.options.get('data')
+      .map(fieldData => fieldData instanceof DataType ?
+        Map({
+          path: List([fieldData.getName()]),
+          field: fieldData
+        }) :
+        fieldData
+      );
   }
 
   hasValue(model) {
@@ -31,6 +43,25 @@ export default class ImmutableMapType extends ImmutableDataType {
     }
     // TODO: Check if child types have a value.
     return model && model.size > 0;
+  }
+
+  getDisplay(model, ref) {
+    model = model || this.getDefaultValue();
+    if (ref) {
+      const {field, value} = this.getFieldAndValue(model, ref);
+      return field.getDisplay(value);
+    } else {
+      if (this.hasValue(value)) {
+        return this.getData()
+          .map(fieldData => ({
+            key: fieldData.get('field').getName(),
+            value: value.getIn(fieldData.get('path'))
+          }))
+          .map(({key, value}) => `${key}: ${value}`)
+          .join(', ');
+      }
+      return '';
+    }
   }
 
   getFieldData(ref) {
@@ -64,14 +95,20 @@ export default class ImmutableMapType extends ImmutableDataType {
     }
 
     if (refs.size == 0) {
-      return null;
+      return this;
     }
 
     const firstRef = refs.first();
-    const fieldData = this.getFieldData(firstRef);
-    const field = fieldData && fieldData.get('field');
 
-    this.getNextField(field, refs.rest());
+    const fieldData = this.getFieldData(firstRef);
+
+    if (!fieldData) {
+      throw new Error(`Cannot find field for ref "${firstRef}" on "${this.getName()}"`);
+    }
+
+    const field = fieldData.get('field');
+
+    return this.getNextField(field, refs.rest());
   }
 
   getFieldAndValue(model, refs) {
@@ -84,7 +121,7 @@ export default class ImmutableMapType extends ImmutableDataType {
     }
 
     if (!model) {
-      return {field: this.getDataField(refs)};
+      return {field: this.getField(refs)};
     }
 
     const firstRef = refs.first();
@@ -139,7 +176,7 @@ export default class ImmutableMapType extends ImmutableDataType {
           const ref = parseRef(field.getName());
           return this.validateSingle(model, ref);
         })
-        .flatten(true)
+        .flatten(false)
         .filter(error => error)
         .map(error => {
           error.addRef(parseRef(error.field.getName()));
@@ -161,7 +198,7 @@ export default class ImmutableMapType extends ImmutableDataType {
 
       List([
         field.validate(value),
-        field.getValidator()(value, model)
+        field.getValidator()(value, model, field)
       ])
         .filter(error => error)
     ]).flatten(true);

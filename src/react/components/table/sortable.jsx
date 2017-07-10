@@ -1,5 +1,7 @@
 import SortDirection from 'react-virtualized/dist/commonjs/Table/SortDirection';
 
+import RenderData from '~/renderers/renderData';
+
 import BaseTable from './base';
 
 export default function sortableTable(Table) {
@@ -15,6 +17,7 @@ export default function sortableTable(Table) {
     };
 
     static defaultProps = {
+      ...BaseTable.defaultProps,
       initialSort: {}
     };
 
@@ -56,14 +59,6 @@ export default function sortableTable(Table) {
       return this.props.sortDirection || this.state.sortDirection;
     }
 
-    getSortValue(column) {
-      return model => {
-        return column.getCell(model, {
-          preferQuick: true
-        });
-      };
-    }
-
     getColumnProps = getter => {
       return column => ({
         ...getter(column),
@@ -72,15 +67,21 @@ export default function sortableTable(Table) {
     }
 
     rowsModifier = rows => {
-      const getSortValue = this.getSortValue(this.props.schema
-        .getColumns()
-        .find(column => column.label == this.getSortBy())
-      );
+      const columnProps = this.props.columns
+        .map(column => column.getTableProps())
+        .find(columnProps => columnProps.label == this.getSortBy());
+
+      const renderData = new RenderData(this.props.dataType, null);
+      const getSortValue = function(row) {
+        renderData.dataValue = row;
+        return columnProps.viewType.getValue(renderData);
+      };
 
       return rows
         .update(models => this.doSort() ?
           models
             .sortBy(getSortValue, (a, b) => {
+              // TODO: Put sort in the column props like filter is?
               const nullA = (a === null || typeof a == 'undefined');
               const nullB = (b === null || typeof b == 'undefined');
               if (nullA && nullB) {

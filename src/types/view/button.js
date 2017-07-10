@@ -11,14 +11,11 @@ export default class ButtonType extends ViewType {
   }
 
   getArgs() {
-    return this.options.get('args');
+    return this.options.get('args', List());
   }
 
   getTableProps() {
-    return {
-      ...super.getTableProps(),
-      label: ''
-    };
+    return super.getTableProps('');
   }
 }
 

@@ -75,9 +75,8 @@ export default function exportableTable(Table) {
     }
 
     export = action => {
-      const columns = this.table.getColumns();
       const models = this.table.getRows();
-      this.props.onExport(action, columns, models);
+      this.props.onExport(action, this.props.columns, models);
       this.setState({
         menuOpen: false
       });
@@ -93,3 +92,4 @@ export default function exportableTable(Table) {
     }
   };
 }
+

@@ -10,5 +10,16 @@ const Static = ({viewType, renderData, renderers}) => {
   return renderers.renderStaticTableCell(viewType.getDisplay(), renderData);
 };
 
-export default ReactRenderer.register(StaticType, StaticField, StaticField, null, Static, Static);
+const StaticFilter = ({viewType, renderData}) => {
+  return renderers.renderFilter(viewType.getDisplay(), renderData);
+};
+
+export default ReactRenderer.register(
+  StaticType,
+  StaticField,
+  StaticField,
+  StaticFilter,
+  Static,
+  Static
+);
 

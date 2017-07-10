@@ -53,6 +53,10 @@ export default class DataType extends Type {
     return this.name;
   }
 
+  getOptions() {
+    return this.options();
+  }
+
   isRequired() {
     return this.options.get('required', false);
   }
@@ -66,7 +70,10 @@ export default class DataType extends Type {
   }
 
   getDefaultValue(defaultValue = null) {
-    return this.options.get('defaultValue', defaultValue);
+    const optionsDefaultValue = this.options.get('defaultValue');
+    return typeof optionsDefaultValue == 'undefined' ?
+      defaultValue :
+      optionsDefaultValue;
   }
 
   getValidator() {
@@ -138,6 +145,10 @@ export default class DataType extends Type {
   validate(value, callback) {
     value = this.getValue(value);
 
+    if (value == this.getDefaultValue()) {
+      return;
+    }
+
     if (!this.hasValue(value)) {
       if (this.isGenerated()) {
         return;
@@ -151,6 +162,10 @@ export default class DataType extends Type {
     if (callback) {
       return callback();
     }
+  }
+
+  filter(filterValue, rowValue) {
+    return filterValue == rowValue;
   }
 }
 
@@ -182,9 +197,8 @@ export class ImmutableDataType extends DataType {
     } else {
       if (field && field.getField) {
         return field.getField(refs);
-      } else {
-        throw new Error(`Cannot call "getField" "${field.name}" of data type "${field.constructor}"`);
       }
+      throw new Error(`Cannot call "getField" "${field.name}" of data type "${field.constructor}"`);
     }
   }
 
@@ -196,14 +210,10 @@ export class ImmutableDataType extends DataType {
     if (refs.size == 0) {
       return {field, value};
     } else {
-      if (field.getFieldAndValue) {
-        const model = field.getModel ?
-          field.getModel(value) :
-          value;
-        return field.getFieldAndValue(model, refs);
-      } else {
-        throw new Error(`Cannot call "getFieldAndValue" for "${field.name}" of data type "${field.constructor}"`);
+      if (field && field.getFieldAndValue) {
+        return field.getFieldAndValue(value, refs);
       }
+      throw new Error(`Cannot call "getFieldAndValue" for "${field.name}" of data type "${field.constructor}"`);
     }
   }
 
@@ -216,13 +226,9 @@ export class ImmutableDataType extends DataType {
       return newValue;
     } else {
       if (field.setValue) {
-        const model = field.getModel ?
-          field.getModel(oldValue) :
-          oldValue;
-        return field.setDataValue(model, refs, newValue);
-      } else {
-        throw new Error(`Cannot call "setValue" for "${field.name}" of data type "${field.constructor}"`);
+        return field.setValue(oldValue, refs, newValue);
       }
+      throw new Error(`Cannot call "setValue" for "${field.name}" of data type "${field.constructor}"`);
     }
   }
 }

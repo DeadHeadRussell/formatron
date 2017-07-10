@@ -9,8 +9,12 @@ export default class ImmutableListType extends ImmutableDataType {
   static typeName = 'list';
 
   static parseOptions(field, parseField) {
-    return field
+    return super.parseOptions(field)
       .update('itemType', parseField);
+  }
+
+  isOfType(value) {
+    return List.isList(value);
   }
 
   getItemType() {
@@ -28,6 +32,16 @@ export default class ImmutableListType extends ImmutableDataType {
     return super.getDefaultValue(List());
   }
 
+  getDisplay(value) {
+    if (this.hasValue(value)) {
+      const itemType = this.getItemType();
+      return value
+        .map(item => itemType.getDisplay(item))
+        .join(', ');
+    }
+    return '';
+  }
+
   getFieldFromRef(ref) {
     if (ref.isSingleRef()) {
       return this.getItemType();
@@ -35,13 +49,13 @@ export default class ImmutableListType extends ImmutableDataType {
       const itemType = this.getItemType();
       const newItemType = ref.view instanceof DataViewType ?
         ref.view.getFieldAndValue(new RenderData(itemType, null)).field :
-        new DataType('mappedListItem', Map());
+        new DataType(`mapped${this.constructor.name}Item`, Map());
 
-      return new this.constructor(`mappedList(${this.getName()})`, this.options
+      return new this.constructor(`mapped${this.constructor.name}(${this.getName()})`, this.options
         .set('itemType', newItemType)
       );
     } else if (ref.isFilterer()) {
-      return new this.constructor(`filteredList(${this.getName()})`, this.options);
+      return new this.constructor(`filtered${this.constructor.name}(${this.getName()})`, this.options);
     } else {
       return this;
     }
@@ -57,7 +71,7 @@ export default class ImmutableListType extends ImmutableDataType {
     }
 
     const field = this.getFieldFromRef(refs.first());
-    this.getNextField(field, refs.rest());
+    return this.getNextField(field, refs.rest());
   }
 
   getFieldAndValue(list, ref) {
@@ -69,7 +83,7 @@ export default class ImmutableListType extends ImmutableDataType {
       return {};
     }
 
-    if (!list || !List.isList(list)) {
+    if (!list || !this.isOfType(list)) {
       return {field: this.getField(ref)};
     }
 
@@ -81,8 +95,10 @@ export default class ImmutableListType extends ImmutableDataType {
   }
 
   setValue(list, ref, newValue) {
-    if (!List.isList(list)) {
-      throw new Error(`Cannot set value of a non-list (${list})`);
+    list = this.getValue(list);
+
+    if (!this.isOfType(list)) {
+      throw new Error(`Cannot set value of a non-${this.constructor.name} (${list})`);
     }
 
     if (!List.isList(ref)) {
@@ -90,7 +106,7 @@ export default class ImmutableListType extends ImmutableDataType {
     }
 
     if (ref.size == 0) {
-      throw new Error(`Invalid ref to set value in list "${ref}"`);
+      throw new Error(`Invalid ref to set value in ${this.constructor.name} "${ref}"`);
     }
 
     const firstRef = ref.first();
@@ -99,7 +115,7 @@ export default class ImmutableListType extends ImmutableDataType {
     const oldValue = firstRef.getValue(this, list);
 
     return firstRef.setValue(this, list, this.setNextValue(
-      field, oldValue, newValue, refs.rest()
+      field, oldValue, newValue, ref.rest()
     ));
   }
 

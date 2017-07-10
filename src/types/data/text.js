@@ -101,5 +101,11 @@ export default class TextType extends DataType {
       }
     });
   }
+
+  filter(filterValue, rowValue) {
+    const filterString = `${filterValue}`.toLowerCase();
+    const rowString = `${rowValue}`.toLowerCase();
+    return rowString.indexOf(filterString) >= 0;
+  }
 }
 

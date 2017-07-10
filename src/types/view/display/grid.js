@@ -1,3 +1,5 @@
+import {List} from 'immutable';
+
 import DisplayType from './';
 
 export default class GridType extends DisplayType {
@@ -11,11 +13,26 @@ export default class GridType extends DisplayType {
   }
 
   getOrientation() {
-    return this.options.get('orientation', 'horizontal');
+    return this.options.get('orientation', 'vertical');
   }
 
   getChildren() {
     return this.options.get('children');
+  }
+
+  getDisplay(renderData, renderers) {
+    // TODO: Refine the shit out of this.
+    return this.getChildren()
+      .map(viewType => List.isList(viewType) ? (
+        viewType
+          .map(viewType =>
+            renderers.getDisplay(viewType, renderData)
+          )
+      ) : (
+        renderers.getDisplay(viewType, renderData)
+      ))
+      .filter(value => value)
+      .join(', ');
   }
 }
 

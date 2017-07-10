@@ -15,5 +15,12 @@ const Button = ({viewType, renderData}) => {
   </button>;
 };
 
-export default ReactRenderer.register(ButtonType, Button, Button, null, Button, Button);
+export default ReactRenderer.register(
+  ButtonType,
+  Button,
+  Button,
+  null,
+  Button,
+  Button
+);
 

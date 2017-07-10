@@ -40,7 +40,7 @@ const TextInputWrapper = props => {
 TextInputWrapper.propTypes = {
   field: FormatronPropTypes.dataType.instanceOf(TextType),
   value: React.PropTypes.string,
-  disabled: React.PropTypes.bool.isRequired,
+  disabled: React.PropTypes.bool,
   placeholder: React.PropTypes.string,
   onChange: React.PropTypes.func.isRequired,
   onBlur: React.PropTypes.func.isRequired
@@ -50,7 +50,7 @@ const FormatronMaskedInput = ({field, value, disabled, placeholder, onChange, on
   <MaskedInput
     className='formatron-input formatron-text formatron-masked'
     mask={field.getMask()}
-    disabled={disabled}
+    disabled={!!disabled}
     value={value}
     placeholder={placeholder}
     onChange={e => onChange(e.target.value)}
@@ -87,7 +87,7 @@ const Text = withDataRenderer(props => (
 
 const StaticText = withDisplayRenderer(({value}) => (
   <p className='formatron-static-value'>
-    {value
+    {value && value
       .split('\n')
       .map(line => (
         <span className='formatron-static-value-line'>
@@ -101,5 +101,12 @@ const StaticText = withDisplayRenderer(({value}) => (
 const TextField = withFormLabel(Text);
 const StaticTextField = withStaticLabel(StaticText);
 
-export default ReactRenderer.register(TextInputType, TextField, StaticTextField, TextFilter, Text, StaticText);
+export default ReactRenderer.register(
+  TextInputType,
+  TextField,
+  StaticTextField,
+  TextFilter,
+  Text,
+  StaticText
+);
 

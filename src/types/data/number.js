@@ -41,5 +41,20 @@ export default class NumberType extends DataType {
       }
     });
   }
+
+  filter(filterValue, rowValue) {
+    const lowerInput = filterValue.get('lower');
+    const upperInput = filterValue.get('upper');
+
+    const lower = Number.isFinite(lowerInput) ?
+      lowerInput :
+      -Infinity;
+
+    const upper = Number.isFinite(upperInput) ?
+      upperInput :
+      Infinity;
+
+    return rowValue >= lower && rowValue <= upper;
+  }
 }
 

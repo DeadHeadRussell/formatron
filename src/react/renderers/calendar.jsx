@@ -10,13 +10,14 @@ import {withDataRenderer, withDisplayRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
 import FormatronPropTypes from './propTypes';
 import ReactRenderer from './reactRenderer';
+import {TableRangeFilter} from './tableHelpers';
 
-const CalendarFilter = ({renderData}) => (
-  <CalendarInput
-    field={renderData.dataType}
-    value={renderData.dataValue}
-    onChange={renderData.options.onChange}
-    onBlur={renderData.options.onBlur}
+const CalendarFilter = ({viewType, renderData}) => (
+  <TableRangeFilter
+    viewType={viewType}
+    renderData={renderData}
+    parse={value => renderData.dataType.convert(value, 'unix')}
+    Component={CalendarInput}
   />
 );
 
@@ -147,7 +148,7 @@ class CalendarInput extends React.Component {
           placeholder={placeholder}
           disabled={disabled}
         />
-        {this.state.input ? (
+        {(!disabled && this.state.input) ? (
           <button className='formatron-field-action' onClick={this.handleClearInput}>
             <span>{'\u00D7'}</span>
           </button>
@@ -171,5 +172,12 @@ const StaticCalendar = withDisplayRenderer(({field, value}) => (
 const CalendarField = withFormLabel(Calendar);
 const StaticCalendarField = withStaticLabel(StaticCalendar);
 
-export default ReactRenderer.register(CalendarType, CalendarField, StaticCalendarField, CalendarFilter, Calendar, StaticCalendar);
+export default ReactRenderer.register(
+  CalendarType,
+  CalendarField,
+  StaticCalendarField,
+  CalendarFilter,
+  Calendar,
+  StaticCalendar
+);
 

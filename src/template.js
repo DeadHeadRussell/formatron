@@ -1,5 +1,7 @@
 import {fromJS} from 'immutable';
 
+import {parseRef} from './refs';
+
 // TODO: Do we need to properly parse the templates instead of doing a dumb
 // regex check that will match anywhere in a string?
 const templateSingleRegex = /{{[^}]*}}/g;
@@ -20,12 +22,12 @@ export default function parseTemplate(template, renderData, options = {}) {
   return template
     .replace(templateSingleRegex, match => {
       const ref = parseRef(match.slice(2, match.length - 2));
-      return format(dataType.getLabel(dataValue, ref));
+      return format(dataType.getDisplay(dataValue, ref));
     })
     .replace(templateArrayRegex, match => {
       const refs = fromJS(JSON.parse(match.slice(1, match.length - 1)))
         .map(parseRef);
-      return format(dataType.getLabel(dataValue, refs));
+      return format(dataType.getDisplay(dataValue, refs));
     });
 }
 

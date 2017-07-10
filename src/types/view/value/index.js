@@ -2,6 +2,8 @@ import {List} from 'immutable';
 
 import ViewType from '../';
 
+let count = 0;
+
 export default class ValueType extends ViewType {
   static typeName = 'value';
 
@@ -34,6 +36,12 @@ export default class ValueType extends ViewType {
    */
   getDisplay(renderData) {
     return this.getValue(renderData);
+  }
+
+  filter(filterValue, rowValue) {
+    const filterString = `${filterValue}`.toLowerCase();
+    const rowString = `${rowValue}`.toLowerCase();
+    return rowString.indexOf(filterString) >= 0;
   }
 }
 

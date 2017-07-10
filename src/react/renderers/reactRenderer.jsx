@@ -2,6 +2,7 @@ import React from 'react';
 
 import Renderer from '~/renderers/renderer';
 
+import reactRenderers from './';
 import FormatronPropTypes from './propTypes';
 
 export default class ReactRenderer extends Renderer {
@@ -33,12 +34,16 @@ export default class ReactRenderer extends Renderer {
   }
 
   renderFilter(viewType, renderData, renderers) {
-    return <this.TableFilter
-      viewType={viewType}
-      renderData={renderData}
-      renderers={renderers}
-      rendererMethod='renderFilter'
-    />;
+    return this.TableFilter ? (
+      <this.TableFilter
+        viewType={viewType}
+        renderData={renderData}
+        renderers={renderers}
+        rendererMethod='renderFilter'
+      />
+    ) : (
+      <div className='formatron-table-filterable-empty' />
+    );
   }
 
   renderTableCell(viewType, renderData, renderers) {
@@ -58,6 +63,10 @@ export default class ReactRenderer extends Renderer {
       rendererMethod='renderStaticTableCell'
     />;
   }
+
+  getKey(viewType) {
+    return `${viewType.constructor.typeName}-${viewType.uniqueId}`;
+  }
 }
 
 const ReactRendererPropTypes = ViewType => ({
@@ -65,11 +74,12 @@ const ReactRendererPropTypes = ViewType => ({
   renderData: FormatronPropTypes.renderData.isRequired
 });
 
-ReactRenderer.register = (ViewType, ...components) => types => {
+ReactRenderer.register = (ViewType, ...components) => () => {
   const propTypes = ReactRendererPropTypes(ViewType);
   components
     .filter(component => component)
     .forEach(component => component.propTypes = propTypes);
-  types[ViewType.typeName] = new ReactRenderer(...components);
+
+  reactRenderers.register(ViewType.typeName, new ReactRenderer(...components));
 };
 

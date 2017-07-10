@@ -15,9 +15,11 @@ const Grid = ({viewType, renderData, renderers, rendererMethod}) => {
         {viewType.getChildren()
           .map((viewType, i) => List.isList(viewType) ? (
             <div className='formatron-grid-inner'>
-              {viewType.map((viewType, j) =>
-                renderers[rendererMethod](viewType, renderData)
-              )}
+              {viewType
+                .map((viewType, j) =>
+                  renderers[rendererMethod](viewType, renderData)
+                )
+              }
             </div>
           ) : (
             renderers[rendererMethod](viewType, renderData)
@@ -28,5 +30,20 @@ const Grid = ({viewType, renderData, renderers, rendererMethod}) => {
   );
 };
 
-export default ReactRenderer.register(GridType, Grid, Grid);
+const TableGrid = ({viewType, renderData, renderers}) => {
+  return (
+    <p className='formatron-static-value'>
+      {viewType.getDisplay(renderData, renderers)}
+    </p>
+  );
+};
+
+export default ReactRenderer.register(
+  GridType,
+  Grid,
+  Grid,
+  null,
+  TableGrid,
+  TableGrid
+);
 

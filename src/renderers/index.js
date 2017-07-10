@@ -1,3 +1,5 @@
+import {Map} from 'immutable';
+
 import ViewType from '~/types/view';
 
 /**
@@ -5,11 +7,40 @@ import ViewType from '~/types/view';
  */
 export default class Renderers {
   /**
-   * Creates a new renderer for a specific type
-   * @param {object.string} renderers - The set of renderers for each ViewType registered.
+   * Creates a new set of renderers for a set of types.
+   * @param {object.<string, Renderer>} renderers - The set of renderers for each ViewType registered.
    */
   constructor(renderers) {
-    this.renderers = renderers;
+    this.renderers = renderers || {};
+    this.cachedValues = Map();
+  }
+
+  /**
+   * Registers a new renderer for a specific type.
+   * @param {string} typeName - The name of the renderer to register.
+   * @param {Renderer} renderer - The renderer to register.
+   */
+  register(typeName, renderer) {
+    this.renderers[typeName] = renderer;
+  }
+
+  bustCache(type, viewType, dataValue) {
+    const path = [type, viewType, dataValue];
+    this.cachedValues.deleteIn(path);
+  }
+
+  cache(type, viewType, dataValue, create) {
+    if (typeof viewType == 'string') {
+      const path = [type, viewType, dataValue];
+      this.cachedValues = this.cachedValues
+        .updateIn(path, cachedView => cachedView ?
+          cachedView :
+          create()
+        );
+      return this.cachedValues.getIn(path);
+    } else {
+      return create();
+    }
   }
 
   /**
@@ -29,11 +60,11 @@ export default class Renderers {
   }
 
   /**
-   * See {@link Renderer#renderTableFilter}
+   * See {@link Renderer#renderFilter}
    */
   renderFilter(viewType, renderData) {
     viewType = this.parseViewType(viewType, renderData);
-    return this.renderers[viewType.constructor.typeName].renderTableFilter(viewType, renderData, this);
+    return this.renderers[viewType.constructor.typeName].renderFilter(viewType, renderData, this);
   }
 
   /**
@@ -58,8 +89,10 @@ export default class Renderers {
    * @params {RenderData} renderData - The data to render.
    */
   getValue(viewType, renderData) {
-    viewType = this.parseViewType(viewType, renderData);
-    return viewType.getValue(renderData, this);
+    return this.cache('value', viewType, renderData.dataValue, () => {
+      viewType = this.parseViewType(viewType, renderData);
+      return viewType.getValue(renderData, this);
+    });
   }
 
   /**
@@ -68,8 +101,10 @@ export default class Renderers {
    * @params {RenderData} renderData - The data to render.
    */
   getDisplay(viewType, renderData) {
-    viewType = this.parseViewType(viewType, renderData);
-    return viewType.getDisplay(renderData, this);
+    return this.cache('display', viewType, renderData.dataValue, () => {
+      viewType = this.parseViewType(viewType, renderData);
+      return viewType.getDisplay(renderData, this);
+    });
   }
 
   /**
@@ -86,8 +121,8 @@ export default class Renderers {
    * exists in the renderData options, attempt to look up the viewType by name.
    */
   parseViewType(viewType, renderData) {
+    const viewTypes = this.getViewTypes(renderData);
     if (typeof viewType == 'string') {
-      const viewTypes = renderData.options.viewTypes || {};
       const lookup = viewTypes.get(viewType);
       if (lookup) {
         return lookup;
@@ -96,7 +131,15 @@ export default class Renderers {
       return viewType;
     }
 
-    throw new Error(`Invalid ViewType passed: ${viewType}`);
+    throw new Error(`Invalid ViewType passed: ${viewType} (${viewTypes})`);
+  }
+
+  getViewTypes(renderData) {
+    const viewTypes = typeof renderData.options.viewTypes == 'function' ?
+      renderData.options.viewTypes(renderData) :
+      renderData.options.viewTypes;
+
+    return viewTypes || Map();
   }
 }
 

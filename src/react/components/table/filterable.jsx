@@ -1,8 +1,79 @@
-import {Map} from 'immutable';
+import {List, Map} from 'immutable';
 import DebounceInput from 'react-debounce-input';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
+import RenderData from '~/renderers/renderData';
+import reactRenderers from '~/react/renderers';
+
 import BaseTable from './base';
+
+class InputDebounce extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = this.createInitialState(props);
+    this.callbackTimer = null;
+  }
+
+  createInitialState(props) {
+    return {
+      renderData: new RenderData(
+        props.renderData.dataType,
+        props.renderData.dataValue,
+        props.renderData.options
+      )
+    };
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.renderData.dataValue != this.props.renderData.dataValue) {
+      this.onChange(newProps.renderData.dataValue);
+    }
+  }
+
+  onChange = (value) => {
+    const renderData = this.state.renderData;
+    renderData.dataValue = value;
+    this.setState({renderData});
+
+    clearTimeout(this.callbackTimer);
+    this.callbackTimer = setTimeout(() => {
+      const {onChange} = this.props.renderData.options;
+      onChange(this.state.renderData.dataValue);
+    }, 500);
+  }
+
+  onBlur = () => {
+    clearTimeout(this.callbackTimer);
+    if (this.state.renderData.dataValue != this.props.renderData.dataValue) {
+      const {onChange} = this.props.renderData.options;
+      onChange(this.state.renderData.dataValue);
+    }
+  }
+
+  render() {
+    const subRenderData = new RenderData(
+      this.state.renderData.dataType,
+      this.state.renderData.dataValue,
+      {
+        onChange: this.onChange,
+        onBlur: this.onBlur
+      }
+    );
+
+    return (
+      <div
+        onClick={e => e.stopPropagation()}
+        onKeyDown={e => e.stopPropagation()}
+      >
+        {reactRenderers.renderFilter(
+          this.props.viewType,
+          subRenderData
+        )}
+      </div>
+    );
+  }
+}
 
 export default function filterableTable(Table) {
   return class FilterableTable extends BaseTable {
@@ -18,6 +89,7 @@ export default function filterableTable(Table) {
     }
 
     static defaultProps = {
+      ...BaseTable.defaultProps,
       showFilterButton: true,
       showFilterFields: true
     }
@@ -44,12 +116,11 @@ export default function filterableTable(Table) {
       }
     }
 
-    onFilterChange(column) {
-      return e => {
-        const filterValue = e.target.value;
+    onFilterChange(columnProps) {
+      return filterValue => {
         this.props.onFilter ?
-          this.props.onFilter(column, filterValue) :
-          this.onFilter(column, filterValue);
+          this.props.onFilter(columnProps, filterValue) :
+          this.onFilter(columnProps, filterValue);
       };
     }
 
@@ -87,24 +158,84 @@ export default function filterableTable(Table) {
       }
     }
 
+    // This function needs to be optimized for performance reasons since it
+    // is performing string / other value matching on potentially large numbers
+    // of rows.
     rowsModifier = rows => {
-      return rows
-        .filter(this.filterModel);
+      const columnsProps = this.props.columns
+        .map(column => column.getTableProps());
+
+      const filters = this.getFilters()
+        .map((filterValue, label) => [
+          filterValue,
+          columnsProps.find(columnProps => columnProps.label == label)
+        ])
+        .filter(([filterValue, columnProps]) => !!columnProps)
+        .toList()
+        .toArray();
+
+      const renderData = new RenderData(this.props.dataType, null);
+
+      return List()
+        .withMutations(newRows => {
+          // TODO: Maybe move this function out of the react specific code and
+          // into some generic filtering code.
+          for (let rowIndex = 0; rowIndex < rows.size; rowIndex++) {
+            const row = rows.get(rowIndex);
+            let matches = true;
+
+            for (let filterIndex = 0; filterIndex < filters.length; filterIndex++) {
+              const [filterValue, columnProps] = filters[filterIndex];
+
+              renderData.dataValue = row;
+              const rowValue = columnProps.viewType.getValue(renderData);
+
+              if (typeof filterValue == 'function') {
+                if (!filterValue(rowValue, row)) {
+                  matches = false;
+                  break;
+                }
+              } else if (rowValue !== null && typeof rowValue != 'undefined') {
+                if (Array.isArray(filterValue)) {
+                  if (!filterValue.some(filterValue => columnProps.filter(filterValue, rowValue, this.props.dataType))) {
+                    matches = false;
+                    break;
+                  }
+                } else {
+                  if (!columnProps.filter(filterValue, rowValue, this.props.dataType)) {
+                    matches = false;
+                    break;
+                  }
+                }
+              } else {
+                matches = false;
+                break;
+              }
+            }
+
+            if (matches) {
+              newRows.push(row);
+            }
+          }
+        });
     }
 
     inputFilterRenderer(column) {
-      if (column.label) {
-        return <DebounceInput
-          className='formatron-filter-input'
-          value={this.getFilters().get(column.label, '')}
-          debounceTimeout={100}
-          onChange={this.onFilterChange(column)}
-          onClick={e => e.stopPropagation()}
-          onKeyDown={e => e.stopPropagation()}
-        />;
-      } else {
+      const columnProps = column.getTableProps();
+
+      if (!columnProps.label) {
         return null;
       }
+
+      const dataType = column.getRef ?
+        this.props.dataType.getField(column.getRef()) :
+        null;
+      const dataValue = this.getFilters().get(columnProps.label, '');
+      const renderData = new RenderData(dataType, dataValue, {
+        onChange: this.onFilterChange(columnProps)
+      });
+
+      return <InputDebounce viewType={column} renderData={renderData} debounce={400} />;
     }
 
     isFiltering() {
@@ -115,43 +246,21 @@ export default function filterableTable(Table) {
       return this.props.filters || this.state.filters;
     }
 
-    onFilter(column, filterValue) {
-      if (filterValue) {
-        this.setState({
-          filters: this.state.filters
-            .set(column.label, filterValue)
-        });
-      } else {
-        this.setState({
-          filters: this.state.filters
-            .remove(column.label)
-        });
-      }
-    }
+    onFilter(columnProps, filterValue) {
+      const removeFilter = typeof filterValue == 'undefined' ||
+        filterValue === null ||
+        filterValue === '' ||
+        (Array.isArray(filterValue) && filterValue.length == 0);
 
-    filterModel = model => {
-      const columns = this.props.schema.getColumns();
-      return this.getFilters()
-        .every((filterValue, label) => {
-          const column = columns.find(column => column.label == label);
-          if (!column) {
-            return true;
-          }
+      const filters = removeFilter ? (
+        this.state.filters
+          .remove(columnProps.label)
+      ) : (
+        this.state.filters
+          .set(columnProps.label, filterValue)
+      );
 
-          const rowValue = column.getCell(model, {preferQuick: false});
-
-          if (typeof filterValue == 'function') {
-            return filterValue(rowValue, model);
-          }
-
-          if (rowValue !== null && typeof rowValue != 'undefined') {
-            const valueString = rowValue.toString().toLowerCase();
-            const filterString = filterValue.toLowerCase();
-            return valueString.indexOf(filterString) != -1;
-          }
-
-          return false;
-        });
+      this.setState({filters});
     }
 
     render() {
