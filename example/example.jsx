@@ -2,20 +2,24 @@ import {List, Map} from 'immutable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {Form, Table} from 'formatron';
+import Form from 'formatron/react/components/form';
+import Table from 'formatron/react/components/table';
 
 import 'font-awesome-webpack-2';
 
-import './example.sass';
-import './types/linked';
+import 'formatron/theme';
 
-import exampleSchema, {createExample, createExamples} from './schema/example';
+import './example.sass';
+
+//import './types/linked';
+
+import {exampleDataType, exampleViewTypes, createExamples} from './schema/example';
 
 class ExampleForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      model: createExample()
+      model: createExamples(1).get(0)
     };
   }
 
@@ -26,12 +30,11 @@ class ExampleForm extends React.Component {
 
   render() {
     return <Form
-      schema={exampleSchema}
+      viewTypes={exampleViewTypes}
+      viewType='form'
+      dataType={exampleDataType}
       model={this.state.model}
-      disabled={Map({
-        disabledValue: 1,
-        notDisabledValue: undefined
-      })}
+
       onSubmit={this.onSubmit}
       actions={[<button key='submit'>Submit</button>]}
     />;
@@ -42,7 +45,7 @@ class ExampleTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      models: createExamples(),
+      models: createExamples(10000),
       editable: false
     };
   }
@@ -85,34 +88,8 @@ class ExampleTable extends React.Component {
   }
 }
 
-class Example extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loc: 'form'
-    };
-  }
-
-  go = loc => {
-    this.setState({loc});
-  }
-
-  render() {
-    return <div>
-      <p>{this.state.loc}</p>
-      <div>
-        <button onClick={() => this.go('form')}>Form</button>
-        <button onClick={() => this.go('table')}>Table</button>
-      </div>
-      {this.state.loc == 'form' ?
-        <ExampleForm /> :
-        <ExampleTable />
-      }
-    </div>;
-  }
-}
-
 ReactDOM.render(
-  <Example />,
+  <ExampleForm />,
   document.getElementById('example-app')
 );
+

@@ -1,54 +1,29 @@
 import {List} from 'immutable';
-import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 
-import Label from '~/components/label';
+import ViewType from './';
 
-export default function(register) {
-  register('button', {
-    Component: ButtonComponent,
-    getDisplayValue: getButtonDisplay,
-    getTableSizing: getButtonSizing
-  });
-}
+export default class ButtonType extends ViewType {
+  static typeName = 'button';
 
-const ButtonComponent = ({options, getters, callbacks}) => {
-  const args = options.get('args', List()).toArray();
-
-  return <button
-    className='form-button'
-    type='button'
-    onClick={() => callbacks.onButtonClick(...args)}
-  >
-    <Label getters={getters}>{options.get('label')}</Label>
-  </button>;
-};
-
-ButtonComponent.propTypes = {
-  options: ImmutablePropTypes.contains({
-    label: React.PropTypes.string,
-    args: ImmutablePropTypes.list
-  }),
-  getters: React.PropTypes.objectOf(React.PropTypes.func),
-  callbacks: React.PropTypes.objectOf(React.PropTypes.func)
-};
-
-function getButtonDisplay(options, getters) {
-  return callbacks => <ButtonComponent
-    options={options}
-    getters={getters}
-    callbacks={callbacks}
-  />;
-}
-
-function getButtonSizing(options) {
-  if (options.get('width')) {
-    return {
-      width: options.get('width'),
-      grow: 0,
-      shrink: 0
-    };
+  static parseOptions(field, parseField) {
+    return super.parseOptions(field, parseField)
+      .update('args', List(), args => args);
   }
-  return undefined;
+
+  getArgs() {
+    return this.options.get('args', List());
+  }
+
+  getValue(renderData) {
+    return this.getLabel(renderData);
+  }
+
+  getDisplay(renderData) {
+    return this.getValue(renderData);
+  }
+
+  getTableProps() {
+    return super.getTableProps('');
+  }
 }
 

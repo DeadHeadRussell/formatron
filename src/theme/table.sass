@@ -1,0 +1,49 @@
+.formatron-table
+  .ReactVirtualized__Table__headerColumn
+    .formatron-input
+      width: 100%
+      height: 36px
+      background: white
+      color: black
+
+    .formatron-range
+      display: flex
+      flex-flow: row nowrap
+      align-items: center
+
+  .ReactVirtualized__Table__row
+    border-bottom: 1px solid #e0e0e0
+
+    &.formatron-table-row-even
+      background-color: #fafafa
+
+  .ReactVirtualized__Table__rowColumn
+    > .formatron-input:not(.formatron-checkbox)
+      width: 100%
+
+.ReactVirtualized__Table__sortableHeaderIcon
+  margin-left: 7px
+  transform: scale(1.8, 1.8)
+
+.formatron-data-input:not(.bool),
+.formatron-data-input-wrapper
+  .formatron-field
+    margin-bottom: 0
+
+  .formatron-filter-input
+    width: 100%
+
+.formatron-filter-input
+  margin-top: 5px
+  padding: 8px 5px
+  border: 1px solid grey
+  border-radius: 3px
+  font: inherit
+  font-weight: normal
+
+.formatron-table-filterable-empty
+  height: 36px
+
+.formatron-table-button
+  margin: 0 5px
+

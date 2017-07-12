@@ -1,6 +1,6 @@
 {
   "name": "formatron",
-  "version": "0.0.21",
+  "version": "0.0.26",
   "description": "A library that generates forms based on JSON schema.",
   "main": "./lib",
   "scripts": {
@@ -10,9 +10,10 @@
     "build": "npm run build:lib && npm run build:dist",
     "build:lib": "npm run build:lib:js && npm run build:lib:css && npm run build:lib:assets",
     "build:lib:js": "babel src --out-dir lib",
-    "build:lib:css": "node-sass --output lib src",
-    "build:lib:assets": "cp src/components/loading/loading.png lib/components/loading",
+    "build:lib:css": "node-sass --load-path=./node_modules --output lib src",
+    "build:lib:assets": "cp src/theme/*.png lib/theme/",
     "build:dist": "webpack --env.prod",
+    "clean": "rm -r lib/* dist/*",
     "preversion": "echo 'tests go here'",
     "version": "npm run build",
     "postversion": "git push && git push --tags"
@@ -22,10 +23,11 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "debounce": "^1.0.2",
+    "es6-error": "^4.0.2",
     "font-awesome": "^4.7.0",
     "font-awesome-webpack-2": "^1.0.0",
     "google-libphonenumber": "^1.0.27",
-    "immutable": "^3.0.0",
+    "immutable": "^4.0.0-rc.2",
     "less": "^2.7.2",
     "moment": "^2.0.0",
     "react": "^15.0.0",
@@ -40,6 +42,7 @@
     "react-tabs": "^0.7.0",
     "react-tether": "^0.5.6",
     "react-virtualized": "^9.7.2",
+    "react-virtualized-select": "^3.0.1",
     "yet-another-datetime-picker": "^0.4.6"
   },
   "devDependencies": {

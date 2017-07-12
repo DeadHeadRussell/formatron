@@ -1,10 +1,17 @@
-import Immutable, {Iterable, List, Map} from 'immutable';
+import Immutable, {List, Map} from 'immutable';
 
-import './index.sass';
+import Type from '../type';
+import ValidationError from './validationError';
 
+/**
+ * A set of standard validation errors that registered types can use.
+ *
+ * TODO: Add a better way to modify the basic error messages other than just
+ * editing the imported object, which is baaaaad.
+ */
 export const validationErrors = {
   required: 'This field is required',
-  undefinedValue: 'This field has an undefined value',
+  undefinedValue: 'This field is in a bad state. Please change the value and try again',
   invalidOption: 'The value selected does not exist',
   integer: 'This field must be an integer',
   finite: 'This field must be a finite number',
@@ -16,158 +23,213 @@ export const validationErrors = {
   singleline: 'This field must contain just one line of text'
 };
 
-export function createDataType(typeName, functions, schemaFunctions) {
-  const type = {
-    get name() {
-      return typeName;
-    },
-    parse,
-    create
-  };
+/**
+ * The base data type. Every registered data type must eventually inherit from this.
+ */
+export default class DataType extends Type {
+  /** The data type name. This must be overridden. */
+  static typeName = '';
 
-  return type;
-
-  function parse(field) {
-    return create(field.get('name'), field.get('options'), field.get('path'));
+  static parse(field, parseField) {
+    field = Immutable.fromJS(field);
+    return new this(
+      field.get('name'),
+      this.parseOptions(field.get('options'), parseField)
+    );
   }
 
-  function create(name, options = Map(), path = List()) {
-    path = List(path);
+  /**
+   * Creates a new instance of a data type.
+   * @param {string} name - The unique name of this instance.
+   * @param {object} options - Options to apply to this instance.
+   */
+  constructor(name, options) {
+    super();
+    this.name = name;
+    this.options = Immutable.fromJS(options || {});
+  }
 
-    if (!Map.isMap(options)) {
-      options = Immutable.fromJS(options);
+  getName() {
+    return this.name;
+  }
+
+  getOptions() {
+    return this.options();
+  }
+
+  isRequired() {
+    return this.options.get('required', false);
+  }
+
+  isUnique() {
+    return this.options.get('unique', false);
+  }
+
+  isGenerated() {
+    return this.options.get('generated', false);
+  }
+
+  getDefaultValue(defaultValue = null) {
+    const optionsDefaultValue = this.options.get('defaultValue');
+    return typeof optionsDefaultValue == 'undefined' ?
+      defaultValue :
+      optionsDefaultValue;
+  }
+
+  getValidator() {
+    return this.options.get('validator', () => {});
+  }
+
+  getValidationLinks() {
+    return this.options.get('validationLinks', List());
+  }
+
+  /**
+   * Checks if the passed in value is "not empty".
+   * @param {object} value - The data value to check.
+   * @returns {bool} `true` if it is "not empty", otherwise, `false`.
+   */
+  hasValue(value) {
+    if (typeof value == 'undefined' || value === null) {
+      return false;
     }
+    return true;
+  }
 
-    if (functions.parseOptions) {
-      options = functions.parseOptions(options, name);
-    }
+  /**
+   * Returns a parsed value. A value of `undefined` implies that the value is
+   * missing and should be filled in by a default value, first supplied in the
+   * options, and if not, the one supplied by the type.
+   * @params {object} value - The data value to parse.
+   */
+  getValue(value) {
+    const values = this.isGenerated() ?
+      [value] :
+      [
+        value,
+        this.getDefaultValue()
+      ];
 
-    let schema = null;
+    return values
+      .find(value => typeof value != 'undefined');
+  }
 
+  // TODO: For the following two functions, potentially look at the ref and
+  // throw an error if they try to reference child types when there are none?
+  getField(ref) {
+    return this;
+  }
+
+  getFieldAndValue(value, ref) {
     return {
-      get type() {
-        return type;
-      },
-      get name() {
-        return name;
-      },
-      get options() {
-        return options;
-      },
-      get path() {
-        return path;
-      },
-
-      set schema(s) {
-        schema = s;
-      },
-
-      Component,
-      useLabel,
-      hasValue,
-      getDefaultValue,
-      validate,
-      toString,
-      toConditionString,
-
-      getSchema,
-      getModel
+      field: this,
+      value: this.getValue(value)
     };
+  }
 
-    function hasValue(value) {
-      if (typeof value == 'undefined') {
-        return false;
-      }
+  /**
+   * Returns the value parsed for human consumption.
+   * @params {object} value - The data value to parse.
+   * @returns {string} The parsed value.
+   */
+  getDisplay(value) {
+    value = this.getValue(value);
+    return (value && value.toString) ? value.toString() : '';
+  }
 
-      if (functions.hasValue) {
-        return functions.hasValue(value, options);
-      }
-      return value !== null && (!Iterable.isIterable(value) || value.size > 0);
+  /**
+   * Validates that the given value follows the rules of the data type.
+   * @params {object} value - The value to validate.
+   * @returns An error if one was found, undefined otherwise.
+   */
+  validate(value, callback) {
+    value = this.getValue(value);
+
+    if (value == this.getDefaultValue()) {
+      return;
     }
 
-    function Component(props) {
-      if (props.value === undefined) {
-        console.error(`prop.value is undefined for ${type.name} and ${name}`);
-      }
-      const SubComponent = functions.component;
-      return <div className='data-field'>
-        <SubComponent {...props} name={name} options={options} schema={schema} />
-      </div>;
-    }
-
-    function useLabel() {
-      if (functions.useLabel) {
-        return functions.useLabel(options);
-      }
-      return true;
-    }
-
-    function getDefaultValue() {
-      if (functions.getDefaultValue) {
-       return functions.getDefaultValue(options);
-      }
-      return null;
-    }
-
-    function validate(value) {
-      try {
-        if (typeof value === 'undefined') {
-          if (!options.get('generated')) {
-            throw new Error(validationErrors.undefinedValue);
-          }
-          return;
-        }
-
-        if (!hasValue(value)) {
-          if (!options.get('generated') && options.get('required')) {
-            throw new Error(validationErrors.required);
-          }
-          return;
-        }
-
-        if (functions.validate) {
-          functions.validate(value, options, schema);
-        }
-
-      } catch(error) {
-        return error.message;
+    if (!this.hasValue(value)) {
+      if (this.isGenerated()) {
+        return;
+      } else if (this.isRequired()) {
+        return new ValidationError(validationErrors.required, this, value);
+      } else {
+        return;
       }
     }
 
-    function toString(value) {
-      if (typeof value == 'undefined') {
-        value = getDefaultValue();
-      }
-
-      if (functions.toString) {
-        return functions.toString(value, options, schema);
-      }
-      return (value && value.toString) ? value.toString() : '';
+    if (callback) {
+      return callback();
     }
+  }
 
-    function toConditionString(value) {
-      if (typeof value == 'undefined') {
-        value = getDefaultValue();
-      }
+  filter(filterValue, rowValue) {
+    return filterValue == rowValue;
+  }
+}
 
-      if (functions.toConditionString) {
-        return functions.toConditionString(name, value, options);
-      }
-      return `${name} = ${toString(value)}`;
+export class ImmutableDataType extends DataType {
+  static typeName = '';
+
+  hasValue(value) {
+    if (!super.hasValue(value)) {
+      return false;
     }
+    return value && value.size > 0;
+  }
 
-    function getSchema(value) {
-      if (schemaFunctions) {
-        return schemaFunctions.getSchema(options, value, schema);
-      }
-      throw new Error(`"getSchema" is not implemented for "${typeName}", "${name}"`);
+  getValue(value, ref) {
+    value = super.getValue(value);
+    if (ref) {
+      return this.getFieldAndValue(value, ref).value;
     }
+    return value;
+  }
 
-    function getModel(value) {
-      if (schemaFunctions) {
-        return schemaFunctions.getModel(options, value, schema);
+  getField(ref) {
+    throw new Error('`getField` is not implemented');
+  }
+
+  getNextField(field, refs) {
+    if (refs.size == 0) {
+      return field;
+    } else {
+      if (field && field.getField) {
+        return field.getField(refs);
       }
-      throw new Error(`"getModel" is not implemented for "${typeName}", "${name}"`);
+      throw new Error(`Cannot call "getField" "${field.name}" of data type "${field.constructor}"`);
+    }
+  }
+
+  getFieldAndValue(value, ref) {
+    throw new Error('`getFieldAndValue` is not implemented');
+  }
+
+  getNextFieldAndValue(field, value, refs) {
+    if (refs.size == 0) {
+      return {field, value};
+    } else {
+      if (field && field.getFieldAndValue) {
+        return field.getFieldAndValue(value, refs);
+      }
+      throw new Error(`Cannot call "getFieldAndValue" for "${field.name}" of data type "${field.constructor}"`);
+    }
+  }
+
+  setValue(value, ref, newValue) {
+    throw new Error('`setField` is not implemented');
+  }
+
+  setNextValue(field, oldValue, newValue, refs) {
+    if (refs.size == 0) {
+      return newValue;
+    } else {
+      if (field.setValue) {
+        return field.setValue(oldValue, refs, newValue);
+      }
+      throw new Error(`Cannot call "setValue" for "${field.name}" of data type "${field.constructor}"`);
     }
   }
 }
+

@@ -1,222 +1,132 @@
-import DatetimePicker from 'yet-another-datetime-picker';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import React from 'react';
-import TetheredComponent from 'react-tether';
-import debounce from 'debounce';
 import moment from 'moment';
 
-const SECS_IN_DAY = 24 * 60 * 60;
-const MS_IN_DAY = SECS_IN_DAY * 1000;
+import DataType from './';
 
-export default function(register) {
-  register('date', {
-    component: DateComponent,
-    toString: (value, options) => {
-      return unixToString(value, options.get('dateType'));
-    }
-  });
-}
+export default class DateType extends DataType {
+  static typeName = 'date';
 
-const propTypes = {
-  name: React.PropTypes.string.isRequired,
-  value: React.PropTypes.number,
-  options: ImmutablePropTypes.map.isRequired,
-  disabled: React.PropTypes.bool.isRequired,
-  onChange: React.PropTypes.func.isRequired,
-  onBlur: React.PropTypes.func.isRequired
-};
-
-class DateComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.blurTimeout = 0;
-    this.state = this.createInitialState(props);
+  getType() {
+    return this.options.get('dateType', 'datetime');
   }
 
-  // Debounce greatly improves time picker slider performance.
-  componentWillReceiveProps = debounce((props) => {
-    this.setState({input: this.createInitialState(props).input});
-  }, 15);
-
-  handleFocus = () => {
-    clearTimeout(this.blurTimeout);
-    this.setState({showPicker: true});
+  getFormat() {
+    return this.options.get('format', this.getDefaultFormat());
   }
 
-  handleBlur = () => {
-    this.saveInput();
-    // Wait for possible focus event before handling the blur event.
-    this.blurTimeout = setTimeout(() => {
-      this.setState({showPicker: false});
-      this.props.onBlur();
-    });
-  }
-
-  saveInput = () => {
-    const unixTimestamp = this.getInputUnixTime();
-    this.props.onChange(unixTimestamp);
-  }
-
-  handlePickerChange = (datetime) => {
-    const type = this.props.options.get('dateType');
-    const unixTimestamp = datetimeToUnix(datetime, type);
-    this.props.onChange(unixTimestamp);
-  }
-
-  handleInputChange = (event) => {
-    this.setState({input: event.target.value});
-  }
-
-  handleEnter = (event) => {
-    if (event.which == 13) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.handleBlur();
+  getDefaultFormat() {
+    switch (this.getType()) {
+      case 'time':
+        return 'hh:mm a';
+      case 'date':
+        return 'YYYY-MM-DD';
+      case 'datetime':
+      default:
+        return 'YYYY-MM-DD hh:mm a';
     }
   }
 
-  createInitialState(props) {
-    const type = props.options.get('dateType');
-    const datetime = unixToDatetime(props.value, type);
-    return {
-      showPicker: false,
-      input: this.getInputFromDatetime(datetime)
-    };
+  convert(value, toType) {
+    const fromType = typeof value == 'string' ?
+      'string' :
+      (value instanceof Date || value instanceof moment) ?
+        'datetime' :
+        'unix';
+    
+    return this.conversions[fromType][toType](value);
   }
 
-  getInputFromDatetime(datetime) {
-    if (datetime.isValid()) {
-      const type = this.props.options.get('dateType');
-      return datetimeToString(datetime, type);
+  getDisplay(value) {
+    value = this.getValue(value);
+    return this.convert(value, 'string');
+  }
+
+  unixToDatetime = value => {
+    if (value === null) {
+      return moment(null);
+    }
+
+    if (this.getType() == 'time') {
+      return moment.utc(value * 1000);
+    } else {
+      return moment(value * 1000);
+    }
+  }
+
+  unixToString = value => {
+    const datetime = this.unixToDatetime(value);
+    return this.datetimeToString(datetime);
+  }
+
+  datetimeToUnix = value => {
+    if (this.getType() == 'time') {
+      return value.hours() * 3600 + value.minutes() * 60 + value.seconds();
+    } else {
+      return value.valueOf() / 1000;
+    }
+  }
+
+  datetimeToString = value => {
+    if (value && value.isValid()) {
+      return value.format(this.getFormat());
     }
     return '';
   }
 
-  getInputUnixTime() {
-    if (!this.state.input) return null;
-    const type = this.props.options.get('dateType');
-    const datetime = stringToDatetime(this.state.input, type);
-    if (datetime.isValid()) {
-      return datetimeToUnix(datetime, type);
+  stringToUnix = value => {
+    if (this.getType() == 'time') {
+      const today = moment.utc(value, this.getFormat());
+      return this.datetimeToUnix(today);
+    } else {
+      const datetime = this.stringToDatetime(value);
+      return this.datetimeToUnix(datetime);
     }
-    return null;
   }
 
-  getPickerDatetime() {
-    const type = this.props.options.get('dateType');
-    const value = this.props.value;
-    if (value !== null) return unixToDatetime(value, type);
-    return moment();
+  stringToDatetime = value => {
+    if (this.getType() == 'time') {
+      const today = moment.utc(value, this.getFormat());
+      const unixTime = this.datetimeToUnix(today);
+      return this.unixToDatetime(unixTime);
+    } else {
+      return moment(value);
+    }
   }
 
-  renderPicker() {
-    const {options} = this.props;
-    return (
-      <TetheredComponent
-        classes={{
-          element: 'tether-element-top'
-        }}
-        renderElementTo='body'
-        attachment='top left'
-        targetAttachment='bottom left'
-        constraints={[{
-          to: 'scrollParent',
-          attachment: 'together'
-        }, {
-          to: 'window',
-          attachment: 'together'
-        }]}
-      >
-        <div className='tether-target' />
-        <DatetimePicker
-          className='form-data-datetime-picker'
-          onFocusCapture={this.handleFocus}
-          onBlur={this.handleBlur}
-          moment={this.getPickerDatetime()}
-          onChange={this.handlePickerChange}
-          onDone={this.handleBlur}
-          onKeyPress={this.handleEnter}
-          type={options.get('dateType')}
-          prevMonthIcon='fa fa-angle-left'
-          nextMonthIcon='fa fa-angle-right'
-          doneIcon='fa fa-check'
-          dateIcon='fa fa-calendar'
-          timeIcon='fa fa-clock-o'
-        />
-      </TetheredComponent>
-    );
+  stringToString = value => {
+    return this.datetimeToString(this.stringToDatetime(value));
   }
 
-  render() {
-    const {options, disabled} = this.props;
-    return (
-      <div className='form-data-input-date-wrapper'>
-        <input
-          className='form-data-input date'
-          type='text'
-          value={this.state.input}
-          onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
-          onChange={this.handleInputChange}
-          onKeyPress={this.handleEnter}
-          placeholder={options.get('placeholder')}
-          disabled={disabled}
-        />
-        {this.state.showPicker && !disabled ? this.renderPicker() : null}
-      </div>
-    );
+  conversions = {
+    unix: {
+      unix: value => value,
+      datetime: this.unixToDatetime,
+      string: this.unixToString
+    },
+    datetime: {
+      unix: this.datetimeToUnix,
+      datetime: value => value,
+      string: this.datetimeToString
+    },
+    string: {
+      unix: this.stringToUnix,
+      datetime: this.stringToDatetime,
+      string: this.stringToString
+    }
   }
-}
 
-DateComponent.propTypes = propTypes;
+  filter(filterValue, rowValue) {
+    const lowerInput = this.convert(filterValue.get('lower'), 'unix');
+    const upperInput = this.convert(filterValue.get('upper'), 'unix');
 
-function unixToDatetime(unixTime, type) {
-  if (unixTime === null) return moment(null);
-  if (type === 'time') {
-    // Add time to start of day.
-    const now = Date.now();
-    const startOfDay = now - now % MS_IN_DAY;
-    return moment(startOfDay + unixTime * 1000);
-  }
-  return moment(unixTime * 1000);
-}
+    const lower = Number.isFinite(lowerInput) ?
+      lowerInput :
+      -Infinity;
 
-function datetimeToUnix(datetime, type) {
-  const unix = datetime.valueOf() / 1000;
-  // Offset time from start of day.
-  if (type === 'time') return (unix + SECS_IN_DAY) % SECS_IN_DAY;
-  return unix;
-}
+    const upper = Number.isFinite(upperInput) ?
+      upperInput :
+      Infinity;
 
-function stringToDatetime(str, type) {
-  if (type === 'time' && isNaN(str)) {
-    return moment(str, getDateFormat(type));
-  } else {
-    return moment(str);
-  }
-}
-
-function datetimeToString(datetime, type) {
-  if (datetime.isValid()) {
-    return datetime.format(getDateFormat(type));
-  } else {
-    return '';
-  }
-}
-
-function unixToString(unixTime, type) {
-  return datetimeToString(unixToDatetime(unixTime, type), type);
-}
-
-function getDateFormat(type) {
-  switch (type) {
-    case 'time':
-      return 'hh:mm a';
-    case 'date':
-      return 'YYYY-MM-DD';
-    case 'datetime':
-    default:
-      return 'YYYY-MM-DD hh:mm a';
+    return rowValue >= lower && rowValue <= upper;
   }
 }
 

@@ -1,14 +1,27 @@
-export {default as create, createListSchema as createList} from './schema';
-export {default as parseTemplate} from './template';
-import * as Types from './types';
-export {Types};
+import * as react from './react';
+import * as refs from './refs';
+import * as renderers from './renderers';
+import RenderData from './renderers/renderData';
+import Renderer from './renderers/renderer';
+import * as template from './template';
+import * as types from './types';
 
-export {default as Form} from './components/form';
-export {default as Label} from './components/label';
-export {default as Select} from './components/tetheredSelect';
-export {default as Table} from './components/table';
-import * as Tables from './components/table';
-export {Tables};
+import './theme';
 
-import 'react-virtualized/styles.css';
-import './index.sass';
+const Formatron = {
+  react,
+  refs,
+  renderers: renderers.default,
+  template,
+  types
+};
+
+Formatron.refs.parseRef = refs.default;
+Formatron.template.parseTemplate = template.default;
+
+Formatron.renderers.valueRenderers = renderers.valueRenderers;
+Formatron.renderers.RenderData = RenderData;
+Formatron.renderers.Renderer = Renderer;
+
+export default Formatron;
+

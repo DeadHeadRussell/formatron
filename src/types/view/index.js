@@ -1,153 +1,93 @@
-import Immutable, {Iterable, List, Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 
-import './index.sass';
+import Type from '../type';
 
-export function createViewType(typeName, functions) {
-  return {
-    get name() {
-      return typeName;
-    },
-    parse,
-    create
-  };
-  
-  function converter(key, value) {
-    if (value.has('typeName')) {
-      return value.toJS();
-    }
-    return Iterable.isKeyed(value) ? Map(value) : List(value);
+let viewIds = 0;
+
+/**
+ * The base view type. Every registered view type must eventually inherit from this.
+ */
+export default class ViewType extends Type {
+  static typeName = '';
+
+  static parseOptions(field, parseField) {
+    return field
+      .remove('type')
+      .update('label', label => Map.isMap(label) ?
+        parseField(label) :
+        label
+      );
   }
 
-  function parse(field, parseField) {
-    field = field.remove('type');
-
-    if (functions.parseOptions) {
-      field = functions.parseOptions(field, parseField);
-    }
-
-    return create(field);
+  /**
+   * Creates a new instance of a view type.
+   * @param {object} options - Options to apply to this instance.
+   */
+  constructor(options) {
+    super();
+    this.options = Immutable.fromJS(options || {});
+    this.uniqueId = viewIds++;
   }
 
-  function create(options = Map()) {
-    options = Immutable.fromJS(options, converter);
+  /**
+   * Returns a label using 1 of 3 options. If the internal label is a basic
+   * value, return it. If it is a view type, get its associated display value.
+   * If it is a function, call the function with the render data.
+   *
+   * @param {RenderData} renderData - The data to maybe generate the label from.
+   * @returns {string} They label, if any, associated with the view.
+   */
+  getLabel(renderData) {
+    const label = this.options.get('label') || '';
+    if (label instanceof ViewType) {
+      return label.getDisplay(renderData);
+    } else if (typeof label == 'function') {
+      return label(renderData);
+    }
+    return label;
+  }
+
+  /**
+   * Returns display information for table based displays.
+   * Currently, the only display used is react-virtualized, so the options are
+   * entirely based on that library.
+   *
+   * For a view type to be used as a table column, it must have a string label.
+   * TODO: Consider allowing any labels, but pass in "dummy" render data that
+   * always returns empty (or default) values. In the current setup, this would
+   * work by just passing the data type and using `undefined` for the data
+   * value.
+   *
+   * If a width is supplied to the view type, the default shrink / grow factor
+   * is 0. Otherwise, the default factor is 1 and the default width is 100.
+   *
+   * @returns {object}
+   */
+  getTableProps(label) {
+    label = typeof label != 'undefined' ?
+      label :
+      (this.options.get('label') || '');
+
+    if (typeof label != 'string') {
+      throw new Error(`Error ${this.constructor.name}: labels must only be plain strings when used with tables.`);
+    }
+
+    const defaultFlex = this.options.has('width') ? 0 : 1;
 
     return {
-      get typeName() {
-        return typeName;
-      },
-
-      get value() {
-        return !!functions.getValue;
-      },
-
-      get display() {
-        return !!functions.Component;
-      },
-
-      get label() {
-        return options.get('label') || '';
-      },
-
-      Component(props) {
-        return <div className='form-field'>
-          <functions.Component options={options} {...props} />
-        </div>;
-      },
-
-      getTableSizing() {
-        if (functions.getTableSizing) {
-          return functions.getTableSizing(options);
-        }
-        return undefined;
-      },
-
-      getValue(getters) {
-        if (functions.getValue) {
-          return functions.getValue(options, getters);
-        } else {
-          throw new Error(`"getValue" is not implemented for "${typeName}", "${options.get('label', '')}"`);
-        }
-      },
-
-      getDisplay(getters) {
-        if (functions.getDisplayValue) {
-          return functions.getDisplayValue(options, getters);
-        } else {
-          throw new Error(`"getDisplay" is not implemented for "${typeName}", "${options.get('label', '')}"`);
-        }
-      }
+      viewType: this,
+      label: label,
+      dataKey: label,
+      width: this.options.get('width', 100),
+      flexGrow: this.options.get('flexGrow', defaultFlex),
+      flexShrink: this.options.get('flexShrink', defaultFlex),
+      filterType: 'equals',
+      filter: this.filter.bind(this)
     };
   }
-}
 
-export const FormPropTypes = {
-  value: createChainableTypeChecker(createFormTypeChecker('value')),
-  display: createChainableTypeChecker(createFormTypeChecker('display'))
-};
-
-export function compareAll(cmp) {
-  return args => {
-    const previousValue = args.reduce((previousValue, value) => {
-      if (typeof previousValue == 'undefined') {
-        return undefined;
-      }
-      return cmp(previousValue, value) ?
-        value : undefined;
-    });
-
-    return typeof previousValue == 'undefined' ?
-      false : true;
-  };
-}
-
-export function textDisplay(value) {
-  return value || '';
-}
-
-export function numericalDisplay(value) {
-  return Number.isFinite(value) ?
-    value :
-    '';
-}
-
-export function truthyDisplay(value) {
-  return value ?
-    'Yes' :
-    'No';
-}
-
-function createChainableTypeChecker(validate) {
-  function checkType(isRequired, props, propName, componentName, location, propFullName, ...rest) {
-    propFullName = propFullName || propName;
-    componentName = componentName || '(anonymous)';
-    if (props[propName] == null) {
-      if (isRequired) {
-        return new Error(
-          `Reqruied ${location} \`${propFullName}\` was not specified in ` +
-          `\`${componentName}\`.`
-        );
-      }
-    } else {
-      return validate(props, propName, componentName, location, propFullName, ...rest);
-    }
+  filter(filterValue, rowValue) {
+    return filterValue == rowValue;
   }
-
-  const chainedCheckType = checkType.bind(null, false);
-  chainedCheckType.isRequired = checkType.bind(null, true);
-
-  return chainedCheckType;
-}
-
-function createFormTypeChecker(formType) {
-  return function(props, propName, componentName, location, propFullName) {
-    const value = props[propName];
-    const type = typeof value;
-    if (type != 'object' || !value[formType]) {
-      return new Error(
-        `Invalid ${location} \`${propFullName}\` of type \'${type}\` ` +
-        `supplied to \`${componentName}\`, expected a \`${formType}FormType\`.`
-      );
-    }
-  };
 }
 
