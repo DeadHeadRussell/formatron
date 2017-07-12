@@ -255,7 +255,7 @@ export default function filterableTable(Table) {
       const dataType = column.getRef ?
         this.props.dataType.getField(column.getRef()) :
         null;
-      const dataValue = this.getFilters().get(columnProps.label, '');
+      const dataValue = this.getFilters().get(columnProps.label);
 
       const renderData = new RenderData(dataType, dataValue, {
         onChange: this.onFilterChange(columnProps)
@@ -273,17 +273,18 @@ export default function filterableTable(Table) {
     }
 
     onFilter(columnProps, filterValue) {
-      const removeFilter = typeof filterValue == 'undefined' ||
-        filterValue === null ||
-        filterValue === '' ||
-        (Array.isArray(filterValue) && filterValue.length == 0);
+      const hasValue = typeof filterValue != 'undefined' &&
+        filterValue !== null &&
+        filterValue !== '' &&
+        !(Array.isArray(filterValue) && filterValue.length == 0) &&
+        !(Map.isMap(filterValue) && !(filterValue.get('lower') || filterValue.get('upper')));
 
-      const filters = removeFilter ? (
-        this.state.filters
-          .remove(columnProps.label)
-      ) : (
+      const filters = hasValue ? (
         this.state.filters
           .set(columnProps.label, filterValue)
+      ) : (
+        this.state.filters
+          .remove(columnProps.label)
       );
 
       this.setState({filters});

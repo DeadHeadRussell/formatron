@@ -6,6 +6,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import Loading from '~/react/components/loading';
 import reactRenderers from '~/react/renderers';
 import FormatronPropTypes from '~/react/propTypes';
+import {parseRef} from '~/refs';
 import RenderData from '~/renderers/renderData';
 
 export default class Form extends React.Component {
@@ -15,26 +16,37 @@ export default class Form extends React.Component {
   }
 
   createInitialState(props) {
+    const defaultValue = this.updateRefs(props.defaultValue);
+    const disabled = this.updateRefs(props.disabled);
     return {
       changes: Map(),
       blurs: Map(),
       dirty: Map(),
       errors: Map(),
-      model: this.cacheModel(props)
+      model: this.cacheModel(props, defaultValue, disabled),
+      defaultValue,
+      disabled
     };
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.model && newProps.model != this.props.model) {
+    if (newProps.model != this.props.model ||
+        newProps.disabled != this.props.disabled ||
+        newProps.defaultValue != this.props.defaultValue) {
       this.setState(this.createInitialState(newProps));
     }
   }
 
-  cacheModel(props) {
+  updateRefs(values) {
+    return values && values
+      .mapKeys(ref => parseRef(ref));
+  }
+
+  cacheModel(props, defaultValue, disabled) {
     return props.dataType
       .getValue(props.model)
-      .update(updateValues(props.model, props.defaultValue))
-      .update(updateValues(props.model, props.disabled));
+      .update(updateValues(props.model, defaultValue))
+      .update(updateValues(props.model, disabled));
 
     function updateValues(model, values) {
       if (!values || !Immutable.isImmutable(values)) {
@@ -57,7 +69,7 @@ export default class Form extends React.Component {
   isValid() {
     const validationErrors = this.props.dataType.validate(this.state.model);
 
-    if (validationErrors.size != 0) {
+    if (validationErrors && validationErrors.size != 0) {
       console.error(validationErrors.toJS());
 
       this.setState({
@@ -76,18 +88,19 @@ export default class Form extends React.Component {
             this.state.blurs
           )
       });
+
+      return false;
     } else {
       this.setState({errors: Map()});
+      return true;
     }
-
-    return validationErrors.size == 0;
   }
 
   isDisabled = ref => {
     // TODO: Recursively check parent refs?
     return this.props.loading ||
-      this.props.disabled === true ||
-      (this.props.disabled && this.props.disabled.get(ref, false));
+      this.state.disabled === true ||
+      (this.state.disabled && this.state.disabled.get(ref, false));
   }
 
   getError = ref => {

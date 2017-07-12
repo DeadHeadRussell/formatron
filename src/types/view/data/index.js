@@ -18,6 +18,7 @@ export default class DataType extends ViewType {
    */
   static parseOptions(field, parseField) {
     return super.parseOptions(field, parseField)
+      .update('defaultValue', field => field && parseField(field))
       .update('ref', this.parseOneOrMany(parseRef));
   }
 
@@ -57,6 +58,13 @@ export default class DataType extends ViewType {
   }
 
   /**
+   * @returns {ViewType} A default value encoded as a view type.
+   */
+  getDefaultValue() {
+    return this.options.get('defaultValue');
+  }
+
+  /**
    * @param {RenderData} The render data to get the value of.
    * @returns {object} The underlying value of the data type.
    */
@@ -73,12 +81,28 @@ export default class DataType extends ViewType {
   }
 
   /**
+   * @returns {DataType} The underlying data type.
+   */
+  getField(renderData) {
+    return renderData.dataType.getField(this.getRef());
+  }
+
+  /**
    * Returns the field and value of the underlying data type.
    * @returns {object}
    */
   getFieldAndValue(renderData) {
     const {dataType, dataValue} = renderData;
-    return dataType.getFieldAndValue(dataValue, this.getRef());
+    const {field, value} = dataType.getFieldAndValue(dataValue, this.getRef());
+    const defaultValueType = this.getDefaultValue();
+    if (!field.hasValue(value) && defaultValueType) {
+      const defaultValue = defaultValueType.getValue(renderData);
+      return {
+        field,
+        value: defaultValue
+      };
+    }
+    return {field, value};
   }
 
   /**

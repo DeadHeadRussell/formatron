@@ -37,8 +37,8 @@ export default class ViewType extends Type {
    * @param {RenderData} renderData - The data to maybe generate the label from.
    * @returns {string} They label, if any, associated with the view.
    */
-  getLabel(renderData) {
-    const label = this.options.get('label') || '';
+  getLabel(renderData, secondLabel) {
+    const label = secondLabel || this.options.get('label') || '';
     if (label instanceof ViewType) {
       return label.getDisplay(renderData);
     } else if (typeof label == 'function') {

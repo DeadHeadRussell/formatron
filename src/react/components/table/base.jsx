@@ -3,7 +3,7 @@ import React, {PureComponent} from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import FormatronPropTypes from '~/react/propTypes';
-import ListType from '~/types/data/list';
+import * as Types from '~/types';
 
 const renderersPropType = ImmutablePropTypes.listOf(
   React.PropTypes.func.isRequired
@@ -49,7 +49,7 @@ export default class BaseTable extends PureComponent {
     columns: ImmutablePropTypes.listOf(
       FormatronPropTypes.viewType.isRequired
     ).isRequired,
-    dataType: FormatronPropTypes.dataType.instanceOf(ListType).isRequired,
+    dataType: FormatronPropTypes.dataType.instanceOf(Types.data.list).isRequired,
     models: ImmutablePropTypes.listOf(
       ImmutablePropTypes.map.isRequired
     ),

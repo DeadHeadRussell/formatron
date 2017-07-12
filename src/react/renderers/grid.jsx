@@ -10,11 +10,14 @@ const Grid = ({viewType, renderData, renderers, rendererMethod}) => {
   const orientationClass = `formatron-orientation-${viewType.getOrientation()}`;
   return (
     <div className={classNames('formatron-grid', orientationClass)}>
-      <Label>{viewType.getLabel()}</Label>
+      <Label>{viewType.getLabel(renderData)}</Label>
       <div className='formatron-grid-outer'>
         {viewType.getChildren()
           .map((viewType, i) => List.isList(viewType) ? (
-            <div className='formatron-grid-inner'>
+            <div
+              key={i}
+              className='formatron-grid-inner'
+            >
               {viewType
                 .map((viewType, j) =>
                   renderers[rendererMethod](viewType, renderData)

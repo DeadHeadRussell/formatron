@@ -102,12 +102,12 @@ export default class DataType extends Type {
    * options, and if not, the one supplied by the type.
    * @params {object} value - The data value to parse.
    */
-  getValue(value) {
+  getValue(value, defaultValue) {
     const values = this.isGenerated() ?
       [value] :
       [
         value,
-        this.getDefaultValue()
+        this.getDefaultValue(defaultValue)
       ];
 
     return values

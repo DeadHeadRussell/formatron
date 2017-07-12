@@ -37,12 +37,20 @@ export default class ImmutableMapType extends ImmutableDataType {
       );
   }
 
+  getDataNames() {
+    return this.getData()
+      .map(fieldData => fieldData.get('field').getName());
+  }
+
   hasValue(model) {
     if (!super.hasValue(model)) {
       return false;
     }
-    // TODO: Check if child types have a value.
-    return model && model.size > 0;
+    return this.getData()
+      .map(fieldData => fieldData.get('field')
+        .hasValue(model.getIn(fieldData.get('path')))
+      )
+      .reduce((modelHasValue, fieldHasValue) => modelHasValue || fieldHasValue);
   }
 
   getDisplay(model, ref) {
@@ -51,7 +59,7 @@ export default class ImmutableMapType extends ImmutableDataType {
       const {field, value} = this.getFieldAndValue(model, ref);
       return field.getDisplay(value);
     } else {
-      if (this.hasValue(value)) {
+      if (this.hasValue(model)) {
         return this.getData()
           .map(fieldData => ({
             key: fieldData.get('field').getName(),
@@ -103,7 +111,7 @@ export default class ImmutableMapType extends ImmutableDataType {
     const fieldData = this.getFieldData(firstRef);
 
     if (!fieldData) {
-      throw new Error(`Cannot find field for ref "${firstRef}" on "${this.getName()}"`);
+      throw new Error(`Cannot find field for ref "${firstRef}" on "${this.getName()}": "${this.getDataNames()}"`);
     }
 
     const field = fieldData.get('field');
@@ -128,7 +136,7 @@ export default class ImmutableMapType extends ImmutableDataType {
     const fieldData = this.getFieldData(firstRef);
 
     if (!fieldData) {
-      throw new Error(`Cannot find field for ref "${firstRef}" on "${model}"`);
+      throw new Error(`Cannot find field for ref "${firstRef}" on "${this.getName()}": "${this.getDataNames()}"`);
     }
     
     const path = fieldData.get('path');
@@ -155,7 +163,7 @@ export default class ImmutableMapType extends ImmutableDataType {
     const fieldData = this.getFieldData(firstRef)
 
     if (!fieldData) {
-      throw new Error(`Cannot find field for ref "${firstRef}" on "${model}"`);
+      throw new Error(`Cannot find field for ref "${firstRef}" on "${this.getName()}": "${this.getDataNames()}"`);
     }
 
     const path = fieldData.get('path');

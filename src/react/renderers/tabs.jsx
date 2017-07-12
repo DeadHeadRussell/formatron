@@ -22,8 +22,13 @@ class FormatronTabs extends React.Component {
   }
 
   onTabSelect = index => {
-    window.location.hash = this.props.viewType.getTabs()
-      .getIn([index, 'label']);
+    window.location.hash = this.props.viewType.
+      getTabLabel(
+        this.props.viewType
+          .getTabs()
+          .get(index),
+        this.props.renderData
+      );
   }
 
   render() {
@@ -33,13 +38,13 @@ class FormatronTabs extends React.Component {
 
     const hash = window.location.hash.slice(1);
     const selected = Math.max(
-      tabs.findIndex(tab => tab.get('label') == hash),
+      tabs.findIndex(tab => viewType.getTabLabel(tab, renderData) == hash),
       0
     );
 
     return (
       <div className='formatron-tabs'>
-        <Label>{viewType.getLabel()}</Label>
+        <Label>{viewType.getLabel(renderData)}</Label>
         <Tabs
           selectedIndex={selected}
           onSelect={this.onTabSelect}
@@ -47,7 +52,7 @@ class FormatronTabs extends React.Component {
           <TabList>
             {tabs.map((tab, i) => (
               <Tab key={i}>
-                {tab.get('label')}
+                {viewType.getTabLabel(tab, renderData)}
               </Tab>
             ))}
           </TabList>

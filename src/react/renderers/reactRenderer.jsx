@@ -26,6 +26,7 @@ export default class ReactRenderer extends Renderer {
 
   renderStaticField(viewType, renderData, renderers) {
     return <this.StaticField
+      key={viewType.uniqueId}
       viewType={viewType}
       renderData={renderData}
       renderers={renderers}
@@ -37,6 +38,7 @@ export default class ReactRenderer extends Renderer {
     const Filter = withSimpleLabel(this.TableFilter);
     return this.TableFilter ? (
       <Filter
+        key={viewType.uniqueId}
         viewType={viewType}
         renderData={renderData}
         renderers={renderers}
@@ -50,18 +52,23 @@ export default class ReactRenderer extends Renderer {
   renderFilter(viewType, renderData, renderers) {
     return this.TableFilter ? (
       <this.TableFilter
+        key={viewType.uniqueId}
         viewType={viewType}
         renderData={renderData}
         renderers={renderers}
         rendererMethod='renderFilter'
       />
     ) : (
-      <div className='formatron-table-filterable-empty' />
+      <div
+        key={viewType.uniqueId}
+        className='formatron-table-filterable-empty'
+      />
     );
   }
 
   renderTableCell(viewType, renderData, renderers) {
     return <this.TableCell
+      key={viewType.uniqueId}
       viewType={viewType}
       renderData={renderData}
       renderers={renderers}
@@ -71,15 +78,12 @@ export default class ReactRenderer extends Renderer {
 
   renderStaticTableCell(viewType, renderData, renderers) {
     return <this.StaticTableCell
+      key={viewType.uniqueId}
       viewType={viewType}
       renderData={renderData}
       renderers={renderers}
       rendererMethod='renderStaticTableCell'
     />;
-  }
-
-  getKey(viewType) {
-    return `${viewType.constructor.typeName}-${viewType.uniqueId}`;
   }
 }
 

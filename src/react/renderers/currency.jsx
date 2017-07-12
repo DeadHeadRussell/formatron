@@ -27,17 +27,19 @@ const StaticCurrencyField = withStaticLabel(StaticCurrency);
 class CurrencyInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {input: this.getInputValue(props)};
+    this.state = this.createInitialState(props);
+  }
+
+  createInitialState(props) {
+    return {
+      input: props.viewType.getDisplay(props.renderData)
+    };
   }
 
   componentWillReceiveProps(newProps) {
     if (newProps.renderData != this.props.renderData) {
-      this.setState({input: this.getInputValue(newProps)});
+      this.setState(this.createInitialState(newProps));
     }
-  }
-
-  getInputValue = (props) => {
-    return props.viewType.getDisplay(props.renderData);
   }
 
   onChange = e => {

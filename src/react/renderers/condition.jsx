@@ -1,6 +1,6 @@
 import ConditionType from '~/types/view/value/condition';
 
-import {withFormLabel, withStaticLabel} from './formHelpers';
+import {withSimpleLabel, withStaticLabel} from './formHelpers';
 import ReactRenderer from './reactRenderer';
 import {TableSimpleFilter} from './tableHelpers';
 
@@ -15,7 +15,7 @@ const Condition = ({viewType, renderData, renderers, rendererMethod}) => {
   ) : null;
 };
 
-const ConditionField = withFormLabel(Condition);
+const ConditionField = withSimpleLabel(Condition);
 const StaticConditionField = withStaticLabel(Condition);
 
 export default ReactRenderer.register(

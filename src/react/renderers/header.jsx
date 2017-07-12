@@ -3,9 +3,9 @@ import HeaderType from '~/types/view/display/header';
 
 import ReactRenderer from './reactRenderer';
 
-const Header = ({viewType}) => (
+const Header = ({viewType, renderData}) => (
   <div className='formatron-header'>
-    <Label>{viewType.getLabel()}</Label>
+    <Label>{viewType.getLabel(renderData)}</Label>
   </div>
 );
 

@@ -56,7 +56,7 @@ class CalendarInput extends React.Component {
   }
 
   saveInput = () => {
-    this.props.onChange(this.state.input);
+    this.props.onChange(this.props.field.convert(this.state.input, 'unix'));
   }
 
   handlePickerChange = (datetime) => {

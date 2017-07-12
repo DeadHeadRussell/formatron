@@ -9,6 +9,10 @@ export function parseRef(field) {
     return field;
   }
 
+  if (field === null || typeof field == 'undefined') {
+    return null;
+  }
+
   if (typeof field == 'string') {
     // Quick hack. Remove soon.
     if (field[1] == ':') {

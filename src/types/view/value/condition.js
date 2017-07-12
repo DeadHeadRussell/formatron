@@ -47,9 +47,14 @@ export default class ConditionType extends ValueType {
    * @returns {bool} `true` if the render data matches the conditions in the options.
    */
   test(renderData) {
+    if (this.getOp() == 'hasValue') {
+      const {field, value} = this.getArgs().get(0).getFieldAndValue(renderData);
+      return field.hasValue(value);
+    }
+
     const func = ConditionType.ops[this.getOp()];
     const values = this.getChildValues(renderData, this.getArgs());
-    return func(values);
+    return func(values, this.getArgs());
   }
 
   getValue(renderData) {

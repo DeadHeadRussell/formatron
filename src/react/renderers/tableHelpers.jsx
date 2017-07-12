@@ -62,14 +62,14 @@ export const TableRangeFilter = ({viewType, renderData, parse, Component}) => {
       <Component
         field={dataType}
         value={value.get('lower')}
-        onChange={newValue => onChange(value.set('lower', parse(newValue)))}
+        onChange={newValue => onChange(value.set('lower', parse ? parse(newValue) : newValue))}
         onBlur={onBlur}
       />
       <div className='formatron-range-sep'>-</div>
       <Component
         field={dataType}
         value={value.get('upper')}
-        onChange={newValue => onChange(value.set('upper', parse(newValue)))}
+        onChange={newValue => onChange(value.set('upper', parse ? parse(newValue) : newValue))}
         onBlur={onBlur}
       />
     </div>

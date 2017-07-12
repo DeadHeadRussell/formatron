@@ -44,7 +44,9 @@ export const withSimpleLabel = (WrappedComponent) => {
     return (
       <div className={classNames('formatron-field', `formatron-field-${viewType.constructor.typeName}`)}>
         <Label>{viewType.getLabel(renderData)}</Label>
-        <WrappedComponent {...props} />
+        <div className='formatron-field-wrapper'>
+          <WrappedComponent {...props} />
+        </div>
       </div>
     );
   };

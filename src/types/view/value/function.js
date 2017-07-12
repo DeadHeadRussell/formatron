@@ -11,14 +11,26 @@ export default class FunctionType extends ValueType {
     ceil: value => Math.ceil(value),
     floor: value => Math.floor(value),
     round: value => Math.round(value),
-    formatDate: (value, format) => new Date(value * 1000).format(format)
+    formatDate: (value, format) => new Date(value * 1000).format(format),
+    countDays: (endTimes, startTimes) => startTimes
+      .map((startTime, index) => {
+        const rawEndTime = endTimes.get(index);
+        const endTime = (rawEndTime === null || typeof rawEndTime == 'undefined') ?
+          (Date.now() / 1000) :
+          endTimes.get(index);
+        return endTime - startTime;
+      })
+      .map(time => time / (60 * 60 * 24))
+      .map(days => Math.floor(days + 1))
+      .reduce((totalDays, days) => totalDays + days, 0)
   };
 
   static fnDisplays = {
     ceil: numericalDisplay,
     floor: numericalDisplay,
     round: numericalDisplay,
-    formatDate: textDisplay
+    formatDate: textDisplay,
+    countDays: numericalDisplay
   };
 
   static parseOptions(field, parseField) {
@@ -43,7 +55,7 @@ export default class FunctionType extends ValueType {
   getDisplay(renderData) {
     const value = this.getValue(renderData);
     const func = FunctionType.fnDisplays[this.getFn()];
-    return func[value];
+    return func(value);
   }
 }
 

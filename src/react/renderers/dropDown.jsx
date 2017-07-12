@@ -78,18 +78,18 @@ function parseOption(option) {
 }
 
 const DropDown = withDataRenderer(props => (
-  props.viewType.isMulti() ? (
+  props.viewType.isMulti(props.field) ? (
     <MultiDropDown {...props} />
   ) : (
     <SingleDropDown {...props} />
   )
 ));
 
-const StaticDropDown = withStaticRenderer(({field, value}) => (
-  <p className='formatron-static-value'>
+const StaticDropDown = withStaticRenderer(({field, value}) => {
+  return <p className='formatron-static-value'>
     {field.getDisplay(value)}
-  </p>
-));
+  </p>;
+});
 
 const DropDownField = withFormLabel(DropDown);
 const StaticDropDownField = withStaticLabel(StaticDropDown);

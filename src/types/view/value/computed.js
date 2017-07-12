@@ -1,4 +1,4 @@
-import {compareAll, numericalDisplay, truthyDisplay} from '../utils';
+import {compareAll, numericalDisplay, textDisplay, truthyDisplay} from '../utils';
 
 import ValueType from './';
 
@@ -16,7 +16,8 @@ export default class ComputedType extends ValueType {
     '>=': compareAll((a, b) => a >= b),
     '<=': compareAll((a, b) => a <= b),
     '=': compareAll((a, b) => a == b),
-    '!=': compareAll((a, b) => a != b)
+    '!=': compareAll((a, b) => a != b),
+    'concat': args => args.reduce((a, b) => `${a}${b}`)
   };
 
   static opDisplays = {
@@ -30,7 +31,8 @@ export default class ComputedType extends ValueType {
     '>=': truthyDisplay,
     '<=': truthyDisplay,
     '=': truthyDisplay,
-    '!=': truthyDisplay
+    '!=': truthyDisplay,
+    'concat': textDisplay
   };
 
   static parseOptions(field, parseField) {

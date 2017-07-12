@@ -1,3 +1,5 @@
+import {Map} from 'immutable';
+
 import DisplayType from './';
 
 export default class TabsType extends DisplayType {
@@ -7,6 +9,10 @@ export default class TabsType extends DisplayType {
     return super.parseOptions(field, parseField)
       .update('tabs', tabs => tabs
         .map(tab => tab
+          .update('label', label => Map.isMap(label) ?
+            parseField(label) :
+            label
+          )
           .update('display', parseField)
         )
       );
@@ -14,6 +20,10 @@ export default class TabsType extends DisplayType {
 
   getTabs() {
     return this.options.get('tabs');
+  }
+
+  getTabLabel(tab, renderData) {
+    return this.getLabel(renderData, tab.get('label'));
   }
 }
 

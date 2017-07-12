@@ -1,5 +1,6 @@
 import {List} from 'immutable';
 
+import RenderData from '~/renderers/renderData';
 import DataViewType from '~/types/view/data';
 
 import DataType, {ImmutableDataType} from './';
