@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 
+const isWindows = /^win/.test(process.platform);
+
 module.exports = (config) => {
   config.set({
     basePath: '',
@@ -86,7 +88,7 @@ module.exports = (config) => {
 
     autoWatch: false,
 
-    browsers: ['Chrome', 'IE', 'IE10'],
+    browsers: isWindows ? ['Chrome', 'IE10'] : ['Chrome'],
 
     customLaunchers: {
       IE10: {

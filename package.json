@@ -6,8 +6,6 @@
   "scripts": {
     "test": "karma start",
     "test:watch": "karma start --no-single-run --auto-watch",
-    "test:mac": "karma start --browsers Chrome",
-    "test:mac:watch": "karma start --browsers Chrome --no-single-run --auto-watch",
     "start": "webpack-dev-server --env.dev --hot --inline --content-base example/ --port 8080",
     "start:lib:js": "babel --watch src --out-dir lib",
     "build": "npm run build:lib && npm run build:dist",
