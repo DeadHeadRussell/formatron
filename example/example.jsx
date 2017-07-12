@@ -1,17 +1,14 @@
 import {List, Map} from 'immutable';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'font-awesome-webpack-2';
 
+import 'formatron/types';
+import 'formatron/theme';
 import Form from 'formatron/react/components/form';
 import Table from 'formatron/react/components/table';
 
-import 'font-awesome-webpack-2';
-
-import 'formatron/theme';
-
 import './example.sass';
-
-//import './types/linked';
 
 import {exampleDataType, exampleViewTypes, createExamples} from './schema/example';
 
@@ -92,4 +89,3 @@ ReactDOM.render(
   <ExampleForm />,
   document.getElementById('example-app')
 );
-

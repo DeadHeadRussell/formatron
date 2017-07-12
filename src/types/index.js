@@ -79,4 +79,3 @@ export function parseField(type, field) {
 
   return types[type][field.get('type')].parse(field, parseField.bind(null, type));
 }
-
