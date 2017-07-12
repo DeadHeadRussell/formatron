@@ -1,10 +1,11 @@
+import * as types from './types';
+
 import * as react from './react';
 import * as refs from './refs';
 import * as renderers from './renderers';
 import RenderData from './renderers/renderData';
 import Renderer from './renderers/renderer';
 import * as template from './template';
-import * as types from './types';
 
 import './theme';
 
