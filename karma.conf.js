@@ -86,7 +86,14 @@ module.exports = (config) => {
 
     autoWatch: false,
 
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'IE', 'IE10'],
+
+    customLaunchers: {
+      IE10: {
+        base: 'IE',
+        'x-ua-compatible': 'IE=EmulateIE10'
+      },
+    },
 
     singleRun: true,
 
