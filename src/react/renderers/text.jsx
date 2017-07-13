@@ -3,7 +3,7 @@ import MaskedInput from 'react-maskedinput';
 import TextType from '~/types/data/text';
 import TextInputType from '~/types/view/data/text';
 
-import {withDataRenderer, withDisplayRenderer} from './data';
+import {withDebouncedRenderer, withDisplayRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
 import FormatronPropTypes from '~/react/propTypes';
 import ReactRenderer from './reactRenderer';
@@ -81,7 +81,7 @@ const TextArea = ({field, value, disabled, placeholder, onChange, onBlur}) => (
   />
 );
 
-const Text = withDataRenderer(props => (
+const Text = withDebouncedRenderer(props => (
   <TextInputWrapper {...props} />
 ));
 

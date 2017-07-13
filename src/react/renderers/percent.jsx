@@ -1,7 +1,7 @@
 import NumberType from '~/types/data/number';
 import PercentType from '~/types/view/data/percent';
 
-import {withDataRenderer, withDisplayRenderer} from './data';
+import {withDebouncedRenderer, withDisplayRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
 import FormatronPropTypes from '~/react/propTypes';
 import ReactRenderer from './reactRenderer';
@@ -57,7 +57,7 @@ const PercentFilter = ({renderData}) => (
   />
 );
 
-const Percent = withDataRenderer(props => (
+const Percent = withDebouncedRenderer(props => (
   <PercentInput {...props} />
 ));
 

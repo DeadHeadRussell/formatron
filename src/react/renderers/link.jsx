@@ -1,7 +1,7 @@
 import TextType from '~/types/data/text';
 import LinkType from '~/types/view/data/link';
 
-import {withDataRenderer, withStaticRenderer} from './data';
+import {withDebouncedRenderer, withStaticRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
 import FormatronPropTypes from '~/react/propTypes';
 import ReactRenderer from './reactRenderer';
@@ -16,7 +16,7 @@ const LinkFilter = ({renderData}) => (
   />
 );
 
-const Link = withDataRenderer(({field, value, disabled, placeholder, onChange, onBlur}) => (
+const Link = withDebouncedRenderer(({field, value, disabled, placeholder, onChange, onBlur}) => (
   <div className='formatron-url-input'>
     <input
       className='formatron-text-input'

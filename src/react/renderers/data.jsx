@@ -1,6 +1,29 @@
 export function withDataRenderer(WrappedComponent) {
-  // TODO: Change back to the non-debounced renderer.
-  return withDebouncedRenderer(WrappedComponent);
+  return ({viewType, renderData}) => {
+    const {getError, isDisabled, onChange, onBlur, nButtonClick} = renderData.options;
+
+    const ref = viewType.getRef();
+    const disabled = isDisabled(ref) || !viewType.isEditable();
+    const error = getError(ref);
+    const placeholder = viewType.getPlaceholder();
+
+    const {field, value} = viewType.getFieldAndValue(renderData);
+
+    return (
+      <WrappedComponent
+        viewType={viewType}
+        renderData={renderData}
+        field={field}
+        value={value}
+        disabled={disabled}
+        error={error}
+        placeholder={placeholder}
+        onChange={value => onChange(ref, value)}
+        onBlur={() => onBlur(ref)}
+        onButtonClick={(...args) => onButtonClick(ref, ...args)}
+      />
+    );
+  };
 }
 
 // TODO: Actually debounce this instead of just returning on blur.
@@ -110,5 +133,4 @@ export function withDisplayRenderer(WrappedComponent) {
     />;
   };
 }
-
 

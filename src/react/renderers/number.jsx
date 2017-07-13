@@ -1,7 +1,7 @@
 import NumberType from '~/types/data/number';
 import NumberInputType from '~/types/view/data/number';
 
-import {withDataRenderer, withStaticRenderer} from './data';
+import {withDebouncedRenderer, withStaticRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
 import FormatronPropTypes from '~/react/propTypes';
 import ReactRenderer from './reactRenderer';
@@ -54,7 +54,7 @@ const NumberFilter = ({viewType, renderData}) => (
   />
 );
 
-const NumberComponent = withDataRenderer(props => (
+const NumberComponent = withDebouncedRenderer(props => (
   <NumberInput {...props} />
 ));
 

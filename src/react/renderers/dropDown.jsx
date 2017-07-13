@@ -14,6 +14,7 @@ import {TableDropDownFilter} from './tableHelpers';
 const DropDownFilter = ({viewType, renderData}) => (
   <TableDropDownFilter
     renderData={renderData}
+    filterOptions={viewType.getFilterOptions()}
     options={viewType.getOptions(renderData.dataType).toJS()}
   />
 );
@@ -24,6 +25,7 @@ const MultiDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => 
     value={value ? value.toJS() : []}
     disabled={disabled}
     multi={true}
+    filterOptions={viewType.getFilterOptions()}
     options={viewType.getOptions(field).toJS()}
     onChange={options => onChange(List(options)
       .map(parseOption)
@@ -53,6 +55,7 @@ const SingleDropDown = ({viewType, field, value, disabled, onChange, onBlur}) =>
     className='formatron-input formatron-dropdown formatron-single'
     value={value === null ? '' : value}
     disabled={disabled}
+    filterOptions={viewType.getFilterOptions()}
     options={viewType.getOptions(field).toJS()}
     onChange={option => onChange(parseOption(option))}
     onBlur={onBlur}

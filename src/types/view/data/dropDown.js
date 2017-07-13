@@ -33,5 +33,14 @@ export default class DropDownType extends DataType {
     }
     return List();
   }
+
+  /**
+   * Allows subtypes to define filter options for faster searches. Returns
+   * undefined so that the default filter options are used.
+   * @returns The filter options.
+   */
+  getFilterOptions() {
+    return undefined;
+  }
 }
 
