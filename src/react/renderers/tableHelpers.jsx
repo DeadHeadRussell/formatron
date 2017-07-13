@@ -14,6 +14,7 @@ export const TableDropDownFilter = ({renderData, multi, options}) => {
   return (
     <Select
       className='formatron-input formatron-dropdown formatron-multi'
+      tetheredClassName='formatron-dropdown-tether'
       value={typeof value == 'undefined' ? defaultValue : value}
       multi={multi}
       options={options}

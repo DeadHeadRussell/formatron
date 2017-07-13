@@ -173,6 +173,7 @@
 
 // Drop Down
 .formatron-dropdown
+  position: relative
   padding-left: 0
   padding-right: 0
 
@@ -197,12 +198,16 @@
     display: none
 
   .Select-menu-outer
+    left: 0
     z-index: 20
     max-height: 400px
     cursor: pointer
 
     > .Select-menu
       max-height: 398px
+
+.formatron-dropdown-tether
+  min-width: 300px
 
 .formatron-tethered-select-menu
   position: relative

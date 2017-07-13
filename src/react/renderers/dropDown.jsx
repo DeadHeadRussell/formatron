@@ -22,6 +22,7 @@ const DropDownFilter = ({viewType, renderData}) => (
 const MultiDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => {
   return <Select
     className='formatron-input formatron-dropdown formatron-multi'
+    tetheredClassName='formatron-dropdown-tether'
     value={value ? value.toJS() : []}
     disabled={disabled}
     multi={true}
@@ -53,6 +54,7 @@ MultiDropDown.propTypes = {
 const SingleDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => {
   return <Select
     className='formatron-input formatron-dropdown formatron-single'
+    tetheredClassName='formatron-dropdown-tether'
     value={value === null ? '' : value}
     disabled={disabled}
     filterOptions={viewType.getFilterOptions()}

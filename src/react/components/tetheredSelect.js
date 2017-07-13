@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import Select from 'react-virtualized-select';
 import TetheredComponent from 'react-tether';
 
@@ -16,10 +17,9 @@ export default class TetheredSelect extends Select {
     }
 
     const wrapper = this._selectRef && this._selectRef.wrapper;
-
-    const selectWidth = wrapper ?
+    const width = wrapper ?
       wrapper.offsetWidth :
-      null;
+      undefined;
 
     return (
       <TetheredComponent
@@ -39,8 +39,8 @@ export default class TetheredSelect extends Select {
       >
         <div />
         <div
-          className='formatron-tethered-select-menu'
-          style={{width: selectWidth}}
+          className={classNames('formatron-tethered-select-menu', this.props.tetheredClassName)}
+          style={{width}}
           onMouseDown={this.handleMouseDown}
         >
           {menu}
