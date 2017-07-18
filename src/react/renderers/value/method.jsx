@@ -1,9 +1,9 @@
 import MethodType from '~/types/view/value/method';
 
-import {withSimpleLabel, withStaticLabel} from './formHelpers';
-import ReactRenderer from './reactRenderer';
-import {TableSimpleFilter} from './tableHelpers';
-import {valueLabelRenderer} from './value';
+import {withSimpleLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableSimpleFilter} from '../tableHelpers';
+import {valueLabelRenderer} from './';
 
 const Method = valueLabelRenderer(MethodType);
 const MethodField = withSimpleLabel(Method);

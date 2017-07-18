@@ -1,9 +1,9 @@
 import CheckboxType from '~/types/view/data/checkbox';
 
-import {withDataRenderer, withStaticRenderer} from './data';
-import {withFormLabel, withStaticLabel} from './formHelpers';
-import ReactRenderer from './reactRenderer';
-import {TableDropDownFilter} from './tableHelpers';
+import {withFormLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableDropDownFilter} from '../tableHelpers';
+import {withDataRenderer, withStaticRenderer} from './';
 
 const CheckboxFilter = ({renderData}) => (
   <TableDropDownFilter

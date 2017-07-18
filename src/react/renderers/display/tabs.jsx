@@ -3,7 +3,7 @@ import {Tabs, Tab, TabList, TabPanel} from 'react-tabs';
 import Label from '~/react/components/label';
 import TabsType from '~/types/view/display/tabs';
 
-import ReactRenderer from './reactRenderer';
+import ReactRenderer from '../reactRenderer';
 
 // TODO: See if there's a simple way to expose the hashtag functionality so
 // users can hook this up to whatever routing solution they use.

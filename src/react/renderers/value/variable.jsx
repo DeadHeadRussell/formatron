@@ -1,9 +1,9 @@
 import VariableType from '~/types/view/value/variable';
 
-import {withSimpleLabel, withStaticLabel} from './formHelpers';
-import ReactRenderer from './reactRenderer';
-import {TableSimpleFilter} from './tableHelpers';
-import {valueLabelRenderer} from './value';
+import {withSimpleLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableSimpleFilter} from '../tableHelpers';
+import {valueLabelRenderer} from './';
 
 const Variable = valueLabelRenderer(VariableType);
 const VariableField = withSimpleLabel(VariableField);

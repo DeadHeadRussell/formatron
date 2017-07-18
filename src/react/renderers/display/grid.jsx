@@ -4,7 +4,7 @@ import {List} from 'immutable';
 import Label from '~/react/components/label';
 import GridType from '~/types/view/display/grid';
 
-import ReactRenderer from './reactRenderer';
+import ReactRenderer from '../reactRenderer';
 
 const Grid = ({viewType, renderData, renderers, rendererMethod}) => {
   const orientationClass = `formatron-orientation-${viewType.getOrientation()}`;

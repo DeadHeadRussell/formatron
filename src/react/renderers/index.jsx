@@ -1,55 +1,62 @@
 import Renderers from '~/renderers';
 
 import registerButton from './button';
-import registerCalendar from './calendar';
-import registerCheckbox from './checkbox';
-import registerComputed from './computed';
-import registerCondition from './condition';
-import registerCurrency from './currency';
-import registerDropDown from './dropDown';
-import registerFunction from './function';
-import registerGrid from './grid';
-import registerHeader from './header';
-import registerLink from './link';
-import registerMethod from './method';
-import registerNumber from './number';
-import registerPercent from './percent';
-import registerProperty from './property';
-import registerStatic from './static';
-import registerSwitch from './switch';
-import registerTable from './table';
-import registerTabs from './tabs';
-import registerTemplate from './template';
-import registerText from './text';
+
+import registerCalendar from './data/calendar';
+import registerCheckbox from './data/checkbox';
+import registerCurrency from './data/currency';
+import registerDropDown from './data/dropDown';
+import registerLink from './data/link';
+import registerNumber from './data/number';
+import registerPercent from './data/percent';
+import registerTable from './data/table';
+import registerText from './data/text';
+
+import registerGrid from './display/grid';
+import registerHeader from './display/header';
+import registerStatic from './display/static';
+import registerTabs from './display/tabs';
+
 import registerValue from './value';
-import registerVariable from './variable';
+import registerComputed from './value/computed';
+import registerCondition from './value/condition';
+import registerFunction from './value/function';
+import registerMethod from './value/method';
+import registerProperty from './value/property';
+import registerSwitch from './value/switch';
+import registerTemplate from './value/template';
+import registerVariable from './value/variable';
 
 /**
  * A set of renderers to be used with React.js.
  */
-export default new Renderers();
+const reactRenderers = new Renderers();
+export default reactRenderers;
 
-registerButton();
-registerCalendar();
-registerCheckbox();
-registerComputed();
-registerCondition();
-registerCurrency();
-registerDropDown();
-registerFunction();
-registerGrid();
-registerHeader();
-registerLink();
-registerMethod();
-registerNumber();
-registerPercent();
-registerProperty();
-registerStatic();
-registerSwitch();
-registerTable();
-registerTabs();
-registerTemplate();
-registerText();
-registerValue();
-registerVariable();
+registerButton(reactRenderers);
+
+registerCalendar(reactRenderers);
+registerCheckbox(reactRenderers);
+registerCurrency(reactRenderers);
+registerDropDown(reactRenderers);
+registerLink(reactRenderers);
+registerNumber(reactRenderers);
+registerPercent(reactRenderers);
+registerTable(reactRenderers);
+registerText(reactRenderers);
+
+registerGrid(reactRenderers);
+registerHeader(reactRenderers);
+registerStatic(reactRenderers);
+registerTabs(reactRenderers);
+
+registerComputed(reactRenderers);
+registerCondition(reactRenderers);
+registerFunction(reactRenderers);
+registerMethod(reactRenderers);
+registerProperty(reactRenderers);
+registerSwitch(reactRenderers);
+registerTemplate(reactRenderers);
+registerValue(reactRenderers);
+registerVariable(reactRenderers);
 

@@ -1,8 +1,8 @@
 import ConditionType from '~/types/view/value/condition';
 
-import {withSimpleLabel, withStaticLabel} from './formHelpers';
-import ReactRenderer from './reactRenderer';
-import {TableSimpleFilter} from './tableHelpers';
+import {withSimpleLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableSimpleFilter} from '../tableHelpers';
 
 const Condition = ({viewType, renderData, renderers, rendererMethod}) => {
   const trueType = viewType.getTrueType();

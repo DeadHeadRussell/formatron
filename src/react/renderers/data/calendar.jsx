@@ -3,14 +3,14 @@ import moment from 'moment';
 import TetheredComponent from 'react-tether';
 import DatetimePicker from 'yet-another-datetime-picker';
 
+import FormatronPropTypes from '~/react/propTypes';
 import DateType from '~/types/data/date';
 import CalendarType from '~/types/view/data/calendar';
 
-import {withDataRenderer, withDisplayRenderer} from './data';
-import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from '~/react/propTypes';
-import ReactRenderer from './reactRenderer';
-import {TableRangeFilter} from './tableHelpers';
+import {withFormLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableRangeFilter} from '../tableHelpers';
+import {withDataRenderer, withDisplayRenderer} from './';
 
 const CalendarFilter = ({viewType, renderData}) => (
   <TableRangeFilter

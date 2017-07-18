@@ -1,6 +1,6 @@
 import StaticType from '~/types/view/display/static';
 
-import ReactRenderer from './reactRenderer';
+import ReactRenderer from '../reactRenderer';
 
 const StaticField = ({viewType, renderData, renderers}) => {
   return renderers.renderStaticField(viewType.getDisplay(), renderData);

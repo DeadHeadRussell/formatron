@@ -1,11 +1,11 @@
+import FormatronPropTypes from '~/react/propTypes';
 import NumberType from '~/types/data/number';
 import PercentType from '~/types/view/data/percent';
 
-import {withDebouncedRenderer, withDisplayRenderer} from './data';
-import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from '~/react/propTypes';
-import ReactRenderer from './reactRenderer';
-import {TableRangeFilter} from './tableHelpers';
+import {withDebouncedRenderer, withDisplayRenderer} from './';
+import {withFormLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableRangeFilter} from '../tableHelpers';
 
 const PercentInput = ({field, value, disabled, placeholder, onChange, onBlur}) => (
   <input

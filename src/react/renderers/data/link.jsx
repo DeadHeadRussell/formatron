@@ -1,10 +1,10 @@
+import FormatronPropTypes from '~/react/propTypes';
 import TextType from '~/types/data/text';
 import LinkType from '~/types/view/data/link';
 
-import {withDebouncedRenderer, withStaticRenderer} from './data';
-import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from '~/react/propTypes';
-import ReactRenderer from './reactRenderer';
+import {withFormLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {withDebouncedRenderer, withStaticRenderer} from './';
 
 const LinkFilter = ({renderData}) => (
   <input

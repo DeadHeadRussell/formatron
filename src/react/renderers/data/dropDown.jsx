@@ -2,14 +2,14 @@ import {List} from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Select from '~/react/components/tetheredSelect';
+import FormatronPropTypes from '~/react/propTypes';
 import EnumType from '~/types/data/enum';
 import DropDownType from '~/types/view/data/dropDown';
 
-import {withDataRenderer, withStaticRenderer} from './data';
-import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from '~/react/propTypes';
-import ReactRenderer from './reactRenderer';
-import {TableDropDownFilter} from './tableHelpers';
+import {withFormLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableDropDownFilter} from '../tableHelpers';
+import {withDataRenderer, withStaticRenderer} from './';
 
 const DropDownFilter = ({viewType, renderData}) => (
   <TableDropDownFilter

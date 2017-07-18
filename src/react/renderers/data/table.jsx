@@ -1,8 +1,8 @@
 import Table from '~/react/components/table';
 import TableType from '~/types/view/data/table';
 
-import {withStaticLabel} from './formHelpers';
-import ReactRenderer from './reactRenderer';
+import {withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
 
 const FormatronTable = withStaticLabel(({viewType, renderData}) => {
   const {field, value} = viewType.getFieldAndValue(renderData);

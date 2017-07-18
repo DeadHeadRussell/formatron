@@ -1,12 +1,12 @@
 import MaskedInput from 'react-maskedinput';
 
+import FormatronPropTypes from '~/react/propTypes';
 import TextType from '~/types/data/text';
 import TextInputType from '~/types/view/data/text';
 
-import {withDebouncedRenderer, withDisplayRenderer} from './data';
 import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from '~/react/propTypes';
-import ReactRenderer from './reactRenderer';
+import ReactRenderer from '../reactRenderer';
+import {withDebouncedRenderer, withDisplayRenderer} from '../';
 
 const TextFilter = ({viewType, renderData}) => (
   <TextInputWrapper

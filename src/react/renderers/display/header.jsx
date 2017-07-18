@@ -1,7 +1,7 @@
 import Label from '~/react/components/label';
 import HeaderType from '~/types/view/display/header';
 
-import ReactRenderer from './reactRenderer';
+import ReactRenderer from '../reactRenderer';
 
 const Header = ({viewType, renderData}) => (
   <div className='formatron-header'>

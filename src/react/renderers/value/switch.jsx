@@ -1,8 +1,8 @@
 import SwitchType from '~/types/view/value/switch';
 
-import {withSimpleLabel, withStaticLabel} from './formHelpers';
-import ReactRenderer from './reactRenderer';
-import {TableSimpleFilter} from './tableHelpers';
+import {withSimpleLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableSimpleFilter} from '../tableHelpers';
 
 const Switch = ({viewType, renderData, renderers, rendererMethod}) => {
   const display = viewType.switch(renderData);

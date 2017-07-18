@@ -1,9 +1,9 @@
 import PropertyType from '~/types/view/value/property';
 
-import {withSimpleLabel, withStaticLabel} from './formHelpers';
-import ReactRenderer from './reactRenderer';
-import {TableSimpleFilter} from './tableHelpers';
-import {valueLabelRenderer} from './value';
+import {withSimpleLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableSimpleFilter} from '../tableHelpers';
+import {valueLabelRenderer} from './';
 
 const Property = valueLabelRenderer(PropertyType);
 const PropertyField = withSimpleLabel(Property);

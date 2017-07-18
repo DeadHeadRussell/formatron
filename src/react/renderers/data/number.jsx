@@ -1,11 +1,11 @@
+import FormatronPropTypes from '~/react/propTypes';
 import NumberType from '~/types/data/number';
 import NumberInputType from '~/types/view/data/number';
 
-import {withDebouncedRenderer, withStaticRenderer} from './data';
-import {withFormLabel, withStaticLabel} from './formHelpers';
-import FormatronPropTypes from '~/react/propTypes';
-import ReactRenderer from './reactRenderer';
-import {TableRangeFilter} from './tableHelpers';
+import {withFormLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableRangeFilter} from '../tableHelpers';
+import {withDebouncedRenderer, withStaticRenderer} from './';
 
 const NumberInput = ({field, value, disabled, placeholder, onChange, onBlur}) => (
   <input

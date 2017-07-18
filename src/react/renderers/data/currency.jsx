@@ -2,9 +2,9 @@ import NumberType from '~/types/data/number';
 
 import CurrencyType from '~/types/view/data/currency';
 
-import {withDataRenderer, withDisplayRenderer} from './data';
-import {withFormLabel, withStaticLabel} from './formHelpers';
-import ReactRenderer from './reactRenderer';
+import {withFormLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {withDataRenderer, withDisplayRenderer} from './';
 
 const CurrencyFilter = ({viewType, renderData}) => (
   <CurrencyInput

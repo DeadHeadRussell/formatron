@@ -2,9 +2,9 @@ import classNames from 'classnames';
 
 import ValueType from '~/types/view/value';
 
-import {withSimpleLabel, withStaticLabel} from './formHelpers';
-import ReactRenderer from './reactRenderer';
-import {TableSimpleFilter} from './tableHelpers';
+import {withSimpleLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableSimpleFilter} from '../tableHelpers';
 
 export const valueLabelRenderer = ViewType => {
   return ({viewType, renderData}) => {

@@ -1,9 +1,9 @@
 import TemplateType from '~/types/view/value/template';
 
-import {withSimpleLabel, withStaticLabel} from './formHelpers';
-import ReactRenderer from './reactRenderer';
-import {TableSimpleFilter} from './tableHelpers';
-import {valueLabelRenderer} from './value';
+import {withSimpleLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableSimpleFilter} from '../tableHelpers';
+import {valueLabelRenderer} from './';
 
 const Template = valueLabelRenderer(TemplateType);
 const TemplateField = withSimpleLabel(Template);

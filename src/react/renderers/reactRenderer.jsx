@@ -2,7 +2,6 @@ import Renderer from '~/renderers/renderer';
 
 import FormatronPropTypes from '~/react/propTypes';
 
-import reactRenderers from './';
 import {withSimpleLabel} from './formHelpers';
 
 export default class ReactRenderer extends Renderer {
@@ -92,12 +91,12 @@ const ReactRendererPropTypes = ViewType => ({
   renderData: FormatronPropTypes.renderData.isRequired
 });
 
-ReactRenderer.register = (ViewType, ...components) => () => {
+ReactRenderer.register = (ViewType, ...components) => renderers => {
   const propTypes = ReactRendererPropTypes(ViewType);
   components
     .filter(component => component)
     .forEach(component => component.propTypes = propTypes);
 
-  reactRenderers.register(ViewType.typeName, new ReactRenderer(...components));
+  renderers.register(ViewType.typeName, new ReactRenderer(...components));
 };
 
