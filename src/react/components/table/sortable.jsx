@@ -81,6 +81,10 @@ export default function sortableTable(Table) {
         return columnProps.viewType.getValue(renderData);
       };
 
+      if (!columnProps) {
+        return rows;
+      }
+
       return rows
         .update(models => this.doSort() ?
           models
