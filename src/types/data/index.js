@@ -77,7 +77,7 @@ export default class DataType extends Type {
   }
 
   getValidator() {
-    return this.options.get('validator', () => {});
+    return this.options.get('validator', () => undefined);
   }
 
   getValidationLinks() {
@@ -90,7 +90,10 @@ export default class DataType extends Type {
    * @returns {bool} `true` if it is "not empty", otherwise, `false`.
    */
   hasValue(value) {
-    if (typeof value == 'undefined' || value === null) {
+    // TODO: should the types that inherit from DataType check that the value
+    // is valid (eg, a number contains a number type, text contains a string,
+    // etc)
+    if (typeof value == 'undefined' || value === this.getDefaultValue()) {
       return false;
     }
     return true;
@@ -103,6 +106,7 @@ export default class DataType extends Type {
    * @params {object} value - The data value to parse.
    */
   getValue(value, defaultValue) {
+    // TODO: see comment in `hasValue` for typechecking.
     const values = this.isGenerated() ?
       [value] :
       [

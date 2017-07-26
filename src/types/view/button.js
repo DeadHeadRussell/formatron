@@ -11,7 +11,7 @@ export default class ButtonType extends ViewType {
   }
 
   getArgs() {
-    return this.options.get('args', List());
+    return this.options.get('args') || List();
   }
 
   getValue(renderData) {

@@ -194,7 +194,7 @@ export default class ImmutableMapType extends ImmutableDataType {
     });
   }
 
-  // TODO: Probably move this out of here and into some form validation module.
+  // TODO: Probably move this out of here and into some form validation / utils module.
   validateSingle(model, ref) {
     const {field, value} = this.getFieldAndValue(model, ref);
 

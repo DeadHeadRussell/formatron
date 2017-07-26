@@ -29,6 +29,22 @@ export default class ViewType extends Type {
     this.uniqueId = viewIds++;
   }
 
+  getWidth() {
+    return this.options.get('width', 100);
+  }
+
+  getDefaultFlex() {
+    return this.options.has('width') ? 0 : 1;
+  }
+
+  getFlexGrow() {
+    return this.options.get('flexGrow', this.getDefaultFlex());
+  }
+
+  getFlexShrink() {
+    return this.options.get('flexShrink', this.getDefaultFlex());
+  }
+
   /**
    * Returns a label using 1 of 3 options. If the internal label is a basic
    * value, return it. If it is a view type, get its associated display value.
@@ -72,15 +88,13 @@ export default class ViewType extends Type {
       throw new Error(`Error ${this.constructor.name}: labels must only be plain strings when used with tables.`);
     }
 
-    const defaultFlex = this.options.has('width') ? 0 : 1;
-
     return {
       viewType: this,
       label: label,
       dataKey: label,
-      width: this.options.get('width', 100),
-      flexGrow: this.options.get('flexGrow', defaultFlex),
-      flexShrink: this.options.get('flexShrink', defaultFlex),
+      width: this.getWidth(),
+      flexGrow: this.getFlexGrow(),
+      flexShrink: this.getFlexShrink(),
       filterType: 'equals',
       filter: this.filter.bind(this)
     };

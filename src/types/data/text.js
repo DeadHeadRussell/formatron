@@ -32,7 +32,7 @@ export default class TextType extends DataType {
   }
 
   getDefaultValue() {
-    super.getDefaultValue('');
+    return super.getDefaultValue('');
   }
 
   format(value) {

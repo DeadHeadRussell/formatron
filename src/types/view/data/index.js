@@ -47,14 +47,17 @@ export default class DataType extends ViewType {
    * @returns {bool} `true` if editable.
    */
   isEditable() {
-    return this.options.get('editable', true);
+    const editable = this.options.get('editable');
+    return typeof editable == 'undefined' ?
+      true :
+      !!editable;
   }
 
   /**
    * @returns {string} A placeholder associated with the view.
    */
   getPlaceholder() {
-    return this.options.get('placeholder', '');
+    return this.options.get('placeholder') || '';
   }
 
   /**

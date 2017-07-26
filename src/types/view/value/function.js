@@ -11,7 +11,13 @@ export default class FunctionType extends ValueType {
     ceil: value => Math.ceil(value),
     floor: value => Math.floor(value),
     round: value => Math.round(value),
-    formatDate: (value, format) => new Date(value * 1000).format(format),
+
+    formatDate: (value, format) => new Date(value * 1000)
+      .format(format),
+
+    addDate: (value, dateString) => moment(value * 1000)
+      .add(...dateString.split(' ')),
+
     countDays: (endTimes, startTimes) => startTimes
       .map((startTime, index) => {
         const rawEndTime = endTimes.get(index);
@@ -30,6 +36,7 @@ export default class FunctionType extends ValueType {
     floor: numericalDisplay,
     round: numericalDisplay,
     formatDate: textDisplay,
+    addDate: textDisplay,
     countDays: numericalDisplay
   };
 
