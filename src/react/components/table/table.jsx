@@ -199,7 +199,8 @@ export default class SchemaTable extends BaseTable {
     return this.reduce(
       this.props.cellRenderers,
       (column, {rowData}) => {
-        const key = `${column.uniqueId}-${rowData.get(BaseTable.naturalIndex)}`;
+        const columnId = typeof column == 'string' ? column : column.uniqueId;
+        const key = `${columnId}-${rowData.get(BaseTable.naturalIndex)}`;
         if (!this.cellCache.has(key)) {
           const renderData = new RenderData(this.props.dataType, rowData, {
             viewTypes: this.props.viewTypes,
