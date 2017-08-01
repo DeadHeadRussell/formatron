@@ -28,7 +28,10 @@ export default class TextType extends DataType {
   }
 
   hasValue(value) {
-    return !!(value && value.length > 0);
+    if (!super.hasValue(value)) {
+      return false;
+    }
+    return typeof value == 'string' && value.length > 0;
   }
 
   getDefaultValue() {
