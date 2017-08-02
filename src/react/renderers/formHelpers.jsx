@@ -64,7 +64,7 @@ export const withStaticLabel = (WrappedComponent) => {
 
     return (
       <div className={classNames('formatron-static', `formatron-field-${viewType.constructor.typeName}`)}>
-        <Label required={required}>
+        <Label>
           {viewType.getLabel(renderData)}
         </Label>
 
