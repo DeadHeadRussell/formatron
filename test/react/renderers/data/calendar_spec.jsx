@@ -1,5 +1,4 @@
 import React from 'react';
-import {Map} from 'immutable';
 import chai, {expect} from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import {mount} from 'enzyme';
@@ -37,11 +36,11 @@ describe('calendar renderer', () => {
   let clock;
 
   beforeEach(() => {
-    clock = sinon.useFakeTimers()
+    clock = sinon.useFakeTimers();
   });
 
   afterEach(() => {
-    clock.restore()
+    clock.restore();
   });
 
   it('renders without exploding', () => {
@@ -49,6 +48,7 @@ describe('calendar renderer', () => {
     const calendar = reactRenderers.renderTableCell(
         new view.calendar(), renderData);
     const wrapper = mount(calendar);
+
     expect(wrapper).to.be.present();
   })
 
@@ -90,7 +90,7 @@ describe('calendar renderer', () => {
 
     const newRenderData = createRenderData({dataType, value});
     wrapper.setProps({renderData: newRenderData});
-    clock.tick(1000)  // Wait for the debounce.
+    clock.tick(1000);  // Wait for the debounce.
     expect(getInput(wrapper)).to.have.value(formattedValue);
   })
 
@@ -106,7 +106,7 @@ describe('calendar renderer', () => {
     const formattedValue = formatValue(value, dataType.getFormat());
     getInput(wrapper).simulate('change', {target: {value: formattedValue}});
     getInput(wrapper).simulate('blur');
-    clock.tick(1000)  // Wait for the blur timeout.
+    clock.tick(1000);  // Wait for the blur timeout.
     expect(onChange.getCall(0).args[1]).to.equal(value);
   })
 })
