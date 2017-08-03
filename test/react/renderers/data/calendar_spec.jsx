@@ -78,13 +78,13 @@ describe('calendar renderer', () => {
   })
 
   it('displays the new value after it is changed', () => {
-    const value = 999000;
     const dataType = new data.date();
     const renderData = createRenderData({dataType});
     const calendar = reactRenderers.renderTableCell(
         new view.calendar(), renderData);
     const wrapper = mount(calendar);
 
+    const value = 999000;
     const formattedValue = formatValue(value, dataType.getFormat());
     expect(getInput(wrapper)).not.to.have.value(formattedValue);
 
