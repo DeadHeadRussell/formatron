@@ -10,7 +10,7 @@ module.exports = (config) => {
     frameworks: ['mocha', 'sinon', 'chai'],
 
     files: [
-      'test/react/components/*',
+      'test/react/**/*',
     ],
 
     webpack: {
