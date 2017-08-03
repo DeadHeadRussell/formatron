@@ -117,12 +117,14 @@ export default function filterableTable(Table) {
       if (props.initialFilters && props.initialFilters.size > 0) {
         return {
           filtering: true,
-          filters: props.initialFilters
+          filters: props.initialFilters,
+          currentFilters: props.initialFilters
         };
       } else {
         return {
           filtering: false,
-          filters: Map()
+          filters: Map(),
+          currentFilters: Map()
         };
       }
     }
@@ -163,15 +165,41 @@ export default function filterableTable(Table) {
 
     getToolbarButtons = buttons => {
       if (this.props.showFilterButton) {
-        return buttons
-          .push(<button
-            key='filter-toggle'
-            type='button'
-            className='formatron-table-button formatron-table-filterable-filter'
-            onClick={this.toggleFilter}
-          >
-            Filter
-          </button>);
+        return this.isFiltering() ? (
+          buttons
+            .push((
+              <button
+                key='filter-run'
+                type='button'
+                className='formatron-table-button formatron-table-filterable-filter'
+                onClick={this.runFilter}
+              >
+                Filter
+              </button>
+            ))
+            .push((
+              <button
+                key='filter-toggle'
+                type='button'
+                className='formatron-table-button formatron-table-filterable-filter'
+                onClick={this.toggleFilter}
+              >
+                Stop Filtering
+              </button>
+            ))
+        ) : (
+          buttons
+            .push((
+              <button
+                key='filter-toggle'
+                type='button'
+                className='formatron-table-button formatron-table-filterable-filter'
+                onClick={this.toggleFilter}
+              >
+                Filter
+              </button>
+            ))
+        );
       } else {
         return buttons;
       }
@@ -269,7 +297,7 @@ export default function filterableTable(Table) {
     }
 
     getFilters() {
-      return this.props.filters || this.state.filters;
+      return this.props.filters || this.state.currentFilters;
     }
 
     onFilter(columnProps, filterValue) {
@@ -288,6 +316,12 @@ export default function filterableTable(Table) {
       );
 
       this.setState({filters});
+    }
+
+    runFilter = () => {
+      this.setState({
+        currentFilters: this.state.filters
+      });
     }
 
     render() {
