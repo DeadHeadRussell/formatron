@@ -85,19 +85,6 @@ describe('calendar renderer', () => {
     expect(getInput(wrapper)).to.have.value(formattedValue);
   });
 
-  it('uses the given type', () => {
-    const value = 999000;
-    const format = 'ss';
-    const dataType = new data.date('', {format});
-    const renderData = createRenderData({value, dataType});
-    const calendar = reactRenderers.renderTableCell(
-        new view.calendar(), renderData);
-    const wrapper = mount(calendar);
-
-    const formattedValue = formatValue(value, format);
-    expect(getInput(wrapper)).to.have.value(formattedValue);
-  });
-
   it('displays the new value after it is changed', () => {
     const dataType = new data.date();
     const renderData = createRenderData({dataType});
