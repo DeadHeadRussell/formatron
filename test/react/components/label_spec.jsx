@@ -1,9 +1,7 @@
 import React from 'react';
 import chai, {expect} from 'chai';
 import chaiEnzyme from 'chai-enzyme';
-import sinon from 'sinon';
 import {shallow} from 'enzyme';
-import moment from 'moment';
 
 import 'formatron/types';
 import {Label} from 'formatron/react';

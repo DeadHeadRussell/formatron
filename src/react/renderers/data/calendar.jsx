@@ -180,4 +180,3 @@ export default ReactRenderer.register(
   Calendar,
   StaticCalendar
 );
-
