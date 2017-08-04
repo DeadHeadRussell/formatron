@@ -1,6 +1,6 @@
 export function withDataRenderer(WrappedComponent) {
   return ({viewType, renderData}) => {
-    const {getError, isDisabled, onChange, onBlur, nButtonClick} = renderData.options;
+    const {getError, isDisabled, onChange, onBlur, onButtonClick} = renderData.options;
 
     const ref = viewType.getRef();
     const disabled = isDisabled(ref) || !viewType.isEditable();
@@ -133,4 +133,3 @@ export function withDisplayRenderer(WrappedComponent) {
     />;
   };
 }
-
