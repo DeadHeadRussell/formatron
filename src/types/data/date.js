@@ -26,12 +26,13 @@ export default class DateType extends DataType {
   }
 
   convert(value, toType) {
-    const fromType = typeof value == 'string' ?
-      'string' :
-      (value instanceof Date || value instanceof moment) ?
-        'datetime' :
-        'unix';
-    
+    const fromType =
+      typeof value == 'string'
+        ? 'string'
+        : value instanceof Date || value instanceof moment
+          ? 'datetime'
+          : 'unix';
+
     return this.conversions[fromType][toType](value);
   }
 
@@ -54,12 +55,12 @@ export default class DateType extends DataType {
     } else {
       return moment(value * 1000);
     }
-  }
+  };
 
   unixToString = value => {
     const datetime = this.unixToDatetime(value);
     return this.datetimeToString(datetime);
-  }
+  };
 
   datetimeToUnix = value => {
     if (!value || !value.isValid()) {
@@ -71,14 +72,14 @@ export default class DateType extends DataType {
     } else {
       return value.valueOf() / 1000;
     }
-  }
+  };
 
   datetimeToString = value => {
     if (value && value.isValid()) {
       return value.format(this.getFormat());
     }
     return '';
-  }
+  };
 
   stringToUnix = value => {
     if (this.getType() == 'time') {
@@ -88,7 +89,7 @@ export default class DateType extends DataType {
       const datetime = this.stringToDatetime(value);
       return this.datetimeToUnix(datetime);
     }
-  }
+  };
 
   stringToDatetime = value => {
     if (this.getType() == 'time') {
@@ -96,43 +97,39 @@ export default class DateType extends DataType {
       const unixTime = this.datetimeToUnix(today);
       return this.unixToDatetime(unixTime);
     } else {
-      return moment(value);
+      return moment(new Date(value).valueOf());
     }
-  }
+  };
 
   stringToString = value => {
     return this.datetimeToString(this.stringToDatetime(value));
-  }
+  };
 
   conversions = {
     unix: {
       unix: value => value,
       datetime: this.unixToDatetime,
-      string: this.unixToString
+      string: this.unixToString,
     },
     datetime: {
       unix: this.datetimeToUnix,
       datetime: value => value,
-      string: this.datetimeToString
+      string: this.datetimeToString,
     },
     string: {
       unix: this.stringToUnix,
       datetime: this.stringToDatetime,
-      string: this.stringToString
-    }
-  }
+      string: this.stringToString,
+    },
+  };
 
   filter(filterValue, rowValue) {
     const lowerInput = this.convert(filterValue.get('lower'), 'unix');
     const upperInput = this.convert(filterValue.get('upper'), 'unix');
 
-    const lower = Number.isFinite(lowerInput) ?
-      lowerInput :
-      -Infinity;
+    const lower = Number.isFinite(lowerInput) ? lowerInput : -Infinity;
 
-    const upper = Number.isFinite(upperInput) ?
-      upperInput :
-      Infinity;
+    const upper = Number.isFinite(upperInput) ? upperInput : Infinity;
 
     console.log(rowValue >= lower && rowValue <= upper);
     console.log(lowerInput, lower, rowValue, upperInput, upper);
@@ -140,4 +137,3 @@ export default class DateType extends DataType {
     return rowValue >= lower && rowValue <= upper;
   }
 }
-

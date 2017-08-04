@@ -3,15 +3,13 @@ const webpack = require('webpack');
 
 const isWindows = /^win/.test(process.platform);
 
-module.exports = (config) => {
+module.exports = config => {
   config.set({
     basePath: '',
 
     frameworks: ['mocha', 'sinon', 'chai'],
 
-    files: [
-      'test/react/**/*',
-    ],
+    files: ['test/react/**/*'],
 
     webpack: {
       externals: {
@@ -31,29 +29,31 @@ module.exports = (config) => {
               presets: ['stage-2', 'es2015', 'react'],
               plugins: [
                 'react-require',
-                [
-                  'babel-root-import',
-                  {'rootPathSuffix': 'src'}
-                ],
-                'transform-class-properties'
-              ]
+                ['babel-root-import', {rootPathSuffix: 'src'}],
+                'transform-class-properties',
+              ],
             },
-          }, {
+          },
+          {
             test: /\.sass$/,
             exclude: /node_modules/,
-            loader: 'style-loader!css-loader!postcss-loader!sass-loader'
-          }, {
+            loader: 'style-loader!css-loader!postcss-loader!sass-loader',
+          },
+          {
             test: /\.css$/,
-            loader: 'style-loader!css-loader'
-          }, {
+            loader: 'style-loader!css-loader',
+          },
+          {
             test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: 'url-loader?limit=10000&mimetype=application/font-woff'
-          }, {
+            loader: 'url-loader?limit=10000&mimetype=application/font-woff',
+          },
+          {
             test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: 'file-loader'
-          }, {
+            loader: 'file-loader',
+          },
+          {
             test: /\.(svg|png|jpg)$/,
-            loader: 'url-loader'
+            loader: 'url-loader',
           },
         ],
       },
@@ -93,7 +93,7 @@ module.exports = (config) => {
     customLaunchers: {
       IE10: {
         base: 'IE',
-        'x-ua-compatible': 'IE=EmulateIE10'
+        'x-ua-compatible': 'IE=EmulateIE10',
       },
     },
 
