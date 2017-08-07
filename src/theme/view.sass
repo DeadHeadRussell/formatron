@@ -38,6 +38,9 @@
     margin-right: 5px
     content: ':'
 
+  .formatron-static-value
+    margin: 0
+
 // Input
 .formatron-input,
 .formatron-field-wrapper > .formatron-static-value
@@ -51,7 +54,7 @@
   border-radius: 4px
   color: inherit
   font: inherit
-  background: white
+  background: #fbfbfb
   outline: none
 
 .formatron-input:not([type=checkbox])
@@ -67,18 +70,16 @@
   font: inherit
 
 .formatron-disabled > .formatron-field-wrapper
-  > .formatron-input,
-  > .formatron-static-value
+  .formatron-input,
+  .formatron-static-value
     background: #fbfbfb
 
-
-.formatron-error[data-error]
-  > .formatron-field-wrapper
-    > .formatron-input,
-    > .formatron-static-value
-      border: 1px solid #cf4f43
-      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1)
-      outline: none
+.formatron-error[data-error] > .formatron-field-wrapper
+  .formatron-input,
+  .formatron-static-value
+    border: 1px solid #cf4f43
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1)
+    outline: none
 
   &:after
     position: relative

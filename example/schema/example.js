@@ -241,6 +241,25 @@ export const exampleViewTypes = Map({
   })
 });
 
+export const exampleColumns = List([
+  parseField(VIEW, {
+    type: 'text',
+    ref: 'name',
+    label: 'Name'
+  }),
+  parseField(VIEW, {
+    type: 'text',
+    ref: 'tel',
+    label: 'Tel'
+  }),
+  parseField(VIEW, {
+    type: 'number',
+    ref: 'count',
+    label: 'Count'
+  }),
+  'doubleCount'
+]);
+
 export function createExamples(count) {
   return List()
     .set(count - 1, 0)

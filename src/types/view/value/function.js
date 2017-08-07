@@ -1,4 +1,5 @@
 import {List} from 'immutable';
+import moment from 'moment';
 
 import {numericalDisplay, textDisplay} from '../utils';
 
@@ -12,7 +13,7 @@ export default class FunctionType extends ValueType {
     floor: value => Math.floor(value),
     round: value => Math.round(value),
 
-    formatDate: (value, format) => new Date(value * 1000)
+    formatDate: (value, format) => moment(value * 1000)
       .format(format),
 
     addDate: (value, dateString) => moment(value * 1000)

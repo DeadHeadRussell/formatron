@@ -1,16 +1,18 @@
 import {List, Map} from 'immutable';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'font-awesome-webpack-2';
 
-import 'formatron/types';
-import 'formatron/theme';
+import * as Types from 'formatron/types';
+
 import Form from 'formatron/react/components/form';
 import Table from 'formatron/react/components/table';
 
-import './example.sass';
+import {exampleDataType, exampleViewTypes, exampleColumns, createExamples} from './schema/example';
+//import './types/linked';
 
-import {exampleDataType, exampleViewTypes, createExamples} from './schema/example';
+import 'font-awesome-webpack-2';
+import 'formatron/theme';
+import './example.sass';
 
 class ExampleForm extends React.Component {
   constructor(props) {
@@ -43,7 +45,8 @@ class ExampleTable extends React.Component {
     super(props);
     this.state = {
       models: createExamples(10000),
-      editable: false
+      editable: false,
+      sortable: false
     };
   }
 
@@ -60,32 +63,62 @@ class ExampleTable extends React.Component {
     });
   }
 
-  toggleEditable = () => {
+  toggle = (toggleable) => {
     this.setState({
-      editable: !this.state.editable
+      [toggleable]: !this.state[toggleable]
     });
   }
 
   render() {
     return <div
-      style={{width: '100%', height: '600px'}}
+      style={{width: '100%', height: 600}}
     >
       <Table
-        schema={exampleSchema}
+        viewTypes={exampleViewTypes}
+        columns={exampleColumns}
+        dataType={exampleDataType}
         models={this.state.models}
         editable={this.state.editable}
         onSubmit={this.saveModel}
+        sortable={this.state.sortable}
         getToolbarButtons={List([buttons => buttons
-          .unshift(<button key='editable' onClick={this.toggleEditable}>
+          .unshift(<button key='editable' onClick={() => this.toggle('editable')}>
             {this.state.editable ? 'Make Uneditable' : 'Make Editable'}
-          </button>)])
-        }
+          </button>)
+          .unshift(<button key='sortable' onClick={() => this.toggle('sortable')}>
+            {this.state.sortable ? 'Make Unsortable' : 'Make Sortable'}
+          </button>)
+        ])}
       />
     </div>;
   }
 }
 
+class Example extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      display: 'form'
+    };
+  }
+
+  render() {
+    return this.state.display == 'form' ? (
+      <div>
+        <button onClick={() => this.setState({display: 'table'})}>Show Table</button>
+        <ExampleForm />
+      </div>
+    ) : (
+      <div>
+        <button onClick={() => this.setState({display: 'form'})}>Show Form</button>
+        <ExampleTable />
+      </div>
+    );
+  }
+}
+
 ReactDOM.render(
-  <ExampleForm />,
+  <Example />,
   document.getElementById('example-app')
 );
+

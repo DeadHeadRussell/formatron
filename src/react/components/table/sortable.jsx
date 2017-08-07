@@ -8,6 +8,7 @@ import BaseTable from './base';
 export default function sortableTable(Table) {
   return class SortableTable extends BaseTable {
     static propTypes = {
+      sortable: React.PropTypes.bool,
       initialSort: React.PropTypes.shape({
         sortBy: React.PropTypes.string,
         sortDirection: React.PropTypes.string
@@ -19,6 +20,7 @@ export default function sortableTable(Table) {
 
     static defaultProps = {
       ...BaseTable.defaultProps,
+      sortable: true,
       initialSort: {}
     };
 
@@ -112,18 +114,29 @@ export default function sortableTable(Table) {
     }
 
     render() {
-      const mergedProps = this.mergeProps({
-        getColumnProps: this.getColumnProps,
-        rowsModifier: this.rowsModifier,
-        sort: this.onSort,
-        sortBy: this.getSortBy(),
-        sortDirection: this.getSortDirection()
-      });
+      if (this.props.sortable) {
+        const mergedProps = this.mergeProps({
+          getColumnProps: this.getColumnProps,
+          rowsModifier: this.rowsModifier,
+          sort: this.onSort,
+          sortBy: this.getSortBy(),
+          sortDirection: this.getSortDirection()
+        });
 
-      return <Table
-        ref={table => this.table = table}
-        {...mergedProps}
-      />;
+        return (
+          <Table
+            ref={table => this.table = table}
+            {...mergedProps}
+          />
+        );
+      } else {
+        return (
+          <Table
+            ref={table => this.table = table}
+            {...this.mergeProps({})}
+          />
+        );
+      }
     }
   }
 }
