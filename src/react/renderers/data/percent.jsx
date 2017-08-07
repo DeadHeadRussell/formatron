@@ -2,22 +2,28 @@ import FormatronPropTypes from '~/react/propTypes';
 import NumberType from '~/types/data/number';
 import PercentType from '~/types/view/data/percent';
 
-import {withDebouncedRenderer, withDisplayRenderer} from './';
+import {withChangeOnBlurRenderer, withDisplayRenderer} from './';
 import {withFormLabel, withStaticLabel} from '../formHelpers';
 import ReactRenderer from '../reactRenderer';
 import {TableRangeFilter} from '../tableHelpers';
 
-const PercentInput = ({field, value, disabled, placeholder, onChange, onBlur}) => (
+const PercentInput = ({
+  field,
+  value,
+  disabled,
+  placeholder,
+  onChange,
+  onBlur,
+}) =>
   <input
-    className='formatron-number-input formatron-percent'
-    type='text'
+    className="formatron-number-input formatron-percent"
+    type="text"
     disabled={disabled}
     value={numberToInput(value)}
     placeholder={placeholder}
     onChange={e => onChange(inputToNumber(e.target.value))}
     onBlur={onBlur}
-  />
-);
+  />;
 
 PercentInput.propTypes = {
   field: FormatronPropTypes.dataType.instanceOf(NumberType).isRequired,
@@ -25,7 +31,7 @@ PercentInput.propTypes = {
   disabled: React.PropTypes.bool,
   placeholder: React.PropTypes.text,
   onChange: React.PropTypes.func.isRequired,
-  onBlur: React.PropTypes.func.isRequired
+  onBlur: React.PropTypes.func.isRequired,
 };
 
 function numberToInput(number) {
@@ -49,21 +55,20 @@ function inputToNumber(input) {
 const PercentField = withFormLabel(Percent);
 const StaticPercentField = withStaticLabel(StaticPercent);
 
-const PercentFilter = ({renderData}) => (
+const PercentFilter = ({renderData, viewType}) =>
   <TableRangeFilter
     viewType={viewType}
     renderData={renderData}
     Component={PercentInput}
-  />
+  />;
+
+const Percent = withChangeOnBlurRenderer(props => <PercentInput {...props} />);
+
+const StaticPercent = withDisplayRenderer(({value}) =>
+  <p className="formatron-static-value">
+    {value}
+  </p>,
 );
-
-const Percent = withDebouncedRenderer(props => (
-  <PercentInput {...props} />
-));
-
-const StaticPercent = withDisplayRenderer(({value}) => (
-  <p className='formatron-static-value'>{value}</p>
-));
 
 export default ReactRenderer.register(
   PercentType,
@@ -71,6 +76,5 @@ export default ReactRenderer.register(
   StaticPercentField,
   PercentFilter,
   Percent,
-  StaticPercent
+  StaticPercent,
 );
-

@@ -6,9 +6,9 @@ import TextInputType from '~/types/view/data/text';
 
 import {withFormLabel, withStaticLabel} from '../formHelpers';
 import ReactRenderer from '../reactRenderer';
-import {withDebouncedRenderer, withDisplayRenderer} from './';
+import {withChangeOnBlurRenderer, withDisplayRenderer} from './';
 
-const TextFilter = ({viewType, renderData}) =>
+const TextFilter = ({renderData}) =>
   <TextInputWrapper
     field={renderData.dataType}
     value={renderData.dataValue}
@@ -19,19 +19,13 @@ const TextFilter = ({viewType, renderData}) =>
 const TextInputWrapper = props => {
   const wrappedProps = {
     ...props,
-    value: formattedValue(),
     onBlur: props.field.format
       ? () => {
-          wrappedProps.value = formattedValue();
           props.onChange(wrappedProps.value);
           props.onBlur();
         }
       : props.onBlur,
   };
-
-  function formattedValue() {
-    return props.field.format ? props.field.format(props.value) : props.value;
-  }
 
   return props.field.getMask && props.field.getMask()
     ? <FormatronMaskedInput {...wrappedProps} />
@@ -88,7 +82,7 @@ const TextArea = ({field, value, disabled, placeholder, onChange, onBlur}) =>
     onBlur={onBlur}
   />;
 
-const Text = withDebouncedRenderer(props => <TextInputWrapper {...props} />);
+const Text = withChangeOnBlurRenderer(props => <TextInputWrapper {...props} />);
 
 const StaticText = withDisplayRenderer(({value}) =>
   <p className="formatron-static-value">
