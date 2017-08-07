@@ -19,6 +19,7 @@ const TextFilter = ({viewType, renderData}) =>
 const TextInputWrapper = props => {
   const wrappedProps = {
     ...props,
+    value: props.field.format ? props.field.format(props.value) : props.value,
     onBlur: props.field.format
       ? () => {
           props.onChange(props.field.format(props.value));

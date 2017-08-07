@@ -24,7 +24,8 @@ export default class TextType extends DataType {
   }
 
   getMask() {
-    return this.options.get('mask');
+    const defaultMask = this.getType() == 'ssn' ? '###-##-####' : '';
+    return this.options.get('mask', defaultMask);
   }
 
   hasValue(value) {
