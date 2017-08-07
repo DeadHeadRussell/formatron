@@ -19,14 +19,19 @@ const TextFilter = ({viewType, renderData}) =>
 const TextInputWrapper = props => {
   const wrappedProps = {
     ...props,
-    value: props.field.format ? props.field.format(props.value) : props.value,
+    value: formattedValue(),
     onBlur: props.field.format
       ? () => {
-          props.onChange(props.field.format(props.value));
+          wrappedProps.value = formattedValue();
+          props.onChange(wrappedProps.value);
           props.onBlur();
         }
       : props.onBlur,
   };
+
+  function formattedValue() {
+    return props.field.format ? props.field.format(props.value) : props.value;
+  }
 
   return props.field.getMask && props.field.getMask()
     ? <FormatronMaskedInput {...wrappedProps} />
