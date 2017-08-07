@@ -3,7 +3,6 @@ import chai, {expect} from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import {mount} from 'enzyme';
 import moment from 'moment';
-import sinon from 'sinon';
 
 import {view, data} from 'formatron/types';
 import RenderData from 'formatron/renderers/renderData';
