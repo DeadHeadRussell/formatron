@@ -17,21 +17,11 @@ const TextFilter = ({renderData}) =>
   />;
 
 const TextInputWrapper = props => {
-  const wrappedProps = {
-    ...props,
-    onBlur: props.field.format
-      ? () => {
-          props.onChange(wrappedProps.value);
-          props.onBlur();
-        }
-      : props.onBlur,
-  };
-
   return props.field.getMask && props.field.getMask()
-    ? <FormatronMaskedInput {...wrappedProps} />
+    ? <FormatronMaskedInput {...props} />
     : props.field.isMultiLined && props.field.isMultiLined()
-      ? <TextArea {...wrappedProps} />
-      : <TextInput {...wrappedProps} />;
+      ? <TextArea {...props} />
+      : <TextInput {...props} />;
 };
 
 TextInputWrapper.propTypes = {

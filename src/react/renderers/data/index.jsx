@@ -37,41 +37,20 @@ export function withChangeOnBlurRenderer(WrappedComponent) {
     constructor(props) {
       super(props);
       this.state = this.createInitialState(props);
-      this.maybeUpdateWithConvertedValue();
     }
 
     createInitialState(props) {
-      return props.viewType.getFieldAndValue(props.renderData);
+      const state = props.viewType.getFieldAndValue(props.renderData);
+      if (state.field.format) {
+        state.value = state.field.format(state.value);
+      }
+      return state;
     }
 
     componentWillReceiveProps(newProps) {
       if (newProps.renderData != this.props.renderData) {
         this.setState(this.createInitialState(newProps));
-        this.maybeUpdateWithConvertedValue();
       }
-    }
-
-    maybeUpdateWithConvertedValue() {
-      const convertedValue = this.convertInput();
-      console.log('converted', convertedValue, 'value', this.state.value);
-      if (this.state.value == convertedValue) return;
-      const {viewType, renderData} = this.props;
-      const ref = viewType.getRef();
-      console.log('onchange', convertedValue);
-      renderData.options.onChange(ref, convertedValue);
-    }
-
-    convertInput() {
-      const {viewType} = this.props;
-      const parsedInput = viewType.parseInput
-        ? viewType.parseInput(this.state.value)
-        : this.state.field.parseInput
-          ? this.state.field.parseInput(this.state.value)
-          : this.state.value;
-      const convertedInput = this.state.field.format
-        ? this.state.field.format(parsedInput)
-        : parsedInput;
-      return convertedInput;
     }
 
     onKeyDown = e => {
@@ -85,14 +64,24 @@ export function withChangeOnBlurRenderer(WrappedComponent) {
     };
 
     onBlur = () => {
-      console.log('onBlur', this.state.value);
-      const convertedValue = this.convertInput();
+      const value = this.state.field.format
+        ? this.state.field.format(this.state.value)
+        : this.state.value;
+      this.setState({value});
       const {viewType, renderData} = this.props;
       const ref = viewType.getRef();
-      console.log('blur onchange', convertedValue);
-      renderData.options.onChange(ref, convertedValue);
+      renderData.options.onChange(ref, this.getParsedInput(value));
       renderData.options.onBlur(ref);
     };
+
+    getParsedInput(value) {
+      const {viewType} = this.props;
+      return viewType.parseInput
+        ? viewType.parseInput(value)
+        : this.state.field.parseInput
+          ? this.state.field.parseInput(value)
+          : value;
+    }
 
     render() {
       const {viewType, renderData} = this.props;

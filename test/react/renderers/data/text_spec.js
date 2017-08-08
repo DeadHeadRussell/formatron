@@ -3,6 +3,7 @@ import chai, {expect} from 'chai';
 import chaiEnzyme from 'chai-enzyme';
 import {mount} from 'enzyme';
 import moment from 'moment';
+import sinon from 'sinon';
 
 import {view, data} from 'formatron/types';
 import RenderData from 'formatron/renderers/renderData';
@@ -37,5 +38,17 @@ describe('text renderer', () => {
     const wrapper = mount(text);
 
     expect(wrapper.find('input')).to.have.value('(802) 864-3334');
+  });
+
+  it('formats phone number on blur', () => {
+    const onChange = sinon.spy();
+    const dataType = new data.text('', {textType: 'tel'});
+    const renderData = createRenderData(dataType, '', {onChange});
+    const text = reactRenderers.renderTableCell(new view.text(), renderData);
+    const wrapper = mount(text);
+
+    wrapper.find('input').simulate('change', {target: {value: '8028643334'}});
+    wrapper.find('input').simulate('blur');
+    expect(onChange.getCall(0).args[1]).to.equal('(802) 864-3334');
   });
 });
