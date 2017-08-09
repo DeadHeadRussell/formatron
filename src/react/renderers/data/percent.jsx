@@ -67,7 +67,7 @@ const Percent = withChangeOnBlurRenderer(props => <PercentInput {...props} />);
 const StaticPercent = withDisplayRenderer(({value}) =>
   <p className="formatron-static-value">
     {value}
-  </p>,
+  </p>
 );
 
 export default ReactRenderer.register(
@@ -76,5 +76,5 @@ export default ReactRenderer.register(
   StaticPercentField,
   PercentFilter,
   Percent,
-  StaticPercent,
+  StaticPercent
 );

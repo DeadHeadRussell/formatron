@@ -327,6 +327,6 @@ export function createExamples(count) {
           text: 'Hai :)',
         },
       ],
-    }),
+    })
   );
 }

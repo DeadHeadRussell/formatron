@@ -25,7 +25,7 @@ function clickPickerDay(day) {
   const tableCells = document.querySelectorAll('.formatron-datetime-picker td');
   const cell = Array.prototype.find.call(
     tableCells,
-    t => t.textContent === String(day),
+    t => t.textContent === String(day)
   );
   cell.click();
 }
@@ -45,7 +45,7 @@ describe('calendar renderer', () => {
     const renderData = createRenderData(new data.date(), 0);
     const calendar = reactRenderers.renderTableCell(
       new view.calendar(),
-      renderData,
+      renderData
     );
     const wrapper = mount(calendar);
 
@@ -58,7 +58,7 @@ describe('calendar renderer', () => {
     const renderData = createRenderData(dataType, value);
     const calendar = reactRenderers.renderTableCell(
       new view.calendar(),
-      renderData,
+      renderData
     );
     const wrapper = mount(calendar);
 
@@ -73,7 +73,7 @@ describe('calendar renderer', () => {
     const renderData = createRenderData(dataType, value);
     const calendar = reactRenderers.renderTableCell(
       new view.calendar(),
-      renderData,
+      renderData
     );
     const wrapper = mount(calendar);
 
@@ -86,7 +86,7 @@ describe('calendar renderer', () => {
     const renderData = createRenderData(dataType, 0);
     const calendar = reactRenderers.renderTableCell(
       new view.calendar(),
-      renderData,
+      renderData
     );
     const wrapper = mount(calendar);
 
@@ -106,7 +106,7 @@ describe('calendar renderer', () => {
     const renderData = createRenderData(dataType, 0, {onChange});
     const calendar = reactRenderers.renderTableCell(
       new view.calendar(),
-      renderData,
+      renderData
     );
     const wrapper = mount(calendar);
 
@@ -128,7 +128,7 @@ describe('calendar renderer', () => {
     const renderData = createRenderData(dataType, 0, {onChange});
     const calendar = reactRenderers.renderTableCell(
       new view.calendar(),
-      renderData,
+      renderData
     );
     const wrapper = mount(calendar);
 

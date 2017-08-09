@@ -29,7 +29,7 @@ const Link = withChangeOnBlurRenderer(
       <a className="formatron-input-link" href={value} _target="blank">
         Open URL
       </a>
-    </div>,
+    </div>
 );
 
 const StaticLink = withStaticRenderer(({value}) =>
@@ -37,7 +37,7 @@ const StaticLink = withStaticRenderer(({value}) =>
     <a className="formatron-link" href={value} _target="blank">
       {value}
     </a>
-  </p>,
+  </p>
 );
 
 const LinkField = withFormLabel(Link);
@@ -49,5 +49,5 @@ export default ReactRenderer.register(
   StaticLinkField,
   LinkFilter,
   Link,
-  StaticLink,
+  StaticLink
 );

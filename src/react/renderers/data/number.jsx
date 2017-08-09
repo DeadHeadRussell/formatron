@@ -53,13 +53,13 @@ const NumberFilter = ({viewType, renderData}) =>
   />;
 
 const NumberComponent = withChangeOnBlurRenderer(props =>
-  <NumberInput {...props} />,
+  <NumberInput {...props} />
 );
 
 const StaticNumber = withStaticRenderer(({value}) =>
   <p className="formatron-static-value">
     {value}
-  </p>,
+  </p>
 );
 
 const NumberField = withFormLabel(NumberComponent);
@@ -71,5 +71,5 @@ export default ReactRenderer.register(
   StaticNumberField,
   NumberFilter,
   NumberComponent,
-  StaticNumber,
+  StaticNumber
 );

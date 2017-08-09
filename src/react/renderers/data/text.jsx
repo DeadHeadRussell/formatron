@@ -80,9 +80,9 @@ const StaticText = withDisplayRenderer(({value}) =>
       value.split('\n').map(line =>
         <span className="formatron-static-value-line">
           {line}
-        </span>,
+        </span>
       )}
-  </p>,
+  </p>
 );
 
 const TextField = withFormLabel(Text);
@@ -94,5 +94,5 @@ export default ReactRenderer.register(
   StaticTextField,
   TextFilter,
   Text,
-  StaticText,
+  StaticText
 );
