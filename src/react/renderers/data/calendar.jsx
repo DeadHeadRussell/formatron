@@ -1,24 +1,24 @@
-import debounce from 'debounce'
-import moment from 'moment'
-import TetheredComponent from 'react-tether'
-import DatetimePicker from 'yet-another-datetime-picker'
+import debounce from 'debounce';
+import moment from 'moment';
+import TetheredComponent from 'react-tether';
+import DatetimePicker from 'yet-another-datetime-picker';
 
-import FormatronPropTypes from '~/react/propTypes'
-import DateType from '~/types/data/date'
-import CalendarType from '~/types/view/data/calendar'
+import FormatronPropTypes from '~/react/propTypes';
+import DateType from '~/types/data/date';
+import CalendarType from '~/types/view/data/calendar';
 
-import { withFormLabel, withStaticLabel } from '../formHelpers'
-import ReactRenderer from '../reactRenderer'
-import { TableRangeFilter } from '../tableHelpers'
-import { withDataRenderer, withDisplayRenderer } from './'
+import {withFormLabel, withStaticLabel} from '../formHelpers';
+import ReactRenderer from '../reactRenderer';
+import {TableRangeFilter} from '../tableHelpers';
+import {withDataRenderer, withDisplayRenderer} from './';
 
-const CalendarFilter = ({ viewType, renderData }) =>
+const CalendarFilter = ({viewType, renderData}) =>
   <TableRangeFilter
     viewType={viewType}
     renderData={renderData}
     parse={value => renderData.dataType.convert(value, 'unix')}
     Component={CalendarInput}
-  />
+  />;
 
 const CalendarInputPropTypes = {
   field: FormatronPropTypes.dataType.instanceOf(DateType).isRequired,
@@ -26,73 +26,73 @@ const CalendarInputPropTypes = {
   disabled: React.PropTypes.bool,
   onChange: React.PropTypes.func.isRequired,
   onBlur: React.PropTypes.func.isRequired,
-}
+};
 
 class CalendarInput extends React.Component {
   constructor(props) {
-    super(props)
-    this.blurTimeout = 0
-    this.state = this.createInitialState(props)
+    super(props);
+    this.blurTimeout = 0;
+    this.state = this.createInitialState(props);
   }
 
   // Debounce greatly improves time picker slider performance.
   componentWillReceiveProps = debounce(props => {
-    this.setState({ input: this.createInitialState(props).input })
-  }, 15)
+    this.setState({input: this.createInitialState(props).input});
+  }, 15);
 
   handleFocus = () => {
-    clearTimeout(this.blurTimeout)
-    this.setState({ showPicker: true })
-  }
+    clearTimeout(this.blurTimeout);
+    this.setState({showPicker: true});
+  };
 
   handleBlur = () => {
     // Wait for possible focus event before handling the blur event.
     this.blurTimeout = setTimeout(() => {
-      this.saveInput()
-      this.setState({ showPicker: false })
-      this.props.onBlur()
-    })
-  }
+      this.saveInput();
+      this.setState({showPicker: false});
+      this.props.onBlur();
+    });
+  };
 
   saveInput = () => {
-    this.props.onChange(this.props.field.convert(this.state.input, 'unix'))
-  }
+    this.props.onChange(this.props.field.convert(this.state.input, 'unix'));
+  };
 
   handlePickerChange = datetime => {
-    this.setState({ input: this.props.field.convert(datetime, 'string') })
-  }
+    this.setState({input: this.props.field.convert(datetime, 'string')});
+  };
 
   handleInputChange = event => {
-    this.setState({ input: event.target.value })
-  }
+    this.setState({input: event.target.value});
+  };
 
   handleClearInput = e => {
-    e.stopPropagation()
-    e.preventDefault()
-    clearTimeout(this.blurTimeout)
-    this.setState({ input: '' }, this.handleBlur)
-  }
+    e.stopPropagation();
+    e.preventDefault();
+    clearTimeout(this.blurTimeout);
+    this.setState({input: ''}, this.handleBlur);
+  };
 
   handleEnter = event => {
     if (event.which == 13) {
-      event.preventDefault()
-      event.stopPropagation()
-      this.handleBlur()
+      event.preventDefault();
+      event.stopPropagation();
+      this.handleBlur();
     }
-  }
+  };
 
   createInitialState(props) {
     return {
       showPicker: false,
       input: props.field.convert(props.value, 'string'),
-    }
+    };
   }
 
   getPickerDatetime() {
     if (!this.state.input) {
-      return moment()
+      return moment();
     }
-    return this.props.field.convert(this.state.input, 'datetime')
+    return this.props.field.convert(this.state.input, 'datetime');
   }
 
   renderPicker() {
@@ -135,11 +135,11 @@ class CalendarInput extends React.Component {
           }}
         />
       </TetheredComponent>
-    )
+    );
   }
 
   render() {
-    const { field, disabled, placeholder } = this.props
+    const {field, disabled, placeholder} = this.props;
     return (
       <div className="formatron-input formatron-calendar">
         <input
@@ -165,22 +165,22 @@ class CalendarInput extends React.Component {
           : null}
         {this.state.showPicker && !disabled ? this.renderPicker() : null}
       </div>
-    )
+    );
   }
 }
 
-CalendarInput.propTypes = CalendarInputPropTypes
+CalendarInput.propTypes = CalendarInputPropTypes;
 
-const Calendar = withDataRenderer(props => <CalendarInput {...props} />)
+const Calendar = withDataRenderer(props => <CalendarInput {...props} />);
 
-const StaticCalendar = withDisplayRenderer(({ field, value }) =>
+const StaticCalendar = withDisplayRenderer(({field, value}) =>
   <p className="formatron-static-value">
     {value}
   </p>
-)
+);
 
-const CalendarField = withFormLabel(Calendar)
-const StaticCalendarField = withStaticLabel(StaticCalendar)
+const CalendarField = withFormLabel(Calendar);
+const StaticCalendarField = withStaticLabel(StaticCalendar);
 
 export default ReactRenderer.register(
   CalendarType,
@@ -189,4 +189,4 @@ export default ReactRenderer.register(
   CalendarFilter,
   Calendar,
   StaticCalendar
-)
+);
