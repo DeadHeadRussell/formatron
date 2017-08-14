@@ -98,7 +98,7 @@ export default class DataType extends ViewType {
     const {dataType, dataValue} = renderData;
     const {field, value} = dataType.getFieldAndValue(dataValue, this.getRef());
     const defaultValueType = this.getDefaultValue();
-    if (!field.hasValue(value) && defaultValueType) {
+    if (field && !field.hasValue(value) && defaultValueType) {
       const defaultValue = defaultValueType.getValue(renderData);
       return {
         field,
