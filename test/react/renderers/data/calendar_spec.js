@@ -6,26 +6,14 @@ import moment from 'moment';
 import sinon from 'sinon';
 
 import {view, data} from 'formatron/types';
-import RenderData from 'formatron/renderers/renderData'
-import reactRenderers from '~/react/renderers'
+import RenderData from 'formatron/renderers/renderData';
+import reactRenderers from '~/react/renderers';
+import createRenderData from '../../../_helpers/createRenderData';
 
 chai.use(chaiEnzyme());
 
-function createRenderData(options = {}) {
-  return new RenderData(
-    options.dataType || new data.date(),
-    options.value || 0,
-    {
-      onChange: options.onChange || (() => {}),
-      onBlur: options.onBlur || (() => {}),
-      isDisabled: () => options.disabled || false,
-      getError: () => options.error || false,
-      isEditable: () => options.editable || true,
-    });
-}
-
 function formatValue(value, format) {
-  return moment(new Date(value * 1000)).format(format);
+  return moment(new Date(value * 1000).valueOf()).format(format);
 }
 
 function getInput(wrapper) {
@@ -36,7 +24,9 @@ function clickPickerDay(day) {
   // Picker is attached to document body because of tether.
   const tableCells = document.querySelectorAll('.formatron-datetime-picker td');
   const cell = Array.prototype.find.call(
-      tableCells, t => t.textContent === String(day));
+    tableCells,
+    t => t.textContent === String(day)
+  );
   cell.click();
 }
 
@@ -52,9 +42,11 @@ describe('calendar renderer', () => {
   });
 
   it('renders without exploding', () => {
-    const renderData = createRenderData();
+    const renderData = createRenderData(new data.date(), 0);
     const calendar = reactRenderers.renderTableCell(
-        new view.calendar(), renderData);
+      new view.calendar(),
+      renderData
+    );
     const wrapper = mount(calendar);
 
     expect(wrapper).to.be.present();
@@ -63,9 +55,11 @@ describe('calendar renderer', () => {
   it('displays the initial value', () => {
     const value = 999000;
     const dataType = new data.date();
-    const renderData = createRenderData({value, dataType});
+    const renderData = createRenderData(dataType, value);
     const calendar = reactRenderers.renderTableCell(
-        new view.calendar(), renderData);
+      new view.calendar(),
+      renderData
+    );
     const wrapper = mount(calendar);
 
     const formattedValue = formatValue(value, dataType.getFormat());
@@ -76,9 +70,11 @@ describe('calendar renderer', () => {
     const value = 999000;
     const format = 'ss';
     const dataType = new data.date('', {format});
-    const renderData = createRenderData({value, dataType});
+    const renderData = createRenderData(dataType, value);
     const calendar = reactRenderers.renderTableCell(
-        new view.calendar(), renderData);
+      new view.calendar(),
+      renderData
+    );
     const wrapper = mount(calendar);
 
     const formattedValue = formatValue(value, format);
@@ -87,27 +83,31 @@ describe('calendar renderer', () => {
 
   it('displays the new value after it is changed', () => {
     const dataType = new data.date();
-    const renderData = createRenderData({dataType});
+    const renderData = createRenderData(dataType, 0);
     const calendar = reactRenderers.renderTableCell(
-        new view.calendar(), renderData);
+      new view.calendar(),
+      renderData
+    );
     const wrapper = mount(calendar);
 
     const value = 999000;
     const formattedValue = formatValue(value, dataType.getFormat());
     expect(getInput(wrapper)).not.to.have.value(formattedValue);
 
-    const newRenderData = createRenderData({dataType, value});
+    const newRenderData = createRenderData(dataType, value);
     wrapper.setProps({renderData: newRenderData});
-    clock.tick(1000);  // Wait for the debounce.
+    clock.tick(1000); // Wait for the debounce.
     expect(getInput(wrapper)).to.have.value(formattedValue);
   });
 
   it('accepts text input and calls onChange after blur', () => {
     const dataType = new data.date();
     const onChange = sinon.spy();
-    const renderData = createRenderData({dataType, onChange});
+    const renderData = createRenderData(dataType, 0, {onChange});
     const calendar = reactRenderers.renderTableCell(
-        new view.calendar(), renderData);
+      new view.calendar(),
+      renderData
+    );
     const wrapper = mount(calendar);
 
     const value = 999000;
@@ -117,7 +117,7 @@ describe('calendar renderer', () => {
     getInput(wrapper).simulate('change', {target: {value: formattedValue}});
     // Blur to trigger onChange.
     getInput(wrapper).simulate('blur');
-    clock.tick(1000);  // Wait for the blur timeout.
+    clock.tick(1000); // Wait for the blur timeout.
 
     expect(onChange.getCall(0).args[1]).to.equal(value);
   });
@@ -125,9 +125,11 @@ describe('calendar renderer', () => {
   it('accepts datetime picker input', () => {
     const dataType = new data.date();
     const onChange = sinon.spy();
-    const renderData = createRenderData({dataType, onChange});
+    const renderData = createRenderData(dataType, 0, {onChange});
     const calendar = reactRenderers.renderTableCell(
-        new view.calendar(), renderData);
+      new view.calendar(),
+      renderData
+    );
     const wrapper = mount(calendar);
 
     // Open the datetime picker.
@@ -136,9 +138,9 @@ describe('calendar renderer', () => {
     clickPickerDay(10);
     // Blur to trigger onChange.
     getInput(wrapper).simulate('blur');
-    clock.tick(1000);  // Wait for the blur timeout.
+    clock.tick(1000); // Wait for the blur timeout.
 
     const dayOfMonth = formatValue(onChange.getCall(0).args[1], 'D');
     expect(dayOfMonth).to.equal(String(10));
   });
-})
+});

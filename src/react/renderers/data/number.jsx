@@ -5,19 +5,18 @@ import NumberInputType from '~/types/view/data/number';
 import {withFormLabel, withStaticLabel} from '../formHelpers';
 import ReactRenderer from '../reactRenderer';
 import {TableRangeFilter} from '../tableHelpers';
-import {withDebouncedRenderer, withStaticRenderer} from './';
+import {withChangeOnBlurRenderer, withStaticRenderer} from './';
 
-const NumberInput = ({field, value, disabled, placeholder, onChange, onBlur}) => (
+const NumberInput = ({field, value, disabled, placeholder, onChange, onBlur}) =>
   <input
-    className='formatron-input formatron-number'
-    type='number'
+    className="formatron-input formatron-number"
+    type="number"
     disabled={disabled}
     value={numberToInput(value)}
     placeholder={placeholder}
     onChange={e => onChange(inputToNumber(e.target.value))}
     onBlur={onBlur}
-  />
-);
+  />;
 
 NumberInput.propTypes = {
   field: FormatronPropTypes.dataType.instanceOf(NumberType).isRequired,
@@ -25,7 +24,7 @@ NumberInput.propTypes = {
   disabled: React.PropTypes.bool,
   placeholder: React.PropTypes.string,
   onChange: React.PropTypes.func.isRequired,
-  onBlur: React.PropTypes.func.isRequired
+  onBlur: React.PropTypes.func.isRequired,
 };
 
 function numberToInput(number) {
@@ -46,21 +45,22 @@ function inputToNumber(input) {
   return null;
 }
 
-const NumberFilter = ({viewType, renderData}) => (
+const NumberFilter = ({viewType, renderData}) =>
   <TableRangeFilter
     viewType={viewType}
     renderData={renderData}
     Component={NumberInput}
-  />
+  />;
+
+const NumberComponent = withChangeOnBlurRenderer(props =>
+  <NumberInput {...props} />
 );
 
-const NumberComponent = withDebouncedRenderer(props => (
-  <NumberInput {...props} />
-));
-
-const StaticNumber = withStaticRenderer(({value}) => (
-  <p className='formatron-static-value'>{value}</p>
-));
+const StaticNumber = withStaticRenderer(({value}) =>
+  <p className="formatron-static-value">
+    {value}
+  </p>
+);
 
 const NumberField = withFormLabel(NumberComponent);
 const StaticNumberField = withStaticLabel(StaticNumber);
@@ -73,4 +73,3 @@ export default ReactRenderer.register(
   NumberComponent,
   StaticNumber
 );
-
