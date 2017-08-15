@@ -77,8 +77,8 @@ const Text = withChangeOnBlurRenderer(props => <TextInputWrapper {...props} />);
 const StaticText = withDisplayRenderer(({value}) =>
   <p className="formatron-static-value">
     {value &&
-      value.split('\n').map(line =>
-        <span className="formatron-static-value-line">
+      value.split('\n').map((line, i) =>
+        <span key={i} className="formatron-static-value-line">
           {line}
         </span>
       )}

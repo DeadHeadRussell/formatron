@@ -208,6 +208,7 @@ export default function editableTable(Table) {
       return columns
         .push((
           <Column
+            key='table-editable-edit'
             label='Save Button'
             dataKey=''
             width={100}

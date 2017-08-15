@@ -11,6 +11,7 @@ export default function viewableTable(Table) {
     columnsRenderer = columns => {
       return columns
         .unshift(<Column
+          key='table-viewable-view'
           label='View Button'
           dataKey=''
           width={100}

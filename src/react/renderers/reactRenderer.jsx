@@ -16,6 +16,7 @@ export default class ReactRenderer extends Renderer {
 
   renderFormField(viewType, renderData, renderers) {
     return <this.FormField
+      key={viewType.uniqueId}
       viewType={viewType}
       renderData={renderData}
       renderers={renderers}

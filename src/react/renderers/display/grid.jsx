@@ -16,13 +16,17 @@ function GridImpl({viewType, renderData, renderers, rendererMethod}) {
             className='formatron-grid-inner'
           >
             {viewType
-              .map((viewType, j) =>
-                renderers[rendererMethod](viewType, renderData)
-              )
+              .map((viewType, j) => (
+                <div key={j}>
+                  {renderers[rendererMethod](viewType, renderData)}
+                </div>
+              ))
             }
           </div>
         ) : (
-          renderers[rendererMethod](viewType, renderData)
+          <div key={i}>
+            {renderers[rendererMethod](viewType, renderData)}
+          </div>
         ))
       }
     </div>

@@ -89,6 +89,7 @@ export default class ViewType extends Type {
     }
 
     return {
+      key: label,
       viewType: this,
       label: label,
       dataKey: label,
