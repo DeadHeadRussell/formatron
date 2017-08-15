@@ -20,9 +20,9 @@ export default class Form extends React.Component {
     const disabled = this.updateRefs(props.disabled);
     return {
       changes: Map(),
-      blurs: Map(),
       dirty: Map(),
       errors: Map(),
+      viewLabels: Map(),
       model: this.cacheModel(props, defaultValue, disabled),
       defaultValue,
       disabled
@@ -30,9 +30,9 @@ export default class Form extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    if (newProps.model != this.props.model ||
-        newProps.disabled != this.props.disabled ||
-        newProps.defaultValue != this.props.defaultValue) {
+    if (!Immutable.is(newProps.model, this.props.model) ||
+        !Immutable.is(newProps.disabled, this.props.disabled) ||
+        !Immutable.is(newProps.defaultValue, this.props.defaultValue)) {
       this.setState(this.createInitialState(newProps));
     }
   }
@@ -80,18 +80,19 @@ export default class Form extends React.Component {
             error
           ]),
 
-        blurs: validationErrors
+        dirty: validationErrors
           .map(error => error.ref)
           .reduce(
-            (blurs, ref) => blurs
-              .set(ref, true),
-            this.state.blurs
+            (dirty, ref) => dirty.set(ref, true),
+            this.state.dirty
           )
       });
-
       return false;
     } else {
-      this.setState({errors: Map()});
+      this.setState({
+        errors: Map(),
+        dirty: Map()
+      });
       return true;
     }
   }
@@ -112,23 +113,16 @@ export default class Form extends React.Component {
     // sometimes called directly after each other, and `onBlur` requires
     // the state changes from `onChange` to have completed first.
     setTimeout(() => {
-      if (this.state.dirty.get(ref) || this.state.changes.get(ref)) {
-        const errors = this.props.dataType.validateSingle(this.state.model, ref);
-        const errorMap = errors.size == 0
-          ?  this.state.errors.remove(ref)
-          : errors
-            .reduce(
-              (errors, error) => errors
-                .set(ref, error),
-              this.state.errors
-            );
+      const validationErrors = this.props.dataType.validate(this.state.model);
+      const errorMap = validationErrors
+        .filter(error => this.state.dirty.get(error.ref))
+        .toMap()
+        .mapEntries(([i, error]) => [
+            error.ref,
+            error
+        ]);
 
-        this.setState({
-          blurs: this.state.blurs
-            .set(ref, true),
-          errors: errorMap
-        });
-      }
+      this.setState({errors: errorMap});
     });
   }
 
@@ -138,13 +132,19 @@ export default class Form extends React.Component {
     }
   }
 
-  onChange = (ref, value) => {
+  onChange = (ref, value, viewLabel) => {
     const newModel = this.props.dataType
       .setValue(this.state.model, ref, value);
 
+    const field = this.props.dataType.getField(ref);
+    const update = field.hasValue(value) || this.state.dirty.get(ref);
+
     this.setState({
-      changes: this.state.changes.set(ref, value),
-      dirty: this.state.dirty.set(ref, true),
+      changes: update
+        ? this.state.changes.set(ref, value)
+        : this.state.changes.remove(ref),
+      dirty: this.state.dirty.set(ref, update),
+      viewLabels: this.state.viewLabels.set(ref, viewLabel),
       model: newModel
     });
 
@@ -208,7 +208,7 @@ export default class Form extends React.Component {
             {validationErrors
               .map((error, ref) => {
                 const refValue = ref
-                  .map(ref => ref.getDisplay())
+                  .map(ref => this.state.viewLabels.get(ref) || ref.getDisplay())
                   .join(', ');
                 return (
                   <p key={refValue} className='formatron-form-validation-error'>

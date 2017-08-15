@@ -177,7 +177,7 @@ export default class ImmutableMapType extends ImmutableDataType {
   }
 
   validate(model) {
-    return super.validate(model, () => {
+    const errors = super.validate(model, () => {
       return this.getData()
         .map(fieldData => {
           const field = fieldData.get('field');
@@ -192,13 +192,13 @@ export default class ImmutableMapType extends ImmutableDataType {
           return error;
         });
     });
+
+    return errors || List();
   }
 
   // TODO: Probably move this out of here and into some form validation / utils module.
   validateSingle(model, ref) {
     const {field, value} = this.getFieldAndValue(model, ref);
-
-    console.log(ref.ref, field, value);
 
     return List([
       field.getValidationLinks()

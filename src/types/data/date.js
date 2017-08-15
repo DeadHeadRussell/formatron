@@ -128,12 +128,7 @@ export default class DateType extends DataType {
     const upperInput = this.convert(filterValue.get('upper'), 'unix');
 
     const lower = Number.isFinite(lowerInput) ? lowerInput : -Infinity;
-
     const upper = Number.isFinite(upperInput) ? upperInput : Infinity;
-
-    console.log(rowValue >= lower && rowValue <= upper);
-    console.log(lowerInput, lower, rowValue, upperInput, upper);
-
     return rowValue >= lower && rowValue <= upper;
   }
 }

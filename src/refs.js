@@ -1,4 +1,4 @@
-import {List} from 'immutable';
+import Immutable, {List} from 'immutable';
 
 import {valueRenderers} from '~/renderers';
 import RenderData from '~/renderers/renderData.js';
@@ -96,6 +96,14 @@ export class Ref {
   toString() {
     return this.getDisplay();
   }
+
+  equals() {
+    return false;
+  }
+
+  hashCode() {
+    return 0;
+  }
 }
 
 export class ImmutableRef extends Ref {
@@ -142,6 +150,14 @@ export class ImmutableRef extends Ref {
 
   getDisplay() {
     return this.ref;
+  }
+
+  equals(other) {
+    return this.ref == other.ref;
+  }
+
+  hashCode() {
+    return Immutable.hash(this.ref);
   }
 }
 
@@ -198,6 +214,14 @@ export class ImmutableListRef extends ImmutableRef {
     }
 
     return list.map(() => newItem);
+  }
+
+  equals(other) {
+    return this.view.uniqueId == other.view.uniqueId;
+  }
+
+  hashCode() {
+    return Immutable.hash(this.view.uniqueId);
   }
 }
 
