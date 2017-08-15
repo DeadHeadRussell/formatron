@@ -21,7 +21,7 @@ const FormatronTable = withStaticLabel(({viewType, renderData}) => {
         models={value}
         context={renderData}
         editable={editable}
-        onChange={(index, subValue) => onChange(ref, value.set(index, subValue))}
+        onChange={(index, subValue) => onChange(ref, value.set(index, subValue, viewType.getLabel(renderData)))}
         onBlur={() => onBlur(ref)}
         size='auto'
       />

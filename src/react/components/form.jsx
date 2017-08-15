@@ -22,6 +22,7 @@ export default class Form extends React.Component {
       changes: Map(),
       dirty: Map(),
       errors: Map(),
+      // TODO: This has plenty of issues but is "good enough" (tm) for now.
       viewLabels: Map(),
       model: this.cacheModel(props, defaultValue, disabled),
       defaultValue,
@@ -207,8 +208,8 @@ export default class Form extends React.Component {
             <p className='formatron-form-validation-error'>The following fields have an error:</p>
             {validationErrors
               .map((error, ref) => {
-                const refValue = ref
-                  .map(ref => this.state.viewLabels.get(ref) || ref.getDisplay())
+                const refValue = this.state.viewLabels.get(ref) || ref
+                  .map(ref => ref.getDisplay())
                   .join(', ');
                 return (
                   <p key={refValue} className='formatron-form-validation-error'>

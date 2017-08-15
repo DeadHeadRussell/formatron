@@ -24,7 +24,7 @@ export function withDataRenderer(WrappedComponent) {
         disabled={disabled}
         error={error}
         placeholder={placeholder}
-        onChange={value => onChange(ref, value)}
+        onChange={value => onChange(ref, value, viewType.getLabel(renderData))}
         onBlur={() => onBlur(ref)}
         onButtonClick={(...args) => onButtonClick(ref, ...args)}
       />
@@ -70,7 +70,7 @@ export function withChangeOnBlurRenderer(WrappedComponent) {
       this.setState({value});
       const {viewType, renderData} = this.props;
       const ref = viewType.getRef();
-      renderData.options.onChange(ref, this.getParsedInput(value));
+      renderData.options.onChange(ref, this.getParsedInput(value), viewType.getLabel(renderData));
       renderData.options.onBlur(ref);
     };
 

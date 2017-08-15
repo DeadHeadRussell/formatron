@@ -47,10 +47,11 @@ class CurrencyInput extends React.Component {
   }
 
   onBlur = () => {
-    const ref = this.props.viewType.getRef();
-    const input = this.props.viewType.parseInput(this.state.input);
-    this.props.renderData.options.onChange(ref, input);
-    this.props.renderData.options.onBlur(ref);
+    const {viewType, renderData} = this.props;
+    const ref = viewType.getRef();
+    const input = viewType.parseInput(this.state.input);
+    renderData.options.onChange(ref, input, viewType.getLabel(renderData));
+    renderData.options.onBlur(ref);
   }
 
   render() {
