@@ -6,38 +6,50 @@ import GridType from '~/types/view/display/grid';
 
 import ReactRenderer from '../reactRenderer';
 
+function GridImpl({viewType, renderData, renderers, rendererMethod}) {
+  return (
+    <div className='formatron-grid-outer'>
+      {viewType.getChildren()
+        .map((viewType, i) => List.isList(viewType) ? (
+          <div
+            key={i}
+            className='formatron-grid-inner'
+          >
+            {viewType
+              .map((viewType, j) =>
+                renderers[rendererMethod](viewType, renderData)
+              )
+            }
+          </div>
+        ) : (
+          renderers[rendererMethod](viewType, renderData)
+        ))
+      }
+    </div>
+  );
+}
+
 const Grid = ({viewType, renderData, renderers, rendererMethod}) => {
   const orientationClass = `formatron-orientation-${viewType.getOrientation()}`;
   return (
     <div className={classNames('formatron-grid', orientationClass)}>
       <Label>{viewType.getLabel(renderData)}</Label>
-      <div className='formatron-grid-outer'>
-        {viewType.getChildren()
-          .map((viewType, i) => List.isList(viewType) ? (
-            <div
-              key={i}
-              className='formatron-grid-inner'
-            >
-              {viewType
-                .map((viewType, j) =>
-                  renderers[rendererMethod](viewType, renderData)
-                )
-              }
-            </div>
-          ) : (
-            renderers[rendererMethod](viewType, renderData)
-          ))
-        }
-      </div>
+      <GridImpl
+        viewType={viewType}
+        renderData={renderData}
+        renderers={renderers}
+        rendererMethod={rendererMethod}
+      />
     </div>
   );
 };
 
-const TableGrid = ({viewType, renderData}) => {
+const TableGrid = (props) => {
+  const orientationClass = `formatron-orientation-${props.viewType.getOrientation()}`;
   return (
-    <p className='formatron-static-value'>
-      {viewType.getDisplay(renderData)}
-    </p>
+    <div className={classNames('formatron-grid', orientationClass)}>
+      <GridImpl {...props} />
+    </div>
   );
 };
 

@@ -206,7 +206,7 @@ export default class SchemaTable extends BaseTable {
             viewTypes: this.props.viewTypes,
             onButtonClick: (...args) => {
               if (this.props.onButtonClick) {
-                const index = rowData.get(this.naturalIndex);
+                const index = rowData.get(BaseTable.naturalIndex);
                 this.props.onButtonClick(index, rowData, ...args);
               }
             }

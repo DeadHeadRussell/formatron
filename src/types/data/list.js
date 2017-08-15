@@ -128,7 +128,7 @@ export default class ImmutableListType extends ImmutableDataType {
           index,
           itemType.validate(item)
         ])
-        .filter(([index, error]) => error)
+        .filter(([index, error]) => error && (!List.isList(error) || error.size > 0))
         .map(([index, error]) => {
           error.addRef(index);
           error.field = this;

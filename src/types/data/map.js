@@ -198,6 +198,8 @@ export default class ImmutableMapType extends ImmutableDataType {
   validateSingle(model, ref) {
     const {field, value} = this.getFieldAndValue(model, ref);
 
+    console.log(ref.ref, field, value);
+
     return List([
       field.getValidationLinks()
         .map(linkRef => this.validateSingle(model, parseRef(linkRef)))

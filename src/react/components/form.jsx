@@ -108,24 +108,28 @@ export default class Form extends React.Component {
   }
 
   onBlur = ref => {
-    if (this.state.dirty.get(ref) || this.state.changes.get(ref)) {
-      const errors = this.props.dataType.validateSingle(this.state.model, ref);
-      const errorMap = errors.size == 0 ?
-        this.state.errors
-          .remove(ref) :
-        errors
-          .reduce(
-            (errors, error) => errors
-              .set(ref, error),
-            this.state.errors
-          );
+    // This `setTimeout` is a dirty hack since `onBlur` and `onChange` are
+    // sometimes called directly after each other, and `onBlur` requires
+    // the state changes from `onChange` to have completed first.
+    setTimeout(() => {
+      if (this.state.dirty.get(ref) || this.state.changes.get(ref)) {
+        const errors = this.props.dataType.validateSingle(this.state.model, ref);
+        const errorMap = errors.size == 0
+          ?  this.state.errors.remove(ref)
+          : errors
+            .reduce(
+              (errors, error) => errors
+                .set(ref, error),
+              this.state.errors
+            );
 
-      this.setState({
-        blurs: this.state.blurs
-          .set(ref, true),
-        errors: errorMap
-      });
-    }
+        this.setState({
+          blurs: this.state.blurs
+            .set(ref, true),
+          errors: errorMap
+        });
+      }
+    });
   }
 
   onButtonClick = (...args) => {

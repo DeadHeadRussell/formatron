@@ -74,7 +74,7 @@
   .formatron-static-value
     background: #fbfbfb
 
-.formatron-error[data-error] > .formatron-field-wrapper
+.formatron-error > .formatron-field-wrapper[data-error]
   .formatron-input,
   .formatron-static-value
     border: 1px solid #cf4f43
@@ -228,6 +228,7 @@
 
     &:before
       margin-right: 5px
+      color: #cf4f43
       content: '*'
 
 // Grid

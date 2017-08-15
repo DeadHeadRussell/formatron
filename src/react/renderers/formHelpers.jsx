@@ -24,13 +24,12 @@ export const withFormLabel = (WrappedComponent) => {
           'formatron-disabled': !!disabled,
           'formatron-error': !!error
         })}
-        data-error={error}
       >
         <Label required={required}>
           {viewType.getLabel(renderData)}
         </Label>
 
-        <div className='formatron-field-wrapper'>
+        <div className='formatron-field-wrapper' data-error={error}>
           <WrappedComponent {...props} />
         </div>
       </label>
