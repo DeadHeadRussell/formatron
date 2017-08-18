@@ -202,7 +202,7 @@ export class ImmutableDataType extends DataType {
       if (field && field.getField) {
         return field.getField(refs);
       }
-      throw new Error(`Cannot call "getField" "${field.name}" of data type "${field.constructor}"`);
+      throw new Error(`Cannot call "getField" "${field.name}" of data type "${field.constructor.name}"`);
     }
   }
 
@@ -217,7 +217,7 @@ export class ImmutableDataType extends DataType {
       if (field && field.getFieldAndValue) {
         return field.getFieldAndValue(value, refs);
       }
-      throw new Error(`Cannot call "getFieldAndValue" for "${field.name}" of data type "${field.constructor}"`);
+      throw new Error(`Cannot call "getFieldAndValue" for "${field.name}" of data type "${field.constructor.name}"`);
     }
   }
 
@@ -232,7 +232,7 @@ export class ImmutableDataType extends DataType {
       if (field.setValue) {
         return field.setValue(oldValue, refs, newValue);
       }
-      throw new Error(`Cannot call "setValue" for "${field.name}" of data type "${field.constructor}"`);
+      throw new Error(`Cannot call "setValue" for "${field.name}" of data type "${field.constructor.name}"`);
     }
   }
 }
