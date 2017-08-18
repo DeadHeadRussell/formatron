@@ -149,11 +149,11 @@ export default class DataType extends Type {
   validate(value, callback) {
     value = this.getValue(value);
 
-    if (this.hasValue(value)) {
-      if (value == this.getDefaultValue()) {
-        return;
-      }
-    } else {
+    if (value === this.getDefaultValue()) {
+      return;
+    }
+
+    if (!this.hasValue(value)) {
       if (this.isGenerated()) {
         return;
       } else if (this.isRequired()) {

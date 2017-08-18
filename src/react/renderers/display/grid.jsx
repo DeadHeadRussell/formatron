@@ -11,22 +11,15 @@ function GridImpl({viewType, renderData, renderers, rendererMethod}) {
     <div className='formatron-grid-outer'>
       {viewType.getChildren()
         .map((viewType, i) => List.isList(viewType) ? (
-          <div
-            key={i}
-            className='formatron-grid-inner'
-          >
+          <div key={i} className='formatron-grid-inner'>
             {viewType
               .map((viewType, j) => (
-                <div key={j}>
-                  {renderers[rendererMethod](viewType, renderData)}
-                </div>
+                renderers[rendererMethod](viewType, renderData)
               ))
             }
           </div>
         ) : (
-          <div key={i}>
-            {renderers[rendererMethod](viewType, renderData)}
-          </div>
+          renderers[rendererMethod](viewType, renderData)
         ))
       }
     </div>
