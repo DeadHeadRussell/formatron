@@ -17,7 +17,6 @@ const Formatron = {
   types
 };
 
-Formatron.refs.parseRef = refs.default;
 Formatron.template.parseTemplate = template.default;
 
 Formatron.renderers.valueRenderers = renderers.valueRenderers;
