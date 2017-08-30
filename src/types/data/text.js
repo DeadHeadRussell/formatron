@@ -28,8 +28,8 @@ export default class TextType extends DataType {
     return this.options.get('mask', defaultMask);
   }
 
-  hasValue(value) {
-    if (!super.hasValue(value)) {
+  hasValue(value, checkDefault) {
+    if (!super.hasValue(value, checkDefault)) {
       return false;
     }
     return typeof value == 'string' && value.length > 0;

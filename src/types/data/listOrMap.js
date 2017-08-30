@@ -31,8 +31,8 @@ export default class ImmutableListOrMapType extends ImmutableDataType {
     return this.type.getDefaultValue();
   }
 
-  hasValue(model) {
-    return this.type.hasValue(model);
+  hasValue(model, checkDefault) {
+    return this.type.hasValue(model, checkDefault);
   }
 
   getValue(model, ref) {

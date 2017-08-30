@@ -42,13 +42,13 @@ export default class ImmutableMapType extends ImmutableDataType {
       .map(fieldData => fieldData.get('field').getName());
   }
 
-  hasValue(model) {
-    if (!super.hasValue(model)) {
+  hasValue(model, checkDefault) {
+    if (!super.hasValue(model, checkDefault)) {
       return false;
     }
     return this.getData()
       .map(fieldData => fieldData.get('field')
-        .hasValue(model.getIn(fieldData.get('path')))
+        .hasValue(model.getIn(fieldData.get('path'), checkDefault))
       )
       .reduce((modelHasValue, fieldHasValue) => modelHasValue || fieldHasValue);
   }

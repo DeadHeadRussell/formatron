@@ -24,11 +24,11 @@ export default class EnumType extends DataType {
     return this.options.get('values', List());
   }
 
-  hasValue(value) {
+  hasValue(value, checkDefault) {
     if (this.isMulti()) {
       return value && value.size > 0;
     } else {
-      return super.hasValue(value);
+      return super.hasValue(value, checkDefault);
     }
   }
 

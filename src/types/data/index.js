@@ -89,11 +89,11 @@ export default class DataType extends Type {
    * @param {object} value - The data value to check.
    * @returns {bool} `true` if it is "not empty", otherwise, `false`.
    */
-  hasValue(value) {
+  hasValue(value, checkDefault = true) {
     // TODO: should the types that inherit from DataType check that the value
     // is valid (eg, a number contains a number type, text contains a string,
     // etc)
-    if (typeof value == 'undefined' || value === this.getDefaultValue()) {
+    if (typeof value == 'undefined' || (value === this.getDefaultValue() && checkDefault)) {
       return false;
     }
     return true;
@@ -149,11 +149,11 @@ export default class DataType extends Type {
   validate(value, callback) {
     value = this.getValue(value);
 
-    if (value === this.getDefaultValue()) {
+    if (value === this.getDefaultValue() && this.hasValue(value, false)) {
       return;
     }
 
-    if (!this.hasValue(value)) {
+    if (!this.hasValue(value, false)) {
       if (this.isGenerated()) {
         return;
       } else if (this.isRequired()) {
