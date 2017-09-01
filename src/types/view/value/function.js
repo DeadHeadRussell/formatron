@@ -17,7 +17,8 @@ export default class FunctionType extends ValueType {
       .format(format),
 
     addDate: (value, dateString) => moment(value * 1000)
-      .add(...dateString.split(' ')),
+      .add(...(dateString || '').split(' '))
+      .valueOf() / 1000,
 
     countDays: (endTimes, startTimes) => startTimes
       .map((startTime, index) => {

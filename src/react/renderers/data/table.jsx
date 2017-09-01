@@ -11,10 +11,8 @@ const FormatronTable = withStaticLabel(({viewType, renderData}) => {
   const ref = viewType.getRef();
   const editable = !isDisabled(ref) && viewType.isEditable();
 
-  const height = (value.size + 1) * 40;
-
   return (
-    <div className='formatron-table' style={{height}}>
+    <div className='formatron-renderer-table'>
       <Table
         dataType={field.getItemType()}
         columns={viewType.getColumns()}
@@ -23,7 +21,7 @@ const FormatronTable = withStaticLabel(({viewType, renderData}) => {
         editable={editable}
         onChange={(index, subValue) => onChange(ref, value.set(index, subValue, viewType.getLabel(renderData)))}
         onBlur={() => onBlur(ref)}
-        size='auto'
+        size='fit'
       />
     </div>
   );

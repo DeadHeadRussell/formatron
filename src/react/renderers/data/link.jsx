@@ -8,7 +8,7 @@ import {withChangeOnBlurRenderer, withStaticRenderer} from './';
 
 const LinkFilter = ({renderData}) =>
   <input
-    className="formatron-text-input"
+    className="formatron-input formatron-text"
     type="text"
     value={renderData.dataValue}
     onChange={renderData.options.onChange}
@@ -19,7 +19,7 @@ const Link = withChangeOnBlurRenderer(
   ({field, value, disabled, placeholder, onChange, onBlur}) =>
     <div className="formatron-url-input">
       <input
-        className="formatron-text-input"
+        className="formatron-input formatron-text"
         type="url"
         disabled={disabled}
         value={value}

@@ -1,6 +1,7 @@
 import {List, Map} from 'immutable';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import defaultCellRangeRenderer from 'react-virtualized/dist/commonjs/Grid/defaultCellRangeRenderer';
+import InfiniteLoader from 'react-virtualized/dist/commonjs/InfiniteLoader';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 import defaultHeaderRenderer from 'react-virtualized/dist/commonjs/Table/defaultHeaderRenderer';
 import defaultHeaderRowRenderer from 'react-virtualized/dist/commonjs/Table/defaultHeaderRowRenderer';
@@ -123,7 +124,7 @@ export default class SchemaTable extends BaseTable {
     // The toolbar buttons currently mess up the height calculations.
     return this.reduce(
       this.props.headerRowRenderers,
-      props => (this.props.models.size) > 0 ? (
+      props => (this.models.size) > 0 ? (
         <div
           className='formatron-table-header'
           style={{
@@ -157,7 +158,7 @@ export default class SchemaTable extends BaseTable {
     return this.reduce(
       this.props.rowsModifiers,
       models
-        .map((model, index) => model
+        .map((model, index) => model && model
           .set(BaseTable.naturalIndex, index)
         )
     );
@@ -173,13 +174,21 @@ export default class SchemaTable extends BaseTable {
   rowRenderer() {
     return this.reduce(
       this.props.rowRenderers,
-      props => defaultRowRenderer({
-        ...props,
-        className: props.className + ((props.index % 2 == 0) ?
-          ' formatron-table-row-even' :
-          ' formatron-table-row-odd'
-        )
-      })
+      props => {
+        if (!this.models.get(props.index)) {
+          console.log(props);
+          return <div className=''>
+            <Loading />
+          </div>;
+        }
+        return defaultRowRenderer({
+          ...props,
+          className: props.className + ((props.index % 2 == 0) ?
+            ' formatron-table-row-even' :
+            ' formatron-table-row-odd'
+          )
+        });
+      }
     );
   }
 
@@ -199,6 +208,10 @@ export default class SchemaTable extends BaseTable {
     return this.reduce(
       this.props.cellRenderers,
       (column, {rowData}) => {
+        if (!rowData) {
+          return <div />;
+        }
+
         const columnId = typeof column == 'string' ? column : column.uniqueId;
         const key = `${columnId}-${rowData.get(BaseTable.naturalIndex)}`;
         if (!this.cellCache.has(key)) {
@@ -232,8 +245,8 @@ export default class SchemaTable extends BaseTable {
   getTableHeight() {
     const headerHeight = this.headerRowHeight();
 
-    const gridHeight = this.props.models.size > 0 ?
-      this.props.models.size * this.props.rowHeight :
+    const gridHeight = this.models.size > 0 ?
+      this.models.size * this.props.rowHeight :
       30;
 
     return gridHeight + headerHeight;
@@ -245,10 +258,15 @@ export default class SchemaTable extends BaseTable {
 
     return <Table
       {...props}
-      ref={table => this.table = table}
+      ref={table => {
+        props.registerChild && props.registerChild(table);
+        this.table = table;
+      }}
       className='formatron-table'
       style={this.props.style}
       height={Math.min(height, maxHeight)}
+
+      onRowsRendered={props.onRowsRendered}
 
       cellRangeRenderer={props => defaultCellRangeRenderer({
         ...props,
@@ -262,7 +280,7 @@ export default class SchemaTable extends BaseTable {
       headerRowRenderer={this.headerRowRenderer()}
 
       rowHeight={this.props.rowHeight}
-      rowCount={models.size}
+      rowCount={this.props.models.size}
       rowRenderer={this.rowRenderer()}
       rowGetter={this.rowGetter(models)}
       noRowsRenderer={this.noRowsRenderer()}
@@ -275,18 +293,19 @@ export default class SchemaTable extends BaseTable {
     </Table>;
   }
 
-  render() {
-    const models = this.rowsModifier(this.props.models);
-    this.models = models;
-
+  renderSizing(models, infiniteProps = {}) {
     return this.props.size == 'auto' ? (
       <AutoSizer>
-        {props => this.renderTable(props, models)}
+        {props => this.renderTable({
+          ...infiniteProps,
+          ...props
+        }, models)}
       </AutoSizer>
     ) : this.props.size == 'window' ? (
       <AutoSizer>
         {({width}) => <WindowScroller key={width}>
           {props => this.renderTable({
+            ...infiniteProps,
             ...props,
             width,
             autoHeight: true
@@ -296,16 +315,35 @@ export default class SchemaTable extends BaseTable {
     ) : this.props.size == 'fit' ? (
       <AutoSizer>
         {({width}) => this.renderTable({
+          ...infiniteProps,
           width,
           height: this.getTableHeight()
         }, models)}
       </AutoSizer>
     ) : (
       this.renderTable({
+        ...infiniteProps,
         width: this.props.size.width,
         height: this.props.size.height || this.getTableHeight()
       }, models)
     );
+  }
+
+  render() {
+    const models = this.rowsModifier(this.props.models);
+    this.models = models;
+
+    return this.props.infiniteLoad
+      ? (
+        <InfiniteLoader
+          isRowLoaded={({index}) => !!this.props.models.get(index)}
+          loadMoreRows={this.props.loadMoreRows}
+          rowCount={this.props.models.size}
+        >
+          {props => this.renderSizing(models, props)}
+        </InfiniteLoader>
+      )
+      : this.renderSizing(models);
   }
 }
 

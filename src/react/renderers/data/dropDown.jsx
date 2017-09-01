@@ -14,20 +14,23 @@ import {withDataRenderer, withStaticRenderer} from './';
 const DropDownFilter = ({viewType, renderData}) => (
   <TableDropDownFilter
     renderData={renderData}
-    filterOptions={viewType.getFilterOptions()}
+    filterOptions={viewType.getFilterOptions(renderData.dataType)}
     options={viewType.getOptions(renderData.dataType).toJS()}
   />
 );
 
 const MultiDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => {
+  const isAsync = viewType.isAsync(field);
   return <Select
     className='formatron-input formatron-dropdown formatron-multi'
     tetheredClassName='formatron-dropdown-tether'
+    async={isAsync}
     value={value ? value.toJS() : []}
     disabled={disabled}
     multi={true}
-    filterOptions={viewType.getFilterOptions()}
-    options={viewType.getOptions(field).toJS()}
+    filterOptions={viewType.getFilterOptions(field)}
+    options={!isAsync && viewType.getOptions(field).toJS()}
+    loadOptions={isAsync && viewType.getOptions.bind(viewType, field)}
     onChange={options => onChange(List(options)
       .map(parseOption)
       .filter(option => option)
@@ -52,13 +55,16 @@ MultiDropDown.propTypes = {
 };
 
 const SingleDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => {
+  const isAsync = viewType.isAsync(field);
   return <Select
     className='formatron-input formatron-dropdown formatron-single'
     tetheredClassName='formatron-dropdown-tether'
+    async={isAsync}
     value={value === null ? '' : value}
     disabled={disabled}
-    filterOptions={viewType.getFilterOptions()}
-    options={viewType.getOptions(field).toJS()}
+    filterOptions={viewType.getFilterOptions(field)}
+    options={!isAsync && viewType.getOptions(field).toJS()}
+    loadOptions={isAsync && viewType.getOptions.bind(viewType, field)}
     onChange={option => onChange(parseOption(option))}
     onBlur={onBlur}
   />;

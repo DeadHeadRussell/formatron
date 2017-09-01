@@ -51,7 +51,7 @@ export default class BaseTable extends PureComponent {
     ).isRequired,
     dataType: FormatronPropTypes.dataType.instanceOf(Types.data.list).isRequired,
     models: ImmutablePropTypes.listOf(
-      ImmutablePropTypes.map.isRequired
+      ImmutablePropTypes.map
     ),
     loading: React.PropTypes.bool
   };

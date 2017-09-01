@@ -104,5 +104,11 @@ export default class ViewType extends Type {
   filter(filterValue, rowValue) {
     return filterValue == rowValue;
   }
+
+  asType(Type) {
+    const newType = new this.constructor(this.options);
+    newType.constructor = Type;
+    return newType;
+  }
 }
 

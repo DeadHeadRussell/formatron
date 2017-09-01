@@ -125,6 +125,12 @@ class CalendarInput extends React.Component {
           onDone={this.handleBlur}
           onKeyPress={this.handleEnter}
           type={this.props.field.getType()}
+
+          nextMonthIcon='fa fa-angle-right'
+          prevMonthIcon='fa fa-angle-left'
+          doneIcon='fa fa-check'
+          dateIcon='fa fa-calendar'
+          timeIcon='fa fa-clock-o'
           theme={{
             colorPrimary: '#606060',
             iconPrevMonth: 'fa fa-angle-left',
