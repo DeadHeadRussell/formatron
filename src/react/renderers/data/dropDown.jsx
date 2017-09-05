@@ -29,7 +29,7 @@ const MultiDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => 
     disabled={disabled}
     multi={true}
     filterOptions={viewType.getFilterOptions(field)}
-    options={!isAsync && viewType.getOptions(field).toJS()}
+    options={!isAsync ? viewType.getOptions(field).toJS() : []}
     loadOptions={isAsync && viewType.getOptions.bind(viewType, field)}
     onChange={options => onChange(List(options)
       .map(parseOption)
@@ -63,7 +63,7 @@ const SingleDropDown = ({viewType, field, value, disabled, onChange, onBlur}) =>
     value={value === null ? '' : value}
     disabled={disabled}
     filterOptions={viewType.getFilterOptions(field)}
-    options={!isAsync && viewType.getOptions(field).toJS()}
+    options={!isAsync ? viewType.getOptions(field).toJS() : []}
     loadOptions={isAsync && viewType.getOptions.bind(viewType, field)}
     onChange={option => onChange(parseOption(option))}
     onBlur={onBlur}

@@ -51,7 +51,8 @@ export default class ConditionType extends ValueType {
    * @returns {bool} `true` if the render data matches the conditions in the options.
    */
   test(renderData) {
-    const rawArgs = this.getArgs();
+    const rawArgs = this.getArgs()
+      .map(arg => valueRenderers.parseViewType(arg, renderData));
     const func = ConditionType.ops[this.getOp()];
     const values = this.getChildValues(renderData, rawArgs);
     return func(values, rawArgs, renderData);

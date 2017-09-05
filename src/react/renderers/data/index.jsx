@@ -41,7 +41,8 @@ export function withChangeOnBlurRenderer(WrappedComponent) {
 
     createInitialState(props) {
       const state = props.viewType.getFieldAndValue(props.renderData);
-      if (state.field.format) {
+      // TODO: Temp check for field until groups are fixed
+      if (state.field && state.field.format) {
         state.value = state.field.format(state.value);
       }
       return state;

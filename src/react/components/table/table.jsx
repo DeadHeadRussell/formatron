@@ -176,7 +176,6 @@ export default class SchemaTable extends BaseTable {
       this.props.rowRenderers,
       props => {
         if (!this.models.get(props.index)) {
-          console.log(props);
           return <div className=''>
             <Loading />
           </div>;
@@ -247,7 +246,7 @@ export default class SchemaTable extends BaseTable {
 
     const gridHeight = this.models.size > 0 ?
       this.models.size * this.props.rowHeight :
-      30;
+      40;
 
     return gridHeight + headerHeight;
   }
