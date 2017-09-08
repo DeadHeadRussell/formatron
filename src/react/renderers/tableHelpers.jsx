@@ -11,13 +11,18 @@ export const TableDropDownFilter = ({renderData, multi, options}) => {
 
   const value = List.isList(dataValue) ? dataValue.toArray() : dataValue;
 
+  const async = typeof options == 'function';
+  const optionsProps = {
+    async,
+    [async ? 'loadOptions' : 'options']: options
+  };
+
   return (
     <Select
       className='formatron-input formatron-dropdown formatron-multi'
       tetheredClassName='formatron-dropdown-tether'
       value={typeof value == 'undefined' ? defaultValue : value}
       multi={multi}
-      options={options}
       onChange={options => onChange(multi ? (
         options
           .map(parseOption)
@@ -27,6 +32,8 @@ export const TableDropDownFilter = ({renderData, multi, options}) => {
         )
       )}
       onBlur={onBlur}
+
+      {...optionsProps}
     />
   );
 };

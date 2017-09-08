@@ -10,6 +10,10 @@ export default class PropertyType extends ValueType {
       .update('obj', parseField);
   }
 
+  initialize(renderData) {
+    super.initialize(renderData, this.getObj());
+  }
+
   getObj() {
     return this.options.get('obj');
   }

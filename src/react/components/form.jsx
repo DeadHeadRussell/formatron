@@ -13,6 +13,7 @@ export default class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.createInitialState(props);
+    reactRenderers.initialize(props.viewType, this.createRenderData(props));
   }
 
   createInitialState(props) {
@@ -35,6 +36,10 @@ export default class Form extends React.Component {
         !Immutable.is(newProps.disabled, this.props.disabled) ||
         !Immutable.is(newProps.defaultValue, this.props.defaultValue)) {
       this.setState(this.createInitialState(newProps));
+    }
+
+    if (newProps.viewType != this.props.viewType) {
+      reactRenderers.initialize(newProps.viewType, this.createRenderData(newProps));
     }
   }
 
@@ -65,6 +70,18 @@ export default class Form extends React.Component {
           );
       }
     }
+  }
+
+  createRenderData(props) {
+    return new RenderData(props.dataType, this.state.model, {
+      ...props.renderOptions,
+      viewTypes: props.viewTypes,
+      getError: this.getError,
+      isDisabled: this.isDisabled,
+      onBlur: this.onBlur,
+      onButtonClick: this.onButtonClick,
+      onChange: this.onChange
+    });
   }
 
   isValid() {
@@ -226,17 +243,7 @@ export default class Form extends React.Component {
   }
 
   renderInputs() {
-    const viewTypes = this.props.viewTypes;
-
-    const renderData = new RenderData(this.props.dataType, this.state.model, {
-      viewTypes: this.props.viewTypes,
-      getError: this.getError,
-      isDisabled: this.isDisabled,
-      onBlur: this.onBlur,
-      onButtonClick: this.onButtonClick,
-      onChange: this.onChange
-    });
-    return reactRenderers.renderFormField(this.props.viewType, renderData);
+    return reactRenderers.renderFormField(this.props.viewType, this.createRenderData(this.props));
   }
 
   renderAction() {
@@ -251,7 +258,8 @@ export default class Form extends React.Component {
 }
 
 Form.defaultProps = {
-  model: Map()
+  model: Map(),
+  renderOptions: {}
 };
 
 Form.propTypes = {
@@ -273,6 +281,8 @@ Form.propTypes = {
   onButtonClick: React.PropTypes.func,
   onChange: React.PropTypes.func,
   onSubmit: React.PropTypes.func,
+
+  renderOptions: React.PropTypes.object,
 
   className: React.PropTypes.string,
 

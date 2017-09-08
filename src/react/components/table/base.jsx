@@ -27,7 +27,8 @@ export default class BaseTable extends PureComponent {
     headerRenderers: List(),
 
     viewTypes: Map(),
-    models: List()
+    models: List(),
+    renderOptions: {}
   };
 
   static propTypes = {
@@ -53,6 +54,7 @@ export default class BaseTable extends PureComponent {
     models: ImmutablePropTypes.listOf(
       ImmutablePropTypes.map
     ),
+    renderOptions: React.PropTypes.object,
     loading: React.PropTypes.bool
   };
 

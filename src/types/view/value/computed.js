@@ -40,6 +40,10 @@ export default class ComputedType extends ValueType {
       .update('args', this.parseOneOrMany(parseField));
   }
 
+  initialize(renderData) {
+    super.initialize(renderData, this.getArgs());
+  }
+
   getOp() {
     return this.options.get('op');
   }

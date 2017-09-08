@@ -1,4 +1,6 @@
-import Immutable, {Map} from 'immutable';
+import Immutable, {List, Map} from 'immutable';
+
+import {valueRenderers} from '~/renderers';
 
 import Type from '../type';
 
@@ -17,6 +19,26 @@ export default class ViewType extends Type {
         parseField(label) :
         label
       );
+  }
+
+  /**
+   * Base class implementation that children can call such as:
+   *   `super.initialize(this.getChildren())`
+   * If a child does not override this, it means that this function will be
+   * called with no arguments, which is a no-op.
+   *
+   * @param {RenderData} renderData - the render data to initialize the type to.
+   * @param {ViewType|List<ViewType>} children - a single view type or a list of view types to call initialize on
+   */
+  initialize(renderData, children) {
+    if (List.isList(children)) {
+      children
+        .forEach(child => valueRenderers
+          .initialize(child, renderData)
+        );
+    } else if (children) {
+      valueRenderers.initialize(children, renderData);
+    }
   }
 
   /**

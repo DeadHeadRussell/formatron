@@ -22,12 +22,14 @@ export default function parseTemplate(template, renderData, options = {}) {
   return template
     .replace(templateSingleRegex, match => {
       const ref = parseRef(match.slice(2, match.length - 2));
-      return format(dataType.getDisplay(dataValue, ref));
+      const {field, value} = dataType.getFieldAndValue(dataValue, ref, renderData.options);
+      return format(field.getDisplay(value, renderData.options));
     })
     .replace(templateArrayRegex, match => {
       const refs = fromJS(JSON.parse(match.slice(1, match.length - 1)))
         .map(parseRef);
-      return format(dataType.getDisplay(dataValue, refs));
+      const {field, value} = dataType.getFieldAndValue(dataValue, refs, renderData.options);
+      return format(field.getDisplay(value, renderData.options));
     });
 }
 

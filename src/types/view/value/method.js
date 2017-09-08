@@ -13,6 +13,11 @@ export default class MethodType extends ValueType {
       .update('args', List(), this.parseOneOrMany(parseField));
   }
 
+  initialize(renderData) {
+    super.initialize(renderData, this.getArgs());
+    super.initialize(renderData, this.getObj());
+  }
+
   getObj() {
     return this.options.get('obj');
   }

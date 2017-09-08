@@ -17,6 +17,17 @@ export default class SwitchType extends ValueType {
       .update('defaultDisplay', field => field && parseField(field));
   }
 
+  initialize(renderData) {
+    super.initialize(renderData, this.getSwitch());
+    super.initialize(renderData, this.getCases()
+      .map(caseField => caseField.get('case'))
+    );
+    super.initialize(renderData, this.getCases()
+      .map(caseField => caseField.get('display'))
+    );
+    super.initialize(renderData, this.getDefaultDisplay());
+  }
+
   getSwitch() {
     return this.options.get('switch');
   }

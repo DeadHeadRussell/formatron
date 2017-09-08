@@ -14,6 +14,14 @@ export default class ImmutableListType extends ImmutableDataType {
       .update('itemType', parseField);
   }
 
+  initialize(value, renderOptions) {
+    const field = this.getItemType();
+    if (field.initialize) {
+      this.getValue(value)
+        .forEach(item => field.initialize(item, renderOptions));
+    }
+  }
+
   isOfType(value) {
     return List.isList(value);
   }
@@ -33,23 +41,23 @@ export default class ImmutableListType extends ImmutableDataType {
     return super.getDefaultValue(List());
   }
 
-  getDisplay(value) {
+  getDisplay(value, renderOptions) {
     if (this.hasValue(value)) {
       const itemType = this.getItemType();
       return value
-        .map(item => itemType.getDisplay(item))
+        .map(item => itemType.getDisplay(item, renderOptions))
         .join(', ');
     }
     return '';
   }
 
-  getFieldFromRef(ref) {
+  getFieldFromRef(ref, renderOptions) {
     if (ref.isSingleRef()) {
       return this.getItemType();
     } else if (ref.isMapper()) {
       const itemType = this.getItemType();
       const newItemType = ref.view instanceof DataViewType ?
-        ref.view.getFieldAndValue(new RenderData(itemType, null)).field :
+        ref.view.getField(new RenderData(itemType, null, renderOptions)) :
         new DataType(`mapped${this.constructor.name}Item`, Map());
 
       return new this.constructor(`mapped${this.constructor.name}(${this.getName()})`, this.options
@@ -62,7 +70,7 @@ export default class ImmutableListType extends ImmutableDataType {
     }
   }
 
-  getField(refs) {
+  getField(refs, renderOptions) {
     if (!List.isList(refs)) {
       refs = List([refs]);
     }
@@ -71,11 +79,11 @@ export default class ImmutableListType extends ImmutableDataType {
       return null;
     }
 
-    const field = this.getFieldFromRef(refs.first());
-    return this.getNextField(field, refs.rest());
+    const field = this.getFieldFromRef(refs.first(), renderOptions);
+    return this.getNextField(field, refs.rest(), renderOptions);
   }
 
-  getFieldAndValue(list, ref) {
+  getFieldAndValue(list, ref, renderOptions) {
     if (!List.isList(ref)) {
       ref = List([ref]);
     }
@@ -85,17 +93,17 @@ export default class ImmutableListType extends ImmutableDataType {
     }
 
     if (!list || !this.isOfType(list)) {
-      return {field: this.getField(ref)};
+      return {field: this.getField(ref, renderOptions)};
     }
 
     const firstRef = ref.first();
-    const value = firstRef.getValue(this, list);
-    const field = this.getFieldFromRef(firstRef);
+    const value = firstRef.getValue(this, list, renderOptions);
+    const field = this.getFieldFromRef(firstRef, renderOptions);
 
-    return this.getNextFieldAndValue(field, value, ref.rest());
+    return this.getNextFieldAndValue(field, value, ref.rest(), renderOptions);
   }
 
-  setValue(list, ref, newValue) {
+  setValue(list, ref, newValue, renderOptions) {
     list = this.getValue(list);
 
     if (!this.isOfType(list)) {
@@ -112,12 +120,12 @@ export default class ImmutableListType extends ImmutableDataType {
 
     const firstRef = ref.first();
 
-    const field = this.getFieldFromRef(firstRef);
-    const oldValue = firstRef.getValue(this, list);
+    const field = this.getFieldFromRef(firstRef, renderOptions);
+    const oldValue = firstRef.getValue(this, list, renderOptions);
 
     return firstRef.setValue(this, list, this.setNextValue(
-      field, oldValue, newValue, ref.rest()
-    ));
+      field, oldValue, newValue, ref.rest(), renderOptions
+    ), renderOptions);
   }
 
   validate(list) {

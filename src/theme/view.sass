@@ -131,7 +131,13 @@
 .formatron-field-checkbox
   display: inline-flex
   flex-flow: row nowrap
+  align-self: baseline
   align-items: center
+  margin-top: 13px
+  margin-bottom: 22px
+
+  &.formatron-checkbox-input-width
+    width: 300px
 
   > .formatron-field-wrapper
     order: -1
@@ -243,7 +249,7 @@
       > .formatron-grid-inner
         flex-flow: column nowrap
 
-        &:not(:first-of-type)
+        &:not(:first-child)
           margin-left: 20px
 
   &.formatron-orientation-vertical
@@ -253,7 +259,7 @@
       > .formatron-grid-inner
         flex-flow: row nowrap
 
-        > :not(:first-of-type)
+        > :not(:first-child)
           margin-left: 10px
 
 .formatron-grid-outer,

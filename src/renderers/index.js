@@ -92,6 +92,17 @@ export default class Renderers {
   }
 
   /**
+   * Initializes the view type to display with a specific set of data. This is
+   * normally to call the required API calls before the data is display.
+   * @params {ViewType} viewType - The view type to render.
+   * @params {RenderData} renderData - The data to render.
+   */
+  initialize(viewType, renderData) {
+    viewType = this.parseViewType(viewType, renderData);
+    return viewType.initialize(renderData);
+  }
+
+  /**
    * Returns the raw data value that is represented by this view type.
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.

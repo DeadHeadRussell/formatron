@@ -93,7 +93,7 @@ export default class DataType extends Type {
     // TODO: should the types that inherit from DataType check that the value
     // is valid (eg, a number contains a number type, text contains a string,
     // etc)
-    if (typeof value == 'undefined' || (value === this.getDefaultValue() && checkDefault)) {
+    if (typeof value == 'undefined' || value === null || (value === this.getDefaultValue() && checkDefault)) {
       return false;
     }
     return true;
@@ -118,9 +118,10 @@ export default class DataType extends Type {
       .find(value => typeof value != 'undefined');
   }
 
-  // TODO: For the following two functions, potentially look at the ref and
-  // throw an error if they try to reference child types when there are none?
   getField(ref) {
+    if (ref || (List.isList(ref) && ref.size > 0)) {
+      throw new Error(`Cannot access a ref for "${this.name}" of data type "${this.constructor.name}"`);
+    }
     return this;
   }
 
@@ -183,54 +184,54 @@ export class ImmutableDataType extends DataType {
     return value && value.size > 0;
   }
 
-  getValue(value, ref) {
+  getValue(value, ref, renderOptions) {
     value = super.getValue(value);
     if (ref) {
-      return this.getFieldAndValue(value, ref).value;
+      return this.getFieldAndValue(value, ref, renderOptions).value;
     }
     return value;
   }
 
-  getField(ref) {
-    throw new Error('`getField` is not implemented');
+  getField(ref, renderOptions) {
+    throw new Error(`"getField" is not implemented for "${this.getName()}"`);
   }
 
-  getNextField(field, refs) {
+  getNextField(field, refs, renderOptions) {
     if (refs.size == 0) {
       return field;
     } else {
       if (field && field.getField) {
-        return field.getField(refs);
+        return field.getField(refs, renderOptions);
       }
       throw new Error(`Cannot call "getField" "${field.name}" of data type "${field.constructor.name}"`);
     }
   }
 
-  getFieldAndValue(value, ref) {
-    throw new Error('`getFieldAndValue` is not implemented');
+  getFieldAndValue(value, ref, renderOptions) {
+    throw new Error(`"getFieldAndValue" is not implemented for ${this.getName()}"`);
   }
 
-  getNextFieldAndValue(field, value, refs) {
+  getNextFieldAndValue(field, value, refs, renderOptions) {
     if (refs.size == 0) {
       return {field, value};
     } else {
       if (field && field.getFieldAndValue) {
-        return field.getFieldAndValue(value, refs);
+        return field.getFieldAndValue(value, refs, renderOptions);
       }
       throw new Error(`Cannot call "getFieldAndValue" for "${field.name}" of data type "${field.constructor.name}"`);
     }
   }
 
   setValue(value, ref, newValue) {
-    throw new Error('`setField` is not implemented');
+    throw new Error(`"setField" is not implemented for "${this.getName()}"`);
   }
 
-  setNextValue(field, oldValue, newValue, refs) {
+  setNextValue(field, oldValue, newValue, refs, renderOptions) {
     if (refs.size == 0) {
       return newValue;
     } else {
       if (field.setValue) {
-        return field.setValue(oldValue, refs, newValue);
+        return field.setValue(oldValue, refs, newValue, renderOptions);
       }
       throw new Error(`Cannot call "setValue" for "${field.name}" of data type "${field.constructor.name}"`);
     }

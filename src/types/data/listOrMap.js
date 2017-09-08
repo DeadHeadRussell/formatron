@@ -23,6 +23,12 @@ export default class ImmutableListOrMapType extends ImmutableDataType {
       this.itemType;
   }
 
+  initialize(value, renderOptions) {
+    if (this.type.initialize) {
+      this.type.initialize(this.getValue(value), renderOptions);
+    }
+  }
+
   isMulti() {
     return this.options.get('multi');
   }
@@ -35,34 +41,34 @@ export default class ImmutableListOrMapType extends ImmutableDataType {
     return this.type.hasValue(model, checkDefault);
   }
 
-  getValue(model, ref) {
-    return this.type.getValue(model, ref);
+  getValue(model, ref, renderOptions) {
+    return this.type.getValue(model, ref, renderOptions);
   }
 
-  getMapDisplay(model) {
-    return this.itemType.getDisplay(model);
+  getMapDisplay(model, renderOptions) {
+    return this.itemType.getDisplay(model, renderOptions);
   }
 
-  getDisplay(model) {
+  getDisplay(model, renderOptions) {
     if (this.isMulti()) {
       return model
-        .map(value => this.getMapDisplay(value))
+        .map(value => this.getMapDisplay(value, renderOptions))
         .join(', ');
     } else {
-      return this.getMapDisplay(value);
+      return this.getMapDisplay(value, renderOptions);
     }
   }
 
-  getField(refs) {
-    return this.type.getField(refs);
+  getField(refs, renderOptions) {
+    return this.type.getField(refs, renderOptions);
   }
 
-  getFieldAndValue(model, refs) {
-    return this.type.getFieldAndValue(model, refs);
+  getFieldAndValue(model, refs, renderOptions) {
+    return this.type.getFieldAndValue(model, refs, renderOptions);
   }
 
-  setValue(model, refs, newValue) {
-    return this.type.setValue(model, refs, newValue);
+  setValue(model, refs, newValue, renderOptions) {
+    return this.type.setValue(model, refs, newValue, renderOptions);
   }
 
   validate(model) {

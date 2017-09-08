@@ -18,6 +18,12 @@ export default class TabsType extends DisplayType {
       );
   }
 
+  initialize(renderData) {
+    super.initialize(renderData, this.getTabs()
+      .map(tab => tab.get('display'))
+    );
+  }
+
   getTabs() {
     return this.options.get('tabs');
   }

@@ -8,6 +8,10 @@ export default class StaticType extends DisplayType {
       .update('display', parseField);
   }
 
+  initialize(renderData) {
+    super.initialize(renderData, this.getDisplay());
+  }
+
   getDisplay() {
     return this.options.get('display');
   }

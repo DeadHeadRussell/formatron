@@ -17,12 +17,14 @@ export const withFormLabel = (WrappedComponent) => {
     };
 
     const required = field && field.isRequired();
+    const otherClasses = viewType.getFormClasses && viewType.getFormClasses();
 
     return (
       <label
         className={classNames('formatron-field', `formatron-field-${viewType.constructor.typeName}`, {
           'formatron-disabled': !!disabled,
-          'formatron-error': !!error
+          'formatron-error': !!error,
+          ...otherClasses
         })}
       >
         <Label required={required}>
@@ -40,8 +42,15 @@ export const withFormLabel = (WrappedComponent) => {
 export const withSimpleLabel = (WrappedComponent) => {
   return props => {
     const {viewType, renderData} = props;
+    const otherClasses = viewType.getFormClasses && viewType.getFormClasses();
     return (
-      <div className={classNames('formatron-field', `formatron-field-${viewType.constructor.typeName}`)}>
+      <div
+        className={classNames(
+          'formatron-field',
+          `formatron-field-${viewType.constructor.typeName}`,
+          otherClasses
+        )}
+      >
         <Label>{viewType.getLabel(renderData)}</Label>
         <div className='formatron-field-wrapper'>
           <WrappedComponent {...props} />
@@ -60,9 +69,16 @@ export const withStaticLabel = (WrappedComponent) => {
     } : {};
 
     const required = field && field.isRequired();
+    const otherClasses = viewType.getFormClasses && viewType.getFormClasses();
 
     return (
-      <div className={classNames('formatron-static', `formatron-field-${viewType.constructor.typeName}`)}>
+      <div
+        className={classNames(
+          'formatron-static',
+          `formatron-field-${viewType.constructor.typeName}`,
+          otherClasses
+        )}
+      >
         <Label>
           {viewType.getLabel(renderData)}
         </Label>

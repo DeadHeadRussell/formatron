@@ -56,6 +56,7 @@ class InputDebounce extends React.Component {
       this.state.renderData.dataType,
       this.state.renderData.dataValue,
       {
+        ...this.state.renderData.options,
         onChange: this.onChange,
         onBlur: this.onBlur
       }
@@ -210,7 +211,8 @@ export default function filterableTable(Table) {
     // of rows.
     rowsModifier = rows => {
       const renderData = new RenderData(this.props.dataType, null, {
-        viewTypes: this.props.viewTypes
+        viewTypes: this.props.viewTypes,
+        ...this.props.renderOptions
       });
 
       const columnsProps = this.props.columns
@@ -271,7 +273,8 @@ export default function filterableTable(Table) {
 
     inputFilterRenderer(column) {
       const propsRenderData = new RenderData(this.props.dataType, null, {
-        viewTypes: this.props.viewTypes
+        viewTypes: this.props.viewTypes,
+        ...this.props.renderOptions
       });
 
       const columnProps = reactRenderers.getTableProps(column, propsRenderData);
@@ -286,6 +289,7 @@ export default function filterableTable(Table) {
       const dataValue = this.getFilters().get(columnProps.label);
 
       const renderData = new RenderData(dataType, dataValue, {
+        ...this.props.renderOptions,
         onChange: this.onFilterChange(columnProps)
       });
 

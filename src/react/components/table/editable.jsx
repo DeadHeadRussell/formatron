@@ -228,7 +228,8 @@ export default function editableTable(Table) {
 
         const renderData = new RenderData(this.props.dataType, model, {
           ...this.state.callbacks.get(rowIndex),
-          viewTypes: this.props.viewTypes
+          viewTypes: this.props.viewTypes,
+          ...this.props.renderOptions
         });
 
         return reactRenderers.renderTableCell(column, renderData);

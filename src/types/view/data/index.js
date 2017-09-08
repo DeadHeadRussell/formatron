@@ -28,6 +28,13 @@ export default class DataType extends ViewType {
       .update('ref', this.constructor.parseOneOrMany(parseRef));
   }
 
+  initialize(renderData) {
+    const {field, value} = this.getFieldAndValue(renderData);
+    if (field && field.initialize) {
+      field.initialize(value, renderData.options);
+    }
+  }
+
   /**
    * Returns the reference to the underlying data. Defaults to an empty 
    * @returns {Ref}
@@ -80,14 +87,14 @@ export default class DataType extends ViewType {
    */
   getDisplay(renderData) {
     const {field, value} = this.getFieldAndValue(renderData);
-    return field.getDisplay(value);
+    return field.getDisplay(value, renderData.options);
   }
 
   /**
    * @returns {DataType} The underlying data type.
    */
   getField(renderData) {
-    return renderData.dataType.getField(this.getRef());
+    return renderData.dataType.getField(this.getRef(), renderData.options);
   }
 
   /**
@@ -96,7 +103,7 @@ export default class DataType extends ViewType {
    */
   getFieldAndValue(renderData) {
     const {dataType, dataValue} = renderData;
-    const {field, value} = dataType.getFieldAndValue(dataValue, this.getRef());
+    const {field, value} = dataType.getFieldAndValue(dataValue, this.getRef(), renderData.options);
     const defaultValueType = this.getDefaultValue();
     if (field && !field.hasValue(value) && defaultValueType) {
       const defaultValue = defaultValueType.getValue(renderData);

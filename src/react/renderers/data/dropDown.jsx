@@ -9,7 +9,7 @@ import DropDownType from '~/types/view/data/dropDown';
 import {withFormLabel, withStaticLabel} from '../formHelpers';
 import ReactRenderer from '../reactRenderer';
 import {TableDropDownFilter} from '../tableHelpers';
-import {withDataRenderer, withStaticRenderer} from './';
+import {withDataRenderer, withDisplayRenderer} from './';
 
 const DropDownFilter = ({viewType, renderData}) => (
   <TableDropDownFilter
@@ -29,7 +29,7 @@ const MultiDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => 
     disabled={disabled}
     multi={true}
     filterOptions={viewType.getFilterOptions(field)}
-    options={!isAsync && viewType.getOptions(field).toJS()}
+    options={!isAsync ? viewType.getOptions(field).toJS() : []}
     loadOptions={isAsync && viewType.getOptions.bind(viewType, field)}
     onChange={options => onChange(List(options)
       .map(parseOption)
@@ -63,7 +63,7 @@ const SingleDropDown = ({viewType, field, value, disabled, onChange, onBlur}) =>
     value={value === null ? '' : value}
     disabled={disabled}
     filterOptions={viewType.getFilterOptions(field)}
-    options={!isAsync && viewType.getOptions(field).toJS()}
+    options={!isAsync ? viewType.getOptions(field).toJS() : []}
     loadOptions={isAsync && viewType.getOptions.bind(viewType, field)}
     onChange={option => onChange(parseOption(option))}
     onBlur={onBlur}
@@ -96,10 +96,8 @@ const DropDown = withDataRenderer(props => (
   )
 ));
 
-const StaticDropDown = withStaticRenderer(({field, value}) => {
-  return <p className='formatron-static-value'>
-    {field.getDisplay(value)}
-  </p>;
+const StaticDropDown = withDisplayRenderer(({value}) => {
+  return <p className='formatron-static-value'>{value}</p>;
 });
 
 const DropDownField = withFormLabel(DropDown);

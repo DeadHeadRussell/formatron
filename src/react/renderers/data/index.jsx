@@ -41,7 +41,7 @@ export function withChangeOnBlurRenderer(WrappedComponent) {
 
     createInitialState(props) {
       const state = props.viewType.getFieldAndValue(props.renderData);
-      if (state.field.format) {
+      if (state.field && state.field.format) {
         state.value = state.field.format(state.value);
       }
       return state;
@@ -131,11 +131,7 @@ export function withStaticRenderer(WrappedComponent) {
 
 export function withDisplayRenderer(WrappedComponent) {
   return ({viewType, renderData}) => {
-    const {dataType, dataValue} = renderData;
-
-    const ref = viewType.getRef();
-    const {field, value: rawValue} = dataType.getFieldAndValue(dataValue, ref);
-
+    const field = viewType.getField(renderData);
     const value = viewType.getDisplay(renderData);
 
     return (

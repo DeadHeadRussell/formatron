@@ -71,7 +71,8 @@ export default function sortableTable(Table) {
 
     rowsModifier = rows => {
       const renderData = new RenderData(this.props.dataType, null, {
-        viewTypes: this.props.viewTypes
+        viewTypes: this.props.viewTypes,
+        ...this.props.renderOptions
       });
 
       const columnProps = this.props.columns

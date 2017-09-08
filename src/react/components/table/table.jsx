@@ -47,6 +47,20 @@ export default class SchemaTable extends BaseTable {
     this.cellCache = Map();
   }
 
+  componentWillReceiveProps(newProps) {
+    if (!newProps.columns.equals(this.props.columns) || !newProps.models.equals(this.props.models)) {
+      newProps.models
+        .forEach(model => newProps.columns
+          .forEach(viewType => reactRenderers
+            .initialize(viewType, new RenderData(this.props.dataType, model, {
+              viewTypes: this.props.viewTypes,
+              ...this.props.renderOptions
+            }))
+          )
+        )
+    }
+  }
+
   getRows() {
     return this.models;
   }
@@ -75,7 +89,8 @@ export default class SchemaTable extends BaseTable {
 
   getColumnProps(column) {
     const renderData = new RenderData(null, null, {
-      viewTypes: this.props.viewTypes
+      viewTypes: this.props.viewTypes,
+      ...this.props.renderOptions
     });
 
     return this.reduce(
@@ -176,8 +191,7 @@ export default class SchemaTable extends BaseTable {
       this.props.rowRenderers,
       props => {
         if (!this.models.get(props.index)) {
-          console.log(props);
-          return <div className=''>
+          return <div style={{height: this.props.rowHeight}}>
             <Loading />
           </div>;
         }
@@ -212,19 +226,21 @@ export default class SchemaTable extends BaseTable {
           return <div />;
         }
 
-        const columnId = typeof column == 'string' ? column : column.uniqueId;
-        const key = `${columnId}-${rowData.get(BaseTable.naturalIndex)}`;
-        if (!this.cellCache.has(key)) {
-          const renderData = new RenderData(this.props.dataType, rowData, {
-            viewTypes: this.props.viewTypes,
-            onButtonClick: (...args) => {
-              if (this.props.onButtonClick) {
-                const index = rowData.get(BaseTable.naturalIndex);
-                this.props.onButtonClick(index, rowData, ...args);
-              }
+        const renderData = new RenderData(this.props.dataType, rowData, {
+          viewTypes: this.props.viewTypes,
+          ...this.props.renderOptions,
+          onButtonClick: (...args) => {
+            if (this.props.onButtonClick) {
+              const index = rowData.get(BaseTable.naturalIndex);
+              this.props.onButtonClick(index, rowData, ...args);
             }
-          });
+          }
+        });
 
+        const columnId = typeof column == 'string' ? column : column.uniqueId;
+        const display = reactRenderers.getDisplay(column, renderData);
+        const key = `${columnId}-${rowData.get(BaseTable.naturalIndex)}-${display}`;
+        if (!this.cellCache.has(key)) {
           this.cellCache = this.cellCache
             .set(key, reactRenderers
               .renderStaticTableCell(column, renderData)
@@ -247,7 +263,7 @@ export default class SchemaTable extends BaseTable {
 
     const gridHeight = this.models.size > 0 ?
       this.models.size * this.props.rowHeight :
-      30;
+      40;
 
     return gridHeight + headerHeight;
   }

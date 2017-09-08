@@ -14,6 +14,12 @@ export default class GridType extends DisplayType {
       );
   }
 
+  initialize(renderData) {
+    super.initialize(renderData, this.getChildren()
+      .flatten(true)
+    );
+  }
+
   getOrientation() {
     return this.options.get('orientation') || 'vertical';
   }

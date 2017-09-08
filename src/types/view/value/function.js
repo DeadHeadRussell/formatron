@@ -47,6 +47,10 @@ export default class FunctionType extends ValueType {
       .update('args', List(), this.parseOneOrMany(parseField));
   }
 
+  initialize(renderData) {
+    super.initialize(renderData, this.getArgs());
+  }
+
   getFn() {
     return this.options.get('fn');
   }
