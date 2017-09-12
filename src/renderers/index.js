@@ -144,7 +144,7 @@ export default class Renderers {
     if (typeof viewType == 'string') {
       const lookup = viewTypes.get(viewType);
       if (lookup) {
-        return lookup;
+        return this.parseViewType(lookup, renderData);
       }
     } else if (viewType instanceof ViewType) {
       return viewType;

@@ -13,7 +13,6 @@ export default class Form extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.createInitialState(props);
-    reactRenderers.initialize(props.viewType, this.createRenderData(props));
   }
 
   createInitialState(props) {
@@ -29,6 +28,10 @@ export default class Form extends React.Component {
       defaultValue,
       disabled
     };
+  }
+
+  componentDidMount() {
+    reactRenderers.initialize(this.props.viewType, this.createRenderData(this.props));
   }
 
   componentWillReceiveProps(newProps) {

@@ -98,7 +98,7 @@ export default class TextType extends DataType {
         case 'plain':
         case 'password':
         default:
-          if (this.isMultiLined() && value.includes('\n')) {
+          if (!this.isMultiLined() && value.includes('\n')) {
             return new ValidationError(validationErrors.singleline, this);
           }
           return;

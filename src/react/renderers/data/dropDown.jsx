@@ -19,7 +19,7 @@ const DropDownFilter = ({viewType, renderData}) => (
   />
 );
 
-const MultiDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => {
+const MultiDropDown = ({viewType, renderData, field, value, disabled, onChange, onBlur}) => {
   const isAsync = viewType.isAsync(field);
   return <Select
     className='formatron-input formatron-dropdown formatron-multi'
@@ -30,7 +30,8 @@ const MultiDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => 
     multi={true}
     filterOptions={viewType.getFilterOptions(field)}
     options={!isAsync ? viewType.getOptions(field).toJS() : []}
-    loadOptions={isAsync && viewType.getOptions.bind(viewType, field)}
+    loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData)}
+    cache={isAsync && field.getValuesCache && field.getValuesCache()}
     onChange={options => onChange(List(options)
       .map(parseOption)
       .filter(option => option)
@@ -54,7 +55,7 @@ MultiDropDown.propTypes = {
   onBlur: React.PropTypes.func.isRequired
 };
 
-const SingleDropDown = ({viewType, field, value, disabled, onChange, onBlur}) => {
+const SingleDropDown = ({viewType, renderData, field, value, disabled, onChange, onBlur}) => {
   const isAsync = viewType.isAsync(field);
   return <Select
     className='formatron-input formatron-dropdown formatron-single'
@@ -64,7 +65,8 @@ const SingleDropDown = ({viewType, field, value, disabled, onChange, onBlur}) =>
     disabled={disabled}
     filterOptions={viewType.getFilterOptions(field)}
     options={!isAsync ? viewType.getOptions(field).toJS() : []}
-    loadOptions={isAsync && viewType.getOptions.bind(viewType, field)}
+    loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData)}
+    cache={isAsync && field.getValuesCache && field.getValuesCache()}
     onChange={option => onChange(parseOption(option))}
     onBlur={onBlur}
   />;

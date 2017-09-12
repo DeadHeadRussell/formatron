@@ -39,6 +39,11 @@ export default class ViewType extends Type {
     } else if (children) {
       valueRenderers.initialize(children, renderData);
     }
+
+    const label = this.options.get('label');
+    if (label instanceof ViewType) {
+      valueRenderers.initialize(label, renderData);
+    }
   }
 
   /**

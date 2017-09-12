@@ -17,7 +17,9 @@ export default class ComputedType extends ValueType {
     '<=': compareAll((a, b) => a <= b),
     '=': compareAll((a, b) => a == b),
     '!=': compareAll((a, b) => a != b),
-    'concat': args => args.reduce((a, b) => `${a}${b}`)
+    'concat': args => args
+      .map((text = '') => (text !== null) ? `${text}` : '')
+      .join('')
   };
 
   static opDisplays = {

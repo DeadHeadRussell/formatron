@@ -47,18 +47,26 @@ export default class SchemaTable extends BaseTable {
     this.cellCache = Map();
   }
 
+  componentDidMount() {
+    this.initialize(this.props);
+  }
+
   componentWillReceiveProps(newProps) {
     if (!newProps.columns.equals(this.props.columns) || !newProps.models.equals(this.props.models)) {
-      newProps.models
-        .forEach(model => newProps.columns
-          .forEach(viewType => reactRenderers
-            .initialize(viewType, new RenderData(this.props.dataType, model, {
-              viewTypes: this.props.viewTypes,
-              ...this.props.renderOptions
-            }))
-          )
-        )
+      this.initialize(newProps);
     }
+  }
+
+  initialize(props) {
+    props.models
+      .forEach(model => props.columns
+        .forEach(viewType => reactRenderers
+          .initialize(viewType, new RenderData(props.dataType, model, {
+            viewTypes: props.viewTypes,
+            ...props.renderOptions
+          }))
+        )
+      );
   }
 
   getRows() {
@@ -318,7 +326,7 @@ export default class SchemaTable extends BaseTable {
         }, models)}
       </AutoSizer>
     ) : this.props.size == 'window' ? (
-      <AutoSizer>
+      <AutoSizer disableHeight>
         {({width}) => <WindowScroller key={width}>
           {props => this.renderTable({
             ...infiniteProps,
@@ -329,7 +337,7 @@ export default class SchemaTable extends BaseTable {
         </WindowScroller>}
       </AutoSizer>
     ) : this.props.size == 'fit' ? (
-      <AutoSizer>
+      <AutoSizer disableHeight>
         {({width}) => this.renderTable({
           ...infiniteProps,
           width,

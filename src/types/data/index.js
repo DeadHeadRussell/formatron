@@ -177,8 +177,8 @@ export default class DataType extends Type {
 export class ImmutableDataType extends DataType {
   static typeName = '';
 
-  hasValue(value) {
-    if (!super.hasValue(value)) {
+  hasValue(value, checkDefault) {
+    if (!super.hasValue(value, checkDefault)) {
       return false;
     }
     return value && value.size > 0;

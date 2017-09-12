@@ -1,5 +1,6 @@
 import {Map} from 'immutable';
 
+import ViewType from '../';
 import DisplayType from './';
 
 export default class TabsType extends DisplayType {
@@ -21,6 +22,11 @@ export default class TabsType extends DisplayType {
   initialize(renderData) {
     super.initialize(renderData, this.getTabs()
       .map(tab => tab.get('display'))
+    );
+
+    super.initialize(renderData, this.getTabs()
+      .filter(tab => tab.get('label') instanceof ViewType)
+      .map(tab => tab.get('label'))
     );
   }
 
