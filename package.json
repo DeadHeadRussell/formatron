@@ -1,6 +1,6 @@
 {
   "name": "formatron",
-  "version": "0.0.39",
+  "version": "0.0.40",
   "description": "A library that generates forms based on JSON schema.",
   "main": "./lib",
   "scripts": {
