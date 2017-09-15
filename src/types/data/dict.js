@@ -28,7 +28,7 @@ export default class ImmutableDictType extends ImmutableListType {
   }
 
   getItemType() {
-    return this.options.get('itemType');
+    return this.getValueType();
   }
 }
 

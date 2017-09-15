@@ -235,6 +235,7 @@
 // Label
 .formatron-label
   font-weight: 700
+  align-self: flex-start
 
   &.formatron-required:before
     margin-right: 5px
@@ -323,6 +324,12 @@
       flex-flow: row nowrap
 
 // Text
+.formatron-label + .formatron-field-wrapper > div > .formatron-textarea-wrapper
+  margin-top: 10px
+  padding-top: 10px
+  padding-left: 20px
+  border-top: 1px solid black
+
 .formatron-textarea
   width: 600px
   min-height: 100px

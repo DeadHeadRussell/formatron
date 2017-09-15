@@ -198,18 +198,21 @@ export default class SchemaTable extends BaseTable {
     return this.reduce(
       this.props.rowRenderers,
       props => {
+        const newProps = {
+          ...props,
+          className: props.className + ((props.index % 2 == 0)
+            ? ' formatron-table-row-even'
+            : ' formatron-table-row-odd'
+          )
+        };
+
         if (!this.models.get(props.index)) {
-          return <div style={{height: this.props.rowHeight}}>
+          return <div {...newProps}>
             <Loading />
           </div>;
         }
-        return defaultRowRenderer({
-          ...props,
-          className: props.className + ((props.index % 2 == 0) ?
-            ' formatron-table-row-even' :
-            ' formatron-table-row-odd'
-          )
-        });
+
+        return defaultRowRenderer(newProps);
       }
     );
   }
@@ -271,7 +274,7 @@ export default class SchemaTable extends BaseTable {
 
     const gridHeight = this.models.size > 0 ?
       this.models.size * this.props.rowHeight :
-      40;
+      80;
 
     return gridHeight + headerHeight;
   }

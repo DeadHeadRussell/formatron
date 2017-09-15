@@ -223,7 +223,7 @@ export default class Form extends React.Component {
           ))
         }
 
-        {validationErrors.size > 0 ? (
+        {(this.props.showRefErrorList && validationErrors.size > 0) ? (
           <div className='formatron-form-error'>
             <p className='formatron-form-validation-error'>The following fields have an error:</p>
             {validationErrors
@@ -262,7 +262,8 @@ export default class Form extends React.Component {
 
 Form.defaultProps = {
   model: Map(),
-  renderOptions: {}
+  renderOptions: {},
+  showRefErrorList: true
 };
 
 Form.propTypes = {
@@ -291,6 +292,7 @@ Form.propTypes = {
 
   errors: React.PropTypes.arrayOf(React.PropTypes.instanceOf(Error)),
   error: React.PropTypes.instanceOf(Error),
+  showRefErrorList: React.PropTypes.bool,
 
   actionsClassName: React.PropTypes.string,
   actions: React.PropTypes.arrayOf(React.PropTypes.element)

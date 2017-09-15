@@ -111,9 +111,11 @@ export default class ImmutableMapType extends ImmutableDataType {
     }
 
     const firstRef = refs.first();
+    if (firstRef.ref === '') {
+      return this.getNextField(this, refs.rest(), renderOptions);
+    }
 
     const fieldData = this.getFieldData(firstRef);
-
     if (!fieldData) {
       throw new Error(`Cannot find field for ref "${firstRef}" on "${this.getName()}": "${this.getDataNames()}"`);
     }
@@ -137,8 +139,11 @@ export default class ImmutableMapType extends ImmutableDataType {
     }
 
     const firstRef = refs.first();
-    const fieldData = this.getFieldData(firstRef);
+    if (firstRef.ref === '') {
+      return this.getNextFieldAndValue(this, model, refs.rest(), renderOptions);
+    }
 
+    const fieldData = this.getFieldData(firstRef);
     if (!fieldData) {
       throw new Error(`Cannot find field for ref "${firstRef}" on "${this.getName()}": "${this.getDataNames()}"`);
     }
@@ -164,8 +169,11 @@ export default class ImmutableMapType extends ImmutableDataType {
     }
 
     const firstRef = refs.first();
-    const fieldData = this.getFieldData(firstRef)
+    if (firstRef.ref === '') {
+      return this.setNextValue(this, model, newValue, refs.rest(), renderOptions);
+    }
 
+    const fieldData = this.getFieldData(firstRef)
     if (!fieldData) {
       throw new Error(`Cannot find field for ref "${firstRef}" on "${this.getName()}": "${this.getDataNames()}"`);
     }

@@ -184,7 +184,7 @@ export class ImmutableListRef extends ImmutableRef {
       throw new Error(`Cannot reference a list with a non-list based data type "${dataType}"`);
     }
 
-    if (!dataValue || !List.isList(dataValue)) {
+    if (!dataValue || !Immutable.isImmutable(dataValue)) {
       throw new Error(`Cannot reference a non-list with a list ref of ${this.view}`);
     }
   }
@@ -202,7 +202,7 @@ export class ImmutableListRef extends ImmutableRef {
 
     const itemType = listType.getItemType();
     return list
-      [this.constructor.method](item => {
+      [this.constructor.method]((item, index) => {
         const renderData = new RenderData(itemType, item, renderOptions);
         return valueRenderers.getValue(this.view, renderData);
       });

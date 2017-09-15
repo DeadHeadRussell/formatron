@@ -8,13 +8,14 @@ import {withFormLabel, withStaticLabel} from '../formHelpers';
 import ReactRenderer from '../reactRenderer';
 import {withChangeOnBlurRenderer, withDisplayRenderer} from './';
 
-const TextFilter = ({renderData}) =>
+const TextFilter = ({renderData}) => (
   <TextInputWrapper
     field={renderData.dataType}
     value={renderData.dataValue}
     onChange={renderData.options.onChange}
     onBlur={renderData.options.onBlur}
-  />;
+  />
+);
 
 const TextInputWrapper = props => {
   return props.field.getMask && props.field.getMask()
@@ -63,14 +64,17 @@ const TextInput = ({field, value, disabled, placeholder, onChange, onBlur}) =>
   />;
 
 const TextArea = ({field, value, disabled, placeholder, onChange, onBlur}) =>
-  <textarea
-    className="formatron-textarea formatron-text"
-    disabled={disabled}
-    value={value || ''}
-    placeholder={placeholder}
-    onChange={e => onChange(e.target.value)}
-    onBlur={onBlur}
-  />;
+  <div className='formatron-textarea-wrapper'>
+    <textarea
+      className="formatron-textarea formatron-text"
+      disabled={disabled}
+      value={value || ''}
+      placeholder={placeholder}
+      onChange={e => onChange(e.target.value)}
+      onBlur={onBlur}
+      title={value}
+    />
+  </div>;
 
 const Text = withChangeOnBlurRenderer(props => <TextInputWrapper {...props} />);
 

@@ -87,7 +87,9 @@ export default class DataType extends ViewType {
    */
   getDisplay(renderData) {
     const {field, value} = this.getFieldAndValue(renderData);
-    return field.getDisplay(value, renderData.options);
+    return field
+      ? field.getDisplay(value, renderData.options)
+      : '';
   }
 
   /**

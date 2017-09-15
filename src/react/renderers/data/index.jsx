@@ -95,6 +95,7 @@ export function withChangeOnBlurRenderer(WrappedComponent) {
       return (
         <div onKeyDown={this.onKeyDown}>
           <WrappedComponent
+            key={viewType.uniqueId}
             viewType={viewType}
             renderData={renderData}
             field={this.state.field}

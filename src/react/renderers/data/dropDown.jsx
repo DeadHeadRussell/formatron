@@ -19,13 +19,14 @@ const DropDownFilter = ({viewType, renderData}) => (
   />
 );
 
-const MultiDropDown = ({viewType, renderData, field, value, disabled, onChange, onBlur}) => {
+const MultiDropDown = ({viewType, renderData, field, value, placeholder, disabled, onChange, onBlur}) => {
   const isAsync = viewType.isAsync(field);
   return <Select
     className='formatron-input formatron-dropdown formatron-multi'
     tetheredClassName='formatron-dropdown-tether'
     async={isAsync}
     value={value ? value.toJS() : []}
+    placeholder={placeholder || 'Select...'}
     disabled={disabled}
     multi={true}
     filterOptions={viewType.getFilterOptions(field)}
@@ -55,13 +56,14 @@ MultiDropDown.propTypes = {
   onBlur: React.PropTypes.func.isRequired
 };
 
-const SingleDropDown = ({viewType, renderData, field, value, disabled, onChange, onBlur}) => {
+const SingleDropDown = ({viewType, renderData, field, value, placeholder, disabled, onChange, onBlur}) => {
   const isAsync = viewType.isAsync(field);
   return <Select
     className='formatron-input formatron-dropdown formatron-single'
     tetheredClassName='formatron-dropdown-tether'
     async={isAsync}
     value={value === null ? '' : value}
+    placeholder={placeholder || 'Select...'}
     disabled={disabled}
     filterOptions={viewType.getFilterOptions(field)}
     options={!isAsync ? viewType.getOptions(field).toJS() : []}

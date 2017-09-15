@@ -20,16 +20,16 @@ export {viewableTable};
 export {Table};
 
 export default exportableTable(
-  sortableTable(
+  //sortableTable(
     editableTable(
       //editableColumnsTable(
-        filterableTable(
+        //filterableTable(
           viewableTable(
             Table
           )
         )
-      )
-    )
+      //)
+    //)
   //)
 );
 

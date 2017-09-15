@@ -40,11 +40,14 @@ export default function editableTable(Table) {
     cacheModels(props) {
       return props.editable ? (
         props.models
-          .map(model => props.dataType
-            .getValue(model)
-            .update(updateValues(model, props.defaultValue))
-            .update(updateValues(model, props.disabled))
-          )
+          .map(model => {
+            const value = props.dataType.getValue(model);
+            return value
+              ? value
+                .update(updateValues(model, props.defaultValue))
+                .update(updateValues(model, props.disabled))
+              : null
+          })
       ) : (
         props.models
       );
@@ -186,6 +189,10 @@ export default function editableTable(Table) {
     }
 
     saveRenderer = props => {
+      if (!props.rowData) {
+        return <div />;
+      }
+
       const rowIndex = props.rowData.get(BaseTable.naturalIndex);
 
       const onSave = this.onSubmit.bind(this, rowIndex);
@@ -223,6 +230,10 @@ export default function editableTable(Table) {
 
     cellRenderer = renderer => {
       return (column, {rowData}) => {
+        if (!rowData) {
+          return <div />;
+        }
+
         const rowIndex = rowData.get(BaseTable.naturalIndex);
         const model = this.state.models.get(rowIndex);
 

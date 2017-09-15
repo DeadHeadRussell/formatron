@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import reactRenderers from '~/react/renderers';
@@ -16,22 +16,42 @@ export default class FilterForm extends React.Component {
     return {
       changes: Map(),
       dirty: Map(),
-      filters: props.filters
+      filters: props.filters,
+      renderDatas: this.createRenderDatas(props, props.filters)
     };
   }
 
+  createRenderDatas(props, filters) {
+    return props.dataType
+      .getData()
+      .map(fieldData => fieldData.get('field'))
+      .toMap()
+      .mapEntries(([i, field]) => [
+        field.getName(),
+        new RenderData(field, filters.get(field.getName()), {
+          viewTypes: props.viewTypes,
+          onBlur: () => this.onBlur(field.getName()),
+          onChange: value => this.onChange(field.getName(), value)
+        })
+      ]);
+  }
+
   componentWillReceiveProps(newProps) {
-    if (newProps.filters && newProps.filters != this.props.filters) {
+    if (!Immutable.is(newProps.filters, this.state.filters)) {
+      console.log(newProps.filters.toJS(), this.state.filters.toJS());
       this.setState(this.createInitialState(newProps));
     }
   }
 
   onBlur = ref => {
-    if (this.state.dirty.get(ref) || this.state.changes.get(ref)) {
-      if (this.props.onChange) {
-        this.props.onChange(this.state.filters);
+    // See the comments in the `onBlur` function of the `Form` component.
+    setTimeout(() => {
+      if (this.state.dirty.get(ref) || this.state.changes.get(ref)) {
+        if (this.props.onChange) {
+          this.props.onChange(this.state.filters);
+        }
       }
-    }
+    });
   }
 
   onChange = (ref, value) => {
@@ -41,11 +61,11 @@ export default class FilterForm extends React.Component {
       changes: this.state.changes.set(ref, value),
       dirty: this.state.dirty.set(ref, true),
       filters: newFilters
+    }, () => {
+      if (this.props.onChange) {
+        this.props.onChange(newFilters);
+      }
     });
-
-    if (this.props.onChange) {
-      this.props.onChange(newFilters);
-    }
   }
 
   onSubmit = e => {
@@ -65,6 +85,7 @@ export default class FilterForm extends React.Component {
   render() {
     return (
       <form
+        key={this.props.dataType.getName()}
         className={classNames('formatron-form', this.props.className)}
         onSubmit={this.onSubmit}
         onReset={this.onReset}
@@ -78,24 +99,16 @@ export default class FilterForm extends React.Component {
 
   renderInputs() {
     return (
-      <div className='formatron-filters'>
+      <div key='filter-fields' className='formatron-filters'>
         {this.props.dataType
           .getData()
-          .map(fieldData => fieldData.get('field'))
-          .map(field => ({
-            field,
-            value: this.state.filters.get(field.getName()),
-            view: this.props.filterViews.get(field.getName())
+          .map(fieldData => fieldData.get('field').getName())
+          .map(fieldName => ({
+            renderData: this.state.renderDatas.get(fieldName),
+            view: this.props.filterViews.get(fieldName)
           }))
           .filter(({view}) => view)
-          .map(({field, value, view}) => {
-            const renderData = new RenderData(field, value, {
-              viewTypes: this.props.viewTypes,
-              onBlur: () => this.onBlur(field.getName()),
-              onChange: value => this.onChange(field.getName(), value)
-            });
-            return reactRenderers.renderFormFilter(view, renderData);
-          })
+          .map(({view, renderData}) => reactRenderers.renderFormFilter(view, renderData))
         }
       </div>
     );
