@@ -30,8 +30,9 @@ const MultiDropDown = ({viewType, renderData, field, value, placeholder, disable
     disabled={disabled}
     multi={true}
     filterOptions={viewType.getFilterOptions(field)}
-    options={!isAsync ? viewType.getOptions(field).toJS() : []}
-    loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData)}
+    options={!isAsync ? viewType.getOptions(field).toJS() : viewType.getValueOption(field, value, renderData)}
+    loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData, value)}
+    autoload={false}
     cache={isAsync && field.getValuesCache && field.getValuesCache()}
     onChange={options => onChange(List(options)
       .map(parseOption)
@@ -66,8 +67,9 @@ const SingleDropDown = ({viewType, renderData, field, value, placeholder, disabl
     placeholder={placeholder || 'Select...'}
     disabled={disabled}
     filterOptions={viewType.getFilterOptions(field)}
-    options={!isAsync ? viewType.getOptions(field).toJS() : []}
-    loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData)}
+    options={!isAsync ? viewType.getOptions(field).toJS() : viewType.getValueOption(field, value, renderData)}
+    loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData, value)}
+    autoload={false}
     cache={isAsync && field.getValuesCache && field.getValuesCache()}
     onChange={option => onChange(parseOption(option))}
     onBlur={onBlur}

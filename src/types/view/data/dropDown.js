@@ -39,13 +39,36 @@ export default class DropDownType extends DataType {
    * @param {string} input - If async, the input entered to return options for.
    * @returns {Immutable.List} a list of options.
    */
-  getOptions(dataType, renderData, input) {
+  getOptions(dataType, renderData, value, input) {
     if (this.options.has('options')) {
       return this.options.get('options', List());
     } else if (dataType && dataType.getValues) {
-      return dataType.getValues(input, renderData && renderData.options) || List();
+      if (this.isAsync(dataType)) {
+        return dataType.getValues(input, renderData.options);
+      } else {
+        return dataType.getValues();
+      }
     }
     return List();
+  }
+
+  getValueOption(dataType, value, renderData) {
+    if (!value) {
+      return [];
+    }
+
+    const label = dataType.getDisplay(value, renderData.options);
+    if (!label) {
+      return [{
+        value,
+        label: 'Loading...'
+      }];
+    }
+    return [{
+      value,
+      label,
+      title: label
+    }];
   }
 
   /**
