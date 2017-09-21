@@ -1,4 +1,5 @@
-import {List, Map} from 'immutable';
+import debounce from 'debounce';
+import {List, Map, Set} from 'immutable';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import defaultCellRangeRenderer from 'react-virtualized/dist/commonjs/Grid/defaultCellRangeRenderer';
 import InfiniteLoader from 'react-virtualized/dist/commonjs/InfiniteLoader';
@@ -45,6 +46,8 @@ export default class SchemaTable extends BaseTable {
   constructor(props) {
     super(props);
     this.cellCache = Map();
+    this.initialized = Set();
+    this.shouldRender = false;
   }
 
   componentDidMount() {
@@ -52,21 +55,42 @@ export default class SchemaTable extends BaseTable {
   }
 
   componentWillReceiveProps(newProps) {
-    if (!newProps.columns.equals(this.props.columns) || !newProps.models.equals(this.props.models)) {
+    this.shouldRender = false;
+    if (!newProps.columns.equals(this.props.columns)) {
+      this.initialized = Set();
+      this.initialize(newProps);
+    } else if (!newProps.models.equals(this.props.models)) {
       this.initialize(newProps);
     }
   }
 
+  startRender = debounce(() => {
+    this.shouldRender = true;
+    this.forceUpdate();
+  }, 100);
+
+  shouldComponentUpdate() {
+    if (!this.shouldRender) {
+      this.startRender();
+      return false;
+    }
+    return true;
+  }
+
   initialize(props) {
     props.models
-      .forEach(model => props.columns
-        .forEach(viewType => reactRenderers
-          .initialize(viewType, new RenderData(props.dataType, model, {
-            viewTypes: props.viewTypes,
-            ...props.renderOptions
-          }))
-        )
-      );
+      .filter(model => model)
+      .filterNot(model => this.initialized.has(model.get('id')))
+      .forEach(model => {
+        this.initialized.add(model.get('id'));
+        props.columns
+          .forEach(viewType => reactRenderers
+            .initialize(viewType, new RenderData(props.dataType, model, {
+              viewTypes: props.viewTypes,
+              ...props.renderOptions
+            }))
+          );
+      });
   }
 
   getRows() {
