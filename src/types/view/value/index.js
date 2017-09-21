@@ -20,6 +20,12 @@ export default class ValueType extends ViewType {
       valueRenderers.getValue(children, renderData);
   }
 
+  getChildDisplays(renderData, children) {
+    return List.isList(children) ?
+      children.map(child => valueRenderers.getDisplay(child, renderData)) :
+      valueRenderers.getDisplay(children, renderData)
+  }
+
   /**
    * Returns the raw underlying value of this view type.
    * @param {RenderData} renderData - The data to compute on.
