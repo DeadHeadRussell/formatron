@@ -16,7 +16,7 @@ export const withFormLabel = (WrappedComponent) => {
       disabled: true
     };
 
-    const required = field && field.isRequired();
+    const required = field && field.isRequired() && viewType.isEditable && viewType.isEditable();
     const otherClasses = viewType.getFormClasses && viewType.getFormClasses();
 
     return (
@@ -68,7 +68,6 @@ export const withStaticLabel = (WrappedComponent) => {
       ...viewType.getFieldAndValue(renderData)
     } : {};
 
-    const required = field && field.isRequired();
     const otherClasses = viewType.getFormClasses && viewType.getFormClasses();
 
     return (
