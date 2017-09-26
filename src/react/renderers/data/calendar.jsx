@@ -45,9 +45,12 @@ class CalendarInput extends React.Component {
     this.setState({showPicker: true});
   };
 
-  handleBlur = () => {
+  handleBlur = (setDefault) => {
     // Wait for possible focus event before handling the blur event.
     this.blurTimeout = setTimeout(() => {
+      if (setDefault && this.state.input === '') {
+        this.setState({input: this.props.field.convert(moment(), 'string')})
+      }
       this.saveInput();
       this.setState({showPicker: false});
       this.props.onBlur();
@@ -70,14 +73,14 @@ class CalendarInput extends React.Component {
     e.stopPropagation();
     e.preventDefault();
     clearTimeout(this.blurTimeout);
-    this.setState({input: ''}, this.handleBlur);
+    this.setState({input: ''}, this.handleBlur.bind(this, false));
   };
 
   handleEnter = event => {
     if (event.which == 13) {
       event.preventDefault();
       event.stopPropagation();
-      this.handleBlur();
+      this.handleBlur(true);
     }
   };
 
@@ -119,10 +122,10 @@ class CalendarInput extends React.Component {
         <DatetimePicker
           className="formatron-datetime-picker"
           onFocusCapture={this.handleFocus}
-          onBlur={this.handleBlur}
+          onBlur={this.handleBlur.bind(this, false)}
           moment={this.getPickerDatetime()}
           onChange={this.handlePickerChange}
-          onDone={this.handleBlur}
+          onDone={this.handleBlur.bind(this, true)}
           onKeyPress={this.handleEnter}
           type={this.props.field.getType()}
 
@@ -153,7 +156,7 @@ class CalendarInput extends React.Component {
           type="text"
           value={this.state.input}
           onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
+          onBlur={this.handleBlur.bind(this, false)}
           onChange={this.handleInputChange}
           onKeyPress={this.handleEnter}
           placeholder={placeholder}
