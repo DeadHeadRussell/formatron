@@ -9,10 +9,17 @@ import BaseTable from './base';
 export default function editableTable(Table) {
   return class EditableTable extends BaseTable {
     static propTypes = {
+      ...BaseTable.propTypes,
       editable: React.PropTypes.bool,
+      showSaveButton: React.PropTypes.bool,
       onSubmit: React.PropTypes.func,
       onChange: React.PropTypes.func,
       onButtonClick: React.PropTypes.func
+    }
+
+    static defaultProps = {
+      ...BaseTable.defaultProps,
+      showSaveButton: true
     }
 
     constructor(props) {
@@ -189,7 +196,7 @@ export default function editableTable(Table) {
     }
 
     saveRenderer = props => {
-      if (!props.rowData) {
+      if (!props.rowData || !this.props.showSaveButton) {
         return <div />;
       }
 
@@ -212,6 +219,10 @@ export default function editableTable(Table) {
     }
 
     columnsRenderer = columns => {
+      if (!this.props.showSaveButton) {
+        return columns;
+      }
+
       return columns
         .push((
           <Column
