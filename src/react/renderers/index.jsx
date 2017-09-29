@@ -17,15 +17,9 @@ import registerHeader from './display/header';
 import registerStatic from './display/static';
 import registerTabs from './display/tabs';
 
-import registerValue from './value';
-import registerComputed from './value/computed';
+import registerValueTypes from './value';
 import registerCondition from './value/condition';
-import registerFunction from './value/function';
-import registerMethod from './value/method';
-import registerProperty from './value/property';
 import registerSwitch from './value/switch';
-import registerTemplate from './value/template';
-import registerVariable from './value/variable';
 
 /**
  * A set of renderers to be used with React.js.
@@ -50,13 +44,7 @@ registerHeader(reactRenderers);
 registerStatic(reactRenderers);
 registerTabs(reactRenderers);
 
-registerComputed(reactRenderers);
+registerValueTypes.forEach(register => register(reactRenderers));
 registerCondition(reactRenderers);
-registerFunction(reactRenderers);
-registerMethod(reactRenderers);
-registerProperty(reactRenderers);
 registerSwitch(reactRenderers);
-registerTemplate(reactRenderers);
-registerValue(reactRenderers);
-registerVariable(reactRenderers);
 

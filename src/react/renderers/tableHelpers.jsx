@@ -2,6 +2,12 @@ import {List, Map} from 'immutable';
 
 import Select from '~/react/components/tetheredSelect';
 
+export const StaticTableCellRenderer = ({viewType, renderData}) => (
+  <p className='formatron-static-value'>
+    {viewType.getDisplay(renderData)}
+  </p>
+);
+
 export const TableDropDownFilter = ({renderData, multi, options}) => {
   const {dataType, dataValue} = renderData;
   const {onChange, onBlur} = renderData.options;

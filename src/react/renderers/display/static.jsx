@@ -1,10 +1,11 @@
 import StaticType from '~/types/view/display/static';
 
+import {withStaticLabel} from '../formHelpers';
 import ReactRenderer from '../reactRenderer';
 
-const StaticField = ({viewType, renderData, renderers}) => {
+const StaticField = withStaticLabel(({viewType, renderData, renderers}) => {
   return renderers.renderStaticField(viewType.getDisplay(), renderData);
-};
+});
 
 const Static = ({viewType, renderData, renderers}) => {
   return renderers.renderStaticTableCell(viewType.getDisplay(), renderData);

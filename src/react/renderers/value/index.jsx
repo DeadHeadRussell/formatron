@@ -1,36 +1,30 @@
-import classNames from 'classnames';
-
+import ComputedType from '~/types/view/value/computed';
+import FunctionType from '~/types/view/value/function';
+import MethodType from '~/types/view/value/method';
+import PropertyType from '~/types/view/value/property';
+import TemplateType from '~/types/view/value/template';
 import ValueType from '~/types/view/value';
+import VariableType from '~/types/view/value/variable';
 
 import {withSimpleLabel, withStaticLabel} from '../formHelpers';
 import ReactRenderer from '../reactRenderer';
-import {TableSimpleFilter} from '../tableHelpers';
+import {StaticTableCellRenderer, TableSimpleFilter} from '../tableHelpers';
 
-export const valueLabelRenderer = ViewType => {
-  return ({viewType, renderData}) => {
-    const display = viewType.getDisplay(renderData);
-    return (
-      <p className={
-        classNames('formatron-static-value', {
-          ['formatron-value-empty']: !display
-        })
-      }>
-        {display}
-      </p>
-    );
-  };
-}
-
-const Value = valueLabelRenderer(ValueType);
-const ValueField = withSimpleLabel(Value);
-const StaticValueField = withStaticLabel(Value);
-
-export default ReactRenderer.register(
+export default [
+  ComputedType,
+  FunctionType,
+  MethodType,
+  PropertyType,
+  TemplateType,
   ValueType,
-  ValueField,
-  StaticValueField,
-  TableSimpleFilter,
-  Value,
-  Value
-);
+  VariableType
+]
+  .map(ViewType => ReactRenderer.register(
+    ViewType,
+    withSimpleLabel(StaticTableCellRenderer),
+    withStaticLabel(StaticTableCellRenderer),
+    TableSimpleFilter,
+    StaticTableCellRenderer,
+    StaticTableCellRenderer
+  ));
 
