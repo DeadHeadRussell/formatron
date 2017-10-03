@@ -54,7 +54,7 @@ export function withChangeOnBlurRenderer(WrappedComponent) {
     }
 
     onKeyDown = e => {
-      if (e.which == 13) {
+      if (e.which == 13 && (!this.state.field.isMultiLined || !this.state.field.isMultiLined())) {
         this.onBlur();
       }
     };
