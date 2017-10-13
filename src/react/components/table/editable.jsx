@@ -207,13 +207,19 @@ export default function editableTable(Table) {
         this.props.saveRenderer(props) :
         'Save';
 
+      const contentString = typeof content == 'string'
+        ? content
+        : content.text;
+      const disabled = content.disabled || false;
+
       return (
         <button
           type='button'
           className='formatron-table-save-row'
           onClick={onSave}
+          disabled={disabled}
         >
-          {content}
+          {contentString}
         </button>
       );
     }
