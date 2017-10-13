@@ -20,7 +20,7 @@ export default class FunctionType extends ValueType {
       .add(...(dateString || '').split(' '))
       .valueOf() / 1000,
 
-    countDays: (endTimes, startTimes) => startTimes
+    countDays: (endTimes, startTimes, addOne = true) => startTimes
       .map((startTime, index) => {
         const rawEndTime = endTimes.get(index);
         const endTime = (rawEndTime === null || typeof rawEndTime == 'undefined') ?
@@ -29,7 +29,7 @@ export default class FunctionType extends ValueType {
         return endTime - startTime;
       })
       .map(time => time / (60 * 60 * 24))
-      .map(days => Math.floor(days + 1))
+      .map(days => Math.floor(days + (addOne ? 1 : 0)))
       .reduce((totalDays, days) => totalDays + days, 0)
   };
 
