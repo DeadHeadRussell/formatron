@@ -16,7 +16,7 @@
     "build:dist": "webpack --env.prod",
     "clean": "rm -r lib/* dist/*",
     "preversion": "echo 'tests go here'",
-    "version": "npm run build",
+    "version": "npm run clean && npm run build",
     "postversion": "git push && git push --tags",
     "format": "prettier --trailing-comma es5 --no-bracket-spacing --single-quote true --write"
   },
