@@ -13,6 +13,8 @@ const NumberInput = ({field, value, disabled, placeholder, onChange, onBlur}) =>
     type="number"
     disabled={disabled}
     value={numberToInput(value)}
+    min={field.getMin()}
+    max={field.getMax()}
     placeholder={placeholder}
     onChange={e => onChange(inputToNumber(e.target.value))}
     onBlur={onBlur}

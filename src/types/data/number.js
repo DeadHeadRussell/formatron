@@ -8,6 +8,14 @@ export default class NumberType extends DataType {
     return this.options.get('type', 'raw');
   }
 
+  getMin() {
+    return this.options.get('min', -Infinity);
+  }
+
+  getMax() {
+    return this.options.get('max', Infinity);
+  }
+
   getDisplay(value) {
     if (typeof value != 'number') {
       return '';
@@ -38,6 +46,12 @@ export default class NumberType extends DataType {
 
       if (this.getType() == 'integer' && !Number.isInteger(value)) {
         return new ValidationError(validationErrors.integer, this, value);
+      }
+
+      const min = this.getMin();
+      const max = this.getMax();
+      if (value < min || value > max) {
+        return new ValidationError(`This value must be between ${min} and ${max} inclusive`, this, value);
       }
     });
   }

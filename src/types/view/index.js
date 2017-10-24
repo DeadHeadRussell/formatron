@@ -57,7 +57,7 @@ export default class ViewType extends Type {
   }
 
   getWidth() {
-    return this.options.get('width', 100);
+    return this.options.get('width');
   }
 
   getDefaultFlex() {
@@ -115,12 +115,14 @@ export default class ViewType extends Type {
       throw new Error(`Error ${this.constructor.name}: labels must only be plain strings when used with tables.`);
     }
 
+    const width = this.getWidth();
+
     return {
       key: label,
       viewType: this,
       label: label,
       dataKey: label,
-      width: this.getWidth(),
+      width: typeof width == 'undefined' ? 100 : width,
       flexGrow: this.getFlexGrow(),
       flexShrink: this.getFlexShrink(),
       filterType: 'equals',

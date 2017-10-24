@@ -26,6 +26,9 @@ export const withFormLabel = (WrappedComponent) => {
           'formatron-error': !!error,
           ...otherClasses
         })}
+        style={{
+          width: viewType.getWidth() || ''
+        }}
       >
         <Label required={required}>
           {viewType.getLabel(renderData)}
@@ -50,6 +53,9 @@ export const withSimpleLabel = (WrappedComponent) => {
           `formatron-field-${viewType.constructor.typeName}`,
           otherClasses
         )}
+        style={{
+          width: viewType.getWidth() || ''
+        }}
       >
         <Label>{viewType.getLabel(renderData)}</Label>
         <div className='formatron-field-wrapper'>
@@ -77,6 +83,9 @@ export const withStaticLabel = (WrappedComponent) => {
           `formatron-field-${viewType.constructor.typeName}`,
           otherClasses
         )}
+        style={{
+          width: viewType.getWidth() || ''
+        }}
       >
         <Label>
           {viewType.getLabel(renderData)}
