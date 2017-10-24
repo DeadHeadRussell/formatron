@@ -46,7 +46,10 @@ export default class BaseTable extends PureComponent {
     headerRenderers: renderersPropType,
 
     className: React.PropTypes.string,
-    viewTypes: ImmutablePropTypes.map,
+    viewTypes: React.PropTypes.oneOfType([
+      ImmutablePropTypes.map,
+      React.PropTypes.func
+    ]),
     columns: ImmutablePropTypes.listOf(
       FormatronPropTypes.viewType.isRequired
     ).isRequired,

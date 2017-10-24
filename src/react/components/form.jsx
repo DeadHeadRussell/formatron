@@ -267,7 +267,10 @@ Form.defaultProps = {
 };
 
 Form.propTypes = {
-  viewTypes: ImmutablePropTypes.map,
+  viewTypes: React.PropTypes.oneOfType([
+    ImmutablePropTypes.map,
+    React.PropTypes.func
+  ]),
   viewType: React.PropTypes.oneOfType([
     React.PropTypes.string.isRequired,
     FormatronPropTypes.viewType.isRequired
