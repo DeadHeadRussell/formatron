@@ -141,6 +141,10 @@ export default function editableTable(Table) {
           if (this.props.onChange) {
             this.props.onChange(index, newModel);
           }
+        },
+
+        submit: () => {
+          this.onSubmit(index);
         }
       };
     }
@@ -183,7 +187,7 @@ export default function editableTable(Table) {
     }
 
     onSubmit = (index, e) => {
-      e.preventDefault();
+      e && e.preventDefault();
 
       if (!this.props.onSubmit) {
         return;

@@ -83,7 +83,8 @@ export default class Form extends React.Component {
       isDisabled: this.isDisabled,
       onBlur: this.onBlur,
       onButtonClick: this.onButtonClick,
-      onChange: this.onChange
+      onChange: this.onChange,
+      submit: this.onSubmit
     });
   }
 
@@ -175,7 +176,7 @@ export default class Form extends React.Component {
   }
 
   onSubmit = e => {
-    e.preventDefault();
+    e && e.preventDefault();
 
     if (!this.props.onSubmit) {
       return;
@@ -252,7 +253,9 @@ export default class Form extends React.Component {
   renderAction() {
     return <div className={this.props.actionsClassName}>
       {this.props.loading ? (
-        <Loading />
+        <div className='formatron-loading'>
+          <Loading />
+        </div>
       ) : (
         this.props.actions
       )}
