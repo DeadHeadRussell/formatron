@@ -56,8 +56,17 @@ export default class ViewType extends Type {
     this.uniqueId = viewIds++;
   }
 
+  // TODO: Put default width / min width as overrideable by each sub view type.
+  // TODO: Separate form / table width options so that you can specify a single
+  // view for each.
   getWidth() {
     return this.options.get('width');
+  }
+
+  getMinWidth() {
+    return this.options.has('width')
+      ? this.options.get('minWidth')
+      : this.options.get('minWidth', 140);
   }
 
   getDefaultFlex() {
@@ -115,14 +124,13 @@ export default class ViewType extends Type {
       throw new Error(`Error ${this.constructor.name}: labels must only be plain strings when used with tables.`);
     }
 
-    const width = this.getWidth();
-
     return {
       key: label,
       viewType: this,
       label: label,
       dataKey: label,
-      width: typeof width == 'undefined' ? 100 : width,
+      width: this.getWidth() || 140,
+      minWidth: this.getMinWidth(),
       flexGrow: this.getFlexGrow(),
       flexShrink: this.getFlexShrink(),
       filterType: 'equals',
