@@ -4,12 +4,10 @@ import ButtonType from '~/types/view/button';
 import ReactRenderer from './reactRenderer';
 
 const Button = ({viewType, renderData}) => {
-  const args = viewType.getArgs().toArray();
-
   return <button
     className='formatron-button'
     type='button'
-    onClick={() => renderData.options.onButtonClick(...args)}
+    onClick={e => viewType.onClick(e, renderData)}
   >
     <Label>{viewType.getLabel(renderData)}</Label>
   </button>;
