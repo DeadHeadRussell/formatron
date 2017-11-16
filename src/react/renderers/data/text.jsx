@@ -52,9 +52,10 @@ const FormatronMaskedInput = ({
     onBlur={onBlur}
   />;
 
-const TextInput = ({field, value, disabled, placeholder, onChange, onBlur}) =>
+const TextInput = ({viewType, field, value, disabled, placeholder, onChange, onBlur}) =>
   <input
     className="formatron-input formatron-text"
+    style={{width: viewType.getWidth()}}
     type={field.getType()}
     disabled={disabled}
     value={value || ''}
