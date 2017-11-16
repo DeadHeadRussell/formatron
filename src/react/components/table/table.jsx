@@ -26,6 +26,7 @@ export default class SchemaTable extends BaseTable {
         height: React.PropTypes.number
       }).isRequired
     ]),
+    minWidth: React.PropTypes.number,
     maxHeight: React.PropTypes.number,
     rowHeight: React.PropTypes.number,
     style: React.PropTypes.object,
@@ -91,6 +92,19 @@ export default class SchemaTable extends BaseTable {
             }))
           );
       });
+  }
+
+  calcMinWidth() {
+    const renderData = new RenderData(null, null, {
+      viewTypes: this.props.viewTypes,
+      ...this.props.renderOptions
+    });
+
+    return 10 + this.columnsRenderer()
+      .reduce((minWidth, column) => {
+        const minColumnWidth = column.props.minWidth || column.props.width;
+        return minWidth + minColumnWidth + 10;
+      }, 0);
   }
 
   getRows() {
@@ -304,6 +318,9 @@ export default class SchemaTable extends BaseTable {
   }
 
   renderTable(props, models) {
+    const width = props.width || 0;
+    const minWidth = this.props.minWidth || this.calcMinWidth() || 0;
+
     const height = props.height || 0;
     const maxHeight = this.props.maxHeight || Infinity;
 
@@ -315,6 +332,7 @@ export default class SchemaTable extends BaseTable {
       }}
       className='formatron-table'
       style={this.props.style}
+      width={Math.max(width, minWidth)}
       height={Math.min(height, maxHeight)}
 
       onRowsRendered={props.onRowsRendered}
