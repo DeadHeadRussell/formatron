@@ -2,8 +2,6 @@
 .formatron-field
   display: block
   width: auto
-  margin-bottom: 10px
-  margin-right: 10px
 
   > .formatron-field-wrapper
     position: relative
@@ -30,8 +28,6 @@
 .formatron-static
   display: flex
   flex-flow: row wrap
-  margin-bottom: 10px
-  margin-right: 10px
 
   > .formatron-label:after
     margin-right: 5px
@@ -131,12 +127,14 @@
   display: inline-flex
   flex-flow: row nowrap
   align-self: baseline
-  align-items: center
-  margin-top: 13px
-  margin-bottom: 22px
+  align-items: baseline
+  height: 52px
+  padding-top: 18px
+  padding-left: 10px
+  padding-right: 20px
 
   &.formatron-checkbox-input-width
-    width: 300px
+    width: 283px
 
   > .formatron-field-wrapper
     order: -1
@@ -149,12 +147,13 @@
 
 .formatron-checkbox
   position: relative
-  width: 17px
-  height: 17px
+  width: 20px
+  height: 20px
   padding: 0
   border: 1px solid #ccc
   border-radius: inherit
   appearance: none
+  -webkit-appearance: none
 
   &:checked:after
     position: absolute
@@ -251,23 +250,31 @@
 
   &.formatron-orientation-horizontal
     > .formatron-grid-outer
-      flex-flow: row nowrap
+      flex-flow: row wrap
 
       > .formatron-grid-inner
         flex-flow: column nowrap
 
-        &:not(:first-child)
-          margin-left: 20px
+        &:not(:last-child)
+          margin-right: 20px
 
   &.formatron-orientation-vertical
     > .formatron-grid-outer
       flex-flow: column nowrap
 
       > .formatron-grid-inner
-        flex-flow: row nowrap
+        flex-flow: row wrap
 
-        > :not(:first-child)
-          margin-left: 10px
+        > *
+          flex: 0 1 auto
+          margin-bottom: 10px
+          margin-right: 10px
+
+.formatron-grid-outer
+  margin-bottom: 20px
+
+  > :not(:last-child)
+    margin-bottom: 10px
 
 .formatron-grid-outer,
 .formatron-grid-inner
