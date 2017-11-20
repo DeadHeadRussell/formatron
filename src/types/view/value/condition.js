@@ -18,7 +18,7 @@ export default class ConditionType extends ValueType {
     '||': args => args.some(arg => !!arg),
     'hasValue': (args, rawArgs, renderData) => {
       const {field, value} = rawArgs.get(0).getFieldAndValue(renderData);
-      return field.hasValue(value);
+      return field && field.hasValue(value);
     }
   };
 
