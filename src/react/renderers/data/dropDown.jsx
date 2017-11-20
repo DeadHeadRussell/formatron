@@ -19,27 +19,42 @@ const DropDownFilter = ({viewType, renderData}) => (
   />
 );
 
-const MultiDropDown = ({viewType, renderData, field, value, placeholder, disabled, onChange, onBlur}) => {
-  const isAsync = viewType.isAsync(field);
-  return <Select
-    className='formatron-input formatron-dropdown formatron-multi'
-    tetheredClassName='formatron-dropdown-tether'
-    async={isAsync}
-    value={value ? value.toJS() : []}
-    placeholder={placeholder || 'Select...'}
-    disabled={disabled}
-    multi={true}
-    filterOptions={viewType.getFilterOptions(field)}
-    options={!isAsync ? viewType.getOptions(field).toJS() : viewType.getValueOption(field, value, renderData)}
-    loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData, value)}
-    autoload={false}
-    cache={isAsync && field.getValuesCache && field.getValuesCache()}
-    onChange={options => onChange(List(options)
-      .map(parseOption)
-      .filter(option => option)
-    )}
-    onBlur={onBlur}
-  />;
+class MultiDropDown extends React.Component {
+  createLoadingOptions(value) {
+    return [{
+      value,
+      label: 'Loading...'
+    }];
+  }
+
+  render() {
+    const {viewType, renderData, field, value, placeholder, disabled, onChange, onBlur} = this.props;
+    const isAsync = viewType.isAsync(field);
+
+    const options = !isAsync
+      ? viewType.getOptions(field).toJS()
+      : viewType.getValueOption(field, value, renderData);
+
+    return <Select
+      className='formatron-input formatron-dropdown formatron-multi'
+      tetheredClassName='formatron-dropdown-tether'
+      async={isAsync}
+      value={value ? value.toJS() : []}
+      placeholder={placeholder || 'Select...'}
+      disabled={disabled}
+      multi={true}
+      filterOptions={viewType.getFilterOptions(field)}
+      options={options || this.createLoadingOptions(value)}
+      loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData, value)}
+      autoload={false}
+      cache={isAsync && field.getValuesCache && field.getValuesCache()}
+      onChange={options => onChange(List(options)
+        .map(parseOption)
+        .filter(option => option)
+      )}
+      onBlur={onBlur}
+    />;
+  }
 };
 
 MultiDropDown.propTypes = {
@@ -57,24 +72,39 @@ MultiDropDown.propTypes = {
   onBlur: React.PropTypes.func.isRequired
 };
 
-const SingleDropDown = ({viewType, renderData, field, value, placeholder, disabled, onChange, onBlur}) => {
-  const isAsync = viewType.isAsync(field);
-  return <Select
-    className='formatron-input formatron-dropdown formatron-single'
-    tetheredClassName='formatron-dropdown-tether'
-    async={isAsync}
-    value={value === null ? '' : value}
-    placeholder={placeholder || 'Select...'}
-    disabled={disabled}
-    filterOptions={viewType.getFilterOptions(field)}
-    options={!isAsync ? viewType.getOptions(field).toJS() : viewType.getValueOption(field, value, renderData)}
-    loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData, value)}
-    autoload={false}
-    cache={isAsync && field.getValuesCache && field.getValuesCache()}
-    onChange={option => onChange(parseOption(option))}
-    onBlur={onBlur}
-  />;
-};
+class SingleDropDown extends React.Component {
+  createLoadingOptions(value) {
+    return [{
+      value,
+      label: 'Loading...'
+    }];
+  }
+
+  render() {
+    const {viewType, renderData, field, value, placeholder, disabled, onChange, onBlur} = this.props;
+    const isAsync = viewType.isAsync(field);
+
+    const options = !isAsync
+      ? viewType.getOptions(field).toJS()
+      : viewType.getValueOption(field, value, renderData);
+
+    return <Select
+      className='formatron-input formatron-dropdown formatron-single'
+      tetheredClassName='formatron-dropdown-tether'
+      async={isAsync}
+      value={value === null ? '' : value}
+      placeholder={placeholder || 'Select...'}
+      disabled={disabled}
+      filterOptions={viewType.getFilterOptions(field)}
+      options={options || this.createLoadingOptions(value)}
+      loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData, value)}
+      autoload={false}
+      cache={isAsync && field.getValuesCache && field.getValuesCache()}
+      onChange={option => onChange(parseOption(option))}
+      onBlur={onBlur}
+    />;
+  }
+}
 
 SingleDropDown.propTypes = {
   field: FormatronPropTypes.dataType.instanceOf(EnumType).isRequired,
