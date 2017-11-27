@@ -37,6 +37,14 @@ export const exampleDataType = parseField(DATA, {
         },
       },
       {
+        path: ['exclude'],
+        field: {
+          type: 'text',
+          name: 'exclude',
+          options: {excluded: true}
+        }
+      },
+      {
         path: ['misc', 'count'],
         field: {
           type: 'number',
@@ -157,6 +165,11 @@ export const exampleViewTypes = Map({
                 type: 'text',
                 label: 'Tel',
                 ref: 'tel',
+              },
+              {
+                type: 'text',
+                label: 'Excluded Value',
+                ref: 'exclude'
               },
               {
                 type: 'text',
@@ -313,6 +326,7 @@ export function createExamples(count) {
       contact: {
         name: `Name ${i + 1}`,
       },
+      exclude: 'I\'ll be excluded! Yay!!!!',
       count: i,
       checked: i % 2 == 0,
       comments: [

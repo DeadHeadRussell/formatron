@@ -195,7 +195,9 @@ export default function editableTable(Table) {
 
       if (this.isValid(index)) {
         const model = this.state.models.get(index);
-        this.props.onSubmit(index, model);
+        this.props.onSubmit(index, this.props.dataType
+          .exclude(model)
+        );
       }
     }
 

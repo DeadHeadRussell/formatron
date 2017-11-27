@@ -221,5 +221,19 @@ export default class ImmutableMapType extends ImmutableDataType {
         .filter(error => error)
     ]).flatten(true);
   }
+
+  exclude(model, deep=true) {
+    model = super.exclude(model);
+    return !model
+      ? model
+      : this.getData()
+        .reduce((model, fieldData) => {
+          const field = fieldData.get('field');
+          const path = fieldData.get('path');
+          return field.isExcluded()
+            ? model.deleteIn(path)
+            : model.updateIn(path, value => field.exclude(value))
+        }, model);
+  }
 }
 

@@ -183,7 +183,9 @@ export default class Form extends React.Component {
     }
 
     if (this.isValid()) {
-      this.props.onSubmit(this.state.model);
+      this.props.onSubmit(this.props.dataType
+        .exclude(this.state.model)
+      );
     }
   }
 
