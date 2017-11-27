@@ -24,7 +24,11 @@ class ExampleForm extends React.Component {
 
   onSubmit = newModel => {
     this.setState({model: newModel});
-    console.log(newModel.toJS());
+    console.log(
+      'Model updated from and to:',
+      this.state.model.toJS(),
+      newModel.toJS()
+    );
   }
 
   render() {

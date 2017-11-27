@@ -69,6 +69,10 @@ export default class DataType extends Type {
     return this.options.get('generated', false);
   }
 
+  isExcluded() {
+    return this.options.get('excluded', false);
+  }
+
   getDefaultValue(defaultValue = null) {
     const optionsDefaultValue = this.options.get('defaultValue');
     return typeof optionsDefaultValue == 'undefined' ?
@@ -91,7 +95,7 @@ export default class DataType extends Type {
    */
   hasValue(value, checkDefault = true) {
     // TODO: should the types that inherit from DataType check that the value
-    // is valid (eg, a number contains a number type, text contains a string,
+    // is valid? (eg, a number contains a number type, text contains a string,
     // etc)
     if (typeof value == 'undefined' || value === null || (value === this.getDefaultValue() && checkDefault)) {
       return false;
@@ -167,6 +171,12 @@ export default class DataType extends Type {
     if (callback) {
       return callback();
     }
+  }
+
+  exclude(model, deep=true) {
+    return this.isExcluded()
+      ? undefined
+      : model;
   }
 
   filter(filterValue, rowValue) {
