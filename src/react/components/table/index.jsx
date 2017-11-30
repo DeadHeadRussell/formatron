@@ -6,6 +6,8 @@ import sortableTable from './sortable';
 import viewableTable from './viewable';
 import Table from './table';
 
+export {SortDirection} from './sortable';
+
 // TODO:
 // * Exportable: Add export buttons to the toolbar
 // * Editable Columns: Allow resizing / dragging / adding / removing of columns

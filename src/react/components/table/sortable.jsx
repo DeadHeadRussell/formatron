@@ -5,6 +5,8 @@ import reactRenderers from '~/react/renderers';
 
 import BaseTable from './base';
 
+export {SortDirection};
+
 export default function sortableTable(Table) {
   return class SortableTable extends BaseTable {
     static propTypes = {
