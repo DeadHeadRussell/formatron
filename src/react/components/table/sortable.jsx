@@ -37,10 +37,20 @@ export default function sortableTable(Table) {
       };
     }
 
+    // Only sort if you are non-infinite load, or if you have an `onSort` prop.
+    isSortable = () => {
+      return this.props.sortable && (
+        !this.props.infiniteLoad ||
+        !!this.props.onSort
+      );
+    }
+
     onSort = props => {
       if (this.props.onSort) {
         this.props.onSort(props);
-      } else {
+      } else if (!this.props.infiniteLoad) {
+        // The default sort implementation does not support tables with
+        // infinite loading since we only sort rows that are currently loaded.
         if (this.state.sortBy == this.props.sortBy &&
             this.state.sortDirection == SortDirection.DESC) {
           this.setState(this.createInitialState());
@@ -115,7 +125,7 @@ export default function sortableTable(Table) {
     }
 
     render() {
-      if (this.props.sortable) {
+      if (this.isSortable()) {
         const mergedProps = this.mergeProps({
           getColumnProps: this.getColumnProps,
           rowsModifier: this.rowsModifier,

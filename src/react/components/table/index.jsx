@@ -20,7 +20,7 @@ export {viewableTable};
 export {Table};
 
 export default exportableTable(
-  //sortableTable(
+  sortableTable(
     editableTable(
       //editableColumnsTable(
         //filterableTable(
@@ -30,6 +30,6 @@ export default exportableTable(
         )
       //)
     //)
-  //)
+  )
 );
 
