@@ -171,6 +171,10 @@ export class ImmutableListRef extends ImmutableRef {
     return true;
   }
 
+  isFinder() {
+    return false;
+  }
+
   isFilterer() {
     return false;
   }
@@ -193,6 +197,11 @@ export class ImmutableListRef extends ImmutableRef {
     return this.view.getLabel();
   }
 
+  applyView(itemType, item, renderOptions) {
+    const renderData = new RenderData(itemType, item, renderOptions);
+    return valueRenderers.getValue(this.view, renderData);
+  }
+
   getValue(listType, list, renderOptions) {
     this.checkValidData(listType, list);
     
@@ -201,11 +210,9 @@ export class ImmutableListRef extends ImmutableRef {
     }
 
     const itemType = listType.getItemType();
-    return list
-      [this.constructor.method]((item, index) => {
-        const renderData = new RenderData(itemType, item, renderOptions);
-        return valueRenderers.getValue(this.view, renderData);
-      });
+    return list[this.constructor.method](
+      (item, index) => this.applyView(itemType, item, renderOptions)
+    );
   }
 
   setValue(listType, list, newItem, renderOptions) {
@@ -227,6 +234,10 @@ export class ImmutableListRef extends ImmutableRef {
 
 export class ImmutableListFindRef extends ImmutableListRef {
   static method = 'find';
+
+  isFinder() {
+    return true;
+  }
 
   setValue(listType, list, newItem, renderOptions) {
     const itemType = listType.getItemType();

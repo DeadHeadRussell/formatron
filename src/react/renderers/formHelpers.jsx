@@ -24,6 +24,7 @@ export const withFormLabel = (WrappedComponent) => {
         className={classNames('formatron-field', `formatron-field-${viewType.constructor.typeName}`, {
           'formatron-disabled': !!disabled,
           'formatron-error': !!error,
+          'formatron-set-width': typeof viewType.getWidth() != 'undefined',
           ...otherClasses
         })}
         style={{
@@ -48,11 +49,10 @@ export const withSimpleLabel = (WrappedComponent) => {
     const otherClasses = viewType.getFormClasses && viewType.getFormClasses();
     return (
       <div
-        className={classNames(
-          'formatron-field',
-          `formatron-field-${viewType.constructor.typeName}`,
-          otherClasses
-        )}
+        className={classNames('formatron-field', `formatron-field-${viewType.constructor.typeName}`, {
+          'formatron-set-width': typeof viewType.getWidth() != 'undefined',
+          ...otherClasses
+        })}
         style={{
           width: viewType.getWidth() || ''
         }}
@@ -78,11 +78,10 @@ export const withStaticLabel = (WrappedComponent) => {
 
     return (
       <div
-        className={classNames(
-          'formatron-static',
-          `formatron-field-${viewType.constructor.typeName}`,
-          otherClasses
-        )}
+        className={classNames('formatron-static', `formatron-field-${viewType.constructor.typeName}`, {
+          'formatron-set-width': typeof viewType.getWidth() != 'undefined',
+          ...otherClasses
+        })}
         style={{
           width: viewType.getWidth() || ''
         }}

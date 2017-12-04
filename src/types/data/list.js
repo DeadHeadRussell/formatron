@@ -52,7 +52,12 @@ export default class ImmutableListType extends ImmutableDataType {
   }
 
   getFieldFromRef(ref, renderOptions) {
-    if (ref.isSingleRef()) {
+    if (ref.isListRef() && ref.isFinder()) {
+      const itemType = this.getItemType();
+      return new itemType.constructor(`found${itemType.constructor.name}(${itemType.getName()})`, itemType.options
+        .update('filters', (filters = List()) => filters.push(ref))
+      );
+    } else if (ref.isSingleRef()) {
       return this.getItemType();
     } else if (ref.isMapper()) {
       const itemType = this.getItemType();
