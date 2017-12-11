@@ -5,81 +5,27 @@ import BaseTable from './base';
 export default function exportableTable(Table) {
   return class ExportableTable extends BaseTable {
     static propTypes = {
-      onExport: React.PropTypes.func,
-      exportTypes: React.PropTypes.arrayOf(
-        React.PropTypes.string.isRequired
-      )
-    }
-
-    constructor(props) {
-      super(props);
-      this.state = {
-        menuOpen: false
-      };
+      onExport: React.PropTypes.func
     }
 
     getToolbarButtons = buttons => {
-      if (this.props.onExport) {
-        return buttons
-          .push(<TetheredComponent
-            classes={{
-              element: 'element-top'
-            }}
-            renderElementTo='body'
-            attachment='top center'
-            targetAttachment='bottom center'
-            constraints={[{
-              to: 'window',
-              attachment: 'together',
-              pin: ['top']
-            }]}
-          >
+      return this.props.onExport
+        ? buttons
+          .push((
             <button
               key='export-toggle'
-              ref={this.setButton}
               type='button'
               className='formatron-table-button formatron-table-exportable-export'
-              onClick={this.popup}
+              onClick={this.export}
             >
               Export
             </button>
-            <div
-              style={{
-                display: this.state.menuOpen ?
-                  'initial' : 'none'
-              }}
-            >
-              <div className='formatron-table-exportable-export-list'>
-                {this.props.exportTypes.map(type => <button
-                  key={type}
-                  type='button'
-                  className='formatron-table-button formatron-table-exportable-export-type'
-                  onClick={this.export.bind(this, type)}
-                >
-                  {type}
-                </button>)}
-              </div>
-            </div>
-          </TetheredComponent>);
-      } else {
-        return buttons;
-      }
+          ))
+        : buttons;
     }
 
-    setButton = button => {
-      this.button = button;
-    }
-
-    popup = () => {
-      this.setState({menuOpen: !this.state.menuOpen});
-    }
-
-    export = action => {
-      const models = this.table.getRows();
-      this.props.onExport(action, this.props.columns, models);
-      this.setState({
-        menuOpen: false
-      });
+    export = () => {
+      this.props.onExport();
     }
 
     render() {

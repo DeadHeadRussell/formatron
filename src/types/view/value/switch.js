@@ -22,9 +22,19 @@ export default class SwitchType extends ValueType {
     super.initialize(renderData, this.getCases()
       .map(caseField => caseField.get('case'))
     );
-    super.initialize(renderData, this.getCases()
+
+    // Allow some case displays to fail since they may not be intended for the
+    // current value. However, since not all data may have been loaded yet, due
+    // to this terrible initialize scheme, we cannot tell which case displays
+    // to load, so we have to try to load them all.
+    this.getCases()
       .map(caseField => caseField.get('display'))
-    );
+      .forEach(display => {
+        try {
+          valueRenderers.initialize(display, renderData);
+        } catch (e) {}
+      });
+
     super.initialize(renderData, this.getDefaultDisplay());
   }
 

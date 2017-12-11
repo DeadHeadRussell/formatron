@@ -27,6 +27,25 @@ class MultiDropDown extends React.Component {
     }];
   }
 
+  getCache = () => {
+    const {viewType, field, value, renderData} = this.props;
+
+    if (field.getValuesCache) {
+      const cache = field.getValuesCache();
+
+      const valueOption = viewType.getValueOption(field, value, renderData);
+      if (valueOption && valueOption.length > 0) {
+        const options = cache[''];
+        const hasValueOption = options.find(option => option.label == valueOption[0].label);
+        if (!hasValueOption) {
+          cache[''].unshift(valueOption[0]);
+        }
+      }
+      return cache;
+    }
+    return null;
+  }
+
   render() {
     const {viewType, renderData, field, value, placeholder, disabled, onChange, onBlur} = this.props;
     const isAsync = viewType.isAsync(field);
@@ -46,8 +65,8 @@ class MultiDropDown extends React.Component {
       filterOptions={viewType.getFilterOptions(field)}
       options={options || this.createLoadingOptions(value)}
       loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData, value)}
-      autoload={false}
-      cache={isAsync && field.getValuesCache && field.getValuesCache()}
+      autoload={true}
+      cache={isAsync && this.getCache()}
       onChange={options => onChange(List(options)
         .map(parseOption)
         .filter(option => option)
@@ -80,6 +99,24 @@ class SingleDropDown extends React.Component {
     }];
   }
 
+  getCache = () => {
+    const {viewType, field, value, renderData} = this.props;
+
+    if (field.getValuesCache) {
+      const cache = field.getValuesCache();
+      const valueOption = viewType.getValueOption(field, value, renderData);
+      if (valueOption && valueOption.length > 0) {
+        const options = cache[''];
+        const hasValueOption = options.find(option => option.label == valueOption[0].label);
+        if (!hasValueOption) {
+          cache[''].unshift(valueOption[0]);
+        }
+      }
+      return cache;
+    }
+    return null;
+  }
+
   render() {
     const {viewType, renderData, field, value, placeholder, disabled, onChange, onBlur} = this.props;
     const isAsync = viewType.isAsync(field);
@@ -98,8 +135,8 @@ class SingleDropDown extends React.Component {
       filterOptions={viewType.getFilterOptions(field)}
       options={options || this.createLoadingOptions(value)}
       loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData, value)}
-      autoload={false}
-      cache={isAsync && field.getValuesCache && field.getValuesCache()}
+      autoload={true}
+      cache={isAsync && this.getCache()}
       onChange={option => onChange(parseOption(option))}
       onBlur={onBlur}
     />;

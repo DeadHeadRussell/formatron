@@ -47,19 +47,20 @@ export default function editableTable(Table) {
     cacheModels(props) {
       return props.editable ? (
         props.models
-          .map(model => {
-            const value = props.dataType.getValue(model);
+          .map((model, index) => {
+            const renderData = this.createRenderData(model, index);
+            const value = props.dataType.getValue(model, undefined, renderData.options);
             return value
               ? value
-                .update(updateValues(model, props.defaultValue))
-                .update(updateValues(model, props.disabled))
+                .update(updateValues(model, index, props.defaultValue))
+                .update(updateValues(model, index, props.disabled))
               : null
           })
       ) : (
         props.models
       );
 
-      function updateValues(model, values) {
+      function updateValues(model, index, values) {
         if (!values || !Immutable.isImmutable(values)) {
           return model => model;
         } else {
@@ -67,7 +68,8 @@ export default function editableTable(Table) {
             .reduce(
               (model, value, ref) => {
                 if (typeof value != 'undefined') {
-                  return props.dataType.setValue(model, ref, value);
+                  const renderData = this.createRenderData(model, index);
+                  return props.dataType.setValue(model, ref, value, renderData.options);
                 }
                 return model
               },
@@ -125,8 +127,10 @@ export default function editableTable(Table) {
         },
 
         onChange: (ref, value) => {
+          const oldModel = this.state.models.get(index);
+          const renderData = this.createRenderData(oldModel, index);
           const newModel = this.props.dataType
-            .setValue(this.state.models.get(index), ref, value);
+            .setValue(oldModel, ref, value, renderData.options);
 
           this.setState({
             changes: this.state.changes.setIn([index, ref], value),
@@ -251,6 +255,17 @@ export default function editableTable(Table) {
         ));
     }
 
+    createRenderData = (model, rowIndex) => {
+      return new RenderData(this.props.dataType, model, {
+        ...(this.state
+          ? this.state.callbacks.get(rowIndex)
+          : {}
+        ),
+        viewTypes: this.props.viewTypes,
+        ...this.props.renderOptions
+      });
+    }
+
     cellRenderer = renderer => {
       return (column, {rowData}) => {
         if (!rowData) {
@@ -260,13 +275,7 @@ export default function editableTable(Table) {
         const rowIndex = rowData.get(BaseTable.naturalIndex);
         const model = this.state.models.get(rowIndex);
 
-        const renderData = new RenderData(this.props.dataType, model, {
-          ...this.state.callbacks.get(rowIndex),
-          viewTypes: this.props.viewTypes,
-          ...this.props.renderOptions
-        });
-
-        return reactRenderers.renderTableCell(column, renderData);
+        return reactRenderers.renderTableCell(column, this.createRenderData(model, rowIndex));
       };
     }
 

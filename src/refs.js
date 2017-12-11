@@ -16,32 +16,27 @@ export function parseRef(field) {
   if (typeof field == 'string') {
     // Quick hack. Remove soon.
     if (field[1] == ':') {
-      const [ref, value] = field.slice(2).split('=');
+      const refTypeCode = field[0];
+      const refValue = field.slice(2);
+      switch (refTypeCode) {
+        case 'r':
+          return new ImmutableRef(refValue);
 
-      const mappyViewType = new Types.view.data({
-        label: field,
-        ref: parseRef(ref)
-      });
-      const truthyViewType = new Types.view.condition({
-        label: field,
-        op: '=',
-        args: [
-          mappyViewType,
-          new Types.view.value({value: value})
-        ],
-        trueType: new Types.view.value({value: true}),
-        falseType: new Types.view.value({value: false})
-      });
+        case 'q':
+          return new ImmutableListFindRef(createTruthyViewType(refValue));
 
-      if (field[0] == 'q') {
-        return new ImmutableListFindRef(truthyViewType);
-      } else if (field[0] == 'f') {
-        return new ImmutableListFilterRef(truthyViewType);
-      } else if (field[0] == 'm') {
-        return new ImmutableListMapRef(mappyViewType);
+        case 'f':
+          return new ImmutableListFilterRef(createTruthyViewType(refValue));
+
+        case 'm':
+          return new ImmutableListMapRef(createMappyViewType(refValue));
+
+        case 'v':
+          return new ImmutableViewRef(refValue);
+
+        default:
+          throw new Error(`Invalid hacky ref type: "${field}"`);
       }
-
-      throw new Error(`Invalid hacky ref type: "${field}"`);
     }
 
     return new ImmutableRef(field);
@@ -50,6 +45,12 @@ export function parseRef(field) {
   switch (field.get('type')) {
     case 'value':
       return new ImmutableRef(field.get('value'));
+
+    case 'view':
+      return new ImmutableViewRef(Types.parseField(
+        Types.VIEW,
+        field.get('view')
+      ));
 
     case 'list':
       const refValue = field.get('value');
@@ -82,6 +83,28 @@ export function parseRef(field) {
     default:
       throw new Error(`Unknown ref type "${field.get('type')}"`);
   }
+}
+
+function createMappyViewType(refValue) {
+  return new Types.view.data({
+    label: refValue,
+    ref: parseRef(refValue)
+  });
+}
+
+function createTruthyViewType(refValue) {
+  const [ref, value] = refValue.split('=');
+
+  return new Types.view.condition({
+    label: `${ref}=${value}`,
+    op: '=',
+    args: [
+      createMappyViewType(ref),
+      new Types.view.value({value})
+    ],
+    trueType: new Types.view.value({value: true}),
+    falseType: new Types.view.value({value: false})
+  });
 }
 
 export class Ref {
@@ -158,6 +181,42 @@ export class ImmutableRef extends Ref {
 
   hashCode() {
     return Immutable.hash(this.ref);
+  }
+}
+
+export class ImmutableViewRef extends ImmutableRef {
+  constructor(view) {
+    super();
+    this.view = view;
+  }
+
+  getValue(dataType, dataValue, renderOptions) {
+    if (!dataValue) {
+      return null;
+    }
+
+    if (!this.view) {
+      return dataValue;
+    }
+
+    const renderData = new RenderData(dataType, dataValue, renderOptions);
+    return valueRenderers.getValue(this.view, renderData)
+  }
+
+  setValue() {
+    throw new Error('Not yet implemented');
+  }
+
+  getDisplay() {
+    return this.view.getLabel();
+  }
+
+  equals(other) {
+    return this.view.uniqueId == other.view.uniqueId;
+  }
+
+  hashCode() {
+    return Immutable.hash(this.view.uniqueId);
   }
 }
 

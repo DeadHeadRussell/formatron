@@ -66,7 +66,7 @@ export default class ViewType extends Type {
   getMinWidth() {
     return this.options.has('width')
       ? this.options.get('minWidth')
-      : this.options.get('minWidth', 140);
+      : this.options.get('minWidth', 180);
   }
 
   getDefaultFlex() {

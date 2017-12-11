@@ -13,6 +13,9 @@ export default class FunctionType extends ValueType {
     floor: value => Math.floor(value),
     round: value => Math.round(value),
 
+    list: (...values) => List(values)
+      .filter(value => value),
+
     formatDate: (value, format) => moment(value * 1000)
       .format(format),
 

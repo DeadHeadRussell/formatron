@@ -53,23 +53,32 @@ export default class ImmutableListType extends ImmutableDataType {
 
   getFieldFromRef(ref, renderOptions) {
     if (ref.isListRef() && ref.isFinder()) {
-      const itemType = this.getItemType();
-      return new itemType.constructor(`found${itemType.constructor.name}(${itemType.getName()})`, itemType.options
-        .update('filters', (filters = List()) => filters.push(ref))
-      );
+      if (!ref.cachedChildType) {
+        const itemType = this.getItemType();
+        ref.cachedChildType = new itemType.constructor(`found${itemType.constructor.name}(${itemType.getName()})`, itemType.options
+          .update('filters', (filters = List()) => filters.push(ref))
+        );
+      }
+      return ref.cachedChildType;
     } else if (ref.isSingleRef()) {
       return this.getItemType();
     } else if (ref.isMapper()) {
-      const itemType = this.getItemType();
-      const newItemType = ref.view instanceof DataViewType ?
-        ref.view.getField(new RenderData(itemType, null, renderOptions)) :
-        new DataType(`mapped${this.constructor.name}Item`, Map());
+      if (!ref.cachedChildType) {
+        const itemType = this.getItemType();
+        const newItemType = ref.view instanceof DataViewType ?
+          ref.view.getField(new RenderData(itemType, null, renderOptions)) :
+          new DataType(`mapped${this.constructor.name}Item`, Map());
 
-      return new this.constructor(`mapped${this.constructor.name}(${this.getName()})`, this.options
-        .set('itemType', newItemType)
-      );
+        ref.cachedChildType = new this.constructor(`mapped${this.constructor.name}(${this.getName()})`, this.options
+          .set('itemType', newItemType)
+        );
+      }
+      return ref.cachedChildType;
     } else if (ref.isFilterer()) {
-      return new this.constructor(`filtered${this.constructor.name}(${this.getName()})`, this.options);
+      if (!ref.cachedChildType) {
+        ref.cachedChildType = new this.constructor(`filtered${this.constructor.name}(${this.getName()})`, this.options);
+      }
+      return ref.cachedChildType;
     } else {
       return this;
     }

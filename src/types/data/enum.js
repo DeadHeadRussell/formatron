@@ -42,6 +42,7 @@ export default class EnumType extends DataType {
 
   getDisplay(value) {
     if (this.isMulti()) {
+      value = value || List();
       return this.getValues()
         .filter(option => value.includes(option.get('value')))
         .map(option => option.get('label'))

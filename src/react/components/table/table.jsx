@@ -87,6 +87,7 @@ export default class SchemaTable extends BaseTable {
         props.columns
           .forEach(viewType => reactRenderers
             .initialize(viewType, new RenderData(props.dataType, model, {
+              component: 'table',
               viewTypes: props.viewTypes,
               ...props.renderOptions
             }))
@@ -295,7 +296,11 @@ export default class SchemaTable extends BaseTable {
               .renderStaticTableCell(column, renderData)
             );
         }
-        return this.cellCache.get(key);
+        return (
+          <div title={display}>
+            {this.cellCache.get(key)}
+          </div>
+        );
       }
     ).bind(null, column);
   }

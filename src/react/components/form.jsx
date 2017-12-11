@@ -78,6 +78,7 @@ export default class Form extends React.Component {
   createRenderData(props) {
     return new RenderData(props.dataType, this.state.model, {
       ...props.renderOptions,
+      component: 'form',
       viewTypes: props.viewTypes,
       getError: this.getError,
       isDisabled: this.isDisabled,
