@@ -125,9 +125,11 @@ export default class Form extends React.Component {
 
   isDisabled = ref => {
     // TODO: Recursively check parent refs?
-    return this.props.loading ||
+    return !!(
+      this.props.loading ||
       this.state.disabled === true ||
-      (this.state.disabled && this.state.disabled.get(ref, false));
+      (this.state.disabled && this.state.disabled.get(ref, false))
+    );
   }
 
   getError = ref => {

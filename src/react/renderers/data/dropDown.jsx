@@ -36,9 +36,11 @@ class MultiDropDown extends React.Component {
       const valueOption = viewType.getValueOption(field, value, renderData);
       if (valueOption && valueOption.length > 0) {
         const options = cache[''];
-        const hasValueOption = options.find(option => option.label == valueOption[0].label);
-        if (!hasValueOption) {
-          cache[''].unshift(valueOption[0]);
+        if (options) {
+          const hasValueOption = options.find(option => option.label == valueOption[0].label);
+          if (!hasValueOption) {
+            cache[''].unshift(valueOption[0]);
+          }
         }
       }
       return cache;
@@ -107,9 +109,11 @@ class SingleDropDown extends React.Component {
       const valueOption = viewType.getValueOption(field, value, renderData);
       if (valueOption && valueOption.length > 0) {
         const options = cache[''];
-        const hasValueOption = options.find(option => option.label == valueOption[0].label);
-        if (!hasValueOption) {
-          cache[''].unshift(valueOption[0]);
+        if (options) {
+          const hasValueOption = options.find(option => option.label == valueOption[0].label);
+          if (!hasValueOption) {
+            cache[''].unshift(valueOption[0]);
+          }
         }
       }
       return cache;
