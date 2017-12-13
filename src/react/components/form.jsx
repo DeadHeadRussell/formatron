@@ -48,7 +48,10 @@ export default class Form extends React.Component {
 
   updateRefs(values) {
     return values && values
-      .mapKeys(ref => parseRef(ref));
+      .mapKeys(ref => List.isList(ref)
+        ? ref
+        : List([ref])
+      );
   }
 
   cacheModel(props, defaultValue, disabled) {
