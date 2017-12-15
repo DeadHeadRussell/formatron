@@ -56,7 +56,7 @@ export default class Form extends React.Component {
 
   cacheModel(props, defaultValue, disabled) {
     return props.dataType
-      .getValue(props.model)
+      .getValue(props.model, undefined, this.props.renderOptions)
       .update(updateValues(props.model, defaultValue))
       .update(updateValues(props.model, disabled));
 
@@ -68,7 +68,7 @@ export default class Form extends React.Component {
           .reduce(
             (model, value, ref) => {
               if (typeof value != 'undefined') {
-                return props.dataType.setValue(model, ref, value);
+                return props.dataType.setValue(model, ref, value, this.props.renderOptions);
               }
               return model
             },
@@ -162,9 +162,9 @@ export default class Form extends React.Component {
 
   onChange = (ref, value, viewLabel) => {
     const newModel = this.props.dataType
-      .setValue(this.state.model, ref, value);
+      .setValue(this.state.model, ref, value, this.props.renderOptions);
 
-    const field = this.props.dataType.getField(ref);
+    const field = this.props.dataType.getField(ref, this.props.renderOptions);
     const update = field.hasValue(value) || this.state.dirty.get(ref);
 
     this.setState({

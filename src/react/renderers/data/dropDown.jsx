@@ -15,11 +15,11 @@ const DropDownFilter = ({viewType, renderData}) => (
   <TableDropDownFilter
     renderData={renderData}
     filterOptions={viewType.getFilterOptions(renderData.dataType)}
-    options={viewType.getOptions(renderData.dataType).toJS()}
+    options={viewType.getOptions(renderData).toJS()}
   />
 );
 
-class MultiDropDown extends React.Component {
+class BaseDropDown extends React.Component {
   createLoadingOptions(value) {
     return [{
       value,
@@ -48,13 +48,23 @@ class MultiDropDown extends React.Component {
     return null;
   }
 
+  getOptions() {
+    const {viewType, field, renderData} = this.props;
+    return viewType.isAsync(field)
+      ? []
+      : viewType.getOptions(renderData).toJS();
+  }
+
+  loadOptions = (input) => {
+    const {viewType, renderData} = this.props;
+    return viewType.getOptions(renderData, input);
+  }
+}
+
+class MultiDropDown extends BaseDropDown {
   render() {
     const {viewType, renderData, field, value, placeholder, disabled, onChange, onBlur} = this.props;
     const isAsync = viewType.isAsync(field);
-
-    const options = !isAsync
-      ? viewType.getOptions(field).toJS()
-      : viewType.getValueOption(field, value, renderData);
 
     return <Select
       className='formatron-input formatron-dropdown formatron-multi'
@@ -65,8 +75,8 @@ class MultiDropDown extends React.Component {
       disabled={disabled}
       multi={true}
       filterOptions={viewType.getFilterOptions(field)}
-      options={options || this.createLoadingOptions(value)}
-      loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData, value)}
+      options={this.getOptions()}
+      loadOptions={isAsync && this.loadOptions}
       autoload={true}
       cache={isAsync && this.getCache()}
       onChange={options => onChange(List(options)
@@ -93,41 +103,10 @@ MultiDropDown.propTypes = {
   onBlur: React.PropTypes.func.isRequired
 };
 
-class SingleDropDown extends React.Component {
-  createLoadingOptions(value) {
-    return [{
-      value,
-      label: 'Loading...'
-    }];
-  }
-
-  getCache = () => {
-    const {viewType, field, value, renderData} = this.props;
-
-    if (field.getValuesCache) {
-      const cache = field.getValuesCache();
-      const valueOption = viewType.getValueOption(field, value, renderData);
-      if (valueOption && valueOption.length > 0) {
-        const options = cache[''];
-        if (options) {
-          const hasValueOption = options.find(option => option.label == valueOption[0].label);
-          if (!hasValueOption) {
-            cache[''].unshift(valueOption[0]);
-          }
-        }
-      }
-      return cache;
-    }
-    return null;
-  }
-
+class SingleDropDown extends BaseDropDown {
   render() {
     const {viewType, renderData, field, value, placeholder, disabled, onChange, onBlur} = this.props;
     const isAsync = viewType.isAsync(field);
-
-    const options = !isAsync
-      ? viewType.getOptions(field).toJS()
-      : viewType.getValueOption(field, value, renderData);
 
     return <Select
       className='formatron-input formatron-dropdown formatron-single'
@@ -137,8 +116,8 @@ class SingleDropDown extends React.Component {
       placeholder={placeholder || 'Select...'}
       disabled={disabled}
       filterOptions={viewType.getFilterOptions(field)}
-      options={options || this.createLoadingOptions(value)}
-      loadOptions={isAsync && viewType.getOptions.bind(viewType, field, renderData, value)}
+      options={this.getOptions()}
+      loadOptions={isAsync && this.loadOptions}
       autoload={true}
       cache={isAsync && this.getCache()}
       onChange={option => onChange(parseOption(option))}
@@ -166,16 +145,14 @@ function parseOption(option) {
 }
 
 const DropDown = withDataRenderer(props => (
-  props.viewType.isMulti(props.field) ? (
-    <MultiDropDown {...props} />
-  ) : (
-    <SingleDropDown {...props} />
-  )
+  props.viewType.isMulti(props.field)
+    ? <MultiDropDown {...props} />
+    : <SingleDropDown {...props} />
 ));
 
-const StaticDropDown = withDisplayRenderer(({value}) => {
-  return <p className='formatron-static-value'>{value}</p>;
-});
+const StaticDropDown = withDisplayRenderer(({value}) => (
+  <p className='formatron-static-value'>{value}</p>
+));
 
 const DropDownField = withFormLabel(DropDown);
 const StaticDropDownField = withStaticLabel(StaticDropDown);

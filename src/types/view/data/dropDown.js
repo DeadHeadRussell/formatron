@@ -5,6 +5,37 @@ import DataType from './';
 export default class DropDownType extends DataType {
   static typeName = 'dropDown';
 
+  constructor(options) {
+    super(options);
+    this.autoloaded = false;
+  }
+
+  initialize(renderData) {
+    super.initialize(renderData);
+
+    // We autoload the values for async dropdowns that use their own cache
+    // since the `react-select` component is not playing well with our
+    // caches and is firing the autoload request everytime the component
+    // is reloaded.
+    if (!this.autoloaded) {
+      this.autoload(renderData);
+    }
+  }
+
+  autoload(renderData) {
+    const {field, value} = this.getFieldAndValue(renderData);
+    if (field.getValuesCache && this.isAsync(field) && renderData.options.component == 'form') {
+      field.getValues('', renderData.options)
+        .then(results => {
+          this.autoloaded = true;
+          const cache = field.getValuesCache();
+          cache[''] = results.options;
+        });
+    } else {
+      this.autoloaded = true;
+    }
+  }
+
   /**
    * Supports async loading of options. The `getOptions` method will then be
    * passed a second argument of the current drop down text input. The return
@@ -39,16 +70,21 @@ export default class DropDownType extends DataType {
    * @param {string} input - If async, the input entered to return options for.
    * @returns {Immutable.List} a list of options.
    */
-  getOptions(dataType, renderData, value, input) {
+  getOptions(renderData, input) {
     if (this.options.has('options')) {
       return this.options.get('options', List());
-    } else if (dataType && dataType.getValues) {
-      if (this.isAsync(dataType)) {
-        return dataType.getValues(input, renderData.options);
-      } else {
-        return dataType.getValues();
-      }
     }
+
+    const field = this.getField(renderData);
+
+    if (this.isAsync(field)) {
+      return this.autoloaded
+        ? field.getValues(input, renderData.options)
+        : Promise.resolve(List());
+    } else {
+      return field.getValues();
+    }
+
     return List();
   }
 
