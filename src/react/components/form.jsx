@@ -6,7 +6,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import Loading from '~/react/components/loading';
 import reactRenderers from '~/react/renderers';
 import FormatronPropTypes from '~/react/propTypes';
-import {parseRef} from '~/refs';
+import {Ref, parseRef} from '~/refs';
 import RenderData from '~/renderers/renderData';
 
 export default class Form extends React.Component {
@@ -50,7 +50,11 @@ export default class Form extends React.Component {
     return values && values
       .mapKeys(ref => List.isList(ref)
         ? ref
-        : List([ref])
+        : List([(
+          ref instanceof Ref
+            ? ref
+            : parseRef(ref)
+        )])
       );
   }
 
