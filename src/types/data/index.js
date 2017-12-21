@@ -123,9 +123,6 @@ export default class DataType extends Type {
   }
 
   getField(ref) {
-    if (ref || (List.isList(ref) && ref.size > 0)) {
-      throw new Error(`Cannot access a ref for "${this.name}" of data type "${this.constructor.name}"`);
-    }
     return this;
   }
 

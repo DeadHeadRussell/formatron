@@ -55,8 +55,9 @@ export default class Form extends React.Component {
   }
 
   cacheModel(props, defaultValue, disabled) {
+    const {renderOptions} = this.props;
     return props.dataType
-      .getValue(props.model, undefined, this.props.renderOptions)
+      .getValue(props.model, undefined, renderOptions)
       .update(updateValues(props.model, defaultValue))
       .update(updateValues(props.model, disabled));
 
@@ -68,7 +69,7 @@ export default class Form extends React.Component {
           .reduce(
             (model, value, ref) => {
               if (typeof value != 'undefined') {
-                return props.dataType.setValue(model, ref, value, this.props.renderOptions);
+                return props.dataType.setValue(model, ref, value, renderOptions);
               }
               return model
             },

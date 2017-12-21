@@ -10,7 +10,7 @@ export default class DataType extends ViewType {
   /**
    * The default ref. This references the root of a passed in value (aka, the value itself).
    */
-  static defaultRef = List([new ImmutableRef('')]);
+  static defaultRef = new ImmutableRef('');
 
   /**
    * Parses the `ref` option into a {@Ref} type.

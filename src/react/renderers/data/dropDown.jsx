@@ -15,7 +15,7 @@ const DropDownFilter = ({viewType, renderData}) => (
   <TableDropDownFilter
     renderData={renderData}
     filterOptions={viewType.getFilterOptions(renderData.dataType)}
-    options={viewType.getOptions(renderData).toJS()}
+    options={viewType.getOptions(renderData, undefined, renderData.dataType).toJS()}
   />
 );
 

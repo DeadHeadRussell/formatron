@@ -5,7 +5,7 @@ export default class TableType extends DataType {
 
   static parseOptions(field, parseField) {
     return super.parseOptions(field, parseField)
-      .update('columns', columns => columns
+      .update('columns', columns => columns && columns
         .map(parseField)
       );
   }

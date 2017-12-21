@@ -12,27 +12,26 @@ export default class DropDownType extends DataType {
 
   initialize(renderData) {
     super.initialize(renderData);
-
-    // We autoload the values for async dropdowns that use their own cache
-    // since the `react-select` component is not playing well with our
-    // caches and is firing the autoload request everytime the component
-    // is reloaded.
-    if (!this.autoloaded) {
-      this.autoload(renderData);
-    }
+    this.autoload(renderData);
   }
 
+  // We autoload the values for async dropdowns that use their own cache
+  // since the `react-select` component is not playing well with our
+  // caches and is firing the autoload request everytime the component
+  // is reloaded.
   autoload(renderData) {
-    const {field, value} = this.getFieldAndValue(renderData);
-    if (field.getValuesCache && this.isAsync(field) && renderData.options.component == 'form') {
-      field.getValues('', renderData.options)
-        .then(results => {
-          this.autoloaded = true;
-          const cache = field.getValuesCache();
-          cache[''] = results.options;
-        });
-    } else {
-      this.autoloaded = true;
+    if (!this.autoloaded) {
+      const {field, value} = this.getFieldAndValue(renderData);
+      if (field && field.getValuesCache && this.isAsync(field) && renderData.options.component == 'form') {
+        field.getValues('', renderData.options)
+          .then(results => {
+            this.autoloaded = true;
+            const cache = field.getValuesCache();
+            cache[''] = results.options;
+          });
+      } else {
+        this.autoloaded = true;
+      }
     }
   }
 
@@ -76,13 +75,15 @@ export default class DropDownType extends DataType {
     }
 
     const field = this.getField(renderData);
-
-    if (this.isAsync(field)) {
-      return this.autoloaded
-        ? field.getValues(input, renderData.options)
-        : Promise.resolve(List());
-    } else {
-      return field.getValues();
+    if (field && field.getValues) {
+      if (this.isAsync(field)) {
+        this.autoload(renderData);
+        return this.autoloaded
+          ? field.getValues(input, renderData.options)
+          : Promise.resolve(List());
+      } else {
+        return field.getValues();
+      }
     }
 
     return List();

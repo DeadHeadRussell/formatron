@@ -38,7 +38,6 @@ export default class FilterForm extends React.Component {
 
   componentWillReceiveProps(newProps) {
     if (!Immutable.is(newProps.filters, this.state.filters)) {
-      console.log(newProps.filters.toJS(), this.state.filters.toJS());
       this.setState(this.createInitialState(newProps));
     }
   }

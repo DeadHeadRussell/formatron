@@ -1,5 +1,6 @@
 import Immutable from 'immutable';
 
+import TypeClass from './type';
 import {registerDataTypes, registerViewTypes} from './register';
 
 /**
@@ -60,6 +61,10 @@ export function parseField(type, field) {
 
   if (!field) {
     throw new Error(`Cannot parse a null field (of type: "${type}")`);
+  }
+
+  if (field instanceof TypeClass) {
+    return field;
   }
 
   if (type == VIEW && typeof field == 'string') {
