@@ -36,6 +36,16 @@ export default class DateType extends DataType {
     return this.conversions[fromType][toType](value);
   }
 
+  hasValue(value) {
+    if (!super.hasValue(value)) {
+      return false;
+    }
+    if (value instanceof moment && !value.isValid()) {
+      return false;
+    }
+    return true;
+  }
+
   getValue(value) {
     return super.getValue(this.convert(value, 'unix'));
   }

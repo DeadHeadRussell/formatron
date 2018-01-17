@@ -3,22 +3,103 @@ import moment from 'moment';
 import TetheredComponent from 'react-tether';
 import DatetimePicker from 'yet-another-datetime-picker';
 
+import Form from '~/react/components/form';
 import FormatronPropTypes from '~/react/propTypes';
+import * as Types from '~/types';
 import DateType from '~/types/data/date';
 import CalendarType from '~/types/view/data/calendar';
 
 import {withFormLabel, withStaticLabel} from '../formHelpers';
 import ReactRenderer from '../reactRenderer';
-import {TableRangeFilter} from '../tableHelpers';
 import {withDataRenderer, withDisplayRenderer} from './';
 
-const CalendarFilter = ({viewType, renderData}) =>
-  <TableRangeFilter
-    viewType={viewType}
-    renderData={renderData}
-    parse={value => renderData.dataType.convert(value, 'unix')}
-    Component={CalendarInput}
-  />;
+class CalendarFilter extends React.Component {
+  static filterData = new Types.data.map('filter', {
+    data: [
+      new Types.data.enum('filterType', {
+        values: [
+          {value: 'Today', label: 'Today'},
+          {value: 'Yesterday', label: 'Yesterday'},
+          {value: 'Last 7 Days', label: 'Last 7 Days'},
+          {value: 'Last 30 Days', label: 'Last 30 Days'},
+          {value: 'Last 365 Days', label: 'Last 365 Days'},
+          {value: 'This Week', label: 'This Week'},
+          {value: 'Last Week', label: 'Last Week'},
+          {value: 'This Month', label: 'This Month'},
+          {value: 'Last Month', label: 'Last Month'},
+          {value: 'This Year', label: 'This Year'},
+          {value: 'Last Year', label: 'Last Year'},
+          {value: 'Custom Dates - Start, End', label: 'Custom Dates - Start, End'},
+          {value: 'Custom Dates - Start, Duration', label: 'Custom Dates - Start, Duration'}
+        ]
+      }),
+      new Types.data.number('duration', {
+        numberType: 'int'
+      }),
+      new Types.data.date('start'),
+      new Types.data.date('end'),
+    ]
+  })
+
+  static filterView = new Types.view.grid({
+    children: [
+      new Types.view.dropDown({ref: 'filterType'}),
+      new Types.view.switch({
+        switch: new Types.view.dropDown({ref: 'filterType'}),
+        cases: [{
+          case: new Types.view.value({value: 'Custom Dates - Start, End'}),
+          display: new Types.view.grid({
+            children: [[
+              new Types.view.calendar({
+                label: 'Start Date',
+                ref: 'start'
+              }),
+              new Types.view.calendar({
+                label: 'End Date',
+                ref: 'end'
+              })
+            ]]
+          })
+        }, {
+          case: new Types.view.value({value: 'Custom Dates - Start, Duration'}),
+          display: new Types.view.grid({
+            children: [[
+              new Types.view.calendar({
+                label: 'Start Date',
+                ref: 'start'
+              }),
+              new Types.view.number({
+                label: 'Duration (days)',
+                ref: 'duration'
+              })
+            ]]
+          })
+        }]
+      })
+    ]
+  })
+
+  onChangeFilter = (filter) => {
+    this.props.renderData.options.onChange(filter);
+  }
+
+  onBlurFilter = () => {
+    this.props.renderData.options.onBlur();
+  }
+
+  render() {
+    return (
+      <Form
+        simple={true}
+        viewType={CalendarFilter.filterView}
+        dataType={CalendarFilter.filterData}
+        model={this.props.renderData.dataValue}
+        onChange={this.onChangeFilter}
+        onBlur={this.onBlur}
+      />
+    );
+  }
+}
 
 const CalendarInputPropTypes = {
   field: FormatronPropTypes.dataType.instanceOf(DateType).isRequired,

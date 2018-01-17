@@ -89,4 +89,3 @@ export const TableRangeFilter = ({viewType, renderData, parse, Component}) => {
     </div>
   );
 };
-
