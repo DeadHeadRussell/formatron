@@ -90,7 +90,7 @@ class CalendarFilter extends React.Component {
   render() {
     return (
       <Form
-        simple={true}
+        className='simple'
         viewType={CalendarFilter.filterView}
         dataType={CalendarFilter.filterData}
         model={this.props.renderData.dataValue}
