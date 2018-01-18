@@ -30,7 +30,8 @@ class CalendarFilter extends React.Component {
           {value: 'This Year', label: 'This Year'},
           {value: 'Last Year', label: 'Last Year'},
           {value: 'Custom Dates - Start, End', label: 'Custom Dates - Start, End'},
-          {value: 'Custom Dates - Start, Duration', label: 'Custom Dates - Start, Duration'}
+          {value: 'Custom Dates - Start, Duration', label: 'Custom Dates - Start, Duration'},
+          {value: 'Custom Dates - End, Duration', label: 'Custom Dates - End, Duration'}
         ]
       }),
       new Types.data.number('duration', {
@@ -67,6 +68,20 @@ class CalendarFilter extends React.Component {
               new Types.view.calendar({
                 label: 'Start Date',
                 ref: 'start'
+              }),
+              new Types.view.number({
+                label: 'Duration (days)',
+                ref: 'duration'
+              })
+            ]]
+          })
+        }, {
+          case: new Types.view.value({value: 'Custom Dates - End, Duration'}),
+          display: new Types.view.grid({
+            children: [[
+              new Types.view.calendar({
+                label: 'End Date',
+                ref: 'end'
               }),
               new Types.view.number({
                 label: 'Duration (days)',
