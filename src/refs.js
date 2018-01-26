@@ -60,21 +60,24 @@ export function parseRef(field) {
             Types.parseField(
               Types.VIEW,
               refValue.get('finder')
-            ));
+            )
+          );
 
         case 'filter':
           return new ImmutableListFilterRef(
             Types.parseField(
               Types.VIEW,
               refValue.get('filter')
-            ));
+            )
+          );
 
         case 'map':
           return new ImmutableListMapRef(
             Types.parseField(
               Types.VIEW,
               refValue.get('mapper')
-            ));
+            )
+          );
 
         default:
           throw new Error(`Unknown list ref type "${refValue.get('type')}"`);

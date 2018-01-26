@@ -14,6 +14,7 @@ export default class ConditionType extends ValueType {
     '>=': compareAll((a, b) => a >= b),
     '<': compareAll((a, b) => a < b),
     '<=': compareAll((a, b) => a <= b),
+    '!': args => !args.get(0),
     '&&': args => args.every(arg => !!arg),
     '||': args => args.some(arg => !!arg),
     'hasValue': (args, rawArgs, renderData) => {
