@@ -78,7 +78,7 @@ export default class DropDownType extends DataType {
     if (field && field.getValues) {
       if (this.isAsync(field)) {
         this.autoload(renderData);
-        return this.autoloaded
+        return (this.autoloaded || input)
           ? field.getValues(input, renderData.options)
           : Promise.resolve(List());
       } else {
