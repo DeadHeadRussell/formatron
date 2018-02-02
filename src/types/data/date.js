@@ -2,17 +2,33 @@ import moment from 'moment';
 
 import DataType from './';
 
+
+/**
+ * The DataType for date values. Stores a value of seconds since January 1st 1970.
+ *
+ * @param {Object} options
+ * @param {string} [options.dateType='datetime'] - 'date' | 'time' | 'datetime'
+ */
 export default class DateType extends DataType {
   static typeName = 'date';
 
+  /**
+   * @returns <string>
+   */
   getType() {
     return this.options.get('dateType', 'datetime');
   }
 
+  /**
+   * @deprecated Will be moved to ViewType
+   */
   getFormat() {
     return this.options.get('format', this.getDefaultFormat());
   }
 
+  /**
+   * @deprecated Will be moved to ViewType
+   */
   getDefaultFormat() {
     switch (this.getType()) {
       case 'time':
@@ -25,6 +41,13 @@ export default class DateType extends DataType {
     }
   }
 
+  /**
+   * Converts between strings, JS Date objects, moment objects, or unix time values.
+   *
+   * @param {string|Date|moment|number} value - The date value to convert
+   * @param {string} toType = 'string' | 'datetime' | 'unix'. The type to convert to.
+   * @return {string|moment|number} The date value in a new format.
+   */
   convert(value, toType) {
     const fromType =
       typeof value == 'string'
@@ -36,6 +59,11 @@ export default class DateType extends DataType {
     return this.conversions[fromType][toType](value);
   }
 
+  /**
+   * Checks if the passed in value holds a valid date value.
+   * @param {any} value - The date value
+   * @return {bool}
+   */
   hasValue(value) {
     if (!super.hasValue(value)) {
       return false;
@@ -46,10 +74,16 @@ export default class DateType extends DataType {
     return true;
   }
 
+  /**
+   * See {@link DataType#getValue}.
+   */
   getValue(value) {
     return super.getValue(this.convert(value, 'unix'));
   }
 
+  /**
+   * @deprecated Will be moved to view types.
+   */
   getDisplay(value) {
     value = this.getValue(value);
     return this.convert(value, 'string');
@@ -133,6 +167,9 @@ export default class DateType extends DataType {
     },
   };
 
+  /**
+   * @deprecated Filtering will be refactored to its own module.
+   */
   filter(filterValue, rowValue) {
     const lowerInput = this.convert(filterValue.get('lower'), 'unix');
     const upperInput = this.convert(filterValue.get('upper'), 'unix');

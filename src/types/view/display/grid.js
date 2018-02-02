@@ -4,6 +4,9 @@ import {valueRenderers} from '~/renderers';
 
 import DisplayType from './';
 
+/**
+ * @extends DisplayType
+ */
 export default class GridType extends DisplayType {
   static typeName = 'grid';
 

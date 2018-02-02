@@ -87,7 +87,8 @@ export default class ViewType extends Type {
    * If it is a function, call the function with the render data.
    *
    * @param {RenderData} renderData - The data to maybe generate the label from.
-   * @returns {string} They label, if any, associated with the view.
+   * @param {ViewType|string} secondLabel - A second label to use in place of the built in label.
+   * @return {string} They label, if any, associated with the view.
    */
   getLabel(renderData, secondLabel) {
     const label = secondLabel || this.options.get('label') || '';
@@ -113,7 +114,7 @@ export default class ViewType extends Type {
    * If a width is supplied to the view type, the default shrink / grow factor
    * is 0. Otherwise, the default factor is 1 and the default width is 100.
    *
-   * @returns {object}
+   * @return {object}
    */
   getTableProps(label) {
     label = typeof label != 'undefined' ?

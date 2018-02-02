@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">Home | formatron</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A library that generates forms based on JSON schema."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="formatron"><meta property="twitter:description" content="A library that generates forms based on JSON schema."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableListFilterRef.html">ImmutableListFilterRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableListFindRef.html">ImmutableListFindRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableListMapRef.html">ImmutableListMapRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableListRef.html">ImmutableListRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableRef.html">ImmutableRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableViewRef.html">ImmutableViewRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~Ref.html">Ref</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseRef">parseRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseTemplate">parseTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Formatron">Formatron</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#react-components">react/components</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/react/components/tetheredSelect.js~TetheredSelect.html">TetheredSelect</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#renderers">renderers</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/renderers/index.js~Renderers.html">Renderers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/renderers/renderData.js~RenderData.html">RenderData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/renderers/renderer.js~Renderer.html">Renderer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-valueRenderers">valueRenderers</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types">types</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/type.js~Type.html">Type</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseField">parseField</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-registerType">registerType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-registerDataTypes">registerDataTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-registerViewTypes">registerViewTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DATA">DATA</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VIEW">VIEW</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-data">data</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-view">view</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-oneOrManyParser">oneOrManyParser</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types-data">types/data</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/bool.js~BoolType.html">BoolType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/date.js~DateType.html">DateType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/dict.js~ImmutableDictType.html">ImmutableDictType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/enum.js~EnumType.html">EnumType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html">DataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html">ImmutableDataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/list.js~ImmutableListType.html">ImmutableListType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/listOrMap.js~ImmutableListOrMapType.html">ImmutableListOrMapType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/map.js~ImmutableMapType.html">ImmutableMapType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/number.js~NumberType.html">NumberType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/text.js~TextType.html">TextType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/validationError.js~ValidationError.html">ValidationError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-validationErrors">validationErrors</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types-view">types/view</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/button.js~ButtonType.html">ButtonType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/index.js~ViewType.html">ViewType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-compareAll">compareAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-numericalDisplay">numericalDisplay</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-textDisplay">textDisplay</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-truthyDisplay">truthyDisplay</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types-view-data">types/view/data</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/calendar.js~CalendarType.html">CalendarType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/checkbox.js~CheckboxType.html">CheckboxType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/currency.js~CurrencyType.html">CurrencyType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/dropDown.js~DropDownType.html">DropDownType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/index.js~DataType.html">DataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/link.js~LinkType.html">LinkType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/number.js~NumberType.html">NumberType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/percent.js~PercentType.html">PercentType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/table.js~TableType.html">TableType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/text.js~TextType.html">TextType</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types-view-display">types/view/display</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/display/grid.js~GridType.html">GridType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/display/header.js~HeaderType.html">HeaderType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/display/index.js~DisplayType.html">DisplayType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/display/static.js~StaticType.html">StaticType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/display/tabs.js~TabsType.html">TabsType</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types-view-value">types/view/value</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/computed.js~ComputedType.html">ComputedType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/condition.js~ConditionType.html">ConditionType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/function.js~FunctionType.html">FunctionType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/index.js~ValueType.html">ValueType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/method.js~MethodType.html">MethodType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/property.js~PropertyType.html">PropertyType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/switch.js~SwitchType.html">SwitchType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/template.js~TemplateType.html">TemplateType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/variable.js~VariableType.html">VariableType</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="formatron">formatron</h1><p>A library that generates and validates HTML forms given a JSON schema.</p>
+<h2 id="run-demo">Run Demo</h2><pre><code><code class="source-code prettyprint">$ npm install
+$ npm start</code>
+</code></pre><p>Then navigate to <a href="http://localhost:8080/">http://localhost:8080/</a> in your browser and you should be able
+to see formatron in action.</p>
+<h2 id="documentation">Documentation</h2><p>This library is about to undergo a refactoring which will then push its version
+to 1.0.0. This documentation will provide a description of how the library is
+currently setup, and what the current plans are for post refactoring.</p>
+<p>There are currently five main sections:</p>
+<ul>
+<li>Type System</li>
+<li>Data Types</li>
+<li>View Types</li>
+<li>Renderers</li>
+<li>React Implementation</li>
+</ul>
+<h3 id="type-system">Type System</h3><p><code>./src/types/index.js</code>
+<code>./src/types/type.js</code></p>
+<p>The type system is how formatron registers data types and view types so that it
+can parse JSON into the appropriate type.</p>
+<p>The type system maintains a registry of types for data, and one for views. It
+also contains a function to register a new type, as well as one to parse JSON.</p>
+<pre><code><code class="source-code prettyprint">import * as Types from `formatron/lib/types&apos;;
+import Type from &apos;formatron/lib/types/type&apos;;
+import DataType from &apos;formatron/lib/types/data&apos;;
+import ViewType from &apos;formatron/lib/types/view&apos;;
+
+// Types.DATA and Types.VIEW let formatron know what registry you want to work
+// with.
+
+class NewDataType extends DataType {
+  // This type name is the name used when registering or accessing the type.
+  // Make sure to pick something unique!!
+  static typeName = &apos;newDataType&apos;;
+}
+
+class NewViewType extends ViewType {
+  static typeName = &apos;newViewType&apos;;
+}
+
+Types.registerType(Types.DATA, NewDataType);
+Types.registerType(Types.VIEW, NewViewType);
+
+// After registering, you can succesfully parse them.
+
+Types.parseField(Types.DATA, {
+  type: &apos;newDataType&apos;,
+  name: &apos;fieldname&apos;,
+  options: { ... }
+});
+
+Types.parseField(Types.VIEW, {
+  type: &apos;newViewType&apos;,
+  ...otherOptions
+});
+
+// and access them in the code.
+new Types.data.newDataType(&apos;fieldName&apos;, { ... });
+new Types.view.newViewType({ ... });</code>
+</code></pre><h3 id="data-types">Data Types</h3><p>Data types represent the structure of the data object. They understand how to:</p>
+<ul>
+<li>validate</li>
+<li>parse</li>
+<li>format</li>
+<li>default value</li>
+<li>initialize</li>
+</ul>
+<p>However, a data type only contains the algorithms to perform the above; they do
+not store the data themselves.</p>
+<p>See <code>./src/types/data</code> for a full list of data types.
+See <code>./src/types/data/index.js</code> for the base data type and the base container
+data type (currently using Immutable.js)</p>
+<pre><code><code class="source-code prettyprint">const modelType = new Types.data.map(&apos;model&apos;, {
+  defaultValue: {},
+  data: [
+    new Types.data.number(&apos;id&apos;, {
+      required: true,
+      numberType: &apos;integer&apos;,
+      defaultValue: 0
+    }),
+    new Types.data.text(&apos;name&apos;, {
+      defaultValue: &apos;&apos;
+    })
+  ]
+});
+
+modelType.getDefaultValue() == {
+  id: 0,
+  name: &apos;&apos;
+};
+
+modelType.getDisplay({id: 2, name: &apos;foo&apos;}) == &apos;id: 2, name: foo&apos;;
+
+modelType.validate({name: &apos;foo&apos;}) == Error(&apos;Missing &quot;id&quot;&apos;);</code>
+</code></pre><h4 id="post-refactor">Post Refactor</h4><p>The <code>initialize()</code> function of the data type is called when a form is loaded so
+that any external resources can be loaded (eg, foreign keys). However, this has
+been determined to be outside the scope of the data type and will be refactored
+to a new location in the near future.</p>
+<h3 id="view-types">View Types</h3><p>View types display data to the user, and define interactions to update the data.
+Eg, a form, a table (that can toggle between editable or not).</p>
+<p>The base view type (<code>./src/types/view/index.js</code>) simply defines a label and
+properties for sizing either a form field or a table column.</p>
+<p>The actual implementations for view types derive from one of the following:</p>
+<ul>
+<li>Data component views
+<strong> <code>./src/types/view/data/...</code>
+</strong> Eg, drop down, checkbox, text input
+** Each data component uses the <code>ref</code> option to reference a data type</li>
+<li>Display views
+<strong> <code>./src/types/view/display/...</code>
+</strong> Eg, grid, tabs, condition
+** Each display contains child views that it displays on the form</li>
+<li>Value views
+<strong> <code>./src/types/view/value/...</code>
+</strong> Eg, constant, computation
+<strong> Each value view displays a static value of some kind
+</strong> Some value views take children views as options which it uses to compute the static value</li>
+<li>Other views
+<strong> Various files
+</strong> Eg, button view, table of related models
+** Displays some more complex view, or a view that does not fit into the above categories</li>
+</ul>
+<pre><code><code class="source-code prettyprint">const createFormView = new Types.view.grid({
+  label: &apos;Create new model&apos;,
+  children: [
+    new Types.view.number({
+      label: &apos;ID&apos;,
+      ref: &apos;id&apos;
+    }),
+    new Types.view.text({
+      label: &apos;Name&apos;,
+      ref: &apos;name&apos;
+    })
+  ]
+});
+
+// Passing gridView into a Form component would display two fields, &quot;ID&quot; and
+// &quot;Name&quot; to the user to edit.</code>
+</code></pre><p>Any formatron argument that takes a view type can also take a string. This will
+cause formatron to lookup the view type in the supplied view types map. See the
+Renderers section below for more details.</p>
+<h4 id="post-refactor">Post Refactor</h4><p>View types will be modified to simply handle the display of data and handle
+user inputs related to updating the data. Other functionality currently handled
+by view types will be refactored to a new home.</p>
+<p>The view types constructor signature may also change</p>
+<h3 id="renderers">Renderers</h3><p>Renderers are an interface that takes in a data type, data value, view type and
+options, and returns a rendered value. The two types of rendered values that
+formatron supports out of the box are React components and JavaScript
+variables.</p>
+<p>See <code>./src/renderers/renderer.js</code> for the renderer interface.
+See <code>./src/renderers/renderData.js</code> for the render data structure.</p>
+<p>The built in renderers also allow view type lookups by string, via a
+<code>viewTypes</code> map in the render data options.</p>
+<pre><code><code class="source-code prettyprint">import {valueRenderers} from &apos;formatron/lib/renderers&apos;;
+import reactRenderers from &apos;formatron/lib/react/renderers&apos;;
+
+const views = Immutable.Map({
+  annotatedName: new Types.view.computed({
+    label: &apos;Annotated Name&apos;,
+    op: &apos;concat&apos;,
+    args: [
+      new Types.view.value({value: &apos;Annotation: &apos;}),
+      new Types.view.data({ref: &apos;name&apos;})
+    ]
+  }),
+
+  createForm: createFormView // from above
+});
+
+const renderData = new RenderData(
+  modelType, // from above
+  {id: 2, name: &apos;foo&apos;},
+  {viewTypes: views}
+);
+
+// Lookup the view type
+valueRenderers.getValue(&apos;annotatedName&apos;, renderData) ==
+  &apos;Annotation: foo&apos;;
+
+// Supply a custom view type
+const lengthView = new Types.view.property({
+  obj: &apos;annotatedName&apos;,
+  property: &apos;length&apos;
+});
+valueRenderers.getDisplay(lengthView, renderData) == 15;
+
+// Returns a react component that represents the create form view.
+reactRenderers.renderFormField(&apos;createForm&apos;, renderData);</code>
+</code></pre><p>The list of render data options required for react forms is:</p>
+<ul>
+<li>getError(ref) : error message</li>
+<li>isDisabled(ref) : bool</li>
+<li>onChange(ref, value, viewLabel) : undefined
+** viewLabel is used to display validation errors to the user</li>
+<li>onBlur(ref) : undefined</li>
+<li>onButtonClick(...args) : undefined
+** The args are passed through as is to the form&apos;s <code>onButtonClick</code> prop</li>
+<li>submit() : undefined
+** Submits the form</li>
+</ul>
+<h4 id="post-refactor">Post refactor</h4><p>This may be removed entirely with renderering left up to the specific
+implementation.</p>
+<h3 id="react-implementation">React Implementation</h3><p>Implements the components for forms, tables, and renderers.</p>
+<p>The two main uses are:</p>
+<h4 id="form">Form</h4><p><code>./src/react/components/form.jsx</code></p>
+<p>Basic prop types are:</p>
+<ul>
+<li>dataType</li>
+<li>model</li>
+<li>viewType</li>
+<li>viewTypes</li>
+</ul>
+<p>See the bottom of the source file for a complete list.</p>
+<pre><code><code class="source-code prettyprint">&lt;Form
+  dataType={modelsType}
+  model={{
+    id: 2,
+    name: &apos;foo&apos;
+  }}
+  viewType=&apos;createForm&apos;
+  viewTypes={views}
+/&gt;</code>
+</code></pre><h4 id="table">Table</h4><p><code>./src/react/components/table/...</code></p>
+<p>A basic table with multiple, optional, extensions is provided:</p>
+<p>Basic prop types are:</p>
+<ul>
+<li>dataType</li>
+<li>models</li>
+<li>columns - list of view types</li>
+<li>viewTypes</li>
+</ul>
+<p>See the relevant source file for a complete list.</p>
+<pre><code><code class="source-code prettyprint">&lt;Table
+  dataType={modelsType}
+  models={[{
+    id: 2,
+    name: &apos;foo&apos;
+  }, {
+    id: 3,
+    name: &apos;bar&apos;
+  }]}
+  columns={[
+    new Types.view.number({
+      label: &apos;ID&apos;,
+      ref: &apos;id&apos;
+    }),
+    new Types.view.text({
+      label: &apos;Name&apos;,
+      ref: &apos;name&apos;
+    }),
+    &apos;annotatedName&apos;
+  ]},
+  viewTypes={views}
+/&gt;</code>
+</code></pre><h4 id="post-refactor">Post refactor</h4><p>All of the form handling logic is embeded in the React components. These will
+be refactored out so that they can be reused by multiple components /
+renderers.</p>
+<h3 id="data-sources--post-refactor-">Data Sources (Post refactor)</h3><p>Data sources is a new concept for the refactor that is currently implemented
+as a mishmash between the data types, view types and renderers.</p>
+<p>The goal is for view types to describe how to interact with the data, data
+sources to describe where that data comes from, and data types to make sure
+that the data is valid.</p>
+<p>Eg, a data source for:</p>
+<ul>
+<li>fetch the ID of the data model</li>
+<li>fetch the computed annotated name value</li>
+<li>fetch the document related via a foreign key</li>
+</ul>
+<p>The data sources would be responsible for:</p>
+<ul>
+<li>knowing where the data is stored and how to retreive it</li>
+<li>knowing how to update the data when the form is changed</li>
+<li>knowing if the data is currently valid or invalid</li>
+<li>performing any required computations</li>
+</ul>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

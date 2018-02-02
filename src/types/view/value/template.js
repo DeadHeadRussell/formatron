@@ -2,6 +2,10 @@ import parseTemplate from '~/template';
 
 import ValueType from './';
 
+/**
+ * @extends ValueType
+ * @deprecated
+ */
 export default class TemplateType extends ValueType {
   static typeName = 'template';
 

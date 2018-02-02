@@ -1,5 +1,8 @@
 import ValueType from './';
 
+/**
+ * @extends ValueType
+ */
 export default class VariableType extends ValueType {
   static typeName = 'variable';
 

@@ -4,6 +4,9 @@ import {valueRenderers} from '~/renderers';
 
 import ValueType from './';
 
+/**
+ * @extends ValueType
+ */
 export default class ComputedType extends ValueType {
   static typeName = 'computed';
 

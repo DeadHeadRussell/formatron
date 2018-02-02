@@ -10,13 +10,13 @@ export default class RenderData {
    * @param {object} options - Arbitrary parameters to pass to the renderer.
    */
   constructor(dataType, dataValue, options = {}) {
-    /** @member {DataType} */
+    /** @type {DataType} */
     this.dataType = dataType;
 
-    /** @member {object} */
+    /** @type {object} */
     this.dataValue = dataValue;
 
-    /** @member {object} */
+    /** @type {object} */
     this.options = options;
   }
 
@@ -24,7 +24,7 @@ export default class RenderData {
    * Creates a new render data struct with the passed in options added.
    *
    * @param {object} newOptions - Arbitrary parameters to pass to the renderer.
-   * @returns {RenderData} - A new render data object.
+   * @return {RenderData} - A new render data object.
    */
   addOptions(newOptions) {
     return new RenderData(this.dataType, this.dataValue, {

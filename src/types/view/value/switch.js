@@ -2,6 +2,9 @@ import {valueRenderers} from '~/renderers';
 
 import ValueType from './';
 
+/**
+ * @extends ValueType
+ */
 export default class SwitchType extends ValueType {
   static typeName = 'switch';
 
@@ -54,7 +57,7 @@ export default class SwitchType extends ValueType {
   /**
    * Returns the appropriate switch case based on the input render data.
    * @param {RenderData} renderData - The data to switch over.
-   * @returns {ViewType} The resulting view type from the switch statement.
+   * @return {ViewType} The resulting view type from the switch statement.
    */
   switch(renderData) {
     const switchValue = valueRenderers.getValue(this.getSwitch(), renderData);

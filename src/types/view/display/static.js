@@ -1,5 +1,8 @@
 import DisplayType from './';
 
+/**
+ * @extends DisplayType
+ */
 export default class StaticType extends DisplayType {
   static typeName = 'static';
 

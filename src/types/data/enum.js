@@ -3,6 +3,15 @@ import {List, Map} from 'immutable';
 import DataType, {validationErrors} from './';
 import ValidationError from './validationError';
 
+/**
+ * DataType for enumerated values.
+ * @todo Split this MultiEnumType and EnumType.
+ *
+ * @param {Object} options
+ * @param {bool} [options.multi=false] - Specifies whether this enum value holds one or multiple values.
+ * @param {string[]|{value: string, label: string}[]} options.values - The list of enum values. If a
+ *  list of strings is passed in, each string is interpreted as both the label and value.
+ */
 export default class EnumType extends DataType {
   static typeName = 'enum';
 

@@ -5,6 +5,9 @@ import {numericalDisplay, textDisplay} from '../utils';
 
 import ValueType from './';
 
+/**
+ * @extends ValueType
+ */
 export default class FunctionType extends ValueType {
   static typeName = 'function';
 

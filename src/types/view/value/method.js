@@ -4,6 +4,9 @@ import {valueRenderers} from '~/renderers';
 
 import ValueType from './';
 
+/**
+ * @extends ValueType
+ */
 export default class MethodType extends ValueType {
   static typeName = 'method';
 
