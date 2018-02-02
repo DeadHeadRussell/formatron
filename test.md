@@ -224,81 +224,72 @@ returns either it or them parsed into types.</p>
 ## Renderer
 
 * [Renderer](#module_Renderer)
-    * [~Renderer](#module_Renderer..Renderer)
-        * [.renderFormField()](#module_Renderer..Renderer+renderFormField) ⇒ <code>object</code>
-        * [.renderStaticField()](#module_Renderer..Renderer+renderStaticField) ⇒ <code>object</code>
-        * [.renderFormFilter()](#module_Renderer..Renderer+renderFormFilter) ⇒ <code>object</code>
-        * [.renderFilter()](#module_Renderer..Renderer+renderFilter) ⇒ <code>object</code>
-        * [.renderTableCell()](#module_Renderer..Renderer+renderTableCell) ⇒ <code>object</code>
-        * [.renderStaticTableCell()](#module_Renderer..Renderer+renderStaticTableCell) ⇒ <code>object</code>
+    * [module.exports](#exp_module_Renderer--module.exports) ⏏
+        * [.renderFormField()](#module_Renderer--module.exports+renderFormField) ⇒ <code>object</code>
+        * [.renderStaticField()](#module_Renderer--module.exports+renderStaticField) ⇒ <code>object</code>
+        * [.renderFormFilter()](#module_Renderer--module.exports+renderFormFilter) ⇒ <code>object</code>
+        * [.renderFilter()](#module_Renderer--module.exports+renderFilter) ⇒ <code>object</code>
+        * [.renderTableCell()](#module_Renderer--module.exports+renderTableCell) ⇒ <code>object</code>
+        * [.renderStaticTableCell()](#module_Renderer--module.exports+renderStaticTableCell) ⇒ <code>object</code>
 
-<a name="module_Renderer..Renderer"></a>
+<a name="exp_module_Renderer--module.exports"></a>
 
-### Renderer~Renderer
+### module.exports ⏏
 The renderer interface.
 
-**Kind**: inner class of [<code>Renderer</code>](#module_Renderer)  
+**Kind**: Exported class  
+<a name="module_Renderer--module.exports+renderFormField"></a>
 
-* [~Renderer](#module_Renderer..Renderer)
-    * [.renderFormField()](#module_Renderer..Renderer+renderFormField) ⇒ <code>object</code>
-    * [.renderStaticField()](#module_Renderer..Renderer+renderStaticField) ⇒ <code>object</code>
-    * [.renderFormFilter()](#module_Renderer..Renderer+renderFormFilter) ⇒ <code>object</code>
-    * [.renderFilter()](#module_Renderer..Renderer+renderFilter) ⇒ <code>object</code>
-    * [.renderTableCell()](#module_Renderer..Renderer+renderTableCell) ⇒ <code>object</code>
-    * [.renderStaticTableCell()](#module_Renderer..Renderer+renderStaticTableCell) ⇒ <code>object</code>
-
-<a name="module_Renderer..Renderer+renderFormField"></a>
-
-#### renderer.renderFormField() ⇒ <code>object</code>
+#### module.exports.renderFormField() ⇒ <code>object</code>
 Renders an interactable form field for the viewType.
 
-**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
 **Returns**: <code>object</code> - The rendered form field.  
 **Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="module_Renderer..Renderer+renderStaticField"></a>
+<a name="module_Renderer--module.exports+renderStaticField"></a>
 
-#### renderer.renderStaticField() ⇒ <code>object</code>
+#### module.exports.renderStaticField() ⇒ <code>object</code>
 Renders a non-interactable field for the viewType.
 
-**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
 **Returns**: <code>object</code> - The rendered static field.  
 **Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="module_Renderer..Renderer+renderFormFilter"></a>
+<a name="module_Renderer--module.exports+renderFormFilter"></a>
 
-#### renderer.renderFormFilter() ⇒ <code>object</code>
+#### module.exports.renderFormFilter() ⇒ <code>object</code>
 Renders an interactable field to be used for filtering this view type with
 an accompanying form label.
 
-**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
 **Returns**: <code>object</code> - The renderer form filter element.  
 **Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="module_Renderer..Renderer+renderFilter"></a>
+<a name="module_Renderer--module.exports+renderFilter"></a>
 
-#### renderer.renderFilter() ⇒ <code>object</code>
+#### module.exports.renderFilter() ⇒ <code>object</code>
 Renders an interactable field to be used for filtering this view type.
 
-**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
 **Returns**: <code>object</code> - The rendered table filter element.  
 **Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="module_Renderer..Renderer+renderTableCell"></a>
+<a name="module_Renderer--module.exports+renderTableCell"></a>
 
-#### renderer.renderTableCell() ⇒ <code>object</code>
+#### module.exports.renderTableCell() ⇒ <code>object</code>
 Renders an interactable field to be used in a table for this view type.
 
-**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
 **Returns**: <code>object</code> - The rendered table cell.  
 **Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="module_Renderer..Renderer+renderStaticTableCell"></a>
+<a name="module_Renderer--module.exports+renderStaticTableCell"></a>
 
-#### renderer.renderStaticTableCell() ⇒ <code>object</code>
+#### module.exports.renderStaticTableCell() ⇒ <code>object</code>
 Renders a non-interactable field to be used in a table for this view type.
 
-**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
 **Returns**: <code>object</code> - The rendered table cell.  
 **Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
