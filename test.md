@@ -1,9 +1,14 @@
+## Modules
+
+<dl>
+<dt><a href="#module_Renderer">Renderer</a></dt>
+<dd></dd>
+</dl>
+
 ## Classes
 
 <dl>
 <dt><a href="#Renderers">Renderers</a></dt>
-<dd></dd>
-<dt><a href="#Renderer">Renderer</a></dt>
 <dd></dd>
 <dt><a href="#DataType">DataType</a></dt>
 <dd></dd>
@@ -30,11 +35,18 @@
 editing the imported object, which is baaaaad.</p>
 </dd>
 <dt><a href="#DATA">DATA</a></dt>
-<dd><p>The main types of types. Naming is hard, ok?</p>
+<dd><p>Constant that represents data types.</p>
+</dd>
+<dt><a href="#VIEW">VIEW</a></dt>
+<dd><p>Constant that represents view types.</p>
 </dd>
 <dt><a href="#data">data</a></dt>
-<dd><p>The pool of types for each type. When a new type is registered, it is
-stored here <code>Type.typeName =&gt; Type</code>.</p>
+<dd><p>The pool of data types. When a new data type is registered, it is stored
+here <code>Type.typeName -&gt; Type</code>.</p>
+</dd>
+<dt><a href="#view">view</a></dt>
+<dd><p>The pool of view types. When a new view type is registered, it is stored
+here <code>Type.typeName -&gt; Type</code>.</p>
 </dd>
 </dl>
 
@@ -81,25 +93,6 @@ exists in the renderData options, attempt to look up the viewType by name.</p>
 </dd>
 <dt><a href="#addOptions">addOptions(newOptions)</a> ⇒ <code>RenderData</code></dt>
 <dd><p>Creates a new render data struct with the passed in options added.</p>
-</dd>
-<dt><a href="#renderFormField">renderFormField()</a> ⇒ <code>object</code></dt>
-<dd><p>Renders an interactable form field for the viewType.</p>
-</dd>
-<dt><a href="#renderStaticField">renderStaticField()</a> ⇒ <code>object</code></dt>
-<dd><p>Renders a non-interactable field for the viewType.</p>
-</dd>
-<dt><a href="#renderFormFilter">renderFormFilter()</a> ⇒ <code>object</code></dt>
-<dd><p>Renders an interactable field to be used for filtering this view type with
-an accompanying form label.</p>
-</dd>
-<dt><a href="#renderFilter">renderFilter()</a> ⇒ <code>object</code></dt>
-<dd><p>Renders an interactable field to be used for filtering this view type.</p>
-</dd>
-<dt><a href="#renderTableCell">renderTableCell()</a> ⇒ <code>object</code></dt>
-<dd><p>Renders an interactable field to be used in a table for this view type.</p>
-</dd>
-<dt><a href="#renderStaticTableCell">renderStaticTableCell()</a> ⇒ <code>object</code></dt>
-<dd><p>Renders a non-interactable field to be used in a table for this view type.</p>
 </dd>
 <dt><a href="#hasValue">hasValue(value)</a> ⇒ <code>bool</code></dt>
 <dd><p>Checks if the passed in value is &quot;not empty&quot;.</p>
@@ -226,6 +219,89 @@ returns either it or them parsed into types.</p>
 </dd>
 </dl>
 
+<a name="module_Renderer"></a>
+
+## Renderer
+
+* [Renderer](#module_Renderer)
+    * [~Renderer](#module_Renderer..Renderer)
+        * [.renderFormField()](#module_Renderer..Renderer+renderFormField) ⇒ <code>object</code>
+        * [.renderStaticField()](#module_Renderer..Renderer+renderStaticField) ⇒ <code>object</code>
+        * [.renderFormFilter()](#module_Renderer..Renderer+renderFormFilter) ⇒ <code>object</code>
+        * [.renderFilter()](#module_Renderer..Renderer+renderFilter) ⇒ <code>object</code>
+        * [.renderTableCell()](#module_Renderer..Renderer+renderTableCell) ⇒ <code>object</code>
+        * [.renderStaticTableCell()](#module_Renderer..Renderer+renderStaticTableCell) ⇒ <code>object</code>
+
+<a name="module_Renderer..Renderer"></a>
+
+### Renderer~Renderer
+The renderer interface.
+
+**Kind**: inner class of [<code>Renderer</code>](#module_Renderer)  
+
+* [~Renderer](#module_Renderer..Renderer)
+    * [.renderFormField()](#module_Renderer..Renderer+renderFormField) ⇒ <code>object</code>
+    * [.renderStaticField()](#module_Renderer..Renderer+renderStaticField) ⇒ <code>object</code>
+    * [.renderFormFilter()](#module_Renderer..Renderer+renderFormFilter) ⇒ <code>object</code>
+    * [.renderFilter()](#module_Renderer..Renderer+renderFilter) ⇒ <code>object</code>
+    * [.renderTableCell()](#module_Renderer..Renderer+renderTableCell) ⇒ <code>object</code>
+    * [.renderStaticTableCell()](#module_Renderer..Renderer+renderStaticTableCell) ⇒ <code>object</code>
+
+<a name="module_Renderer..Renderer+renderFormField"></a>
+
+#### renderer.renderFormField() ⇒ <code>object</code>
+Renders an interactable form field for the viewType.
+
+**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Returns**: <code>object</code> - The rendered form field.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
+**Params**: <code>RenderData</code> renderData - The data to render.  
+<a name="module_Renderer..Renderer+renderStaticField"></a>
+
+#### renderer.renderStaticField() ⇒ <code>object</code>
+Renders a non-interactable field for the viewType.
+
+**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Returns**: <code>object</code> - The rendered static field.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
+**Params**: <code>RenderData</code> renderData - The data to render.  
+<a name="module_Renderer..Renderer+renderFormFilter"></a>
+
+#### renderer.renderFormFilter() ⇒ <code>object</code>
+Renders an interactable field to be used for filtering this view type with
+an accompanying form label.
+
+**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Returns**: <code>object</code> - The renderer form filter element.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
+**Params**: <code>RenderData</code> renderData - The data to render.  
+<a name="module_Renderer..Renderer+renderFilter"></a>
+
+#### renderer.renderFilter() ⇒ <code>object</code>
+Renders an interactable field to be used for filtering this view type.
+
+**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Returns**: <code>object</code> - The rendered table filter element.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
+**Params**: <code>RenderData</code> renderData - The data to render.  
+<a name="module_Renderer..Renderer+renderTableCell"></a>
+
+#### renderer.renderTableCell() ⇒ <code>object</code>
+Renders an interactable field to be used in a table for this view type.
+
+**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Returns**: <code>object</code> - The rendered table cell.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
+**Params**: <code>RenderData</code> renderData - The data to render.  
+<a name="module_Renderer..Renderer+renderStaticTableCell"></a>
+
+#### renderer.renderStaticTableCell() ⇒ <code>object</code>
+Renders a non-interactable field to be used in a table for this view type.
+
+**Kind**: instance method of [<code>Renderer</code>](#module_Renderer..Renderer)  
+**Returns**: <code>object</code> - The rendered table cell.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
+**Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="Renderers"></a>
 
 ## Renderers
@@ -234,15 +310,6 @@ returns either it or them parsed into types.</p>
 
 ### new Renderers()
 Collection of render functions of a specific type (eg. React renderers).
-
-<a name="Renderer"></a>
-
-## Renderer
-**Kind**: global class  
-<a name="new_Renderer_new"></a>
-
-### new Renderer()
-The renderer interface.
 
 <a name="DataType"></a>
 
@@ -325,14 +392,27 @@ editing the imported object, which is baaaaad.
 <a name="DATA"></a>
 
 ## DATA
-The main types of types. Naming is hard, ok?
+Constant that represents data types.
+
+**Kind**: global constant  
+<a name="VIEW"></a>
+
+## VIEW
+Constant that represents view types.
 
 **Kind**: global constant  
 <a name="data"></a>
 
 ## data
-The pool of types for each type. When a new type is registered, it is
-stored here `Type.typeName => Type`.
+The pool of data types. When a new data type is registered, it is stored
+here `Type.typeName -> Type`.
+
+**Kind**: global constant  
+<a name="view"></a>
+
+## view
+The pool of view types. When a new view type is registered, it is stored
+here `Type.typeName -> Type`.
 
 **Kind**: global constant  
 <a name="register"></a>
@@ -345,7 +425,7 @@ Registers a new renderer for a specific type.
 | Param | Type | Description |
 | --- | --- | --- |
 | typeName | <code>string</code> | The name of the renderer to register. |
-| renderer | [<code>Renderer</code>](#Renderer) | The renderer to register. |
+| renderer | <code>Renderer</code> | The renderer to register. |
 
 <a name="renderFormField"></a>
 
@@ -434,61 +514,6 @@ Creates a new render data struct with the passed in options added.
 | --- | --- | --- |
 | newOptions | <code>object</code> | Arbitrary parameters to pass to the renderer. |
 
-<a name="renderFormField"></a>
-
-## renderFormField() ⇒ <code>object</code>
-Renders an interactable form field for the viewType.
-
-**Kind**: global function  
-**Returns**: <code>object</code> - The rendered form field.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="renderStaticField"></a>
-
-## renderStaticField() ⇒ <code>object</code>
-Renders a non-interactable field for the viewType.
-
-**Kind**: global function  
-**Returns**: <code>object</code> - The rendered static field.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="renderFormFilter"></a>
-
-## renderFormFilter() ⇒ <code>object</code>
-Renders an interactable field to be used for filtering this view type with
-an accompanying form label.
-
-**Kind**: global function  
-**Returns**: <code>object</code> - The renderer form filter element.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="renderFilter"></a>
-
-## renderFilter() ⇒ <code>object</code>
-Renders an interactable field to be used for filtering this view type.
-
-**Kind**: global function  
-**Returns**: <code>object</code> - The rendered table filter element.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="renderTableCell"></a>
-
-## renderTableCell() ⇒ <code>object</code>
-Renders an interactable field to be used in a table for this view type.
-
-**Kind**: global function  
-**Returns**: <code>object</code> - The rendered table cell.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="renderStaticTableCell"></a>
-
-## renderStaticTableCell() ⇒ <code>object</code>
-Renders a non-interactable field to be used in a table for this view type.
-
-**Kind**: global function  
-**Returns**: <code>object</code> - The rendered table cell.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="hasValue"></a>
 
 ## hasValue(value) ⇒ <code>bool</code>
