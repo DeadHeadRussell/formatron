@@ -1,8 +1,28 @@
+## Classes
+
+<dl>
+<dt><a href="#Renderers">Renderers</a></dt>
+<dd></dd>
+<dt><a href="#Renderer">Renderer</a></dt>
+<dd></dd>
+<dt><a href="#DataType">DataType</a></dt>
+<dd></dd>
+<dt><a href="#Type">Type</a></dt>
+<dd></dd>
+<dt><a href="#DataType">DataType</a></dt>
+<dd></dd>
+<dt><a href="#ViewType">ViewType</a></dt>
+<dd></dd>
+</dl>
+
 ## Constants
 
 <dl>
 <dt><a href="#reactRenderers">reactRenderers</a></dt>
 <dd><p>A set of renderers to be used with React.js.</p>
+</dd>
+<dt><a href="#valueRenderers">valueRenderers</a></dt>
+<dd><p>The renderers to use to render view types to js values.</p>
 </dd>
 <dt><a href="#validationErrors">validationErrors</a></dt>
 <dd><p>A set of standard validation errors that registered types can use.</p>
@@ -97,14 +117,14 @@ options, and if not, the one supplied by the type.</p>
 </dd>
 <dt><a href="#registerType">registerType(type, Type)</a></dt>
 <dd><p>Registers a custom data or view type. They must inherit from the appropriate
-base class (see <a href="DataType">DataType</a> and <a href="ViewType">ViewType</a>).</p>
+base class (see <a href="#DataType">DataType</a> and <a href="#ViewType">ViewType</a>).</p>
 </dd>
 <dt><a href="#parseField">parseField(type, field)</a></dt>
 <dd><p>Parse an Immutable Map object and return the resulting field. The Immutable
 Map field must contain a <code>type</code> field which represents the <code>typeName</code> to
 attempt to parse the field as.</p>
 </dd>
-<dt><a href="#parse">parse(field, parseField)</a> ⇒ <code>Type</code></dt>
+<dt><a href="#parse">parse(field, parseField)</a> ⇒ <code><a href="#Type">Type</a></code></dt>
 <dd><p>Parses a JS or Immutable.js object into a type.</p>
 </dd>
 <dt><a href="#parseOptions">parseOptions(field, parseField)</a> ⇒ <code>Immutable.Map</code></dt>
@@ -141,13 +161,13 @@ Defaults to <code>true</code>.</p>
 </dd>
 <dt><a href="#getPlaceholder">getPlaceholder()</a> ⇒ <code>string</code></dt>
 <dd></dd>
-<dt><a href="#getDefaultValue">getDefaultValue()</a> ⇒ <code>ViewType</code></dt>
+<dt><a href="#getDefaultValue">getDefaultValue()</a> ⇒ <code><a href="#ViewType">ViewType</a></code></dt>
 <dd></dd>
 <dt><a href="#getValue">getValue(The)</a> ⇒ <code>object</code></dt>
 <dd></dd>
 <dt><a href="#getDisplay">getDisplay()</a> ⇒ <code>object</code></dt>
 <dd></dd>
-<dt><a href="#getField">getField()</a> ⇒ <code>DataType</code></dt>
+<dt><a href="#getField">getField()</a> ⇒ <code><a href="#DataType">DataType</a></code></dt>
 <dd></dd>
 <dt><a href="#getFieldAndValue">getFieldAndValue()</a> ⇒ <code>object</code></dt>
 <dd><p>Returns the field and value of the underlying data type.</p>
@@ -192,7 +212,7 @@ associated values.</p>
 <dt><a href="#getDisplay">getDisplay(renderData)</a> ⇒ <code>object</code></dt>
 <dd><p>Returns the underlying value of this view type in a human consumable form.</p>
 </dd>
-<dt><a href="#switch">switch(renderData)</a> ⇒ <code>ViewType</code></dt>
+<dt><a href="#switch">switch(renderData)</a> ⇒ <code><a href="#ViewType">ViewType</a></code></dt>
 <dd><p>Returns the appropriate switch case based on the input render data.</p>
 </dd>
 </dl>
@@ -200,16 +220,97 @@ associated values.</p>
 ## Typedefs
 
 <dl>
-<dt><a href="#oneOrManyParser">oneOrManyParser</a> ⇒ <code>Type</code> | <code>Immutable.List.&lt;Type&gt;</code></dt>
+<dt><a href="#oneOrManyParser">oneOrManyParser</a> ⇒ <code><a href="#Type">Type</a></code> | <code><a href="#Type">Immutable.List.&lt;Type&gt;</a></code></dt>
 <dd><p>Takes in either a single field or a list of fields (as Immutable json) and
 returns either it or them parsed into types.</p>
 </dd>
 </dl>
 
+<a name="Renderers"></a>
+
+## Renderers
+**Kind**: global class  
+<a name="new_Renderers_new"></a>
+
+### new Renderers()
+Collection of render functions of a specific type (eg. React renderers).
+
+<a name="Renderer"></a>
+
+## Renderer
+**Kind**: global class  
+<a name="new_Renderer_new"></a>
+
+### new Renderer()
+The renderer interface.
+
+<a name="DataType"></a>
+
+## DataType
+**Kind**: global class  
+
+* [DataType](#DataType)
+    * [new DataType()](#new_DataType_new)
+    * [new DataType()](#new_DataType_new)
+
+<a name="new_DataType_new"></a>
+
+### new DataType()
+The base data type. Every registered data type must eventually inherit from this.
+
+<a name="new_DataType_new"></a>
+
+### new DataType()
+The base view type for displaying data from the model.
+
+<a name="Type"></a>
+
+## Type
+**Kind**: global class  
+<a name="new_Type_new"></a>
+
+### new Type()
+The base type that all view and data types inherit from. This provides basic
+parsing functionality that can be overriden and used by the child types.
+
+<a name="DataType"></a>
+
+## DataType
+**Kind**: global class  
+
+* [DataType](#DataType)
+    * [new DataType()](#new_DataType_new)
+    * [new DataType()](#new_DataType_new)
+
+<a name="new_DataType_new"></a>
+
+### new DataType()
+The base data type. Every registered data type must eventually inherit from this.
+
+<a name="new_DataType_new"></a>
+
+### new DataType()
+The base view type for displaying data from the model.
+
+<a name="ViewType"></a>
+
+## ViewType
+**Kind**: global class  
+<a name="new_ViewType_new"></a>
+
+### new ViewType()
+The base view type. Every registered view type must eventually inherit from this.
+
 <a name="reactRenderers"></a>
 
 ## reactRenderers
 A set of renderers to be used with React.js.
+
+**Kind**: global constant  
+<a name="valueRenderers"></a>
+
+## valueRenderers
+The renderers to use to render view types to js values.
 
 **Kind**: global constant  
 <a name="validationErrors"></a>
@@ -244,7 +345,7 @@ Registers a new renderer for a specific type.
 | Param | Type | Description |
 | --- | --- | --- |
 | typeName | <code>string</code> | The name of the renderer to register. |
-| renderer | <code>Renderer</code> | The renderer to register. |
+| renderer | [<code>Renderer</code>](#Renderer) | The renderer to register. |
 
 <a name="renderFormField"></a>
 
@@ -289,7 +390,7 @@ Initializes the view type to display with a specific set of data. This is
 normally to call the required API calls before the data is display.
 
 **Kind**: global function  
-**Params**: <code>ViewType</code> viewType - The view type to render.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="getValue"></a>
 
@@ -297,7 +398,7 @@ normally to call the required API calls before the data is display.
 Returns the raw data value that is represented by this view type.
 
 **Kind**: global function  
-**Params**: <code>ViewType</code> viewType - The view type to render.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="getDisplay"></a>
 
@@ -305,7 +406,7 @@ Returns the raw data value that is represented by this view type.
 Returns a "pretty" data value that is represented by this view type.
 
 **Kind**: global function  
-**Params**: <code>ViewType</code> viewType - The view type to render.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="getTableProps"></a>
 
@@ -313,7 +414,7 @@ Returns a "pretty" data value that is represented by this view type.
 Returns a map of properties to use to display a table.
 
 **Kind**: global function  
-**Params**: <code>ViewType</code> viewType - The view type to get the props of.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to get the props of.  
 <a name="parseViewType"></a>
 
 ## parseViewType()
@@ -340,7 +441,7 @@ Renders an interactable form field for the viewType.
 
 **Kind**: global function  
 **Returns**: <code>object</code> - The rendered form field.  
-**Params**: <code>ViewType</code> viewType - The view type to render.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="renderStaticField"></a>
 
@@ -349,7 +450,7 @@ Renders a non-interactable field for the viewType.
 
 **Kind**: global function  
 **Returns**: <code>object</code> - The rendered static field.  
-**Params**: <code>ViewType</code> viewType - The view type to render.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="renderFormFilter"></a>
 
@@ -359,7 +460,7 @@ an accompanying form label.
 
 **Kind**: global function  
 **Returns**: <code>object</code> - The renderer form filter element.  
-**Params**: <code>ViewType</code> viewType - The view type to render.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="renderFilter"></a>
 
@@ -368,7 +469,7 @@ Renders an interactable field to be used for filtering this view type.
 
 **Kind**: global function  
 **Returns**: <code>object</code> - The rendered table filter element.  
-**Params**: <code>ViewType</code> viewType - The view type to render.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="renderTableCell"></a>
 
@@ -377,7 +478,7 @@ Renders an interactable field to be used in a table for this view type.
 
 **Kind**: global function  
 **Returns**: <code>object</code> - The rendered table cell.  
-**Params**: <code>ViewType</code> viewType - The view type to render.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="renderStaticTableCell"></a>
 
@@ -386,7 +487,7 @@ Renders a non-interactable field to be used in a table for this view type.
 
 **Kind**: global function  
 **Returns**: <code>object</code> - The rendered table cell.  
-**Params**: <code>ViewType</code> viewType - The view type to render.  
+**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
 **Params**: <code>RenderData</code> renderData - The data to render.  
 <a name="hasValue"></a>
 
@@ -429,7 +530,7 @@ Validates that the given value follows the rules of the data type.
 
 ## registerType(type, Type)
 Registers a custom data or view type. They must inherit from the appropriate
-base class (see [DataType](DataType) and [ViewType](ViewType)).
+base class (see [DataType](#DataType) and [ViewType](#ViewType)).
 
 **Kind**: global function  
 **Throws**:
@@ -440,7 +541,7 @@ base class (see [DataType](DataType) and [ViewType](ViewType)).
 | Param | Type | Description |
 | --- | --- | --- |
 | type |  | One of `Types.DATA`, `Types.VIEW` |
-| Type | <code>DataType</code> \| <code>ViewType</code> | The class to be registered |
+| Type | [<code>DataType</code>](#DataType) \| [<code>ViewType</code>](#ViewType) | The class to be registered |
 
 <a name="parseField"></a>
 
@@ -462,11 +563,11 @@ attempt to parse the field as.
 
 <a name="parse"></a>
 
-## parse(field, parseField) ⇒ <code>Type</code>
+## parse(field, parseField) ⇒ [<code>Type</code>](#Type)
 Parses a JS or Immutable.js object into a type.
 
 **Kind**: global function  
-**Returns**: <code>Type</code> - The newly instantiated type.  
+**Returns**: [<code>Type</code>](#Type) - The newly instantiated type.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -507,7 +608,7 @@ value is expected to be a promise.
 
 **Kind**: global function  
 **Returns**: <code>bool</code> - `true` if the options are loaded asynchronously.  
-**Params**: <code>DataType</code> dataType - The data type to provide.  
+**Params**: [<code>DataType</code>](#DataType) dataType - The data type to provide.  
 <a name="isMulti"></a>
 
 ## isMulti(dataType) ⇒ <code>bool</code>
@@ -518,7 +619,7 @@ Returns if this display should allow picking multiple items or not.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| dataType | <code>DataType</code> | An optional data type to provide. |
+| dataType | [<code>DataType</code>](#DataType) | An optional data type to provide. |
 
 <a name="getOptions"></a>
 
@@ -531,7 +632,7 @@ this view type's options, or in the passed in data type.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| dataType | <code>DataType</code> | An optional data type to check for options. |
+| dataType | [<code>DataType</code>](#DataType) | An optional data type to check for options. |
 | input | <code>string</code> | If async, the input entered to return options for. |
 
 <a name="getFilterOptions"></a>
@@ -570,9 +671,9 @@ Defaults to `true`.
 **Returns**: <code>string</code> - A placeholder associated with the view.  
 <a name="getDefaultValue"></a>
 
-## getDefaultValue() ⇒ <code>ViewType</code>
+## getDefaultValue() ⇒ [<code>ViewType</code>](#ViewType)
 **Kind**: global function  
-**Returns**: <code>ViewType</code> - A default value encoded as a view type.  
+**Returns**: [<code>ViewType</code>](#ViewType) - A default value encoded as a view type.  
 <a name="getValue"></a>
 
 ## getValue(The) ⇒ <code>object</code>
@@ -590,9 +691,9 @@ Defaults to `true`.
 **Returns**: <code>object</code> - The undeflying value of the data type formatted for human consumption.  
 <a name="getField"></a>
 
-## getField() ⇒ <code>DataType</code>
+## getField() ⇒ [<code>DataType</code>](#DataType)
 **Kind**: global function  
-**Returns**: <code>DataType</code> - The underlying data type.  
+**Returns**: [<code>DataType</code>](#DataType) - The underlying data type.  
 <a name="getFieldAndValue"></a>
 
 ## getFieldAndValue() ⇒ <code>object</code>
@@ -619,7 +720,7 @@ called with no arguments, which is a no-op.
 | Param | Type | Description |
 | --- | --- | --- |
 | renderData | <code>RenderData</code> | the render data to initialize the type to. |
-| children | <code>ViewType</code> \| <code>List.&lt;ViewType&gt;</code> | a single view type or a list of view types to call initialize on |
+| children | [<code>ViewType</code>](#ViewType) \| [<code>List.&lt;ViewType&gt;</code>](#ViewType) | a single view type or a list of view types to call initialize on |
 
 <a name="getLabel"></a>
 
@@ -676,7 +777,7 @@ associated values.
 | Param | Type | Description |
 | --- | --- | --- |
 | renderData | <code>RenderData</code> | The render data to compute over. |
-| children | <code>ViewType</code> \| <code>List.&lt;ViewType&gt;</code> | The child or children to parse. |
+| children | [<code>ViewType</code>](#ViewType) \| [<code>List.&lt;ViewType&gt;</code>](#ViewType) | The child or children to parse. |
 
 <a name="getValue"></a>
 
@@ -704,11 +805,11 @@ Returns the underlying value of this view type in a human consumable form.
 
 <a name="switch"></a>
 
-## switch(renderData) ⇒ <code>ViewType</code>
+## switch(renderData) ⇒ [<code>ViewType</code>](#ViewType)
 Returns the appropriate switch case based on the input render data.
 
 **Kind**: global function  
-**Returns**: <code>ViewType</code> - The resulting view type from the switch statement.  
+**Returns**: [<code>ViewType</code>](#ViewType) - The resulting view type from the switch statement.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -716,12 +817,12 @@ Returns the appropriate switch case based on the input render data.
 
 <a name="oneOrManyParser"></a>
 
-## oneOrManyParser ⇒ <code>Type</code> \| <code>Immutable.List.&lt;Type&gt;</code>
+## oneOrManyParser ⇒ [<code>Type</code>](#Type) \| [<code>Immutable.List.&lt;Type&gt;</code>](#Type)
 Takes in either a single field or a list of fields (as Immutable json) and
 returns either it or them parsed into types.
 
 **Kind**: global typedef  
-**Returns**: <code>Type</code> \| <code>Immutable.List.&lt;Type&gt;</code> - The parsed type or types.  
+**Returns**: [<code>Type</code>](#Type) \| [<code>Immutable.List.&lt;Type&gt;</code>](#Type) - The parsed type or types.  
 
 | Param | Type | Description |
 | --- | --- | --- |
