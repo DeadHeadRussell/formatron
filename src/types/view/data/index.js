@@ -4,6 +4,10 @@ import {parseRef, ImmutableRef} from '~/refs';
 
 import ViewType from '../';
 
+/**
+ * The base view type for displaying data from the model.
+ * @extends ViewType
+ */
 export default class DataType extends ViewType {
   static typeName = 'data';
 
@@ -14,7 +18,7 @@ export default class DataType extends ViewType {
 
   /**
    * Parses the `ref` option into a {@Ref} type.
-   * @returns {Immutable.Map} The parsed options.
+   * @return {Immutable.Map} The parsed options.
    */
   static parseOptions(field, parseField) {
     return super.parseOptions(field, parseField)
@@ -37,7 +41,7 @@ export default class DataType extends ViewType {
 
   /**
    * Returns the reference to the underlying data. Defaults to an empty 
-   * @returns {Ref}
+   * @return {Ref}
    */
   getRef() {
     const refs = this.options.get('ref') || this.constructor.defaultRef;
@@ -51,7 +55,7 @@ export default class DataType extends ViewType {
   /**
    * Returns whether the underlying data type should be editable or not.
    * Defaults to `true`.
-   * @returns {bool} `true` if editable.
+   * @return {bool} `true` if editable.
    */
   isEditable() {
     const editable = this.options.get('editable');
@@ -61,29 +65,29 @@ export default class DataType extends ViewType {
   }
 
   /**
-   * @returns {string} A placeholder associated with the view.
+   * @return {string} A placeholder associated with the view.
    */
   getPlaceholder() {
     return this.options.get('placeholder') || '';
   }
 
   /**
-   * @returns {ViewType} A default value encoded as a view type.
+   * @return {ViewType} A default value encoded as a view type.
    */
   getDefaultValue() {
     return this.options.get('defaultValue');
   }
 
   /**
-   * @param {RenderData} The render data to get the value of.
-   * @returns {object} The underlying value of the data type.
+   * @param {RenderData} renderData - The render data to get the value of.
+   * @return {object} The underlying value of the data type.
    */
   getValue(renderData) {
     return this.getFieldAndValue(renderData).value;
   }
 
   /**
-   * @returns {object} The undeflying value of the data type formatted for human consumption.
+   * @return {object} The undeflying value of the data type formatted for human consumption.
    */
   getDisplay(renderData) {
     const {field, value} = this.getFieldAndValue(renderData);
@@ -93,7 +97,7 @@ export default class DataType extends ViewType {
   }
 
   /**
-   * @returns {DataType} The underlying data type.
+   * @return {DataType} The underlying data type.
    */
   getField(renderData) {
     return renderData.dataType.getField(this.getRef(), renderData.options);
@@ -101,7 +105,7 @@ export default class DataType extends ViewType {
 
   /**
    * Returns the field and value of the underlying data type.
-   * @returns {object}
+   * @return {object}
    */
   getFieldAndValue(renderData) {
     const {dataType, dataValue} = renderData;

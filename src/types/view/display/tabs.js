@@ -3,6 +3,9 @@ import {Map} from 'immutable';
 import ViewType from '../';
 import DisplayType from './';
 
+/**
+ * @extends DisplayType
+ */
 export default class TabsType extends DisplayType {
   static typeName = 'tabs';
 

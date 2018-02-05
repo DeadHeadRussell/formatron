@@ -4,16 +4,23 @@ import TypeClass from './type';
 import {registerDataTypes, registerViewTypes} from './register';
 
 /**
- * The main types of types. Naming is hard, ok?
+ * Constant that represents data types.
  */
 export const DATA = 'data';
+/**
+ * Constant that represents view types.
+ */
 export const VIEW = 'view';
 
 /**
- * The pool of types for each type. When a new type is registered, it is
- * stored here `Type.typeName => Type`.
+ * The pool of data types. When a new data type is registered, it is stored
+ * here `Type.typeName -> Type`.
  */
 export const data = {};
+/**
+ * The pool of view types. When a new view type is registered, it is stored
+ * here `Type.typeName -> Type`.
+ */
 export const view = {};
 
 const types = {

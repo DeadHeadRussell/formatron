@@ -1,3 +1,7 @@
+/**
+ * @module React
+ */
+
 import Renderers from '~/renderers';
 
 import registerButton from './button';

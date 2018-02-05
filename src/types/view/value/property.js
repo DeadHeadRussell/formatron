@@ -2,6 +2,9 @@ import {valueRenderers} from '~/renderers';
 
 import ValueType from './';
 
+/**
+ * @extends ValueType
+ */
 export default class PropertyType extends ValueType {
   static typeName = 'property';
 

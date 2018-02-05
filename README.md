@@ -1,6 +1,9 @@
 # formatron
 A library that generates and validates HTML forms given a JSON schema.
 
+## Install
+`npm install --save formatron`
+
 ## Run Demo
 
 ```
@@ -12,6 +15,8 @@ Then navigate to http://localhost:8080/ in your browser and you should be able
 to see formatron in action.
 
 ## Documentation
+
+For a current API reference, see: https://formatron.github.io
 
 This library is about to undergo a refactoring which will then push its version
 to 1.0.0. This documentation will provide a description of how the library is
@@ -36,7 +41,7 @@ The type system maintains a registry of types for data, and one for views. It
 also contains a function to register a new type, as well as one to parse JSON.
 
 ```
-import * as Types from `formatron/lib/types';
+import * as Types from 'formatron/lib/types';
 import Type from 'formatron/lib/types/type';
 import DataType from 'formatron/lib/types/data';
 import ViewType from 'formatron/lib/types/view';

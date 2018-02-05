@@ -1,0 +1,14 @@
+{
+  "source": "./src",
+  "destination": "./docs",
+  "importPathReplace": {
+    "from": "/.js",
+    "to": "/index.js"
+  },
+  "plugins": [
+    {"name": "esdoc-jsx-plugin"},
+    {"name": "esdoc-ecmascript-proposal-plugin", "option": {"all": true}},
+    {"name": "esdoc-standard-plugin"}
+  ]
+}
+

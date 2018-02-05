@@ -2,6 +2,9 @@ import {List} from 'immutable';
 
 import ViewType from './';
 
+/**
+ * @extends ViewType
+ */
 export default class ButtonType extends ViewType {
   static typeName = 'button';
 

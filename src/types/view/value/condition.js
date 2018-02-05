@@ -4,6 +4,9 @@ import {valueRenderers} from '~/renderers';
 
 import ValueType from './';
 
+/**
+ * @extends ValueType
+ */
 export default class ConditionType extends ValueType {
   static typeName = 'condition';
 
@@ -55,7 +58,7 @@ export default class ConditionType extends ValueType {
   /**
    * Returns true or false based on the input render data.
    * @param {RenderData} renderData - The data to test.
-   * @returns {bool} `true` if the render data matches the conditions in the options.
+   * @return {bool} `true` if the render data matches the conditions in the options.
    */
   test(renderData) {
     const rawArgs = this.getArgs()

@@ -2,6 +2,9 @@ import {List} from 'immutable';
 
 import DataType from './';
 
+/**
+ * @extends src/types/view/data/index.js~DataType
+ */
 export default class DropDownType extends DataType {
   static typeName = 'dropDown';
 
@@ -40,7 +43,7 @@ export default class DropDownType extends DataType {
    * passed a second argument of the current drop down text input. The return
    * value is expected to be a promise.
    * @params {DataType} dataType - The data type to provide.
-   * @returns {bool} `true` if the options are loaded asynchronously.
+   * @return {bool} `true` if the options are loaded asynchronously.
    */
   isAsync(dataType) {
     return dataType.isAsync
@@ -51,7 +54,7 @@ export default class DropDownType extends DataType {
   /**
    * Returns if this display should allow picking multiple items or not.
    * @param {DataType} dataType - An optional data type to provide.
-   * @returns {bool} `true` if this should allow picking multiple options.
+   * @return {bool} `true` if this should allow picking multiple options.
    */
   isMulti(dataType) {
     if (this.options.has('multi')) {
@@ -65,9 +68,9 @@ export default class DropDownType extends DataType {
   /**
    * Returns a list of avaliable options in the drop down, either specified in
    * this view type's options, or in the passed in data type.
-   * @param {DataType} dataType - An optional data type to check for options.
+   * @param {RenderData} renderData - The render data to get options from.
    * @param {string} input - If async, the input entered to return options for.
-   * @returns {Immutable.List} a list of options.
+   * @return {Immutable.List} a list of options.
    */
   getOptions(renderData, input) {
     if (this.options.has('options')) {
@@ -108,7 +111,7 @@ export default class DropDownType extends DataType {
   /**
    * Allows subtypes to define filter options for faster searches. Returns
    * undefined so that the default filter options are used.
-   * @returns The filter options.
+   * @return The filter options.
    */
   getFilterOptions(dataType) {
     return dataType.getFilterOptions

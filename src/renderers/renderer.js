@@ -12,7 +12,7 @@ export default class Renderer {
    * Renders an interactable form field for the viewType.
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.
-   * @returns {object} The rendered form field.
+   * @return {object} The rendered form field.
    */
   renderFormField(viewType, renderData) {}
 
@@ -20,7 +20,7 @@ export default class Renderer {
    * Renders a non-interactable field for the viewType.
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.
-   * @returns {object} The rendered static field.
+   * @return {object} The rendered static field.
    */
   renderStaticField(viewType, renderData) {}
 
@@ -29,7 +29,7 @@ export default class Renderer {
    * an accompanying form label.
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.
-   * @returns {object} The renderer form filter element.
+   * @return {object} The renderer form filter element.
    */
   renderFormFilter(viewType, renderData) {}
 
@@ -37,7 +37,7 @@ export default class Renderer {
    * Renders an interactable field to be used for filtering this view type.
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.
-   * @returns {object} The rendered table filter element.
+   * @return {object} The rendered table filter element.
    */
   renderFilter(viewType, renderData) {}
 
@@ -45,7 +45,7 @@ export default class Renderer {
    * Renders an interactable field to be used in a table for this view type.
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.
-   * @returns {object} The rendered table cell.
+   * @return {object} The rendered table cell.
    */
   renderTableCell(viewType, renderData) {}
 
@@ -53,7 +53,7 @@ export default class Renderer {
    * Renders a non-interactable field to be used in a table for this view type.
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.
-   * @returns {object} The rendered table cell.
+   * @return {object} The rendered table cell.
    */
   renderStaticTableCell(viewType, renderData) {}
 }

@@ -1,3 +1,8 @@
+/**
+ * @namespace DataTypes
+ * @module
+ */
+
 import Immutable, {List, Map} from 'immutable';
 
 import Type from '../type';
@@ -41,7 +46,14 @@ export default class DataType extends Type {
   /**
    * Creates a new instance of a data type.
    * @param {string} name - The unique name of this instance.
-   * @param {object} options - Options to apply to this instance.
+   * @param {Object} options - Options to apply to this instance.
+   * @param {bool} [options.required=false] - Is this data type required to have a value?
+   * @param {bool} [optons.unique=false] - Is this data type required to be unique across all models?
+   * @param {bool} [options.generated=false] - Does the server generate this value if it is left blank?
+   * @param {bool} [options.excluded=false] - Does this value get excluded from the output?
+   * @param {any} [options.defaultValue=null] - The default value to use.
+   * @param {function(value: any, rootValue: any): boolean} [options.validator] - A custom validation function
+   * @param {string[]} validationLinks - A list of other data types in this model to also validate when this one is validated
    */
   constructor(name, options) {
     super();
@@ -91,7 +103,8 @@ export default class DataType extends Type {
   /**
    * Checks if the passed in value is "not empty".
    * @param {object} value - The data value to check.
-   * @returns {bool} `true` if it is "not empty", otherwise, `false`.
+   * @param {bool} [checkDefault=true] - Check if the value is the default value or not.
+   * @return {bool} `true` if it is "not empty", otherwise, `false`.
    */
   hasValue(value, checkDefault = true) {
     // TODO: should the types that inherit from DataType check that the value
@@ -136,7 +149,7 @@ export default class DataType extends Type {
   /**
    * Returns the value parsed for human consumption.
    * @params {object} value - The data value to parse.
-   * @returns {string} The parsed value.
+   * @return {string} The parsed value.
    */
   getDisplay(value) {
     value = this.getValue(value);
@@ -146,7 +159,7 @@ export default class DataType extends Type {
   /**
    * Validates that the given value follows the rules of the data type.
    * @params {object} value - The value to validate.
-   * @returns An error if one was found, undefined otherwise.
+   * @return An error if one was found, undefined otherwise.
    */
   validate(value, callback) {
     value = this.getValue(value);

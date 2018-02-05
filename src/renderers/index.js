@@ -162,5 +162,8 @@ export default class Renderers {
   }
 }
 
+/**
+ * The renderers to use to render view types to js values.
+ */
 export const valueRenderers = new Renderers();
 
