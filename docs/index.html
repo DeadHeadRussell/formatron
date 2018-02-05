@@ -102,11 +102,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="formatron">formatron</h1><p>A library that generates and validates HTML forms given a JSON schema.</p>
+<h2 id="install">Install</h2><p><code>npm install --save formatron</code></p>
 <h2 id="run-demo">Run Demo</h2><pre><code><code class="source-code prettyprint">$ npm install
 $ npm start</code>
 </code></pre><p>Then navigate to <a href="http://localhost:8080/">http://localhost:8080/</a> in your browser and you should be able
 to see formatron in action.</p>
-<h2 id="documentation">Documentation</h2><p>This library is about to undergo a refactoring which will then push its version
+<h2 id="documentation">Documentation</h2><p>For a current API reference, see: <a href="https://formatron.github.io">https://formatron.github.io</a></p>
+<p>This library is about to undergo a refactoring which will then push its version
 to 1.0.0. This documentation will provide a description of how the library is
 currently setup, and what the current plans are for post refactoring.</p>
 <p>There are currently five main sections:</p>
@@ -123,7 +125,7 @@ currently setup, and what the current plans are for post refactoring.</p>
 can parse JSON into the appropriate type.</p>
 <p>The type system maintains a registry of types for data, and one for views. It
 also contains a function to register a new type, as well as one to parse JSON.</p>
-<pre><code><code class="source-code prettyprint">import * as Types from `formatron/lib/types&apos;;
+<pre><code><code class="source-code prettyprint">import * as Types from &apos;formatron/lib/types&apos;;
 import Type from &apos;formatron/lib/types/type&apos;;
 import DataType from &apos;formatron/lib/types/data&apos;;
 import ViewType from &apos;formatron/lib/types/view&apos;;
