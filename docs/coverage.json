@@ -1,7 +1,7 @@
 {
-  "coverage": "17.46%",
+  "coverage": "17.91%",
   "expectCount": 441,
-  "actualCount": 77,
+  "actualCount": 79,
   "files": {
     "src/index.js": {
       "expectCount": 1,
@@ -120,11 +120,9 @@
     },
     "src/types/data/bool.js": {
       "expectCount": 4,
-      "actualCount": 1,
+      "actualCount": 3,
       "undocumentLines": [
-        13,
-        15,
-        19
+        8
       ]
     },
     "src/types/data/date.js": {

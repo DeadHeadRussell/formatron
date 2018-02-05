@@ -101,12 +101,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/types/data/bool.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
- * @namespace DataTypes
- * @module
- */
-
-import DataType from &apos;./&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import DataType from &apos;./&apos;;
 
 /**
  * The DataType for boolean values.
@@ -115,10 +110,16 @@ import DataType from &apos;./&apos;;
 export default class BoolType extends DataType {
   static typeName = &apos;bool&apos;;
 
+  /**
+   * Default value is `false`
+   */
   getDefaultValue() {
     return super.getDefaultValue(false);
   }
 
+  /**
+   * @deprecated
+   */
   getDisplay(value) {
     return this.getValue(value) ?
       &apos;Yes&apos; :

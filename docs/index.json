@@ -3338,7 +3338,7 @@
     "__docId__": 160,
     "kind": "file",
     "name": "src/types/data/bool.js",
-    "content": "/**\n * @namespace DataTypes\n * @module\n */\n\nimport DataType from './';\n\n/**\n * The DataType for boolean values.\n * @class BoolType\n */\nexport default class BoolType extends DataType {\n  static typeName = 'bool';\n\n  getDefaultValue() {\n    return super.getDefaultValue(false);\n  }\n\n  getDisplay(value) {\n    return this.getValue(value) ?\n      'Yes' :\n      'No';\n  }\n}\n\n",
+    "content": "import DataType from './';\n\n/**\n * The DataType for boolean values.\n * @class BoolType\n */\nexport default class BoolType extends DataType {\n  static typeName = 'bool';\n\n  /**\n   * Default value is `false`\n   */\n  getDefaultValue() {\n    return super.getDefaultValue(false);\n  }\n\n  /**\n   * @deprecated\n   */\n  getDisplay(value) {\n    return this.getValue(value) ?\n      'Yes' :\n      'No';\n  }\n}\n\n",
     "static": true,
     "longname": "/home/russell/code/formatron/src/types/data/bool.js",
     "access": "public",
@@ -3357,7 +3357,7 @@
     "importPath": "formatron/src/types/data/bool.js",
     "importStyle": "BoolType",
     "description": "The DataType for boolean values.",
-    "lineNumber": 12,
+    "lineNumber": 7,
     "unknown": [
       {
         "tagName": "@class",
@@ -3378,7 +3378,7 @@
     "longname": "src/types/data/bool.js~BoolType.typeName",
     "access": "public",
     "description": null,
-    "lineNumber": 13,
+    "lineNumber": 8,
     "undocument": true,
     "type": {
       "types": [
@@ -3396,9 +3396,8 @@
     "static": false,
     "longname": "src/types/data/bool.js~BoolType#getDefaultValue",
     "access": "public",
-    "description": null,
-    "lineNumber": 15,
-    "undocument": true,
+    "description": "Default value is `false`",
+    "lineNumber": 13,
     "params": [],
     "return": {
       "types": [
@@ -3416,9 +3415,9 @@
     "static": false,
     "longname": "src/types/data/bool.js~BoolType#getDisplay",
     "access": "public",
-    "description": null,
-    "lineNumber": 19,
-    "undocument": true,
+    "description": "",
+    "lineNumber": 20,
+    "deprecated": true,
     "params": [
       {
         "name": "value",
