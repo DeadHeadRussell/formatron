@@ -1,0 +1,657 @@
+{
+  "coverage": "17.46%",
+  "expectCount": 441,
+  "actualCount": 77,
+  "files": {
+    "src/index.js": {
+      "expectCount": 1,
+      "actualCount": 0,
+      "undocumentLines": [
+        12
+      ]
+    },
+    "src/react/components/tetheredSelect.js": {
+      "expectCount": 8,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6,
+        9,
+        10,
+        13,
+        52,
+        56,
+        66
+      ]
+    },
+    "src/refs.js": {
+      "expectCount": 56,
+      "actualCount": 0,
+      "undocumentLines": [
+        7,
+        91,
+        98,
+        113,
+        114,
+        118,
+        122,
+        126,
+        130,
+        135,
+        136,
+        138,
+        141,
+        145,
+        149,
+        153,
+        165,
+        177,
+        181,
+        185,
+        190,
+        191,
+        193,
+        196,
+        209,
+        213,
+        217,
+        221,
+        226,
+        227,
+        229,
+        232,
+        236,
+        240,
+        244,
+        248,
+        258,
+        262,
+        267,
+        280,
+        288,
+        292,
+        297,
+        298,
+        300,
+        304,
+        320,
+        321,
+        323,
+        327,
+        331,
+        357,
+        358,
+        360,
+        364,
+        368
+      ]
+    },
+    "src/renderers/index.js": {
+      "expectCount": 20,
+      "actualCount": 15,
+      "undocumentLines": [
+        18,
+        19,
+        31,
+        36,
+        160
+      ]
+    },
+    "src/renderers/renderData.js": {
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
+    },
+    "src/renderers/renderer.js": {
+      "expectCount": 8,
+      "actualCount": 7,
+      "undocumentLines": [
+        9
+      ]
+    },
+    "src/template.js": {
+      "expectCount": 3,
+      "actualCount": 0,
+      "undocumentLines": [
+        8,
+        9,
+        11
+      ]
+    },
+    "src/types/data/bool.js": {
+      "expectCount": 4,
+      "actualCount": 1,
+      "undocumentLines": [
+        13,
+        15,
+        19
+      ]
+    },
+    "src/types/data/date.js": {
+      "expectCount": 18,
+      "actualCount": 1,
+      "undocumentLines": [
+        16,
+        18,
+        22,
+        26,
+        38,
+        49,
+        59,
+        63,
+        68,
+        80,
+        85,
+        97,
+        104,
+        114,
+        124,
+        128,
+        146
+      ]
+    },
+    "src/types/data/dict.js": {
+      "expectCount": 8,
+      "actualCount": 1,
+      "undocumentLines": [
+        15,
+        17,
+        23,
+        27,
+        31,
+        35,
+        39
+      ]
+    },
+    "src/types/data/enum.js": {
+      "expectCount": 9,
+      "actualCount": 1,
+      "undocumentLines": [
+        16,
+        18,
+        28,
+        32,
+        36,
+        44,
+        52,
+        68
+      ]
+    },
+    "src/types/data/index.js": {
+      "expectCount": 34,
+      "actualCount": 8,
+      "undocumentLines": [
+        39,
+        54,
+        55,
+        58,
+        62,
+        66,
+        70,
+        74,
+        78,
+        82,
+        89,
+        93,
+        131,
+        135,
+        179,
+        185,
+        190,
+        191,
+        193,
+        200,
+        208,
+        212,
+        223,
+        227,
+        238,
+        242
+      ]
+    },
+    "src/types/data/list.js": {
+      "expectCount": 14,
+      "actualCount": 0,
+      "undocumentLines": [
+        9,
+        10,
+        12,
+        17,
+        25,
+        29,
+        33,
+        40,
+        44,
+        54,
+        87,
+        100,
+        120,
+        145
+      ]
+    },
+    "src/types/data/listOrMap.js": {
+      "expectCount": 17,
+      "actualCount": 0,
+      "undocumentLines": [
+        7,
+        8,
+        10,
+        13,
+        17,
+        21,
+        26,
+        32,
+        36,
+        40,
+        44,
+        48,
+        52,
+        62,
+        66,
+        70,
+        74
+      ]
+    },
+    "src/types/data/map.js": {
+      "expectCount": 17,
+      "actualCount": 0,
+      "undocumentLines": [
+        8,
+        9,
+        11,
+        25,
+        37,
+        41,
+        52,
+        57,
+        68,
+        79,
+        84,
+        104,
+        128,
+        158,
+        191,
+        208,
+        225
+      ]
+    },
+    "src/types/data/number.js": {
+      "expectCount": 8,
+      "actualCount": 0,
+      "undocumentLines": [
+        4,
+        5,
+        7,
+        11,
+        15,
+        19,
+        41,
+        59
+      ]
+    },
+    "src/types/data/text.js": {
+      "expectCount": 13,
+      "actualCount": 0,
+      "undocumentLines": [
+        6,
+        8,
+        9,
+        11,
+        18,
+        22,
+        26,
+        31,
+        38,
+        42,
+        52,
+        74,
+        109
+      ]
+    },
+    "src/types/data/validationError.js": {
+      "expectCount": 6,
+      "actualCount": 0,
+      "undocumentLines": [
+        4,
+        5,
+        7,
+        8,
+        9,
+        12
+      ]
+    },
+    "src/types/index.js": {
+      "expectCount": 7,
+      "actualCount": 6,
+      "undocumentLines": [
+        30
+      ]
+    },
+    "src/types/register.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        35,
+        46
+      ]
+    },
+    "src/types/type.js": {
+      "expectCount": 5,
+      "actualCount": 5,
+      "undocumentLines": []
+    },
+    "src/types/view/button.js": {
+      "expectCount": 7,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6,
+        8,
+        12,
+        16,
+        20,
+        24
+      ]
+    },
+    "src/types/view/data/calendar.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4
+      ]
+    },
+    "src/types/view/data/checkbox.js": {
+      "expectCount": 4,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        6,
+        10
+      ]
+    },
+    "src/types/view/data/currency.js": {
+      "expectCount": 4,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        6,
+        18
+      ]
+    },
+    "src/types/view/data/dropDown.js": {
+      "expectCount": 11,
+      "actualCount": 4,
+      "undocumentLines": [
+        5,
+        6,
+        8,
+        10,
+        13,
+        22,
+        92
+      ]
+    },
+    "src/types/view/data/index.js": {
+      "expectCount": 16,
+      "actualCount": 12,
+      "undocumentLines": [
+        12,
+        29,
+        31,
+        35
+      ]
+    },
+    "src/types/view/data/link.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4
+      ]
+    },
+    "src/types/view/data/number.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4
+      ]
+    },
+    "src/types/view/data/percent.js": {
+      "expectCount": 5,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        6,
+        16,
+        23
+      ]
+    },
+    "src/types/view/data/table.js": {
+      "expectCount": 4,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        6,
+        13
+      ]
+    },
+    "src/types/view/data/text.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4
+      ]
+    },
+    "src/types/view/display/grid.js": {
+      "expectCount": 7,
+      "actualCount": 0,
+      "undocumentLines": [
+        7,
+        8,
+        10,
+        17,
+        23,
+        27,
+        31
+      ]
+    },
+    "src/types/view/display/header.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4
+      ]
+    },
+    "src/types/view/display/index.js": {
+      "expectCount": 2,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4
+      ]
+    },
+    "src/types/view/display/static.js": {
+      "expectCount": 5,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        6,
+        11,
+        15
+      ]
+    },
+    "src/types/view/display/tabs.js": {
+      "expectCount": 6,
+      "actualCount": 0,
+      "undocumentLines": [
+        6,
+        7,
+        9,
+        22,
+        33,
+        37
+      ]
+    },
+    "src/types/view/index.js": {
+      "expectCount": 17,
+      "actualCount": 5,
+      "undocumentLines": [
+        7,
+        14,
+        16,
+        56,
+        57,
+        63,
+        67,
+        73,
+        77,
+        81,
+        142,
+        146
+      ]
+    },
+    "src/types/view/utils.js": {
+      "expectCount": 4,
+      "actualCount": 0,
+      "undocumentLines": [
+        1,
+        16,
+        20,
+        26
+      ]
+    },
+    "src/types/view/value/computed.js": {
+      "expectCount": 10,
+      "actualCount": 0,
+      "undocumentLines": [
+        7,
+        8,
+        10,
+        28,
+        44,
+        49,
+        53,
+        57,
+        61,
+        72
+      ]
+    },
+    "src/types/view/value/condition.js": {
+      "expectCount": 12,
+      "actualCount": 1,
+      "undocumentLines": [
+        7,
+        8,
+        10,
+        26,
+        33,
+        39,
+        43,
+        47,
+        51,
+        68,
+        77
+      ]
+    },
+    "src/types/view/value/function.js": {
+      "expectCount": 10,
+      "actualCount": 0,
+      "undocumentLines": [
+        8,
+        9,
+        11,
+        39,
+        48,
+        53,
+        57,
+        61,
+        65,
+        71
+      ]
+    },
+    "src/types/view/value/index.js": {
+      "expectCount": 7,
+      "actualCount": 3,
+      "undocumentLines": [
+        7,
+        8,
+        23,
+        47
+      ]
+    },
+    "src/types/view/value/method.js": {
+      "expectCount": 8,
+      "actualCount": 0,
+      "undocumentLines": [
+        7,
+        8,
+        10,
+        16,
+        21,
+        25,
+        29,
+        33
+      ]
+    },
+    "src/types/view/value/property.js": {
+      "expectCount": 7,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6,
+        8,
+        13,
+        17,
+        21,
+        25
+      ]
+    },
+    "src/types/view/value/switch.js": {
+      "expectCount": 10,
+      "actualCount": 1,
+      "undocumentLines": [
+        5,
+        6,
+        8,
+        20,
+        41,
+        45,
+        49,
+        73,
+        80
+      ]
+    },
+    "src/types/view/value/template.js": {
+      "expectCount": 4,
+      "actualCount": 0,
+      "undocumentLines": [
+        5,
+        6,
+        8,
+        12
+      ]
+    },
+    "src/types/view/value/variable.js": {
+      "expectCount": 7,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        4,
+        6,
+        10,
+        14,
+        18,
+        23
+      ]
+    }
+  }
+}

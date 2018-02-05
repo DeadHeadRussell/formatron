@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/refs.js | formatron</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A library that generates forms based on JSON schema."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="formatron"><meta property="twitter:description" content="A library that generates forms based on JSON schema."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableListFilterRef.html">ImmutableListFilterRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableListFindRef.html">ImmutableListFindRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableListMapRef.html">ImmutableListMapRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableListRef.html">ImmutableListRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableRef.html">ImmutableRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~ImmutableViewRef.html">ImmutableViewRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~Ref.html">Ref</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseRef">parseRef</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseTemplate">parseTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Formatron">Formatron</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#react-components">react/components</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/react/components/tetheredSelect.js~TetheredSelect.html">TetheredSelect</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#renderers">renderers</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/renderers/index.js~Renderers.html">Renderers</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/renderers/renderData.js~RenderData.html">RenderData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/renderers/renderer.js~Renderer.html">Renderer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-valueRenderers">valueRenderers</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types">types</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/type.js~Type.html">Type</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseField">parseField</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-registerType">registerType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-registerDataTypes">registerDataTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-registerViewTypes">registerViewTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DATA">DATA</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-VIEW">VIEW</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-data">data</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-view">view</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types-data">types/data</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/bool.js~BoolType.html">BoolType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/date.js~DateType.html">DateType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/dict.js~ImmutableDictType.html">ImmutableDictType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/enum.js~EnumType.html">EnumType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html">DataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html">ImmutableDataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/list.js~ImmutableListType.html">ImmutableListType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/listOrMap.js~ImmutableListOrMapType.html">ImmutableListOrMapType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/map.js~ImmutableMapType.html">ImmutableMapType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/number.js~NumberType.html">NumberType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/text.js~TextType.html">TextType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/data/validationError.js~ValidationError.html">ValidationError</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-validationErrors">validationErrors</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types-view">types/view</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/button.js~ButtonType.html">ButtonType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/index.js~ViewType.html">ViewType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-compareAll">compareAll</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-numericalDisplay">numericalDisplay</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-textDisplay">textDisplay</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-truthyDisplay">truthyDisplay</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types-view-data">types/view/data</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/calendar.js~CalendarType.html">CalendarType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/checkbox.js~CheckboxType.html">CheckboxType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/currency.js~CurrencyType.html">CurrencyType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/dropDown.js~DropDownType.html">DropDownType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/index.js~DataType.html">DataType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/link.js~LinkType.html">LinkType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/number.js~NumberType.html">NumberType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/percent.js~PercentType.html">PercentType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/table.js~TableType.html">TableType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/data/text.js~TextType.html">TextType</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types-view-display">types/view/display</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/display/grid.js~GridType.html">GridType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/display/header.js~HeaderType.html">HeaderType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/display/index.js~DisplayType.html">DisplayType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/display/static.js~StaticType.html">StaticType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/display/tabs.js~TabsType.html">TabsType</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#types-view-value">types/view/value</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/computed.js~ComputedType.html">ComputedType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/condition.js~ConditionType.html">ConditionType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/function.js~FunctionType.html">FunctionType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/index.js~ValueType.html">ValueType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/method.js~MethodType.html">MethodType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/property.js~PropertyType.html">PropertyType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/switch.js~SwitchType.html">SwitchType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/template.js~TemplateType.html">TemplateType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/types/view/value/variable.js~VariableType.html">VariableType</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/refs.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import Immutable, {List} from &apos;immutable&apos;;
+
+import {valueRenderers} from &apos;~/renderers&apos;;
+import RenderData from &apos;~/renderers/renderData.js&apos;;
+import * as Types from &apos;~/types&apos;;
+
+export function parseRef(field) {
+  if (field instanceof Ref) {
+    return field;
+  }
+
+  if (field === null || typeof field == &apos;undefined&apos;) {
+    return null;
+  }
+
+  if (typeof field == &apos;string&apos;) {
+    // Quick hack. Remove soon.
+    if (field[1] == &apos;:&apos;) {
+      const refTypeCode = field[0];
+      const refValue = field.slice(2);
+      switch (refTypeCode) {
+        case &apos;r&apos;:
+          return new ImmutableRef(refValue);
+
+        case &apos;q&apos;:
+          return new ImmutableListFindRef(createTruthyViewType(refValue));
+
+        case &apos;f&apos;:
+          return new ImmutableListFilterRef(createTruthyViewType(refValue));
+
+        case &apos;m&apos;:
+          return new ImmutableListMapRef(createMappyViewType(refValue));
+
+        case &apos;v&apos;:
+          return new ImmutableViewRef(refValue);
+
+        default:
+          throw new Error(`Invalid hacky ref type: &quot;${field}&quot;`);
+      }
+    }
+
+    return new ImmutableRef(field);
+  }
+
+  switch (field.get(&apos;type&apos;)) {
+    case &apos;value&apos;:
+      return new ImmutableRef(field.get(&apos;value&apos;));
+
+    case &apos;view&apos;:
+      return new ImmutableViewRef(Types.parseField(
+        Types.VIEW,
+        field.get(&apos;view&apos;)
+      ));
+
+    case &apos;list&apos;:
+      const refValue = field.get(&apos;value&apos;);
+      switch (refValue.get(&apos;type&apos;)) {
+        case &apos;find&apos;: 
+          return new ImmutableListFindRef(
+            Types.parseField(
+              Types.VIEW,
+              refValue.get(&apos;finder&apos;)
+            )
+          );
+
+        case &apos;filter&apos;:
+          return new ImmutableListFilterRef(
+            Types.parseField(
+              Types.VIEW,
+              refValue.get(&apos;filter&apos;)
+            )
+          );
+
+        case &apos;map&apos;:
+          return new ImmutableListMapRef(
+            Types.parseField(
+              Types.VIEW,
+              refValue.get(&apos;mapper&apos;)
+            )
+          );
+
+        default:
+          throw new Error(`Unknown list ref type &quot;${refValue.get(&apos;type&apos;)}&quot;`);
+      }
+
+    default:
+      throw new Error(`Unknown ref type &quot;${field.get(&apos;type&apos;)}&quot;`);
+  }
+}
+
+function createMappyViewType(refValue) {
+  return new Types.view.data({
+    label: refValue,
+    ref: parseRef(refValue)
+  });
+}
+
+function createTruthyViewType(refValue) {
+  const [ref, value] = refValue.split(&apos;=&apos;);
+
+  return new Types.view.condition({
+    label: `${ref}=${value}`,
+    op: &apos;=&apos;,
+    args: [
+      createMappyViewType(ref),
+      new Types.view.value({value})
+    ],
+    trueType: new Types.view.value({value: true}),
+    falseType: new Types.view.value({value: false})
+  });
+}
+
+export class Ref {
+  getValue() {
+    throw new Error(&apos;Abstract function&apos;);
+  }
+
+  getDisplay() {
+    throw new Error(&apos;go away&apos;);
+  }
+
+  toString() {
+    return this.getDisplay();
+  }
+
+  equals() {
+    return false;
+  }
+
+  hashCode() {
+    return 0;
+  }
+}
+
+export class ImmutableRef extends Ref {
+  constructor(ref) {
+    super();
+    this.ref = ref;
+  }
+
+  isListRef() {
+    return false;
+  }
+
+  isSingleRef() {
+    return true;
+  }
+
+  isMultiRef() {
+    return !this.isSingleRef();
+  }
+
+  getValue(dataType, dataValue, renderOptions) {
+    if (!dataValue) {
+      return null;
+    }
+
+    if (!this.ref) {
+      return dataValue;
+    }
+
+    return dataValue.get(this.ref);
+  }
+
+  setValue(dataType, dataValue, childValue, renderOptions) {
+    if (!dataValue) {
+      throw new Error(`Cannot set value for on a null object: (with ${this.getDisplay})`);
+    }
+
+    if (!this.ref) {
+      return dataValue;
+    }
+
+    return dataValue.set(this.ref, childValue);
+  }
+
+  getDisplay() {
+    return this.ref;
+  }
+
+  equals(other) {
+    return this.ref == other.ref;
+  }
+
+  hashCode() {
+    return Immutable.hash(this.ref);
+  }
+}
+
+export class ImmutableViewRef extends ImmutableRef {
+  constructor(view) {
+    super();
+    this.view = view;
+  }
+
+  getValue(dataType, dataValue, renderOptions) {
+    if (!dataValue) {
+      return null;
+    }
+
+    if (!this.view) {
+      return dataValue;
+    }
+
+    const renderData = new RenderData(dataType, dataValue, renderOptions);
+    return valueRenderers.getValue(this.view, renderData)
+  }
+
+  setValue() {
+    throw new Error(&apos;Not yet implemented&apos;);
+  }
+
+  getDisplay() {
+    return this.view.getLabel();
+  }
+
+  equals(other) {
+    return this.view.uniqueId == other.view.uniqueId;
+  }
+
+  hashCode() {
+    return Immutable.hash(this.view.uniqueId);
+  }
+}
+
+export class ImmutableListRef extends ImmutableRef {
+  constructor(view) {
+    super();
+    this.view = view;
+  }
+
+  isListRef() {
+    return true;
+  }
+
+  isFinder() {
+    return false;
+  }
+
+  isFilterer() {
+    return false;
+  }
+
+  isMapper() {
+    return false;
+  }
+
+  checkValidData(dataType, dataValue) {
+    if (!dataType instanceof Types.data.list) {
+      throw new Error(`Cannot reference a list with a non-list based data type &quot;${dataType}&quot;`);
+    }
+
+    if (!dataValue || !Immutable.isImmutable(dataValue)) {
+      throw new Error(`Cannot reference a non-list with a list ref of ${this.view}`);
+    }
+  }
+
+  getDisplay() {
+    return this.view.getLabel();
+  }
+
+  applyView(itemType, item, renderOptions) {
+    const renderData = new RenderData(itemType, item, renderOptions);
+    return valueRenderers.getValue(this.view, renderData);
+  }
+
+  getValue(listType, list, renderOptions) {
+    this.checkValidData(listType, list);
+    
+    if (!this.constructor.method) {
+      return list;
+    }
+
+    const itemType = listType.getItemType();
+    return list[this.constructor.method](
+      (item, index) =&gt; this.applyView(itemType, item, renderOptions)
+    );
+  }
+
+  setValue(listType, list, newItem, renderOptions) {
+    if (List.isList(newItem)) {
+      console.warn(&apos;Setting each list item to be a list. This may be due to using multiple list refs which is currently unimplemented&apos;);
+    }
+
+    return list.map(() =&gt; newItem);
+  }
+
+  equals(other) {
+    return this.view.uniqueId == other.view.uniqueId;
+  }
+
+  hashCode() {
+    return Immutable.hash(this.view.uniqueId);
+  }
+}
+
+export class ImmutableListFindRef extends ImmutableListRef {
+  static method = &apos;find&apos;;
+
+  isFinder() {
+    return true;
+  }
+
+  setValue(listType, list, newItem, renderOptions) {
+    const itemType = listType.getItemType();
+    const index = list
+      .findIndex(item =&gt; {
+        const renderData = new RenderData(itemType, item, renderOptions);
+        return valueRenderers.getValue(this.view, renderData);
+      });
+
+    if (index &gt;= 0) {
+      return list.set(index, newItem);
+    } else {
+      return list.push(newItem);
+    }
+  }
+}
+
+export class ImmutableListFilterRef extends ImmutableListRef {
+  static method = &apos;filter&apos;
+
+  isSingleRef() {
+    return false;
+  }
+
+  isFilterer() {
+    return true;
+  }
+
+  setValue(listType, list, newItem, renderOptions) {
+    if (List.isList(newItem)) {
+      console.warn(&apos;Setting each list item to be a list. This may be due to using multiple list refs which is currently unimplemented&apos;);
+    }
+
+    const itemType = listType.getItemType();
+
+    const indexes = list
+      .map((item, index) =&gt; [
+        index,
+        item
+      ])
+      .filter(([index, item]) =&gt; {
+        const renderData = new RenderData(itemType, item, renderOptions);
+        return valueRenderers.getValue(this.view, renderData);
+      })
+      .map(([index, item]) =&gt; index);
+
+    return list
+      .map((item, index) =&gt; indexes.includes(index) ?
+        newItem :
+        index
+      );
+  }
+}
+
+export class ImmutableListMapRef extends ImmutableListRef {
+  static method = &apos;map&apos;
+
+  isSingleRef() {
+    return false;
+  }
+
+  isMapper() {
+    return true;
+  }
+
+  setValue(listType, list, newItem) {
+    throw new Error(&apos;Not yet implemented&apos;);
+  }
+}
+
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.4)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

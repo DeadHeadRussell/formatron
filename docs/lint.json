@@ -1,0 +1,166 @@
+[
+  {
+    "name": "DataType#hasValue",
+    "filePath": "src/types/data/index.js",
+    "lines": [
+      {
+        "lineNumber": 96,
+        "line": "  /**"
+      },
+      {
+        "lineNumber": 97,
+        "line": "   * Checks if the passed in value is \"not empty\"."
+      },
+      {
+        "lineNumber": 98,
+        "line": "   * @param {object} value - The data value to check."
+      },
+      {
+        "lineNumber": 99,
+        "line": "   * @returns {bool} `true` if it is \"not empty\", otherwise, `false`."
+      },
+      {
+        "lineNumber": 100,
+        "line": "   */"
+      },
+      {
+        "lineNumber": 101,
+        "line": "  hasValue(value, checkDefault = true) {"
+      }
+    ],
+    "codeParams": [
+      "value",
+      "checkDefault"
+    ],
+    "docParams": [
+      "value"
+    ]
+  },
+  {
+    "name": "DropDownType#getOptions",
+    "filePath": "src/types/view/data/dropDown.js",
+    "lines": [
+      {
+        "lineNumber": 64,
+        "line": "  /**"
+      },
+      {
+        "lineNumber": 65,
+        "line": "   * Returns a list of avaliable options in the drop down, either specified in"
+      },
+      {
+        "lineNumber": 66,
+        "line": "   * this view type's options, or in the passed in data type."
+      },
+      {
+        "lineNumber": 67,
+        "line": "   * @param {DataType} dataType - An optional data type to check for options."
+      },
+      {
+        "lineNumber": 68,
+        "line": "   * @param {string} input - If async, the input entered to return options for."
+      },
+      {
+        "lineNumber": 69,
+        "line": "   * @returns {Immutable.List} a list of options."
+      },
+      {
+        "lineNumber": 70,
+        "line": "   */"
+      },
+      {
+        "lineNumber": 71,
+        "line": "  getOptions(renderData, input) {"
+      }
+    ],
+    "codeParams": [
+      "renderData",
+      "input"
+    ],
+    "docParams": [
+      "dataType",
+      "input"
+    ]
+  },
+  {
+    "name": "DataType#getValue",
+    "filePath": "src/types/view/data/index.js",
+    "lines": [
+      {
+        "lineNumber": 80,
+        "line": "  /**"
+      },
+      {
+        "lineNumber": 81,
+        "line": "   * @param {RenderData} The render data to get the value of."
+      },
+      {
+        "lineNumber": 82,
+        "line": "   * @returns {object} The underlying value of the data type."
+      },
+      {
+        "lineNumber": 83,
+        "line": "   */"
+      },
+      {
+        "lineNumber": 84,
+        "line": "  getValue(renderData) {"
+      }
+    ],
+    "codeParams": [
+      "renderData"
+    ],
+    "docParams": [
+      "The"
+    ]
+  },
+  {
+    "name": "ViewType#getLabel",
+    "filePath": "src/types/view/index.js",
+    "lines": [
+      {
+        "lineNumber": 84,
+        "line": "  /**"
+      },
+      {
+        "lineNumber": 85,
+        "line": "   * Returns a label using 1 of 3 options. If the internal label is a basic"
+      },
+      {
+        "lineNumber": 86,
+        "line": "   * value, return it. If it is a view type, get its associated display value."
+      },
+      {
+        "lineNumber": 87,
+        "line": "   * If it is a function, call the function with the render data."
+      },
+      {
+        "lineNumber": 88,
+        "line": "   *"
+      },
+      {
+        "lineNumber": 89,
+        "line": "   * @param {RenderData} renderData - The data to maybe generate the label from."
+      },
+      {
+        "lineNumber": 90,
+        "line": "   * @returns {string} They label, if any, associated with the view."
+      },
+      {
+        "lineNumber": 91,
+        "line": "   */"
+      },
+      {
+        "lineNumber": 92,
+        "line": "  getLabel(renderData, secondLabel) {"
+      }
+    ],
+    "codeParams": [
+      "renderData",
+      "secondLabel"
+    ],
+    "docParams": [
+      "renderData"
+    ]
+  }
+]
