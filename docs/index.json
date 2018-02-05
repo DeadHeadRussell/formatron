@@ -3338,7 +3338,7 @@
     "__docId__": 160,
     "kind": "file",
     "name": "src/types/data/bool.js",
-    "content": "import DataType from './';\n\n/**\n * The DataType for boolean values.\n * @class BoolType\n */\nexport default class BoolType extends DataType {\n  static typeName = 'bool';\n\n  /**\n   * Default value is `false`\n   */\n  getDefaultValue() {\n    return super.getDefaultValue(false);\n  }\n\n  /**\n   * @deprecated\n   */\n  getDisplay(value) {\n    return this.getValue(value) ?\n      'Yes' :\n      'No';\n  }\n}\n\n",
+    "content": "import DataType from './';\n\n/**\n * The DataType for boolean values.\n */\nexport default class BoolType extends DataType {\n  static typeName = 'bool';\n\n  /**\n   * Default value is `false`\n   */\n  getDefaultValue() {\n    return super.getDefaultValue(false);\n  }\n\n  /**\n   * @deprecated New ViewTypes will take over this functionality.\n   */\n  getDisplay(value) {\n    return this.getValue(value) ?\n      'Yes' :\n      'No';\n  }\n}\n\n",
     "static": true,
     "longname": "/home/russell/code/formatron/src/types/data/bool.js",
     "access": "public",
@@ -3357,13 +3357,7 @@
     "importPath": "formatron/src/types/data/bool.js",
     "importStyle": "BoolType",
     "description": "The DataType for boolean values.",
-    "lineNumber": 7,
-    "unknown": [
-      {
-        "tagName": "@class",
-        "tagValue": "BoolType"
-      }
-    ],
+    "lineNumber": 6,
     "interface": false,
     "extends": [
       "src/types/data/.js~DataType"
@@ -3378,7 +3372,7 @@
     "longname": "src/types/data/bool.js~BoolType.typeName",
     "access": "public",
     "description": null,
-    "lineNumber": 8,
+    "lineNumber": 7,
     "undocument": true,
     "type": {
       "types": [
@@ -3397,7 +3391,7 @@
     "longname": "src/types/data/bool.js~BoolType#getDefaultValue",
     "access": "public",
     "description": "Default value is `false`",
-    "lineNumber": 13,
+    "lineNumber": 12,
     "params": [],
     "return": {
       "types": [
@@ -3416,8 +3410,8 @@
     "longname": "src/types/data/bool.js~BoolType#getDisplay",
     "access": "public",
     "description": "",
-    "lineNumber": 20,
-    "deprecated": true,
+    "lineNumber": 19,
+    "deprecated": "New ViewTypes will take over this functionality.",
     "params": [
       {
         "name": "value",

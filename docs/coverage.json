@@ -122,7 +122,7 @@
       "expectCount": 4,
       "actualCount": 3,
       "undocumentLines": [
-        8
+        7
       ]
     },
     "src/types/data/date.js": {

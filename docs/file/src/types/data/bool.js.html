@@ -105,7 +105,6 @@
 
 /**
  * The DataType for boolean values.
- * @class BoolType
  */
 export default class BoolType extends DataType {
   static typeName = &apos;bool&apos;;
@@ -118,7 +117,7 @@ export default class BoolType extends DataType {
   }
 
   /**
-   * @deprecated
+   * @deprecated New ViewTypes will take over this functionality.
    */
   getDisplay(value) {
     return this.getValue(value) ?
