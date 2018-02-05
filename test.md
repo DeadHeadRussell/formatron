@@ -1,19 +1,31 @@
 ## Modules
 
 <dl>
-<dt><a href="#module_Renderer">Renderer</a></dt>
+<dt><a href="#module_React">React</a></dt>
+<dd></dd>
+<dt><a href="#module_renderers">renderers</a></dt>
+<dd></dd>
+<dt><a href="#module_renderers">renderers</a></dt>
+<dd></dd>
+<dt><a href="#module_renderers">renderers</a></dt>
+<dd></dd>
+<dt><a href="#module_DataTypes">DataTypes</a></dt>
+<dd></dd>
+<dt><a href="#module_DataTypes">DataTypes</a></dt>
+<dd></dd>
+<dt><a href="#module_DataTypes">DataTypes</a></dt>
+<dd></dd>
+<dt><a href="#module_DataTypes">DataTypes</a></dt>
+<dd></dd>
+<dt><a href="#module_DataTypes/">DataTypes/</a></dt>
+<dd></dd>
+<dt><a href="#module_Types">Types</a></dt>
 <dd></dd>
 </dl>
 
 ## Classes
 
 <dl>
-<dt><a href="#Renderers">Renderers</a></dt>
-<dd></dd>
-<dt><a href="#DataType">DataType</a></dt>
-<dd></dd>
-<dt><a href="#Type">Type</a></dt>
-<dd></dd>
 <dt><a href="#DataType">DataType</a></dt>
 <dd></dd>
 <dt><a href="#ViewType">ViewType</a></dt>
@@ -23,17 +35,6 @@
 ## Constants
 
 <dl>
-<dt><a href="#reactRenderers">reactRenderers</a></dt>
-<dd><p>A set of renderers to be used with React.js.</p>
-</dd>
-<dt><a href="#valueRenderers">valueRenderers</a></dt>
-<dd><p>The renderers to use to render view types to js values.</p>
-</dd>
-<dt><a href="#validationErrors">validationErrors</a></dt>
-<dd><p>A set of standard validation errors that registered types can use.</p>
-<p>TODO: Add a better way to modify the basic error messages other than just
-editing the imported object, which is baaaaad.</p>
-</dd>
 <dt><a href="#DATA">DATA</a></dt>
 <dd><p>Constant that represents data types.</p>
 </dd>
@@ -53,61 +54,6 @@ here <code>Type.typeName -&gt; Type</code>.</p>
 ## Functions
 
 <dl>
-<dt><a href="#register">register(typeName, renderer)</a></dt>
-<dd><p>Registers a new renderer for a specific type.</p>
-</dd>
-<dt><a href="#renderFormField">renderFormField()</a></dt>
-<dd><p>See <a href="Renderer#renderFormField">Renderer#renderFormField</a></p>
-</dd>
-<dt><a href="#renderStaticField">renderStaticField()</a></dt>
-<dd><p>See <a href="Renderer#renderStaticField">Renderer#renderStaticField</a></p>
-</dd>
-<dt><a href="#renderFormFilter">renderFormFilter()</a></dt>
-<dd><p>See <a href="Renderer#renderFormFilter">Renderer#renderFormFilter</a></p>
-</dd>
-<dt><a href="#renderFilter">renderFilter()</a></dt>
-<dd><p>See <a href="Renderer#renderFilter">Renderer#renderFilter</a></p>
-</dd>
-<dt><a href="#renderTableCell">renderTableCell()</a></dt>
-<dd><p>See <a href="Renderer#renderTableCell">Renderer#renderTableCell</a></p>
-</dd>
-<dt><a href="#renderStaticTableCell">renderStaticTableCell()</a></dt>
-<dd><p>See <a href="Renderer#renderStaticTableCell">Renderer#renderStaticTableCell</a></p>
-</dd>
-<dt><a href="#initialize">initialize()</a></dt>
-<dd><p>Initializes the view type to display with a specific set of data. This is
-normally to call the required API calls before the data is display.</p>
-</dd>
-<dt><a href="#getValue">getValue()</a></dt>
-<dd><p>Returns the raw data value that is represented by this view type.</p>
-</dd>
-<dt><a href="#getDisplay">getDisplay()</a></dt>
-<dd><p>Returns a &quot;pretty&quot; data value that is represented by this view type.</p>
-</dd>
-<dt><a href="#getTableProps">getTableProps()</a></dt>
-<dd><p>Returns a map of properties to use to display a table.</p>
-</dd>
-<dt><a href="#parseViewType">parseViewType()</a></dt>
-<dd><p>If the view type passed in is a string and if the <code>viewTypes</code> property
-exists in the renderData options, attempt to look up the viewType by name.</p>
-</dd>
-<dt><a href="#addOptions">addOptions(newOptions)</a> ⇒ <code>RenderData</code></dt>
-<dd><p>Creates a new render data struct with the passed in options added.</p>
-</dd>
-<dt><a href="#hasValue">hasValue(value)</a> ⇒ <code>bool</code></dt>
-<dd><p>Checks if the passed in value is &quot;not empty&quot;.</p>
-</dd>
-<dt><a href="#getValue">getValue()</a></dt>
-<dd><p>Returns a parsed value. A value of <code>undefined</code> implies that the value is
-missing and should be filled in by a default value, first supplied in the
-options, and if not, the one supplied by the type.</p>
-</dd>
-<dt><a href="#getDisplay">getDisplay()</a> ⇒ <code>string</code></dt>
-<dd><p>Returns the value parsed for human consumption.</p>
-</dd>
-<dt><a href="#validate">validate()</a> ⇒</dt>
-<dd><p>Validates that the given value follows the rules of the data type.</p>
-</dd>
 <dt><a href="#registerType">registerType(type, Type)</a></dt>
 <dd><p>Registers a custom data or view type. They must inherit from the appropriate
 base class (see <a href="#DataType">DataType</a> and <a href="#ViewType">ViewType</a>).</p>
@@ -116,15 +62,6 @@ base class (see <a href="#DataType">DataType</a> and <a href="#ViewType">ViewTyp
 <dd><p>Parse an Immutable Map object and return the resulting field. The Immutable
 Map field must contain a <code>type</code> field which represents the <code>typeName</code> to
 attempt to parse the field as.</p>
-</dd>
-<dt><a href="#parse">parse(field, parseField)</a> ⇒ <code><a href="#Type">Type</a></code></dt>
-<dd><p>Parses a JS or Immutable.js object into a type.</p>
-</dd>
-<dt><a href="#parseOptions">parseOptions(field, parseField)</a> ⇒ <code>Immutable.Map</code></dt>
-<dd><p>Override this function if you want the type to reference other types.</p>
-</dd>
-<dt><a href="#parseOneOrMany">parseOneOrMany(parseField)</a> ⇒ <code><a href="#oneOrManyParser">oneOrManyParser</a></code></dt>
-<dd><p>Creates a one or many parser with the passed in field parser.</p>
 </dd>
 <dt><a href="#isAsync">isAsync()</a> ⇒ <code>bool</code></dt>
 <dd><p>Supports async loading of options. The <code>getOptions</code> method will then be
@@ -210,141 +147,376 @@ associated values.</p>
 </dd>
 </dl>
 
-## Typedefs
+<a name="module_React"></a>
 
-<dl>
-<dt><a href="#oneOrManyParser">oneOrManyParser</a> ⇒ <code><a href="#Type">Type</a></code> | <code><a href="#Type">Immutable.List.&lt;Type&gt;</a></code></dt>
-<dd><p>Takes in either a single field or a list of fields (as Immutable json) and
-returns either it or them parsed into types.</p>
-</dd>
-</dl>
+## React
+<a name="module_React..reactRenderers"></a>
 
-<a name="module_Renderer"></a>
+### React~reactRenderers
+A set of renderers to be used with React.js.
 
-## Renderer
+**Kind**: inner constant of [<code>React</code>](#module_React)  
+<a name="module_renderers"></a>
 
-* [Renderer](#module_Renderer)
-    * [module.exports](#exp_module_Renderer--module.exports) ⏏
-        * [.renderFormField()](#module_Renderer--module.exports+renderFormField) ⇒ <code>object</code>
-        * [.renderStaticField()](#module_Renderer--module.exports+renderStaticField) ⇒ <code>object</code>
-        * [.renderFormFilter()](#module_Renderer--module.exports+renderFormFilter) ⇒ <code>object</code>
-        * [.renderFilter()](#module_Renderer--module.exports+renderFilter) ⇒ <code>object</code>
-        * [.renderTableCell()](#module_Renderer--module.exports+renderTableCell) ⇒ <code>object</code>
-        * [.renderStaticTableCell()](#module_Renderer--module.exports+renderStaticTableCell) ⇒ <code>object</code>
+## renderers
 
-<a name="exp_module_Renderer--module.exports"></a>
+* [renderers](#module_renderers)
+    * [module.exports](#exp_module_renderers--module.exports) ⏏
+    * [module.exports](#exp_module_renderers--module.exports) ⏏
+    * [module.exports](#exp_module_renderers--module.exports) ⏏
+
+<a name="exp_module_renderers--module.exports"></a>
+
+### module.exports ⏏
+Collection of render functions of a specific type (eg. React renderers).
+
+**Kind**: Exported class  
+<a name="exp_module_renderers--module.exports"></a>
+
+### module.exports ⏏
+Struct that contains all information required for rendering.
+
+**Kind**: Exported class  
+<a name="exp_module_renderers--module.exports"></a>
 
 ### module.exports ⏏
 The renderer interface.
 
 **Kind**: Exported class  
-<a name="module_Renderer--module.exports+renderFormField"></a>
+<a name="module_renderers"></a>
 
-#### module.exports.renderFormField() ⇒ <code>object</code>
-Renders an interactable form field for the viewType.
+## renderers
 
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
-**Returns**: <code>object</code> - The rendered form field.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="module_Renderer--module.exports+renderStaticField"></a>
+* [renderers](#module_renderers)
+    * [module.exports](#exp_module_renderers--module.exports) ⏏
+    * [module.exports](#exp_module_renderers--module.exports) ⏏
+    * [module.exports](#exp_module_renderers--module.exports) ⏏
 
-#### module.exports.renderStaticField() ⇒ <code>object</code>
-Renders a non-interactable field for the viewType.
+<a name="exp_module_renderers--module.exports"></a>
 
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
-**Returns**: <code>object</code> - The rendered static field.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="module_Renderer--module.exports+renderFormFilter"></a>
-
-#### module.exports.renderFormFilter() ⇒ <code>object</code>
-Renders an interactable field to be used for filtering this view type with
-an accompanying form label.
-
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
-**Returns**: <code>object</code> - The renderer form filter element.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="module_Renderer--module.exports+renderFilter"></a>
-
-#### module.exports.renderFilter() ⇒ <code>object</code>
-Renders an interactable field to be used for filtering this view type.
-
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
-**Returns**: <code>object</code> - The rendered table filter element.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="module_Renderer--module.exports+renderTableCell"></a>
-
-#### module.exports.renderTableCell() ⇒ <code>object</code>
-Renders an interactable field to be used in a table for this view type.
-
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
-**Returns**: <code>object</code> - The rendered table cell.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="module_Renderer--module.exports+renderStaticTableCell"></a>
-
-#### module.exports.renderStaticTableCell() ⇒ <code>object</code>
-Renders a non-interactable field to be used in a table for this view type.
-
-**Kind**: instance method of [<code>module.exports</code>](#exp_module_Renderer--module.exports)  
-**Returns**: <code>object</code> - The rendered table cell.  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="Renderers"></a>
-
-## Renderers
-**Kind**: global class  
-<a name="new_Renderers_new"></a>
-
-### new Renderers()
+### module.exports ⏏
 Collection of render functions of a specific type (eg. React renderers).
 
-<a name="DataType"></a>
+**Kind**: Exported class  
+<a name="exp_module_renderers--module.exports"></a>
 
-## DataType
-**Kind**: global class  
+### module.exports ⏏
+Struct that contains all information required for rendering.
 
-* [DataType](#DataType)
-    * [new DataType()](#new_DataType_new)
-    * [new DataType()](#new_DataType_new)
+**Kind**: Exported class  
+<a name="exp_module_renderers--module.exports"></a>
 
-<a name="new_DataType_new"></a>
+### module.exports ⏏
+The renderer interface.
 
-### new DataType()
+**Kind**: Exported class  
+<a name="module_renderers"></a>
+
+## renderers
+
+* [renderers](#module_renderers)
+    * [module.exports](#exp_module_renderers--module.exports) ⏏
+    * [module.exports](#exp_module_renderers--module.exports) ⏏
+    * [module.exports](#exp_module_renderers--module.exports) ⏏
+
+<a name="exp_module_renderers--module.exports"></a>
+
+### module.exports ⏏
+Collection of render functions of a specific type (eg. React renderers).
+
+**Kind**: Exported class  
+<a name="exp_module_renderers--module.exports"></a>
+
+### module.exports ⏏
+Struct that contains all information required for rendering.
+
+**Kind**: Exported class  
+<a name="exp_module_renderers--module.exports"></a>
+
+### module.exports ⏏
+The renderer interface.
+
+**Kind**: Exported class  
+<a name="module_DataTypes"></a>
+
+## DataTypes
+
+* [DataTypes](#module_DataTypes)
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for boolean values.
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for date values.
+
+Allowed options:
+ dateType: date | time | datetime (default)
+ format: Format string. Uses moment's format strings. Default: 'YYYY-MM-DD hh:mm a' as applicable
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for dictionary values.
+
+Allowed options:
+ keyType: DataType for the keys
+ valueType: DataType for the values
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+DataType for enumerated values.
+
+Allowed options:
+ multi: bool (default false)
+ values: list of {value, label} objects. If a list of strings is passed in, the string is interpreted as both the value and the label.
+
+**Kind**: Exported class  
+<a name="module_DataTypes"></a>
+
+## DataTypes
+
+* [DataTypes](#module_DataTypes)
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for boolean values.
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for date values.
+
+Allowed options:
+ dateType: date | time | datetime (default)
+ format: Format string. Uses moment's format strings. Default: 'YYYY-MM-DD hh:mm a' as applicable
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for dictionary values.
+
+Allowed options:
+ keyType: DataType for the keys
+ valueType: DataType for the values
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+DataType for enumerated values.
+
+Allowed options:
+ multi: bool (default false)
+ values: list of {value, label} objects. If a list of strings is passed in, the string is interpreted as both the value and the label.
+
+**Kind**: Exported class  
+<a name="module_DataTypes"></a>
+
+## DataTypes
+
+* [DataTypes](#module_DataTypes)
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for boolean values.
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for date values.
+
+Allowed options:
+ dateType: date | time | datetime (default)
+ format: Format string. Uses moment's format strings. Default: 'YYYY-MM-DD hh:mm a' as applicable
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for dictionary values.
+
+Allowed options:
+ keyType: DataType for the keys
+ valueType: DataType for the values
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+DataType for enumerated values.
+
+Allowed options:
+ multi: bool (default false)
+ values: list of {value, label} objects. If a list of strings is passed in, the string is interpreted as both the value and the label.
+
+**Kind**: Exported class  
+<a name="module_DataTypes"></a>
+
+## DataTypes
+
+* [DataTypes](#module_DataTypes)
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+    * [module.exports](#exp_module_DataTypes--module.exports) ⏏
+
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for boolean values.
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for date values.
+
+Allowed options:
+ dateType: date | time | datetime (default)
+ format: Format string. Uses moment's format strings. Default: 'YYYY-MM-DD hh:mm a' as applicable
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+The DataType for dictionary values.
+
+Allowed options:
+ keyType: DataType for the keys
+ valueType: DataType for the values
+
+**Kind**: Exported class  
+<a name="exp_module_DataTypes--module.exports"></a>
+
+### module.exports ⏏
+DataType for enumerated values.
+
+Allowed options:
+ multi: bool (default false)
+ values: list of {value, label} objects. If a list of strings is passed in, the string is interpreted as both the value and the label.
+
+**Kind**: Exported class  
+<a name="module_DataTypes/"></a>
+
+## DataTypes/
+<a name="exp_module_DataTypes/--module.exports"></a>
+
+### module.exports ⏏
 The base data type. Every registered data type must eventually inherit from this.
 
-<a name="new_DataType_new"></a>
+**Kind**: Exported class  
+<a name="module_Types"></a>
 
-### new DataType()
-The base view type for displaying data from the model.
+## Types
 
-<a name="Type"></a>
+* [Types](#module_Types)
+    * _instance_
+        * [.typeName](#module_Types+typeName)
+    * _static_
+        * [.parse(field, parseField)](#module_Types.parse) ⇒ <code>Type</code>
+        * [.parseOptions(field, parseField)](#module_Types.parseOptions) ⇒ <code>Immutable.Map</code>
+        * [.parseOneOrMany(parseField)](#module_Types.parseOneOrMany) ⇒ <code>oneOrManyParser</code>
+    * _inner_
+        * [~Type](#module_Types..Type)
+            * [new Type()](#new_module_Types..Type_new)
+        * [~oneOrManyParser](#module_Types..oneOrManyParser) ⇒ <code>Type</code> \| <code>Immutable.List.&lt;Type&gt;</code>
 
-## Type
-**Kind**: global class  
-<a name="new_Type_new"></a>
+<a name="module_Types+typeName"></a>
 
-### new Type()
+### types.typeName
+The type name. This must be overridden so that the type can be registered.
+
+**Kind**: instance property of [<code>Types</code>](#module_Types)  
+<a name="module_Types.parse"></a>
+
+### Types.parse(field, parseField) ⇒ <code>Type</code>
+Parses a JS or Immutable.js object into a type.
+
+**Kind**: static method of [<code>Types</code>](#module_Types)  
+**Returns**: <code>Type</code> - The newly instantiated type.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| field | <code>object</code> \| <code>Immutable.Map</code> | The field to parse. |
+| parseField | <code>function</code> | A function to parse child types. |
+
+<a name="module_Types.parseOptions"></a>
+
+### Types.parseOptions(field, parseField) ⇒ <code>Immutable.Map</code>
+Override this function if you want the type to reference other types.
+
+**Kind**: static method of [<code>Types</code>](#module_Types)  
+**Returns**: <code>Immutable.Map</code> - The modified field object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| field | <code>Immutable.Map</code> | The field to parse. |
+| parseField | <code>function</code> | A function to parse a child type. |
+
+<a name="module_Types.parseOneOrMany"></a>
+
+### Types.parseOneOrMany(parseField) ⇒ <code>oneOrManyParser</code>
+Creates a one or many parser with the passed in field parser.
+
+**Kind**: static method of [<code>Types</code>](#module_Types)  
+**Returns**: <code>oneOrManyParser</code> - The parser function. Can be used in `.map`, etc.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| parseField | <code>func</code> | The field parsing functon to use. |
+
+<a name="module_Types..Type"></a>
+
+### Types~Type
+**Kind**: inner class of [<code>Types</code>](#module_Types)  
+<a name="new_module_Types..Type_new"></a>
+
+#### new Type()
 The base type that all view and data types inherit from. This provides basic
 parsing functionality that can be overriden and used by the child types.
 
+<a name="module_Types..oneOrManyParser"></a>
+
+### Types~oneOrManyParser ⇒ <code>Type</code> \| <code>Immutable.List.&lt;Type&gt;</code>
+Takes in either a single field or a list of fields (as Immutable json) and
+returns either it or them parsed into types.
+
+**Kind**: inner typedef of [<code>Types</code>](#module_Types)  
+**Returns**: <code>Type</code> \| <code>Immutable.List.&lt;Type&gt;</code> - The parsed type or types.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| fields | <code>Immutable.Map</code> \| <code>Immutable.List.&lt;Immutable.Map&gt;</code> | The field or fields to parse. |
+
 <a name="DataType"></a>
 
 ## DataType
 **Kind**: global class  
-
-* [DataType](#DataType)
-    * [new DataType()](#new_DataType_new)
-    * [new DataType()](#new_DataType_new)
-
-<a name="new_DataType_new"></a>
-
-### new DataType()
-The base data type. Every registered data type must eventually inherit from this.
-
 <a name="new_DataType_new"></a>
 
 ### new DataType()
@@ -359,27 +531,6 @@ The base view type for displaying data from the model.
 ### new ViewType()
 The base view type. Every registered view type must eventually inherit from this.
 
-<a name="reactRenderers"></a>
-
-## reactRenderers
-A set of renderers to be used with React.js.
-
-**Kind**: global constant  
-<a name="valueRenderers"></a>
-
-## valueRenderers
-The renderers to use to render view types to js values.
-
-**Kind**: global constant  
-<a name="validationErrors"></a>
-
-## validationErrors
-A set of standard validation errors that registered types can use.
-
-TODO: Add a better way to modify the basic error messages other than just
-editing the imported object, which is baaaaad.
-
-**Kind**: global constant  
 <a name="DATA"></a>
 
 ## DATA
@@ -406,142 +557,6 @@ The pool of view types. When a new view type is registered, it is stored
 here `Type.typeName -> Type`.
 
 **Kind**: global constant  
-<a name="register"></a>
-
-## register(typeName, renderer)
-Registers a new renderer for a specific type.
-
-**Kind**: global function  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| typeName | <code>string</code> | The name of the renderer to register. |
-| renderer | <code>Renderer</code> | The renderer to register. |
-
-<a name="renderFormField"></a>
-
-## renderFormField()
-See [Renderer#renderFormField](Renderer#renderFormField)
-
-**Kind**: global function  
-<a name="renderStaticField"></a>
-
-## renderStaticField()
-See [Renderer#renderStaticField](Renderer#renderStaticField)
-
-**Kind**: global function  
-<a name="renderFormFilter"></a>
-
-## renderFormFilter()
-See [Renderer#renderFormFilter](Renderer#renderFormFilter)
-
-**Kind**: global function  
-<a name="renderFilter"></a>
-
-## renderFilter()
-See [Renderer#renderFilter](Renderer#renderFilter)
-
-**Kind**: global function  
-<a name="renderTableCell"></a>
-
-## renderTableCell()
-See [Renderer#renderTableCell](Renderer#renderTableCell)
-
-**Kind**: global function  
-<a name="renderStaticTableCell"></a>
-
-## renderStaticTableCell()
-See [Renderer#renderStaticTableCell](Renderer#renderStaticTableCell)
-
-**Kind**: global function  
-<a name="initialize"></a>
-
-## initialize()
-Initializes the view type to display with a specific set of data. This is
-normally to call the required API calls before the data is display.
-
-**Kind**: global function  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="getValue"></a>
-
-## getValue()
-Returns the raw data value that is represented by this view type.
-
-**Kind**: global function  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="getDisplay"></a>
-
-## getDisplay()
-Returns a "pretty" data value that is represented by this view type.
-
-**Kind**: global function  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to render.  
-**Params**: <code>RenderData</code> renderData - The data to render.  
-<a name="getTableProps"></a>
-
-## getTableProps()
-Returns a map of properties to use to display a table.
-
-**Kind**: global function  
-**Params**: [<code>ViewType</code>](#ViewType) viewType - The view type to get the props of.  
-<a name="parseViewType"></a>
-
-## parseViewType()
-If the view type passed in is a string and if the `viewTypes` property
-exists in the renderData options, attempt to look up the viewType by name.
-
-**Kind**: global function  
-<a name="addOptions"></a>
-
-## addOptions(newOptions) ⇒ <code>RenderData</code>
-Creates a new render data struct with the passed in options added.
-
-**Kind**: global function  
-**Returns**: <code>RenderData</code> - - A new render data object.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| newOptions | <code>object</code> | Arbitrary parameters to pass to the renderer. |
-
-<a name="hasValue"></a>
-
-## hasValue(value) ⇒ <code>bool</code>
-Checks if the passed in value is "not empty".
-
-**Kind**: global function  
-**Returns**: <code>bool</code> - `true` if it is "not empty", otherwise, `false`.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| value | <code>object</code> | The data value to check. |
-
-<a name="getValue"></a>
-
-## getValue()
-Returns a parsed value. A value of `undefined` implies that the value is
-missing and should be filled in by a default value, first supplied in the
-options, and if not, the one supplied by the type.
-
-**Kind**: global function  
-**Params**: <code>object</code> value - The data value to parse.  
-<a name="getDisplay"></a>
-
-## getDisplay() ⇒ <code>string</code>
-Returns the value parsed for human consumption.
-
-**Kind**: global function  
-**Returns**: <code>string</code> - The parsed value.  
-**Params**: <code>object</code> value - The data value to parse.  
-<a name="validate"></a>
-
-## validate() ⇒
-Validates that the given value follows the rules of the data type.
-
-**Kind**: global function  
-**Returns**: An error if one was found, undefined otherwise.  
-**Params**: <code>object</code> value - The value to validate.  
 <a name="registerType"></a>
 
 ## registerType(type, Type)
@@ -576,44 +591,6 @@ attempt to parse the field as.
 | --- | --- | --- |
 | type |  | One of `Types.DATA`, `Types.VIEW` |
 | field | <code>Immutable.Map</code> | The field represented by an Immutable Map. |
-
-<a name="parse"></a>
-
-## parse(field, parseField) ⇒ [<code>Type</code>](#Type)
-Parses a JS or Immutable.js object into a type.
-
-**Kind**: global function  
-**Returns**: [<code>Type</code>](#Type) - The newly instantiated type.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| field | <code>object</code> \| <code>Immutable.Map</code> | The field to parse. |
-| parseField | <code>function</code> | A function to parse child types. |
-
-<a name="parseOptions"></a>
-
-## parseOptions(field, parseField) ⇒ <code>Immutable.Map</code>
-Override this function if you want the type to reference other types.
-
-**Kind**: global function  
-**Returns**: <code>Immutable.Map</code> - The modified field object.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| field | <code>Immutable.Map</code> | The field to parse. |
-| parseField | <code>function</code> | A function to parse a child type. |
-
-<a name="parseOneOrMany"></a>
-
-## parseOneOrMany(parseField) ⇒ [<code>oneOrManyParser</code>](#oneOrManyParser)
-Creates a one or many parser with the passed in field parser.
-
-**Kind**: global function  
-**Returns**: [<code>oneOrManyParser</code>](#oneOrManyParser) - The parser function. Can be used in `.map`, etc.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| parseField | <code>func</code> | The field parsing functon to use. |
 
 <a name="isAsync"></a>
 
@@ -830,17 +807,4 @@ Returns the appropriate switch case based on the input render data.
 | Param | Type | Description |
 | --- | --- | --- |
 | renderData | <code>RenderData</code> | The data to switch over. |
-
-<a name="oneOrManyParser"></a>
-
-## oneOrManyParser ⇒ [<code>Type</code>](#Type) \| [<code>Immutable.List.&lt;Type&gt;</code>](#Type)
-Takes in either a single field or a list of fields (as Immutable json) and
-returns either it or them parsed into types.
-
-**Kind**: global typedef  
-**Returns**: [<code>Type</code>](#Type) \| [<code>Immutable.List.&lt;Type&gt;</code>](#Type) - The parsed type or types.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| fields | <code>Immutable.Map</code> \| <code>Immutable.List.&lt;Immutable.Map&gt;</code> | The field or fields to parse. |
 
