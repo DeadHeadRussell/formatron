@@ -324,6 +324,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "formatron/src/utils.js~convertdate",
+    "function/index.html#static-function-convertDate",
+    "<span>convertDate</span> <span class=\"search-result-import-path\">formatron/src/utils.js</span>",
+    "function"
+  ],
+  [
     "formatron/src/types/index.js~data",
     "variable/index.html#static-variable-data",
     "<span>data</span> <span class=\"search-result-import-path\">formatron/src/types/index.js</span>",
@@ -735,6 +741,12 @@ window.esdocSearchIndex = [
     "src/react/components/tetheredselect.js~tetheredselect#handlemousedown",
     "class/src/react/components/tetheredSelect.js~TetheredSelect.html#instance-member-handleMouseDown",
     "src/react/components/tetheredSelect.js~TetheredSelect#handleMouseDown",
+    "member"
+  ],
+  [
+    "src/react/components/tetheredselect.js~tetheredselect.proptypes",
+    "class/src/react/components/tetheredSelect.js~TetheredSelect.html#static-member-propTypes",
+    "src/react/components/tetheredSelect.js~TetheredSelect.propTypes",
     "member"
   ],
   [
@@ -1266,28 +1278,10 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/types/data/date.js~datetype#conversions",
-    "class/src/types/data/date.js~DateType.html#instance-member-conversions",
-    "src/types/data/date.js~DateType#conversions",
-    "member"
-  ],
-  [
     "src/types/data/date.js~datetype#convert",
     "class/src/types/data/date.js~DateType.html#instance-method-convert",
     "src/types/data/date.js~DateType#convert",
     "method"
-  ],
-  [
-    "src/types/data/date.js~datetype#datetimetostring",
-    "class/src/types/data/date.js~DateType.html#instance-member-datetimeToString",
-    "src/types/data/date.js~DateType#datetimeToString",
-    "member"
-  ],
-  [
-    "src/types/data/date.js~datetype#datetimetounix",
-    "class/src/types/data/date.js~DateType.html#instance-member-datetimeToUnix",
-    "src/types/data/date.js~DateType#datetimeToUnix",
-    "member"
   ],
   [
     "src/types/data/date.js~datetype#filter",
@@ -1330,36 +1324,6 @@ window.esdocSearchIndex = [
     "class/src/types/data/date.js~DateType.html#instance-method-hasValue",
     "src/types/data/date.js~DateType#hasValue",
     "method"
-  ],
-  [
-    "src/types/data/date.js~datetype#stringtodatetime",
-    "class/src/types/data/date.js~DateType.html#instance-member-stringToDatetime",
-    "src/types/data/date.js~DateType#stringToDatetime",
-    "member"
-  ],
-  [
-    "src/types/data/date.js~datetype#stringtostring",
-    "class/src/types/data/date.js~DateType.html#instance-member-stringToString",
-    "src/types/data/date.js~DateType#stringToString",
-    "member"
-  ],
-  [
-    "src/types/data/date.js~datetype#stringtounix",
-    "class/src/types/data/date.js~DateType.html#instance-member-stringToUnix",
-    "src/types/data/date.js~DateType#stringToUnix",
-    "member"
-  ],
-  [
-    "src/types/data/date.js~datetype#unixtodatetime",
-    "class/src/types/data/date.js~DateType.html#instance-member-unixToDatetime",
-    "src/types/data/date.js~DateType#unixToDatetime",
-    "member"
-  ],
-  [
-    "src/types/data/date.js~datetype#unixtostring",
-    "class/src/types/data/date.js~DateType.html#instance-member-unixToString",
-    "src/types/data/date.js~DateType#unixToString",
-    "member"
   ],
   [
     "src/types/data/date.js~datetype.typename",
@@ -3190,5 +3154,11 @@ window.esdocSearchIndex = [
     "class/src/types/view/value/variable.js~VariableType.html#static-member-variables",
     "src/types/view/value/variable.js~VariableType.variables",
     "member"
+  ],
+  [
+    "src/utils.js",
+    "file/src/utils.js.html",
+    "src/utils.js",
+    "file"
   ]
 ]

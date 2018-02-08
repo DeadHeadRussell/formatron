@@ -38,6 +38,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/refs.js~Ref.html">Ref</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseRef">parseRef</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-parseTemplate">parseTemplate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-convertDate">convertDate</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Formatron">Formatron</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#react-components">react/components</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/react/components/tetheredSelect.js~TetheredSelect.html">TetheredSelect</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#renderers">renderers</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/renderers/index.js~Renderers.html">Renderers</a></span></span></li>
@@ -104,8 +105,9 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/types/data/date.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import moment from &apos;moment&apos;;
 
-import DataType from &apos;./&apos;;
+import {convertDate} from &apos;~/utils&apos;;
 
+import DataType from &apos;./&apos;;
 
 /**
  * The DataType for date values. Stores a value of seconds since January 1st 1970.
@@ -153,14 +155,10 @@ export default class DateType extends DataType {
    * @return {string|moment|number} The date value in a new format.
    */
   convert(value, toType) {
-    const fromType =
-      typeof value == &apos;string&apos;
-        ? &apos;string&apos;
-        : value instanceof Date || value instanceof moment
-          ? &apos;datetime&apos;
-          : &apos;unix&apos;;
-
-    return this.conversions[fromType][toType](value);
+    return convertDate(value, toType, {
+      type: this.getType(),
+      format: this.getFormat()
+    });
   }
 
   /**
@@ -193,84 +191,6 @@ export default class DateType extends DataType {
     return this.convert(value, &apos;string&apos;);
   }
 
-  unixToDatetime = value =&gt; {
-    if (value === null) {
-      return moment(null);
-    }
-
-    if (this.getType() == &apos;time&apos;) {
-      return moment.utc(value * 1000);
-    } else {
-      return moment(value * 1000);
-    }
-  };
-
-  unixToString = value =&gt; {
-    const datetime = this.unixToDatetime(value);
-    return this.datetimeToString(datetime);
-  };
-
-  datetimeToUnix = value =&gt; {
-    if (!value || !value.isValid()) {
-      return null;
-    }
-
-    if (this.getType() == &apos;time&apos;) {
-      return value.hours() * 3600 + value.minutes() * 60 + value.seconds();
-    } else {
-      return value.valueOf() / 1000;
-    }
-  };
-
-  datetimeToString = value =&gt; {
-    if (value &amp;&amp; value.isValid()) {
-      return value.format(this.getFormat());
-    }
-    return &apos;&apos;;
-  };
-
-  stringToUnix = value =&gt; {
-    if (this.getType() == &apos;time&apos;) {
-      const today = moment.utc(value, this.getFormat());
-      return this.datetimeToUnix(today);
-    } else {
-      const datetime = this.stringToDatetime(value);
-      return this.datetimeToUnix(datetime);
-    }
-  };
-
-  stringToDatetime = value =&gt; {
-    if (this.getType() == &apos;time&apos;) {
-      const today = moment.utc(value, this.getFormat());
-      const unixTime = this.datetimeToUnix(today);
-      return this.unixToDatetime(unixTime);
-    } else {
-      return moment(new Date(value).valueOf());
-    }
-  };
-
-  stringToString = value =&gt; {
-    return this.datetimeToString(this.stringToDatetime(value));
-  };
-
-  conversions = {
-    unix: {
-      unix: value =&gt; value,
-      datetime: this.unixToDatetime,
-      string: this.unixToString,
-    },
-    datetime: {
-      unix: this.datetimeToUnix,
-      datetime: value =&gt; value,
-      string: this.datetimeToString,
-    },
-    string: {
-      unix: this.stringToUnix,
-      datetime: this.stringToDatetime,
-      string: this.stringToString,
-    },
-  };
-
   /**
    * @deprecated Filtering will be refactored to its own module.
    */
@@ -283,6 +203,7 @@ export default class DateType extends DataType {
     return rowValue &gt;= lower &amp;&amp; rowValue &lt;= upper;
   }
 }
+
 </code></pre>
 
 </div>

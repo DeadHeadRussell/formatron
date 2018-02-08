@@ -1,6 +1,6 @@
 {
-  "coverage": "25.17%",
-  "expectCount": 441,
+  "coverage": "25.05%",
+  "expectCount": 443,
   "actualCount": 111,
   "files": {
     "src/index.js": {
@@ -11,17 +11,18 @@
       ]
     },
     "src/react/components/tetheredSelect.js": {
-      "expectCount": 8,
+      "expectCount": 9,
       "actualCount": 0,
       "undocumentLines": [
         5,
         6,
-        9,
-        10,
-        13,
-        52,
-        56,
-        66
+        11,
+        14,
+        15,
+        18,
+        57,
+        61,
+        71
       ]
     },
     "src/refs.js": {
@@ -126,18 +127,10 @@
       ]
     },
     "src/types/data/date.js": {
-      "expectCount": 18,
+      "expectCount": 10,
       "actualCount": 9,
       "undocumentLines": [
-        13,
-        92,
-        104,
-        109,
-        121,
-        128,
-        138,
-        148,
-        152
+        14
       ]
     },
     "src/types/data/dict.js": {
@@ -617,6 +610,21 @@
         17,
         21,
         26
+      ]
+    },
+    "src/utils.js": {
+      "expectCount": 9,
+      "actualCount": 0,
+      "undocumentLines": [
+        3,
+        18,
+        30,
+        35,
+        47,
+        54,
+        64,
+        74,
+        78
       ]
     }
   }
