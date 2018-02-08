@@ -4,7 +4,7 @@
   "description": "A library that generates forms based on JSON schema.",
   "main": "./lib",
   "scripts": {
-    "doc": "esdoc",
+    "doc": "esdoc && git add docs/ && git commit -m 'Updated docs'",
     "test": "karma start",
     "test:watch": "karma start --no-single-run --auto-watch",
     "start": "webpack-dev-server --env.dev --hot --inline --content-base example/ --port 8080",
@@ -16,7 +16,7 @@
     "build:lib:assets": "cp src/theme/*.png lib/theme/",
     "build:dist": "webpack --env.prod",
     "clean": "rm -r lib/* dist/*",
-    "preversion": "echo 'tests go here' && npm run doc && git commit -a -m 'Update docs'",
+    "preversion": "echo 'tests go here' && npm run doc",
     "version": "npm run clean && npm run build",
     "postversion": "git push && git push --tags",
     "format": "prettier --trailing-comma es5 --no-bracket-spacing --single-quote true --write"
