@@ -1,7 +1,8 @@
 import moment from 'moment';
 
-import DataType from './';
+import {convertDate} from '~/utils';
 
+import DataType from './';
 
 /**
  * The DataType for date values. Stores a value of seconds since January 1st 1970.
@@ -49,14 +50,10 @@ export default class DateType extends DataType {
    * @return {string|moment|number} The date value in a new format.
    */
   convert(value, toType) {
-    const fromType =
-      typeof value == 'string'
-        ? 'string'
-        : value instanceof Date || value instanceof moment
-          ? 'datetime'
-          : 'unix';
-
-    return this.conversions[fromType][toType](value);
+    return convertDate(value, toType, {
+      type: this.getType(),
+      format: this.getFormat()
+    });
   }
 
   /**
@@ -89,84 +86,6 @@ export default class DateType extends DataType {
     return this.convert(value, 'string');
   }
 
-  unixToDatetime = value => {
-    if (value === null) {
-      return moment(null);
-    }
-
-    if (this.getType() == 'time') {
-      return moment.utc(value * 1000);
-    } else {
-      return moment(value * 1000);
-    }
-  };
-
-  unixToString = value => {
-    const datetime = this.unixToDatetime(value);
-    return this.datetimeToString(datetime);
-  };
-
-  datetimeToUnix = value => {
-    if (!value || !value.isValid()) {
-      return null;
-    }
-
-    if (this.getType() == 'time') {
-      return value.hours() * 3600 + value.minutes() * 60 + value.seconds();
-    } else {
-      return value.valueOf() / 1000;
-    }
-  };
-
-  datetimeToString = value => {
-    if (value && value.isValid()) {
-      return value.format(this.getFormat());
-    }
-    return '';
-  };
-
-  stringToUnix = value => {
-    if (this.getType() == 'time') {
-      const today = moment.utc(value, this.getFormat());
-      return this.datetimeToUnix(today);
-    } else {
-      const datetime = this.stringToDatetime(value);
-      return this.datetimeToUnix(datetime);
-    }
-  };
-
-  stringToDatetime = value => {
-    if (this.getType() == 'time') {
-      const today = moment.utc(value, this.getFormat());
-      const unixTime = this.datetimeToUnix(today);
-      return this.unixToDatetime(unixTime);
-    } else {
-      return moment(new Date(value).valueOf());
-    }
-  };
-
-  stringToString = value => {
-    return this.datetimeToString(this.stringToDatetime(value));
-  };
-
-  conversions = {
-    unix: {
-      unix: value => value,
-      datetime: this.unixToDatetime,
-      string: this.unixToString,
-    },
-    datetime: {
-      unix: this.datetimeToUnix,
-      datetime: value => value,
-      string: this.datetimeToString,
-    },
-    string: {
-      unix: this.stringToUnix,
-      datetime: this.stringToDatetime,
-      string: this.stringToString,
-    },
-  };
-
   /**
    * @deprecated Filtering will be refactored to its own module.
    */
@@ -179,3 +98,4 @@ export default class DateType extends DataType {
     return rowValue >= lower && rowValue <= upper;
   }
 }
+

@@ -3,6 +3,11 @@ import Select from 'react-virtualized-select';
 import TetheredComponent from 'react-tether';
 
 export default class TetheredSelect extends Select {
+  static propTypes = {
+    ...Select.propTypes,
+    tetheredClassName: React.PropTypes.string
+  }
+
   constructor(props) {
     super(props);
 
