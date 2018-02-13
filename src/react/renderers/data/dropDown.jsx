@@ -19,7 +19,7 @@ const DropDownFilter = ({viewType, renderData}) => (
   />
 );
 
-class BaseDropDown extends React.Component {
+export class BaseDropDown extends React.Component {
   createLoadingOptions(value) {
     return [{
       value,
