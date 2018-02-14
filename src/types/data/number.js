@@ -3,13 +3,16 @@ import ValidationError from './validationError';
 
 /**
  * The data type for numbers.
- * @extends {DataType}
+ *
+ * Allowed options:
  *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
  * |type|{@link string}| <ul><li>optional</li><li>default: 'raw'</li></ul> | The type of number to handle. 'raw' \| 'integer' \| 'float' |
  * |min|{@link number}| <ul><li>optional</li></ul> | The minimum value to allow. |
  * |max|{@link number}| <ul><li>optional</li></ul> | The maximum value to allow. |
+ *
+ * @extends {DataType}
  */
 export default class NumberType extends DataType {
   static typeName = 'number';

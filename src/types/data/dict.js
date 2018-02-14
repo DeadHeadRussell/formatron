@@ -6,6 +6,7 @@ import ImmutableListType from './list';
  * The DataType for dictionary values using Immutable.js.
  *
  * Allowed options:
+ *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
  * |keyType|{@link DataType}|  | The DataType to use for keys. |

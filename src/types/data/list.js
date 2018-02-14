@@ -8,11 +8,14 @@ import ValidationError from './validationError';
 
 /**
  * The data type for lists of data.
- * @extends {ImmutableDataType}
+ *
+ * Allowed options:
  *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
  * |itemType|{@link DataType}| | The data type to use for elements of this list. |
+ *
+ * @extends {ImmutableDataType}
  */
 export default class ImmutableListType extends ImmutableDataType {
   static typeName = 'list';

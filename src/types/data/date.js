@@ -6,12 +6,14 @@ import DataType from './';
 
 /**
  * The DataType for date values. Stores a value of seconds since January 1st 1970.
- * @extends {DataType}
  *
  * Allowed options:
+ *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
  * |dateType|{@link string}| <ul><li>optional</li><li>default: 'datetime'</li></ul> | 'date' \| 'time' \| 'datetime'|
+ *
+ * @extends {DataType}
  */
 export default class DateType extends DataType {
   static typeName = 'date';

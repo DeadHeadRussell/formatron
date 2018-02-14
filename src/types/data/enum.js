@@ -4,18 +4,20 @@ import DataType, {validationErrors} from './';
 import ValidationError from './validationError';
 
 /**
- * @todo Split this into MultiEnumType and EnumType.
- *
  * DataType for enumerated values.
- * @extends {DataType}
  *
  * Allowed options:
+ * 
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
  * |multi| {@link boolean} | <ul><li>optional</li><li>default: false</li></ul> | Specifies whether this enum value holds one or multiple values. |
  * |values| {@link Object}[] \| {@link string}[] | | The list of enum values. If a list of strings is passed in, each string is interpreted as both the value and the label. |
  * |values.value| {@link string} | | The unique value used by Formatron to identify this enum value. |
  * |values.label| {@link string} | | The value used to display this enum to the user. |
+ *
+ * @extends {DataType}
+ *
+ * @todo Split this into MultiEnumType and EnumType.
  */
 export default class EnumType extends DataType {
   static typeName = 'enum';

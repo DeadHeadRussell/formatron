@@ -7,13 +7,16 @@ import ValidationError from './validationError';
 
 /**
  * The data type for maps of data.
- * @extends {ImmutableDataType}
+ *
+ * Allowed options:
  *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
  * |data|({@link Object} \| {@link DataType})[] | | A list of children data types. Its key in the map is the name of the child data type. If a data types is provided without a path, the path is assumed to be the name of the data type. |
  * |data.path| {@link string}[] | | Where to access the child data type. @see https://facebook.github.io/immutable-js/docs/#/Map/getIn |
  * |data.field| {@link DataType} | | The child data type. |
+ *
+ * @extends {ImmutableDataType}
  */
 export default class ImmutableMapType extends ImmutableDataType {
   static typeName = 'map';

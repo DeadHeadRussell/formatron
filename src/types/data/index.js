@@ -32,6 +32,7 @@ export const validationErrors = {
  * The base data type. Every registered data type must eventually inherit from this.
  *
  * Allowed options:
+ *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
  * |required|{@link boolean}| <ul><li>optional</li><li>default: false</li></ul> | Marks if this data type is required to have a value to pass validation. |

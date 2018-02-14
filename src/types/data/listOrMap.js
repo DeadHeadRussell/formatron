@@ -5,18 +5,21 @@ import ImmutableListType from './list';
 import ImmutableMapType from './map';
 
 /**
- * @todo See if this is really the best method. Possible alternative is just using single / list types.
- *
  * A data type that can handle a specified type of value, or a list of that
  * same type of value. Eg, a single / multi file upload data type could be
  * extended from this type.
- * @extends {ImmutableDataType}
  *
  * Note: This class cannot be parsed into directly, and must be inherited from to use.
+ *
+ * Allowed options:
  *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
  * |multi|{@link boolean}| <ul><li>optional</li><li>default: false</li></ul> | Specifies whether this data type holds one or multiple values. |
+ *
+ * @extends {ImmutableDataType}
+ *
+ * @todo See if this is really the best method. Possible alternative is just using single / list types.
  */
 export default class ImmutableListOrMapType extends ImmutableDataType {
   static typeName = '';

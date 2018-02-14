@@ -108,13 +108,16 @@ import ValidationError from &apos;./validationError&apos;;
 
 /**
  * The data type for numbers.
- * @extends {DataType}
+ *
+ * Allowed options:
  *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
  * |type|{@link string}| &lt;ul&gt;&lt;li&gt;optional&lt;/li&gt;&lt;li&gt;default: &apos;raw&apos;&lt;/li&gt;&lt;/ul&gt; | The type of number to handle. &apos;raw&apos; \| &apos;integer&apos; \| &apos;float&apos; |
  * |min|{@link number}| &lt;ul&gt;&lt;li&gt;optional&lt;/li&gt;&lt;/ul&gt; | The minimum value to allow. |
  * |max|{@link number}| &lt;ul&gt;&lt;li&gt;optional&lt;/li&gt;&lt;/ul&gt; | The maximum value to allow. |
+ *
+ * @extends {DataType}
  */
 export default class NumberType extends DataType {
   static typeName = &apos;number&apos;;
