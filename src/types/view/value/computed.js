@@ -63,11 +63,9 @@ export default class ComputedType extends ValueType {
 
   getValue(renderData) {
     const op = this.getOp();
-    const rawArgs = this.getArgs()
-      .map(arg => valueRenderers.parseViewType(arg, renderData));
     const values = op == 'concat'
-      ? this.getChildDisplays(renderData, rawArgs)
-      : this.getChildValues(renderData, rawArgs);
+      ? this.getChildDisplays(renderData, this.getArgs())
+      : this.getChildValues(renderData, this.getArgs());
     const func = ComputedType.ops[op];
     return func(values);
   }
