@@ -16,7 +16,7 @@ to see formatron in action.
 
 ## Documentation
 
-For a current API reference, see: https://formatron.github.io
+For a current API reference, see: https://idelic-tech.github.io/formatron/
 
 This library is about to undergo a refactoring which will then push its version
 to 1.0.0. This documentation will provide a description of how the library is
