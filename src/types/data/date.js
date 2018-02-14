@@ -11,7 +11,7 @@ import DataType from './';
  *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
- * |dateType|{@link string}| <ul><li>optional</li><li>default: 'datetime'</li></ul> | 'date' \| 'time' \| 'datetime'|
+ * |dateType|{@link string}| <ul><li>optional</li><li>default: 'datetime'</li></ul> | Whether to handle just a date, time or both. 'date' &vert; 'time' &vert; 'datetime' |
  *
  * @extends {DataType}
  */

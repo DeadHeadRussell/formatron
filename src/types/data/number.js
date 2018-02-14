@@ -8,7 +8,7 @@ import ValidationError from './validationError';
  *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
- * |type|{@link string}| <ul><li>optional</li><li>default: 'raw'</li></ul> | The type of number to handle. 'raw' \| 'integer' \| 'float' |
+ * |type|{@link string}| <ul><li>optional</li><li>default: 'raw'</li></ul> | The type of number to handle. 'raw' &vert; 'integer' &vert; 'float' |
  * |min|{@link number}| <ul><li>optional</li></ul> | The minimum value to allow. |
  * |max|{@link number}| <ul><li>optional</li></ul> | The maximum value to allow. |
  *
