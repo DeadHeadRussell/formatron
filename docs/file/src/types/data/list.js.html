@@ -111,6 +111,14 @@ import DataViewType from &apos;~/types/view/data&apos;;
 import DataType, {ImmutableDataType} from &apos;./&apos;;
 import ValidationError from &apos;./validationError&apos;;
 
+/**
+ * The data type for lists of data.
+ * @extends {ImmutableDataType}
+ *
+ * |Name|Type|Attribute|Description|
+ * |----|----|---------|-----------|
+ * |itemType|{@link DataType}| | The data type to use for elements of this list. |
+ */
 export default class ImmutableListType extends ImmutableDataType {
   static typeName = &apos;list&apos;;
 

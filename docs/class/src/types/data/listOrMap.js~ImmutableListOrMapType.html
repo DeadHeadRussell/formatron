@@ -103,13 +103,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import ImmutableListOrMapType from &apos;<span><a href="file/src/types/data/listOrMap.js.html#lineNumber7">formatron/src/types/data/listOrMap.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import ImmutableListOrMapType from &apos;<span><a href="file/src/types/data/listOrMap.js.html#lineNumber21">formatron/src/types/data/listOrMap.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/types/data/listOrMap.js.html#lineNumber7">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/types/data/listOrMap.js.html#lineNumber21">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -119,7 +119,7 @@
 
   
   
-  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span>src/types/data/.js~ImmutableDataType</span> &#x2192; ImmutableListOrMapType</div></div>
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="class/src/types/type.js~Type.html">Type</a></span> &#x2192; <span><a href="class/src/types/data/index.js~DataType.html">DataType</a></span> &#x2192; <span><a href="class/src/types/data/index.js~ImmutableDataType.html">ImmutableDataType</a></span> &#x2192; ImmutableListOrMapType</div></div>
   
   
   
@@ -138,7 +138,11 @@
 
   
 
-  
+  <div data-ice="todo"><h4>TODO:</h4><ul><li><span>See if this is really the best method. Possible alternative is just using single / list types.
+
+A data type that can handle a specified type of value, or a list of that
+same type of value. Eg, a single / multi file upload data type could be
+extended from this type.</span></li></ul></div>
 </div>
 
 <div data-ice="staticMemberSummary"><h2>Static Member Summary</h2><table class="summary" data-ice="summary">
@@ -619,7 +623,988 @@
 </table>
 </div>
 
+<div class="inherited-summary" data-ice="inheritedSummary"><h2>Inherited Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3"><span class="toggle closed"></span> From class <span><a href="class/src/types/type.js~Type.html">Type</a></span></td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/type.js~Type.html#static-member-typeName">typeName</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The type name.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/type.js~Type.html#static-method-parse">parse</a></span></span><span class="code" data-ice="signature">(field: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span> | <span>Immutable.Map</span>, parseField: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span><a href="class/src/types/type.js~Type.html">Type</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Parses a JS or Immutable.js object into a type.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/type.js~Type.html#static-method-parseOneOrMany">parseOneOrMany</a></span></span><span class="code" data-ice="signature">(parseField: <span>func</span>): <span><a href="typedef/index.html#static-typedef-oneOrManyParser">oneOrManyParser</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Creates a one or many parser with the passed in field parser.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/type.js~Type.html#static-method-parseOptions">parseOptions</a></span></span><span class="code" data-ice="signature">(field: <span>Immutable.Map</span>, parseField: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>): <span>Immutable.Map</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Override this function if you want the type to reference other types.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
 
+<table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3"><span class="toggle closed"></span> From class <span><a href="class/src/types/data/index.js~DataType.html">DataType</a></span></td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#static-member-typeName">typeName</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The data type name.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#static-method-parse">parse</a></span></span><span class="code" data-ice="signature">(field: <span>*</span>, parseField: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-member-name">name</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-member-options">options</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-exclude">exclude</a></span></span><span class="code" data-ice="signature">(model: <span>*</span>, deep: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-filter">filter</a></span></span><span class="code" data-ice="signature">(filterValue: <span>*</span>, rowValue: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getDefaultValue">getDefaultValue</a></span></span><span class="code" data-ice="signature">(defaultValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getDisplay">getDisplay</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Returns the value parsed for human consumption.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getField">getField</a></span></span><span class="code" data-ice="signature">(ref: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getFieldAndValue">getFieldAndValue</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>, ref: <span>*</span>): {&quot;field&quot;: <span>*</span>, &quot;value&quot;: <span>*</span>}</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getName">getName</a></span></span><span class="code" data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getOptions">getOptions</a></span></span><span class="code" data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getValidationLinks">getValidationLinks</a></span></span><span class="code" data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getValidator">getValidator</a></span></span><span class="code" data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getValue">getValue</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>, defaultValue: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Returns a parsed value.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-hasValue">hasValue</a></span></span><span class="code" data-ice="signature">(value: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>, checkDefault: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Checks if the passed in value is &quot;not empty&quot;.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-isExcluded">isExcluded</a></span></span><span class="code" data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-isGenerated">isGenerated</a></span></span><span class="code" data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-isRequired">isRequired</a></span></span><span class="code" data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-isUnique">isUnique</a></span></span><span class="code" data-ice="signature">(): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~DataType.html#instance-method-validate">validate</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>, callback: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Validates that the given value follows the rules of the data type.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+
+<table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3"><span class="toggle closed"></span> From class <span><a href="class/src/types/data/index.js~ImmutableDataType.html">ImmutableDataType</a></span></td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html#static-member-typeName">typeName</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-getField">getField</a></span></span><span class="code" data-ice="signature">(ref: <span>*</span>, renderOptions: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-getFieldAndValue">getFieldAndValue</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>, ref: <span>*</span>, renderOptions: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-getNextField">getNextField</a></span></span><span class="code" data-ice="signature">(field: <span>*</span>, refs: <span>*</span>, renderOptions: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-getNextFieldAndValue">getNextFieldAndValue</a></span></span><span class="code" data-ice="signature">(field: <span>*</span>, value: <span>*</span>, refs: <span>*</span>, renderOptions: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-getValue">getValue</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>, ref: <span>*</span>, renderOptions: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-hasValue">hasValue</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>, checkDefault: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-setNextValue">setNextValue</a></span></span><span class="code" data-ice="signature">(field: <span>*</span>, oldValue: <span>*</span>, newValue: <span>*</span>, refs: <span>*</span>, renderOptions: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-setValue">setValue</a></span></span><span class="code" data-ice="signature">(value: <span>*</span>, ref: <span>*</span>, newValue: <span>*</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
 
 <div data-ice="staticMemberDetails"><h2 data-ice="title">Static Public Members</h2>
 
@@ -635,16 +1620,17 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber8">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber22">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>The data type name. This must be overridden.</p>
+</div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/types/data/index.js~ImmutableDataType.html#static-member-typeName">ImmutableDataType#typeName</a></span></div>
 
   <div data-ice="properties">
 </div>
@@ -682,16 +1668,17 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber10">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber24">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Creates a new instance of a data type.</p>
+</div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/types/data/index.js~DataType.html#instance-constructor-constructor">DataType#constructor</a></span></div>
 
   <div data-ice="properties">
 </div>
@@ -728,7 +1715,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber13">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber27">source</a></span></span>
     </span>
   </h3>
 
@@ -771,7 +1758,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber17">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber31">source</a></span></span>
     </span>
   </h3>
 
@@ -814,7 +1801,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber21">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber35">source</a></span></span>
     </span>
   </h3>
 
@@ -860,7 +1847,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber36">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber50">source</a></span></span>
     </span>
   </h3>
 
@@ -869,7 +1856,7 @@
   
   
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getDefaultValue">DataType#getDefaultValue</a></span></div>
 
   <div data-ice="properties">
 </div>
@@ -915,16 +1902,17 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber52">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber66">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Returns the value parsed for human consumption.</p>
+</div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/types/data/index.js~DataType.html#instance-method-getDisplay">DataType#getDisplay</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -992,7 +1980,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber62">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber76">source</a></span></span>
     </span>
   </h3>
 
@@ -1001,7 +1989,7 @@
   
   
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-getField">ImmutableDataType#getField</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -1069,7 +2057,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber66">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber80">source</a></span></span>
     </span>
   </h3>
 
@@ -1078,7 +2066,7 @@
   
   
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-getFieldAndValue">ImmutableDataType#getFieldAndValue</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -1152,7 +2140,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber48">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber62">source</a></span></span>
     </span>
   </h3>
 
@@ -1229,16 +2217,19 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber44">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber58">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Returns a parsed value. A value of <code>undefined</code> implies that the value is
+missing and should be filled in by a default value, first supplied in the
+options, and if not, the one supplied by the type.</p>
+</div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-getValue">ImmutableDataType#getValue</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -1312,16 +2303,17 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber40">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber54">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Checks if the passed in value is &quot;not empty&quot;.</p>
+</div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-hasValue">ImmutableDataType#hasValue</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -1389,7 +2381,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber26">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber40">source</a></span></span>
     </span>
   </h3>
 
@@ -1454,7 +2446,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber32">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber46">source</a></span></span>
     </span>
   </h3>
 
@@ -1509,7 +2501,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber70">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber84">source</a></span></span>
     </span>
   </h3>
 
@@ -1518,7 +2510,7 @@
   
   
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/types/data/index.js~ImmutableDataType.html#instance-method-setValue">ImmutableDataType#setValue</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>
@@ -1598,16 +2590,17 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber74">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/types/data/listOrMap.js.html#lineNumber88">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Validates that the given value follows the rules of the data type.</p>
+</div>
 
-  
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/types/data/index.js~DataType.html#instance-method-validate">DataType#validate</a></span></div>
 
   <div data-ice="properties"><div data-ice="properties">
   <h4 data-ice="title">Params:</h4>

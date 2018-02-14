@@ -43,7 +43,7 @@ export default class DropDownType extends DataType {
    * passed a second argument of the current drop down text input. The return
    * value is expected to be a promise.
    * @params {DataType} dataType - The data type to provide.
-   * @return {bool} `true` if the options are loaded asynchronously.
+   * @return {boolean} `true` if the options are loaded asynchronously.
    */
   isAsync(dataType) {
     return dataType.isAsync
@@ -54,7 +54,7 @@ export default class DropDownType extends DataType {
   /**
    * Returns if this display should allow picking multiple items or not.
    * @param {DataType} dataType - An optional data type to provide.
-   * @return {bool} `true` if this should allow picking multiple options.
+   * @return {boolean} `true` if this should allow picking multiple options.
    */
   isMulti(dataType) {
     if (this.options.has('multi')) {

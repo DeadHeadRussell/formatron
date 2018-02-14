@@ -1,6 +1,9 @@
 import ExtendableError from 'es6-error';
 import {List} from 'immutable';
 
+/**
+ * The error class used for errors while validating values against data types.
+ */
 export default class ValidationError extends ExtendableError {
   constructor(message, field, value, ref) {
     super(message);

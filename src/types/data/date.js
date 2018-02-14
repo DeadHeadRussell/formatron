@@ -6,15 +6,18 @@ import DataType from './';
 
 /**
  * The DataType for date values. Stores a value of seconds since January 1st 1970.
+ * @extends {DataType}
  *
- * @param {Object} options
- * @param {string} [options.dateType='datetime'] - 'date' | 'time' | 'datetime'
+ * Allowed options:
+ * |Name|Type|Attribute|Description|
+ * |----|----|---------|-----------|
+ * |dateType|{@link string}| <ul><li>optional</li><li>default: 'datetime'</li></ul> | 'date' \| 'time' \| 'datetime'|
  */
 export default class DateType extends DataType {
   static typeName = 'date';
 
   /**
-   * @returns <string>
+   * @return <string> "date" | "time" | "datetime"
    */
   getType() {
     return this.options.get('dateType', 'datetime');
@@ -46,7 +49,7 @@ export default class DateType extends DataType {
    * Converts between strings, JS Date objects, moment objects, or unix time values.
    *
    * @param {string|Date|moment|number} value - The date value to convert
-   * @param {string} toType = 'string' | 'datetime' | 'unix'. The type to convert to.
+   * @param {string} [toType='string'|'datetime'|'unix'] - The type to convert to.
    * @return {string|moment|number} The date value in a new format.
    */
   convert(value, toType) {
@@ -59,7 +62,7 @@ export default class DateType extends DataType {
   /**
    * Checks if the passed in value holds a valid date value.
    * @param {any} value - The date value
-   * @return {bool}
+   * @return {boolean}
    */
   hasValue(value) {
     if (!super.hasValue(value)) {

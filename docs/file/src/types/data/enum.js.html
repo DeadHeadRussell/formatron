@@ -109,13 +109,18 @@ import DataType, {validationErrors} from &apos;./&apos;;
 import ValidationError from &apos;./validationError&apos;;
 
 /**
- * DataType for enumerated values.
- * @todo Split this MultiEnumType and EnumType.
+ * @todo Split this into MultiEnumType and EnumType.
  *
- * @param {Object} options
- * @param {bool} [options.multi=false] - Specifies whether this enum value holds one or multiple values.
- * @param {string[]|{value: string, label: string}[]} options.values - The list of enum values. If a
- *  list of strings is passed in, each string is interpreted as both the label and value.
+ * DataType for enumerated values.
+ * @extends {DataType}
+ *
+ * Allowed options:
+ * |Name|Type|Attribute|Description|
+ * |----|----|---------|-----------|
+ * |multi| {@link boolean} | &lt;ul&gt;&lt;li&gt;optional&lt;/li&gt;&lt;li&gt;default: false&lt;/li&gt;&lt;/ul&gt; | Specifies whether this enum value holds one or multiple values. |
+ * |values| {@link Object}[] \| {@link string}[] | | The list of enum values. If a list of strings is passed in, each string is interpreted as both the value and the label. |
+ * |values.value| {@link string} | | The unique value used by Formatron to identify this enum value. |
+ * |values.label| {@link string} | | The value used to display this enum to the user. |
  */
 export default class EnumType extends DataType {
   static typeName = &apos;enum&apos;;

@@ -9,7 +9,7 @@ export default class BoolType extends DataType {
 
   /**
    * Default value is `false`
-   * @return {bool} The default bool value.
+   * @return {boolean} The default bool value.
    */
   getDefaultValue() {
     return super.getDefaultValue(false);

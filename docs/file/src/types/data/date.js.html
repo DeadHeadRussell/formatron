@@ -111,15 +111,18 @@ import DataType from &apos;./&apos;;
 
 /**
  * The DataType for date values. Stores a value of seconds since January 1st 1970.
+ * @extends {DataType}
  *
- * @param {Object} options
- * @param {string} [options.dateType=&apos;datetime&apos;] - &apos;date&apos; | &apos;time&apos; | &apos;datetime&apos;
+ * Allowed options:
+ * |Name|Type|Attribute|Description|
+ * |----|----|---------|-----------|
+ * |dateType|{@link string}| &lt;ul&gt;&lt;li&gt;optional&lt;/li&gt;&lt;li&gt;default: &apos;datetime&apos;&lt;/li&gt;&lt;/ul&gt; | &apos;date&apos; \| &apos;time&apos; \| &apos;datetime&apos;|
  */
 export default class DateType extends DataType {
   static typeName = &apos;date&apos;;
 
   /**
-   * @returns &lt;string&gt;
+   * @return &lt;string&gt; &quot;date&quot; | &quot;time&quot; | &quot;datetime&quot;
    */
   getType() {
     return this.options.get(&apos;dateType&apos;, &apos;datetime&apos;);
@@ -151,7 +154,7 @@ export default class DateType extends DataType {
    * Converts between strings, JS Date objects, moment objects, or unix time values.
    *
    * @param {string|Date|moment|number} value - The date value to convert
-   * @param {string} toType = &apos;string&apos; | &apos;datetime&apos; | &apos;unix&apos;. The type to convert to.
+   * @param {string} [toType=&apos;string&apos;|&apos;datetime&apos;|&apos;unix&apos;] - The type to convert to.
    * @return {string|moment|number} The date value in a new format.
    */
   convert(value, toType) {
@@ -164,7 +167,7 @@ export default class DateType extends DataType {
   /**
    * Checks if the passed in value holds a valid date value.
    * @param {any} value - The date value
-   * @return {bool}
+   * @return {boolean}
    */
   hasValue(value) {
     if (!super.hasValue(value)) {

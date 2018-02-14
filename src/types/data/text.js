@@ -5,6 +5,16 @@ import ValidationError from './validationError';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
+/**
+ * The DataType for text values.
+ * @extends {DataType}
+ *
+ * |Name|Type|Attribute|Description|
+ * |----|----|---------|-----------|
+ * |type|{@link string}| <ul><li>optional</li><li>default: 'raw'</li></ul> | The type of text to handle. This affects both validation and display. 'raw' \| 'email' \| 'url' \| 'ssn' \| 'zipCode' \| 'tel' \| 'password' |
+ * |multi|{@link boolean}| <ul><li>optional</li><li>default: false</ul></ul> | Whether or not to allow newline characters in the text. |
+ * |mask|{@link string}| <ul><li>optional</li><li>default: '###-##-####' (for `type='ssn'` only)</ul> | A mask to use while editing the value. |
+ */
 export default class TextType extends DataType {
   static typeName = 'text';
 
@@ -95,7 +105,6 @@ export default class TextType extends DataType {
           }
           return;
 
-        case 'plain':
         case 'password':
         default:
           if (!this.isMultiLined() && value.includes('\n')) {

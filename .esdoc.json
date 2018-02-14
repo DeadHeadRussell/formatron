@@ -7,7 +7,12 @@
   },
   "plugins": [
     {"name": "esdoc-jsx-plugin"},
-    {"name": "esdoc-ecmascript-proposal-plugin", "option": {"all": true}},
+    {"name": "esdoc-ecmascript-proposal-plugin", "option": {
+      "classProperties": true,
+      "objectRestSpread": true,
+      "functionBind": true,
+      "exportExtensions": true
+    }},
     {"name": "esdoc-standard-plugin"}
   ]
 }

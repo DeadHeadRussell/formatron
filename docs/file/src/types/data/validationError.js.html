@@ -106,6 +106,9 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import ExtendableError from &apos;es6-error&apos;;
 import {List} from &apos;immutable&apos;;
 
+/**
+ * The error class used for errors while validating values against data types.
+ */
 export default class ValidationError extends ExtendableError {
   constructor(message, field, value, ref) {
     super(message);
