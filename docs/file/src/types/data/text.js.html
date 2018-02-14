@@ -112,13 +112,14 @@ const phoneUtil = PhoneNumberUtil.getInstance();
 
 /**
  * The DataType for text values.
- * @extends {DataType}
  *
  * |Name|Type|Attribute|Description|
  * |----|----|---------|-----------|
  * |type|{@link string}| &lt;ul&gt;&lt;li&gt;optional&lt;/li&gt;&lt;li&gt;default: &apos;raw&apos;&lt;/li&gt;&lt;/ul&gt; | The type of text to handle. This affects both validation and display. &apos;raw&apos; &amp;vert; &apos;email&apos; &amp;vert; &apos;url&apos; &amp;vert; &apos;ssn&apos; &amp;vert; &apos;zipCode&apos; &amp;vert; &apos;tel&apos; &amp;vert; &apos;password&apos; |
  * |multi|{@link boolean}| &lt;ul&gt;&lt;li&gt;optional&lt;/li&gt;&lt;li&gt;default: false&lt;/ul&gt;&lt;/ul&gt; | Whether or not to allow newline characters in the text. |
  * |mask|{@link string}| &lt;ul&gt;&lt;li&gt;optional&lt;/li&gt;&lt;li&gt;default: &apos;###-##-####&apos; (for `type=&apos;ssn&apos;` only)&lt;/ul&gt; | A mask to use while editing the value. |
+ *
+ * @extends {DataType}
  */
 export default class TextType extends DataType {
   static typeName = &apos;text&apos;;
