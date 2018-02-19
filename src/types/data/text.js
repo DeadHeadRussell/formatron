@@ -74,7 +74,7 @@ export default class TextType extends DataType {
         return value || '';
 
       case 'ssn':
-        if(!TextType.regexps.ssnDisplay.test(value)) {
+        if (!TextType.regexps.ssnDisplay.test(value)) {
           return value.replace(TextType.regexps.ssnDisplay, "$1-$2-$3");
         }
         return value || '';
