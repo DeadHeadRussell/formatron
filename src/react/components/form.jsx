@@ -138,7 +138,8 @@ export default class Form extends React.Component {
   }
 
   getError = ref => {
-    return this.state.errors.get(ref);
+    const error = this.state.errors.get(ref);
+    return error ? `ValidationError: ${error.message}` : null;
   }
 
   onBlur = ref => {
