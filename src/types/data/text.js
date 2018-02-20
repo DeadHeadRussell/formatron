@@ -24,6 +24,7 @@ export default class TextType extends DataType {
     url: /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/,
     ssn: /^(\d{3}-?\d{2}-?\d{4}|XXX-XX-XXXX)$/,
     ssnDisplay: /^(\d{3}-\d{2}-\d{4})$/,
+    ssnReplace: /(\d{3})(\d{2})(\d{4})/,
     zipCode: /^\d{5}([ \-]\d{4})?$/,
   };
 
@@ -75,7 +76,7 @@ export default class TextType extends DataType {
 
       case 'ssn':
         if (!TextType.regexps.ssnDisplay.test(value)) {
-          return value.replace(TextType.regexps.ssnDisplay, "$1-$2-$3");
+          return value.replace(TextType.regexps.ssnReplace, "$1-$2-$3");
         }
         return value || '';
 
