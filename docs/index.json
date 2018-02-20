@@ -6695,7 +6695,7 @@
     "__docId__": 291,
     "kind": "file",
     "name": "src/types/data/text.js",
-    "content": "import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';\n\nimport DataType, {validationErrors} from './';\nimport ValidationError from './validationError';\n\nconst phoneUtil = PhoneNumberUtil.getInstance();\n\n/**\n * The DataType for text values.\n *\n * |Name|Type|Attribute|Description|\n * |----|----|---------|-----------|\n * |type|{@link string}| <ul><li>optional</li><li>default: 'raw'</li></ul> | The type of text to handle. This affects both validation and display. 'raw' &vert; 'email' &vert; 'url' &vert; 'ssn' &vert; 'zipCode' &vert; 'tel' &vert; 'password' |\n * |multi|{@link boolean}| <ul><li>optional</li><li>default: false</ul></ul> | Whether or not to allow newline characters in the text. |\n * |mask|{@link string}| <ul><li>optional</li><li>default: '###-##-####' (for `type='ssn'` only)</ul> | A mask to use while editing the value. |\n *\n * @extends {DataType}\n */\nexport default class TextType extends DataType {\n  static typeName = 'text';\n\n  static regexps = {\n    email: /^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/,\n    url: /((([A-Za-z]{3,9}:(?:\\/\\/)?)(?:[\\-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9\\.\\-]+|(?:www\\.|[\\-;:&=\\+\\$,\\w]+@)[A-Za-z0-9\\.\\-]+)((?:\\/[\\+~%\\/\\.\\w\\-_]*)?\\??(?:[\\-\\+=&;%@\\.\\w_]*)#?(?:[\\.\\!\\/\\\\\\w]*))?)/,\n    ssn: /^(\\d{3}-?\\d{2}-?\\d{4}|XXX-XX-XXXX)$/,\n    zipCode: /^\\d{5}([ \\-]\\d{4})?$/,\n  };\n\n  getType() {\n    return this.options.get('textType', 'raw');\n  }\n\n  isMultiLined() {\n    return this.options.get('multi', false);\n  }\n\n  getMask() {\n    const defaultMask = this.getType() == 'ssn' ? '###-##-####' : '';\n    return this.options.get('mask', defaultMask);\n  }\n\n  hasValue(value, checkDefault) {\n    if (!super.hasValue(value, checkDefault)) {\n      return false;\n    }\n    return typeof value == 'string' && value.length > 0;\n  }\n\n  getDefaultValue() {\n    return super.getDefaultValue('');\n  }\n\n  format(value) {\n    switch (this.getType()) {\n      case 'tel':\n        return this.getDisplay(value);\n\n      default:\n        return value || '';\n    }\n  }\n\n  getDisplay(value) {\n    switch (this.getType()) {\n      case 'password':\n        return '********';\n\n      case 'tel':\n        try {\n          const telno = phoneUtil.parse(value, 'US');\n          return phoneUtil.format(telno, PhoneNumberFormat.NATIONAL);\n        } catch (e) {}\n        return value || '';\n\n      default:\n        if (this.isMultiLined()) {\n          if (value && value.includes('\\n')) {\n            return `${value.split('\\n')[0]}...`;\n          }\n        }\n        return value || '';\n    }\n  }\n\n  validate(value) {\n    return super.validate(value, () => {\n      const type = this.getType();\n      switch (type) {\n        case 'email':\n        case 'url':\n        case 'ssn':\n        case 'zipCode':\n          if (!TextType.regexps[type].test(value)) {\n            return new ValidationError(validationErrors[type], this);\n          }\n          return;\n\n        case 'tel':\n          try {\n            const telno = phoneUtil.parse(value, 'US');\n            if (!phoneUtil.isValidNumber(telno)) {\n              return new ValidationError(validationErrors.tel, this);\n            }\n          } catch (e) {\n            return new ValidationError(e.message, this);\n          }\n          return;\n\n        case 'password':\n        default:\n          if (!this.isMultiLined() && value.includes('\\n')) {\n            return new ValidationError(validationErrors.singleline, this);\n          }\n          return;\n      }\n    });\n  }\n\n  filter(filterValue, rowValue) {\n    const filterString = `${filterValue}`.toLowerCase();\n    const rowString = `${rowValue}`.toLowerCase();\n    return rowString.indexOf(filterString) >= 0;\n  }\n}\n",
+    "content": "import {PhoneNumberFormat, PhoneNumberUtil} from 'google-libphonenumber';\n\nimport DataType, {validationErrors} from './';\nimport ValidationError from './validationError';\n\nconst phoneUtil = PhoneNumberUtil.getInstance();\n\n/**\n * The DataType for text values.\n *\n * |Name|Type|Attribute|Description|\n * |----|----|---------|-----------|\n * |type|{@link string}| <ul><li>optional</li><li>default: 'raw'</li></ul> | The type of text to handle. This affects both validation and display. 'raw' &vert; 'email' &vert; 'url' &vert; 'ssn' &vert; 'zipCode' &vert; 'tel' &vert; 'password' |\n * |multi|{@link boolean}| <ul><li>optional</li><li>default: false</ul></ul> | Whether or not to allow newline characters in the text. |\n * |mask|{@link string}| <ul><li>optional</li><li>default: '###-##-####' (for `type='ssn'` only)</ul> | A mask to use while editing the value. |\n *\n * @extends {DataType}\n */\nexport default class TextType extends DataType {\n  static typeName = 'text';\n\n  static regexps = {\n    email: /^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/,\n    url: /((([A-Za-z]{3,9}:(?:\\/\\/)?)(?:[\\-;:&=\\+\\$,\\w]+@)?[A-Za-z0-9\\.\\-]+|(?:www\\.|[\\-;:&=\\+\\$,\\w]+@)[A-Za-z0-9\\.\\-]+)((?:\\/[\\+~%\\/\\.\\w\\-_]*)?\\??(?:[\\-\\+=&;%@\\.\\w_]*)#?(?:[\\.\\!\\/\\\\\\w]*))?)/,\n    ssn: /^(\\d{3}-?\\d{2}-?\\d{4}|XXX-XX-XXXX)$/,\n    ssnDisplay: /^(\\d{3}-\\d{2}-\\d{4})$/,\n    zipCode: /^\\d{5}([ \\-]\\d{4})?$/,\n  };\n\n  getType() {\n    return this.options.get('textType', 'raw');\n  }\n\n  isMultiLined() {\n    return this.options.get('multi', false);\n  }\n\n  getMask() {\n    const defaultMask = this.getType() == 'ssn' ? '###-##-####' : '';\n    return this.options.get('mask', defaultMask);\n  }\n\n  hasValue(value, checkDefault) {\n    if (!super.hasValue(value, checkDefault)) {\n      return false;\n    }\n    return typeof value == 'string' && value.length > 0;\n  }\n\n  getDefaultValue() {\n    return super.getDefaultValue('');\n  }\n\n  format(value) {\n    switch (this.getType()) {\n      case 'tel':\n        return this.getDisplay(value);\n\n      default:\n        return value || '';\n    }\n  }\n\n  getDisplay(value) {\n    switch (this.getType()) {\n      case 'password':\n        return '********';\n\n      case 'tel':\n        try {\n          const telno = phoneUtil.parse(value, 'US');\n          return phoneUtil.format(telno, PhoneNumberFormat.NATIONAL);\n        } catch (e) {}\n        return value || '';\n\n      case 'ssn':\n        if (!TextType.regexps.ssnDisplay.test(value)) {\n          return value.replace(TextType.regexps.ssnDisplay, \"$1-$2-$3\");\n        }\n        return value || '';\n\n      default:\n        if (this.isMultiLined()) {\n          if (value && value.includes('\\n')) {\n            return `${value.split('\\n')[0]}...`;\n          }\n        }\n        return value || '';\n    }\n  }\n\n  validate(value) {\n    return super.validate(value, () => {\n      const type = this.getType();\n      switch (type) {\n        case 'email':\n        case 'url':\n        case 'ssn':\n        case 'zipCode':\n          if (!TextType.regexps[type].test(value)) {\n            return new ValidationError(validationErrors[type], this);\n          }\n          return;\n\n        case 'tel':\n          try {\n            const telno = phoneUtil.parse(value, 'US');\n            if (!phoneUtil.isValidNumber(telno)) {\n              return new ValidationError(validationErrors.tel, this);\n            }\n          } catch (e) {\n            return new ValidationError(e.message, this);\n          }\n          return;\n\n        case 'password':\n        default:\n          if (!this.isMultiLined() && value.includes('\\n')) {\n            return new ValidationError(validationErrors.singleline, this);\n          }\n          return;\n      }\n    });\n  }\n\n  filter(filterValue, rowValue) {\n    const filterString = `${filterValue}`.toLowerCase();\n    const rowString = `${rowValue}`.toLowerCase();\n    return rowString.indexOf(filterString) >= 0;\n  }\n}\n",
     "static": true,
     "longname": "/home/russell/code/formatron/src/types/data/text.js",
     "access": "public",
@@ -6786,7 +6786,7 @@
     "longname": "src/types/data/text.js~TextType#getType",
     "access": "public",
     "description": null,
-    "lineNumber": 29,
+    "lineNumber": 30,
     "undocument": true,
     "params": [],
     "return": {
@@ -6806,7 +6806,7 @@
     "longname": "src/types/data/text.js~TextType#isMultiLined",
     "access": "public",
     "description": null,
-    "lineNumber": 33,
+    "lineNumber": 34,
     "undocument": true,
     "params": [],
     "return": {
@@ -6826,7 +6826,7 @@
     "longname": "src/types/data/text.js~TextType#getMask",
     "access": "public",
     "description": null,
-    "lineNumber": 37,
+    "lineNumber": 38,
     "undocument": true,
     "params": [],
     "return": {
@@ -6846,7 +6846,7 @@
     "longname": "src/types/data/text.js~TextType#hasValue",
     "access": "public",
     "description": null,
-    "lineNumber": 42,
+    "lineNumber": 43,
     "undocument": true,
     "params": [
       {
@@ -6879,7 +6879,7 @@
     "longname": "src/types/data/text.js~TextType#getDefaultValue",
     "access": "public",
     "description": null,
-    "lineNumber": 49,
+    "lineNumber": 50,
     "undocument": true,
     "params": [],
     "return": {
@@ -6899,7 +6899,7 @@
     "longname": "src/types/data/text.js~TextType#format",
     "access": "public",
     "description": null,
-    "lineNumber": 53,
+    "lineNumber": 54,
     "undocument": true,
     "params": [
       {
@@ -6926,7 +6926,7 @@
     "longname": "src/types/data/text.js~TextType#getDisplay",
     "access": "public",
     "description": null,
-    "lineNumber": 63,
+    "lineNumber": 64,
     "undocument": true,
     "params": [
       {
@@ -6953,7 +6953,7 @@
     "longname": "src/types/data/text.js~TextType#validate",
     "access": "public",
     "description": null,
-    "lineNumber": 85,
+    "lineNumber": 92,
     "undocument": true,
     "params": [
       {
@@ -6980,7 +6980,7 @@
     "longname": "src/types/data/text.js~TextType#filter",
     "access": "public",
     "description": null,
-    "lineNumber": 119,
+    "lineNumber": 126,
     "undocument": true,
     "params": [
       {
@@ -7995,7 +7995,7 @@
     "__docId__": 353,
     "kind": "file",
     "name": "src/types/view/data/dropDown.js",
-    "content": "import {List} from 'immutable';\n\nimport DataType from './';\n\n/**\n * @extends src/types/view/data/index.js~DataType\n */\nexport default class DropDownType extends DataType {\n  static typeName = 'dropDown';\n\n  constructor(options) {\n    super(options);\n    this.autoloaded = false;\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData);\n    this.autoload(renderData);\n  }\n\n  // We autoload the values for async dropdowns that use their own cache\n  // since the `react-select` component is not playing well with our\n  // caches and is firing the autoload request everytime the component\n  // is reloaded.\n  autoload(renderData) {\n    if (!this.autoloaded) {\n      const {field, value} = this.getFieldAndValue(renderData);\n      if (field && field.getValuesCache && this.isAsync(field) && renderData.options.component == 'form') {\n        field.getValues('', renderData.options)\n          .then(results => {\n            this.autoloaded = true;\n            const cache = field.getValuesCache();\n            cache[''] = results.options;\n          });\n      } else {\n        this.autoloaded = true;\n      }\n    }\n  }\n\n  /**\n   * Supports async loading of options. The `getOptions` method will then be\n   * passed a second argument of the current drop down text input. The return\n   * value is expected to be a promise.\n   * @params {DataType} dataType - The data type to provide.\n   * @return {boolean} `true` if the options are loaded asynchronously.\n   */\n  isAsync(dataType) {\n    return dataType.isAsync\n      ? dataType.isAsync()\n      : false;\n  }\n\n  /**\n   * Returns if this display should allow picking multiple items or not.\n   * @param {DataType} dataType - An optional data type to provide.\n   * @return {boolean} `true` if this should allow picking multiple options.\n   */\n  isMulti(dataType) {\n    if (this.options.has('multi')) {\n      return this.options.get('multi');\n    } else if (dataType && dataType.isMulti) {\n      return dataType.isMulti();\n    }\n    return false;\n  }\n\n  /**\n   * Returns a list of avaliable options in the drop down, either specified in\n   * this view type's options, or in the passed in data type.\n   * @param {RenderData} renderData - The render data to get options from.\n   * @param {string} input - If async, the input entered to return options for.\n   * @return {Immutable.List} a list of options.\n   */\n  getOptions(renderData, input) {\n    if (this.options.has('options')) {\n      return this.options.get('options', List());\n    }\n\n    const field = this.getField(renderData);\n    if (field && field.getValues) {\n      if (this.isAsync(field)) {\n        this.autoload(renderData);\n        return (this.autoloaded || input)\n          ? field.getValues(input, renderData.options)\n          : Promise.resolve(List());\n      } else {\n        return field.getValues();\n      }\n    }\n\n    return List();\n  }\n\n  getValueOption(dataType, value, renderData) {\n    if (!value) {\n      return [];\n    }\n\n    const label = dataType.getDisplay(value, renderData.options);\n    if (!label) {\n      return null;\n    }\n    return [{\n      value,\n      label,\n      title: label\n    }];\n  }\n\n  /**\n   * Allows subtypes to define filter options for faster searches. Returns\n   * undefined so that the default filter options are used.\n   * @return The filter options.\n   */\n  getFilterOptions(dataType) {\n    return dataType.getFilterOptions\n      ? dataType.getFilterOptions()\n      : undefined;\n  }\n}\n\n",
+    "content": "import {List} from 'immutable';\n\nimport DataType from './';\n\n/**\n * @extends src/types/view/data/index.js~DataType\n */\nexport default class DropDownType extends DataType {\n  static typeName = 'dropDown';\n\n  constructor(options) {\n    super(options);\n    this.autoloaded = false;\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData);\n    this.autoload(renderData);\n  }\n\n  // We autoload the values for async dropdowns that use their own cache\n  // since the `react-select` component is not playing well with our\n  // caches and is firing the autoload request everytime the component\n  // is reloaded.\n  autoload(renderData) {\n    if (!this.autoloaded) {\n      const {field, value} = this.getFieldAndValue(renderData);\n      if (field && field.getValuesCache && this.isAsync(field) && renderData.options.component == 'form') {\n        field.getValues('', renderData.options)\n          .then(results => {\n            this.autoloaded = true;\n            const cache = field.getValuesCache();\n            cache[''] = results.options;\n          });\n      } else {\n        this.autoloaded = true;\n      }\n    }\n  }\n\n  /**\n   * Supports async loading of options. The `getOptions` method will then be\n   * passed a second argument of the current drop down text input. The return\n   * value is expected to be a promise.\n   * @params {DataType} dataType - The data type to provide.\n   * @return {boolean} `true` if the options are loaded asynchronously.\n   */\n  isAsync(dataType) {\n    return dataType.isAsync\n      ? dataType.isAsync()\n      : false;\n  }\n\n  /**\n   * Returns if this display should allow picking multiple items or not.\n   * @param {DataType} dataType - An optional data type to provide.\n   * @return {boolean} `true` if this should allow picking multiple options.\n   */\n  isMulti(dataType) {\n    if (this.options.has('multi')) {\n      return this.options.get('multi');\n    } else if (dataType && dataType.isMulti) {\n      return dataType.isMulti();\n    }\n    return false;\n  }\n\n  /**\n   * Returns a list of avaliable options in the drop down, either specified in\n   * this view type's options, or in the passed in data type.\n   * @param {RenderData} renderData - The render data to get options from.\n   * @param {string} input - If async, the input entered to return options for.\n   * @return {Immutable.List} a list of options.\n   */\n  getOptions(renderData, input) {\n    if (this.options.has('options')) {\n      return this.options.get('options', List());\n    }\n\n    const field = this.getField(renderData);\n    if (field && field.getValues) {\n      if (this.isAsync(field)) {\n        this.autoload(renderData);\n        return (this.autoloaded || typeof input == 'string')\n          ? field.getValues(input, renderData.options)\n          : Promise.resolve({complete: false, options: []});\n      } else {\n        return field.getValues();\n      }\n    }\n\n    return List();\n  }\n\n  getValueOption(dataType, value, renderData) {\n    if (!value) {\n      return [];\n    }\n\n    const label = dataType.getDisplay(value, renderData.options);\n    if (!label) {\n      return null;\n    }\n    return [{\n      value,\n      label,\n      title: label\n    }];\n  }\n\n  /**\n   * Allows subtypes to define filter options for faster searches. Returns\n   * undefined so that the default filter options are used.\n   * @return The filter options.\n   */\n  getFilterOptions(dataType) {\n    return dataType.getFilterOptions\n      ? dataType.getFilterOptions()\n      : undefined;\n  }\n}\n\n",
     "static": true,
     "longname": "/home/russell/code/formatron/src/types/view/data/dropDown.js",
     "access": "public",
