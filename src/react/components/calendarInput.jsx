@@ -38,6 +38,10 @@ export default class CalendarInput extends React.Component {
     this.setState({showPicker: true});
   };
 
+  handleClick = () => {
+    this.calendarInput.focus();
+  }
+
   handleBlur = (setDefault) => {
     // Wait for possible focus event before handling the blur event.
     this.blurTimeout = setTimeout(() => {
@@ -148,8 +152,9 @@ export default class CalendarInput extends React.Component {
   render() {
     const {disabled, placeholder} = this.props;
     return (
-      <div className="formatron-input formatron-calendar">
+      <div onClick={this.handleClick} className="formatron-input formatron-calendar">
         <input
+          ref={el => this.calendarInput = el}
           className="formatron-input-inner"
           type="text"
           value={this.state.input}
