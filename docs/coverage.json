@@ -1,6 +1,6 @@
 {
-  "coverage": "26.41%",
-  "expectCount": 443,
+  "coverage": "26.59%",
+  "expectCount": 440,
   "actualCount": 117,
   "files": {
     "src/index.js": {
@@ -355,15 +355,12 @@
       ]
     },
     "src/types/view/data/dropDown.js": {
-      "expectCount": 11,
+      "expectCount": 8,
       "actualCount": 5,
       "undocumentLines": [
         9,
         11,
-        13,
-        16,
-        25,
-        95
+        68
       ]
     },
     "src/types/view/data/index.js": {

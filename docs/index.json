@@ -7995,7 +7995,7 @@
     "__docId__": 353,
     "kind": "file",
     "name": "src/types/view/data/dropDown.js",
-    "content": "import {List} from 'immutable';\n\nimport DataType from './';\n\n/**\n * @extends src/types/view/data/index.js~DataType\n */\nexport default class DropDownType extends DataType {\n  static typeName = 'dropDown';\n\n  constructor(options) {\n    super(options);\n    this.autoloaded = false;\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData);\n    this.autoload(renderData);\n  }\n\n  // We autoload the values for async dropdowns that use their own cache\n  // since the `react-select` component is not playing well with our\n  // caches and is firing the autoload request everytime the component\n  // is reloaded.\n  autoload(renderData) {\n    if (!this.autoloaded) {\n      const {field, value} = this.getFieldAndValue(renderData);\n      if (field && field.getValuesCache && this.isAsync(field) && renderData.options.component == 'form') {\n        field.getValues('', renderData.options)\n          .then(results => {\n            this.autoloaded = true;\n            const cache = field.getValuesCache();\n            cache[''] = results.options;\n          });\n      } else {\n        this.autoloaded = true;\n      }\n    }\n  }\n\n  /**\n   * Supports async loading of options. The `getOptions` method will then be\n   * passed a second argument of the current drop down text input. The return\n   * value is expected to be a promise.\n   * @params {DataType} dataType - The data type to provide.\n   * @return {boolean} `true` if the options are loaded asynchronously.\n   */\n  isAsync(dataType) {\n    return dataType.isAsync\n      ? dataType.isAsync()\n      : false;\n  }\n\n  /**\n   * Returns if this display should allow picking multiple items or not.\n   * @param {DataType} dataType - An optional data type to provide.\n   * @return {boolean} `true` if this should allow picking multiple options.\n   */\n  isMulti(dataType) {\n    if (this.options.has('multi')) {\n      return this.options.get('multi');\n    } else if (dataType && dataType.isMulti) {\n      return dataType.isMulti();\n    }\n    return false;\n  }\n\n  /**\n   * Returns a list of avaliable options in the drop down, either specified in\n   * this view type's options, or in the passed in data type.\n   * @param {RenderData} renderData - The render data to get options from.\n   * @param {string} input - If async, the input entered to return options for.\n   * @return {Immutable.List} a list of options.\n   */\n  getOptions(renderData, input) {\n    if (this.options.has('options')) {\n      return this.options.get('options', List());\n    }\n\n    const field = this.getField(renderData);\n    if (field && field.getValues) {\n      if (this.isAsync(field)) {\n        this.autoload(renderData);\n        return (this.autoloaded || typeof input == 'string')\n          ? field.getValues(input, renderData.options)\n          : Promise.resolve({complete: false, options: []});\n      } else {\n        return field.getValues();\n      }\n    }\n\n    return List();\n  }\n\n  getValueOption(dataType, value, renderData) {\n    if (!value) {\n      return [];\n    }\n\n    const label = dataType.getDisplay(value, renderData.options);\n    if (!label) {\n      return null;\n    }\n    return [{\n      value,\n      label,\n      title: label\n    }];\n  }\n\n  /**\n   * Allows subtypes to define filter options for faster searches. Returns\n   * undefined so that the default filter options are used.\n   * @return The filter options.\n   */\n  getFilterOptions(dataType) {\n    return dataType.getFilterOptions\n      ? dataType.getFilterOptions()\n      : undefined;\n  }\n}\n\n",
+    "content": "import {List} from 'immutable';\n\nimport DataType from './';\n\n/**\n * @extends src/types/view/data/index.js~DataType\n */\nexport default class DropDownType extends DataType {\n  static typeName = 'dropDown';\n\n  initialize(renderData) {\n    super.initialize(renderData);\n  }\n\n  /**\n   * Supports async loading of options. The `getOptions` method will then be\n   * passed a second argument of the current drop down text input. The return\n   * value is expected to be a promise.\n   * @params {DataType} dataType - The data type to provide.\n   * @return {boolean} `true` if the options are loaded asynchronously.\n   */\n  isAsync(dataType) {\n    return dataType.isAsync\n      ? dataType.isAsync()\n      : false;\n  }\n\n  /**\n   * Returns if this display should allow picking multiple items or not.\n   * @param {DataType} dataType - An optional data type to provide.\n   * @return {boolean} `true` if this should allow picking multiple options.\n   */\n  isMulti(dataType) {\n    if (this.options.has('multi')) {\n      return this.options.get('multi');\n    } else if (dataType && dataType.isMulti) {\n      return dataType.isMulti();\n    }\n    return false;\n  }\n\n  /**\n   * Returns a list of avaliable options in the drop down, either specified in\n   * this view type's options, or in the passed in data type.\n   * @param {RenderData} renderData - The render data to get options from.\n   * @param {string} input - If async, the input entered to return options for.\n   * @return {Immutable.List} a list of options.\n   */\n  getOptions(renderData, input) {\n    if (this.options.has('options')) {\n      return this.options.get('options', List());\n    }\n\n    const field = this.getField(renderData);\n    if (field && field.getValues) {\n      if (this.isAsync(field)) {\n        return (typeof input == 'string' && input.length > 0)\n          ? field.getValues(input, renderData.options)\n          : Promise.resolve({complete: false, options: []});\n      } else {\n        return field.getValues();\n      }\n    }\n\n    return List();\n  }\n\n  getValueOption(dataType, value, renderData) {\n    if (!value) {\n      return [];\n    }\n\n    const label = dataType.getDisplay(value, renderData.options);\n    if (!label) {\n      return null;\n    }\n    return [{\n      value,\n      label,\n      title: label\n    }];\n  }\n\n  /**\n   * Allows subtypes to define filter options for faster searches. Returns\n   * undefined so that the default filter options are used.\n   * @return The filter options.\n   */\n  getFilterOptions(dataType) {\n    return dataType.getFilterOptions\n      ? dataType.getFilterOptions()\n      : undefined;\n  }\n}\n\n",
     "static": true,
     "longname": "/home/russell/code/formatron/src/types/view/data/dropDown.js",
     "access": "public",
@@ -8039,37 +8039,6 @@
   },
   {
     "__docId__": 356,
-    "kind": "constructor",
-    "name": "constructor",
-    "memberof": "src/types/view/data/dropDown.js~DropDownType",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/types/view/data/dropDown.js~DropDownType#constructor",
-    "access": "public",
-    "description": null,
-    "lineNumber": 11,
-    "undocument": true
-  },
-  {
-    "__docId__": 357,
-    "kind": "member",
-    "name": "autoloaded",
-    "memberof": "src/types/view/data/dropDown.js~DropDownType",
-    "static": false,
-    "longname": "src/types/view/data/dropDown.js~DropDownType#autoloaded",
-    "access": "public",
-    "description": null,
-    "lineNumber": 13,
-    "undocument": true,
-    "type": {
-      "types": [
-        "boolean"
-      ]
-    }
-  },
-  {
-    "__docId__": 358,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/data/dropDown.js~DropDownType",
@@ -8079,7 +8048,7 @@
     "longname": "src/types/view/data/dropDown.js~DropDownType#initialize",
     "access": "public",
     "description": null,
-    "lineNumber": 16,
+    "lineNumber": 11,
     "undocument": true,
     "params": [
       {
@@ -8092,30 +8061,7 @@
     "return": null
   },
   {
-    "__docId__": 359,
-    "kind": "method",
-    "name": "autoload",
-    "memberof": "src/types/view/data/dropDown.js~DropDownType",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/types/view/data/dropDown.js~DropDownType#autoload",
-    "access": "public",
-    "description": null,
-    "lineNumber": 25,
-    "undocument": true,
-    "params": [
-      {
-        "name": "renderData",
-        "types": [
-          "*"
-        ]
-      }
-    ],
-    "return": null
-  },
-  {
-    "__docId__": 362,
+    "__docId__": 357,
     "kind": "method",
     "name": "isAsync",
     "memberof": "src/types/view/data/dropDown.js~DropDownType",
@@ -8125,7 +8071,7 @@
     "longname": "src/types/view/data/dropDown.js~DropDownType#isAsync",
     "access": "public",
     "description": "Supports async loading of options. The `getOptions` method will then be\npassed a second argument of the current drop down text input. The return\nvalue is expected to be a promise.",
-    "lineNumber": 48,
+    "lineNumber": 22,
     "unknown": [
       {
         "tagName": "@params",
@@ -8150,7 +8096,7 @@
     ]
   },
   {
-    "__docId__": 363,
+    "__docId__": 358,
     "kind": "method",
     "name": "isMulti",
     "memberof": "src/types/view/data/dropDown.js~DropDownType",
@@ -8160,7 +8106,7 @@
     "longname": "src/types/view/data/dropDown.js~DropDownType#isMulti",
     "access": "public",
     "description": "Returns if this display should allow picking multiple items or not.",
-    "lineNumber": 59,
+    "lineNumber": 33,
     "params": [
       {
         "nullable": null,
@@ -8183,7 +8129,7 @@
     }
   },
   {
-    "__docId__": 364,
+    "__docId__": 359,
     "kind": "method",
     "name": "getOptions",
     "memberof": "src/types/view/data/dropDown.js~DropDownType",
@@ -8193,7 +8139,7 @@
     "longname": "src/types/view/data/dropDown.js~DropDownType#getOptions",
     "access": "public",
     "description": "Returns a list of avaliable options in the drop down, either specified in\nthis view type's options, or in the passed in data type.",
-    "lineNumber": 75,
+    "lineNumber": 49,
     "params": [
       {
         "nullable": null,
@@ -8226,7 +8172,7 @@
     }
   },
   {
-    "__docId__": 365,
+    "__docId__": 360,
     "kind": "method",
     "name": "getValueOption",
     "memberof": "src/types/view/data/dropDown.js~DropDownType",
@@ -8236,7 +8182,7 @@
     "longname": "src/types/view/data/dropDown.js~DropDownType#getValueOption",
     "access": "public",
     "description": null,
-    "lineNumber": 95,
+    "lineNumber": 68,
     "undocument": true,
     "params": [
       {
@@ -8265,7 +8211,7 @@
     }
   },
   {
-    "__docId__": 366,
+    "__docId__": 361,
     "kind": "method",
     "name": "getFilterOptions",
     "memberof": "src/types/view/data/dropDown.js~DropDownType",
@@ -8275,7 +8221,7 @@
     "longname": "src/types/view/data/dropDown.js~DropDownType#getFilterOptions",
     "access": "public",
     "description": "Allows subtypes to define filter options for faster searches. Returns\nundefined so that the default filter options are used.",
-    "lineNumber": 116,
+    "lineNumber": 89,
     "return": {
       "nullable": null,
       "types": [
@@ -8294,7 +8240,7 @@
     ]
   },
   {
-    "__docId__": 367,
+    "__docId__": 362,
     "kind": "file",
     "name": "src/types/view/data/index.js",
     "content": "import {List} from 'immutable';\n\nimport {parseRef, ImmutableRef} from '~/refs';\n\nimport ViewType from '../';\n\n/**\n * The base view type for displaying data from the model.\n * @extends ViewType\n */\nexport default class DataType extends ViewType {\n  static typeName = 'data';\n\n  /**\n   * The default ref. This references the root of a passed in value (aka, the value itself).\n   */\n  static defaultRef = new ImmutableRef('');\n\n  /**\n   * Parses the `ref` option into a {@Ref} type.\n   * @return {Immutable.Map} The parsed options.\n   */\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('defaultValue', field => field && parseField(field))\n      .update('ref', this.parseOneOrMany(parseRef));\n  }\n\n  constructor(options) {\n    super(options);\n    this.options = this.options\n      .update('ref', this.constructor.parseOneOrMany(parseRef));\n  }\n\n  initialize(renderData) {\n    const {field, value} = this.getFieldAndValue(renderData);\n    if (field && field.initialize) {\n      field.initialize(value, renderData.options);\n    }\n  }\n\n  /**\n   * Returns the reference to the underlying data. Defaults to an empty \n   * @return {Ref}\n   */\n  getRef() {\n    const refs = this.options.get('ref') || this.constructor.defaultRef;\n    if (List.isList(refs)) {\n      return refs;\n    } else {\n      return List([refs]);\n    }\n  }\n\n  /**\n   * Returns whether the underlying data type should be editable or not.\n   * Defaults to `true`.\n   * @return {bool} `true` if editable.\n   */\n  isEditable() {\n    const editable = this.options.get('editable');\n    return typeof editable == 'undefined' ?\n      true :\n      !!editable;\n  }\n\n  /**\n   * @return {string} A placeholder associated with the view.\n   */\n  getPlaceholder() {\n    return this.options.get('placeholder') || '';\n  }\n\n  /**\n   * @return {ViewType} A default value encoded as a view type.\n   */\n  getDefaultValue() {\n    return this.options.get('defaultValue');\n  }\n\n  /**\n   * @param {RenderData} renderData - The render data to get the value of.\n   * @return {object} The underlying value of the data type.\n   */\n  getValue(renderData) {\n    return this.getFieldAndValue(renderData).value;\n  }\n\n  /**\n   * @return {object} The undeflying value of the data type formatted for human consumption.\n   */\n  getDisplay(renderData) {\n    const {field, value} = this.getFieldAndValue(renderData);\n    return field\n      ? field.getDisplay(value, renderData.options)\n      : '';\n  }\n\n  /**\n   * @return {DataType} The underlying data type.\n   */\n  getField(renderData) {\n    return renderData.dataType.getField(this.getRef(), renderData.options);\n  }\n\n  /**\n   * Returns the field and value of the underlying data type.\n   * @return {object}\n   */\n  getFieldAndValue(renderData) {\n    const {dataType, dataValue} = renderData;\n    const {field, value} = dataType.getFieldAndValue(dataValue, this.getRef(), renderData.options);\n    const defaultValueType = this.getDefaultValue();\n    if (field && !field.hasValue(value) && defaultValueType) {\n      const defaultValue = defaultValueType.getValue(renderData);\n      return {\n        field,\n        value: defaultValue\n      };\n    }\n    return {field, value};\n  }\n\n  /**\n   * Filters the value by calling the underlying field's filter function. If\n   * the field is not found, call the super's filter function instead.\n   */\n  filter(filterValue, rowValue, dataType) {\n    const field = dataType.getField(this.getRef());\n    if (!field) {\n      return super.filter(filterValue, rowValue, row, dataType);\n    }\n\n    return field.filter(filterValue, rowValue);\n  }\n}\n\n",
@@ -8305,7 +8251,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 368,
+    "__docId__": 363,
     "kind": "class",
     "name": "DataType",
     "memberof": "src/types/view/data/index.js",
@@ -8323,7 +8269,7 @@
     ]
   },
   {
-    "__docId__": 369,
+    "__docId__": 364,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8340,7 +8286,7 @@
     }
   },
   {
-    "__docId__": 370,
+    "__docId__": 365,
     "kind": "member",
     "name": "defaultRef",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8356,7 +8302,7 @@
     }
   },
   {
-    "__docId__": 371,
+    "__docId__": 366,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8391,7 +8337,7 @@
     ]
   },
   {
-    "__docId__": 372,
+    "__docId__": 367,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8405,7 +8351,7 @@
     "undocument": true
   },
   {
-    "__docId__": 373,
+    "__docId__": 368,
     "kind": "member",
     "name": "options",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8422,7 +8368,7 @@
     }
   },
   {
-    "__docId__": 374,
+    "__docId__": 369,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8445,7 +8391,7 @@
     "return": null
   },
   {
-    "__docId__": 375,
+    "__docId__": 370,
     "kind": "method",
     "name": "getRef",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8467,7 +8413,7 @@
     "params": []
   },
   {
-    "__docId__": 376,
+    "__docId__": 371,
     "kind": "method",
     "name": "isEditable",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8489,7 +8435,7 @@
     "params": []
   },
   {
-    "__docId__": 377,
+    "__docId__": 372,
     "kind": "method",
     "name": "getPlaceholder",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8511,7 +8457,7 @@
     "params": []
   },
   {
-    "__docId__": 378,
+    "__docId__": 373,
     "kind": "method",
     "name": "getDefaultValue",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8533,7 +8479,7 @@
     "params": []
   },
   {
-    "__docId__": 379,
+    "__docId__": 374,
     "kind": "method",
     "name": "getValue",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8566,7 +8512,7 @@
     }
   },
   {
-    "__docId__": 380,
+    "__docId__": 375,
     "kind": "method",
     "name": "getDisplay",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8595,7 +8541,7 @@
     ]
   },
   {
-    "__docId__": 381,
+    "__docId__": 376,
     "kind": "method",
     "name": "getField",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8624,7 +8570,7 @@
     ]
   },
   {
-    "__docId__": 382,
+    "__docId__": 377,
     "kind": "method",
     "name": "getFieldAndValue",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8653,7 +8599,7 @@
     ]
   },
   {
-    "__docId__": 383,
+    "__docId__": 378,
     "kind": "method",
     "name": "filter",
     "memberof": "src/types/view/data/index.js~DataType",
@@ -8691,7 +8637,7 @@
     }
   },
   {
-    "__docId__": 384,
+    "__docId__": 379,
     "kind": "file",
     "name": "src/types/view/data/link.js",
     "content": "import DataType from './';\n\n/**\n * @extends src/types/view/data/index.js~DataType\n */\nexport default class LinkType extends DataType {\n  static typeName = 'link';\n}\n\n",
@@ -8702,7 +8648,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 385,
+    "__docId__": 380,
     "kind": "class",
     "name": "LinkType",
     "memberof": "src/types/view/data/link.js",
@@ -8720,7 +8666,7 @@
     ]
   },
   {
-    "__docId__": 386,
+    "__docId__": 381,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/data/link.js~LinkType",
@@ -8737,7 +8683,7 @@
     }
   },
   {
-    "__docId__": 387,
+    "__docId__": 382,
     "kind": "file",
     "name": "src/types/view/data/number.js",
     "content": "import DataType from './';\n\n/**\n * @extends src/types/view/data/index.js~DataType\n */\nexport default class NumberType extends DataType {\n  static typeName = 'number';\n}\n\n",
@@ -8748,7 +8694,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 388,
+    "__docId__": 383,
     "kind": "class",
     "name": "NumberType",
     "memberof": "src/types/view/data/number.js",
@@ -8766,7 +8712,7 @@
     ]
   },
   {
-    "__docId__": 389,
+    "__docId__": 384,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/data/number.js~NumberType",
@@ -8783,7 +8729,7 @@
     }
   },
   {
-    "__docId__": 390,
+    "__docId__": 385,
     "kind": "file",
     "name": "src/types/view/data/percent.js",
     "content": "import DataType from './';\n\n/**\n * @extends src/types/view/data/index.js~DataType\n */\nexport default class PercentType extends DataType {\n  static typeName = 'percent';\n\n  getFieldAndValue(renderData) {\n    const {field, value} = super.getFieldAndValue(renderData);\n    return {\n      field,\n      value: value === null ?\n        null :\n        value * 100\n    };\n  }\n\n  getDisplay(renderData) {\n    const value = this.getValue(renderData);\n    return value === null ?\n      '' :\n      `${value}%`;\n  }\n\n  parseInput(value) {\n    return value === null ?\n      null :\n      value / 100;\n  }\n}\n\n",
@@ -8794,7 +8740,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 391,
+    "__docId__": 386,
     "kind": "class",
     "name": "PercentType",
     "memberof": "src/types/view/data/percent.js",
@@ -8812,7 +8758,7 @@
     ]
   },
   {
-    "__docId__": 392,
+    "__docId__": 387,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/data/percent.js~PercentType",
@@ -8829,7 +8775,7 @@
     }
   },
   {
-    "__docId__": 393,
+    "__docId__": 388,
     "kind": "method",
     "name": "getFieldAndValue",
     "memberof": "src/types/view/data/percent.js~PercentType",
@@ -8856,7 +8802,7 @@
     }
   },
   {
-    "__docId__": 394,
+    "__docId__": 389,
     "kind": "method",
     "name": "getDisplay",
     "memberof": "src/types/view/data/percent.js~PercentType",
@@ -8883,7 +8829,7 @@
     }
   },
   {
-    "__docId__": 395,
+    "__docId__": 390,
     "kind": "method",
     "name": "parseInput",
     "memberof": "src/types/view/data/percent.js~PercentType",
@@ -8910,7 +8856,7 @@
     }
   },
   {
-    "__docId__": 396,
+    "__docId__": 391,
     "kind": "file",
     "name": "src/types/view/data/table.js",
     "content": "import DataType from './';\n\n/**\n * @extends src/types/view/data/index.js~DataType\n */\nexport default class TableType extends DataType {\n  static typeName = 'table';\n\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('columns', columns => columns && columns\n        .map(parseField)\n      );\n  }\n\n  getColumns() {\n    return this.options.get('columns');\n  }\n}\n\n",
@@ -8921,7 +8867,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 397,
+    "__docId__": 392,
     "kind": "class",
     "name": "TableType",
     "memberof": "src/types/view/data/table.js",
@@ -8939,7 +8885,7 @@
     ]
   },
   {
-    "__docId__": 398,
+    "__docId__": 393,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/data/table.js~TableType",
@@ -8956,7 +8902,7 @@
     }
   },
   {
-    "__docId__": 399,
+    "__docId__": 394,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/data/table.js~TableType",
@@ -8989,7 +8935,7 @@
     }
   },
   {
-    "__docId__": 400,
+    "__docId__": 395,
     "kind": "method",
     "name": "getColumns",
     "memberof": "src/types/view/data/table.js~TableType",
@@ -9009,7 +8955,7 @@
     }
   },
   {
-    "__docId__": 401,
+    "__docId__": 396,
     "kind": "file",
     "name": "src/types/view/data/text.js",
     "content": "import DataType from './';\n\n/**\n * @extends src/types/view/data/index.js~DataType\n */\nexport default class TextType extends DataType {\n  static typeName = 'text';\n}\n\n",
@@ -9020,7 +8966,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 402,
+    "__docId__": 397,
     "kind": "class",
     "name": "TextType",
     "memberof": "src/types/view/data/text.js",
@@ -9038,7 +8984,7 @@
     ]
   },
   {
-    "__docId__": 403,
+    "__docId__": 398,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/data/text.js~TextType",
@@ -9055,7 +9001,7 @@
     }
   },
   {
-    "__docId__": 404,
+    "__docId__": 399,
     "kind": "file",
     "name": "src/types/view/display/grid.js",
     "content": "import {List} from 'immutable';\n\nimport {valueRenderers} from '~/renderers';\n\nimport DisplayType from './';\n\n/**\n * @extends DisplayType\n */\nexport default class GridType extends DisplayType {\n  static typeName = 'grid';\n\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('children', children => children\n        .map(this.parseOneOrMany(parseField))\n      );\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData, this.getChildren()\n      .flatten(true)\n    );\n  }\n\n  getOrientation() {\n    return this.options.get('orientation') || 'vertical';\n  }\n\n  getChildren() {\n    return this.options.get('children');\n  }\n\n  getDisplay(renderData) {\n    // TODO: Refine the shit out of this.\n    return this.getChildren()\n      .map(viewType => List.isList(viewType) ? (\n        viewType\n          .map(viewType =>\n            valueRenderers.getDisplay(viewType, renderData)\n          )\n      ) : (\n        valueRenderers.getDisplay(viewType, renderData)\n      ))\n      .filter(value => value)\n      .join(', ');\n  }\n}\n\n",
@@ -9066,7 +9012,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 405,
+    "__docId__": 400,
     "kind": "class",
     "name": "GridType",
     "memberof": "src/types/view/display/grid.js",
@@ -9084,7 +9030,7 @@
     ]
   },
   {
-    "__docId__": 406,
+    "__docId__": 401,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/display/grid.js~GridType",
@@ -9101,7 +9047,7 @@
     }
   },
   {
-    "__docId__": 407,
+    "__docId__": 402,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/display/grid.js~GridType",
@@ -9134,7 +9080,7 @@
     }
   },
   {
-    "__docId__": 408,
+    "__docId__": 403,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/display/grid.js~GridType",
@@ -9157,7 +9103,7 @@
     "return": null
   },
   {
-    "__docId__": 409,
+    "__docId__": 404,
     "kind": "method",
     "name": "getOrientation",
     "memberof": "src/types/view/display/grid.js~GridType",
@@ -9177,7 +9123,7 @@
     }
   },
   {
-    "__docId__": 410,
+    "__docId__": 405,
     "kind": "method",
     "name": "getChildren",
     "memberof": "src/types/view/display/grid.js~GridType",
@@ -9197,7 +9143,7 @@
     }
   },
   {
-    "__docId__": 411,
+    "__docId__": 406,
     "kind": "method",
     "name": "getDisplay",
     "memberof": "src/types/view/display/grid.js~GridType",
@@ -9224,7 +9170,7 @@
     }
   },
   {
-    "__docId__": 412,
+    "__docId__": 407,
     "kind": "file",
     "name": "src/types/view/display/header.js",
     "content": "import DisplayType from './';\n\n/**\n * @extends DisplayType\n */\nexport default class HeaderType extends DisplayType {\n  static typeName = 'header';\n}\n\n",
@@ -9235,7 +9181,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 413,
+    "__docId__": 408,
     "kind": "class",
     "name": "HeaderType",
     "memberof": "src/types/view/display/header.js",
@@ -9253,7 +9199,7 @@
     ]
   },
   {
-    "__docId__": 414,
+    "__docId__": 409,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/display/header.js~HeaderType",
@@ -9270,7 +9216,7 @@
     }
   },
   {
-    "__docId__": 415,
+    "__docId__": 410,
     "kind": "file",
     "name": "src/types/view/display/index.js",
     "content": "import ViewType from '../';\n\n/**\n * @extends DisplayType\n */\nexport default class DisplayType extends ViewType {\n  static typeName = '';\n}\n\n",
@@ -9281,7 +9227,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 416,
+    "__docId__": 411,
     "kind": "class",
     "name": "DisplayType",
     "memberof": "src/types/view/display/index.js",
@@ -9299,7 +9245,7 @@
     ]
   },
   {
-    "__docId__": 417,
+    "__docId__": 412,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/display/index.js~DisplayType",
@@ -9316,7 +9262,7 @@
     }
   },
   {
-    "__docId__": 418,
+    "__docId__": 413,
     "kind": "file",
     "name": "src/types/view/display/static.js",
     "content": "import DisplayType from './';\n\n/**\n * @extends DisplayType\n */\nexport default class StaticType extends DisplayType {\n  static typeName = 'static';\n\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('display', parseField);\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData, this.getDisplay());\n  }\n\n  getDisplay() {\n    return this.options.get('display');\n  }\n}\n\n",
@@ -9327,7 +9273,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 419,
+    "__docId__": 414,
     "kind": "class",
     "name": "StaticType",
     "memberof": "src/types/view/display/static.js",
@@ -9345,7 +9291,7 @@
     ]
   },
   {
-    "__docId__": 420,
+    "__docId__": 415,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/display/static.js~StaticType",
@@ -9362,7 +9308,7 @@
     }
   },
   {
-    "__docId__": 421,
+    "__docId__": 416,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/display/static.js~StaticType",
@@ -9395,7 +9341,7 @@
     }
   },
   {
-    "__docId__": 422,
+    "__docId__": 417,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/display/static.js~StaticType",
@@ -9418,7 +9364,7 @@
     "return": null
   },
   {
-    "__docId__": 423,
+    "__docId__": 418,
     "kind": "method",
     "name": "getDisplay",
     "memberof": "src/types/view/display/static.js~StaticType",
@@ -9438,7 +9384,7 @@
     }
   },
   {
-    "__docId__": 424,
+    "__docId__": 419,
     "kind": "file",
     "name": "src/types/view/display/tabs.js",
     "content": "import {Map} from 'immutable';\n\nimport ViewType from '../';\nimport DisplayType from './';\n\n/**\n * @extends DisplayType\n */\nexport default class TabsType extends DisplayType {\n  static typeName = 'tabs';\n\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('tabs', tabs => tabs\n        .map(tab => tab\n          .update('label', label => Map.isMap(label) ?\n            parseField(label) :\n            label\n          )\n          .update('display', parseField)\n        )\n      );\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData, this.getTabs()\n      .map(tab => tab.get('display'))\n    );\n\n    super.initialize(renderData, this.getTabs()\n      .filter(tab => tab.get('label') instanceof ViewType)\n      .map(tab => tab.get('label'))\n    );\n  }\n\n  getTabs() {\n    return this.options.get('tabs');\n  }\n\n  getTabLabel(tab, renderData) {\n    return this.getLabel(renderData, tab.get('label'));\n  }\n}\n\n",
@@ -9449,7 +9395,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 425,
+    "__docId__": 420,
     "kind": "class",
     "name": "TabsType",
     "memberof": "src/types/view/display/tabs.js",
@@ -9467,7 +9413,7 @@
     ]
   },
   {
-    "__docId__": 426,
+    "__docId__": 421,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/display/tabs.js~TabsType",
@@ -9484,7 +9430,7 @@
     }
   },
   {
-    "__docId__": 427,
+    "__docId__": 422,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/display/tabs.js~TabsType",
@@ -9517,7 +9463,7 @@
     }
   },
   {
-    "__docId__": 428,
+    "__docId__": 423,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/display/tabs.js~TabsType",
@@ -9540,7 +9486,7 @@
     "return": null
   },
   {
-    "__docId__": 429,
+    "__docId__": 424,
     "kind": "method",
     "name": "getTabs",
     "memberof": "src/types/view/display/tabs.js~TabsType",
@@ -9560,7 +9506,7 @@
     }
   },
   {
-    "__docId__": 430,
+    "__docId__": 425,
     "kind": "method",
     "name": "getTabLabel",
     "memberof": "src/types/view/display/tabs.js~TabsType",
@@ -9593,7 +9539,7 @@
     }
   },
   {
-    "__docId__": 431,
+    "__docId__": 426,
     "kind": "file",
     "name": "src/types/view/index.js",
     "content": "import Immutable, {List, Map} from 'immutable';\n\nimport {valueRenderers} from '~/renderers';\n\nimport Type from '../type';\n\nlet viewIds = 0;\n\n/**\n * The base view type. Every registered view type must eventually inherit from this.\n */\nexport default class ViewType extends Type {\n  static typeName = '';\n\n  static parseOptions(field, parseField) {\n    return field\n      .remove('type')\n      .update('label', label => Map.isMap(label) ?\n        parseField(label) :\n        label\n      );\n  }\n\n  /**\n   * Base class implementation that children can call such as:\n   *   `super.initialize(this.getChildren())`\n   * If a child does not override this, it means that this function will be\n   * called with no arguments, which is a no-op.\n   *\n   * @param {RenderData} renderData - the render data to initialize the type to.\n   * @param {ViewType|List<ViewType>} children - a single view type or a list of view types to call initialize on\n   */\n  initialize(renderData, children) {\n    if (List.isList(children)) {\n      children\n        .forEach(child => valueRenderers\n          .initialize(child, renderData)\n        );\n    } else if (children) {\n      valueRenderers.initialize(children, renderData);\n    }\n\n    const label = this.options.get('label');\n    if (label instanceof ViewType) {\n      valueRenderers.initialize(label, renderData);\n    }\n  }\n\n  /**\n   * Creates a new instance of a view type.\n   * @param {object} options - Options to apply to this instance.\n   */\n  constructor(options) {\n    super();\n    this.options = Immutable.fromJS(options || {});\n    this.uniqueId = viewIds++;\n  }\n\n  // TODO: Put default width / min width as overrideable by each sub view type.\n  // TODO: Separate form / table width options so that you can specify a single\n  // view for each.\n  getWidth() {\n    return this.options.get('width');\n  }\n\n  getMinWidth() {\n    return this.options.has('width')\n      ? this.options.get('minWidth')\n      : this.options.get('minWidth', 180);\n  }\n\n  getDefaultFlex() {\n    return this.options.has('width') ? 0 : 1;\n  }\n\n  getFlexGrow() {\n    return this.options.get('flexGrow', this.getDefaultFlex());\n  }\n\n  getFlexShrink() {\n    return this.options.get('flexShrink', this.getDefaultFlex());\n  }\n\n  /**\n   * Returns a label using 1 of 3 options. If the internal label is a basic\n   * value, return it. If it is a view type, get its associated display value.\n   * If it is a function, call the function with the render data.\n   *\n   * @param {RenderData} renderData - The data to maybe generate the label from.\n   * @param {ViewType|string} secondLabel - A second label to use in place of the built in label.\n   * @return {string} They label, if any, associated with the view.\n   */\n  getLabel(renderData, secondLabel) {\n    const label = secondLabel || this.options.get('label') || '';\n    if (label instanceof ViewType) {\n      return label.getDisplay(renderData);\n    } else if (typeof label == 'function') {\n      return label(renderData);\n    }\n    return label;\n  }\n\n  /**\n   * Returns display information for table based displays.\n   * Currently, the only display used is react-virtualized, so the options are\n   * entirely based on that library.\n   *\n   * For a view type to be used as a table column, it must have a string label.\n   * TODO: Consider allowing any labels, but pass in \"dummy\" render data that\n   * always returns empty (or default) values. In the current setup, this would\n   * work by just passing the data type and using `undefined` for the data\n   * value.\n   *\n   * If a width is supplied to the view type, the default shrink / grow factor\n   * is 0. Otherwise, the default factor is 1 and the default width is 100.\n   *\n   * @return {object}\n   */\n  getTableProps(label) {\n    label = typeof label != 'undefined' ?\n      label :\n      (this.options.get('label') || '');\n\n    if (typeof label != 'string') {\n      throw new Error(`Error ${this.constructor.name}: labels must only be plain strings when used with tables.`);\n    }\n\n    return {\n      key: label,\n      viewType: this,\n      label: label,\n      dataKey: label,\n      width: this.getWidth() || 140,\n      minWidth: this.getMinWidth(),\n      flexGrow: this.getFlexGrow(),\n      flexShrink: this.getFlexShrink(),\n      filterType: 'equals',\n      filter: this.filter.bind(this)\n    };\n  }\n\n  filter(filterValue, rowValue) {\n    return filterValue == rowValue;\n  }\n\n  asType(Type) {\n    const newType = new this.constructor(this.options);\n    newType.constructor = Type;\n    return newType;\n  }\n}\n\n",
@@ -9604,7 +9550,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 432,
+    "__docId__": 427,
     "kind": "variable",
     "name": "viewIds",
     "memberof": "src/types/view/index.js",
@@ -9625,7 +9571,7 @@
     "ignore": true
   },
   {
-    "__docId__": 433,
+    "__docId__": 428,
     "kind": "class",
     "name": "ViewType",
     "memberof": "src/types/view/index.js",
@@ -9643,7 +9589,7 @@
     ]
   },
   {
-    "__docId__": 434,
+    "__docId__": 429,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9660,7 +9606,7 @@
     }
   },
   {
-    "__docId__": 435,
+    "__docId__": 430,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9693,7 +9639,7 @@
     }
   },
   {
-    "__docId__": 436,
+    "__docId__": 431,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9730,7 +9676,7 @@
     "return": null
   },
   {
-    "__docId__": 437,
+    "__docId__": 432,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9755,7 +9701,7 @@
     ]
   },
   {
-    "__docId__": 438,
+    "__docId__": 433,
     "kind": "member",
     "name": "options",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9772,7 +9718,7 @@
     }
   },
   {
-    "__docId__": 439,
+    "__docId__": 434,
     "kind": "member",
     "name": "uniqueId",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9789,7 +9735,7 @@
     }
   },
   {
-    "__docId__": 440,
+    "__docId__": 435,
     "kind": "method",
     "name": "getWidth",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9809,7 +9755,7 @@
     }
   },
   {
-    "__docId__": 441,
+    "__docId__": 436,
     "kind": "method",
     "name": "getMinWidth",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9829,7 +9775,7 @@
     }
   },
   {
-    "__docId__": 442,
+    "__docId__": 437,
     "kind": "method",
     "name": "getDefaultFlex",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9849,7 +9795,7 @@
     }
   },
   {
-    "__docId__": 443,
+    "__docId__": 438,
     "kind": "method",
     "name": "getFlexGrow",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9869,7 +9815,7 @@
     }
   },
   {
-    "__docId__": 444,
+    "__docId__": 439,
     "kind": "method",
     "name": "getFlexShrink",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9889,7 +9835,7 @@
     }
   },
   {
-    "__docId__": 445,
+    "__docId__": 440,
     "kind": "method",
     "name": "getLabel",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9933,7 +9879,7 @@
     }
   },
   {
-    "__docId__": 446,
+    "__docId__": 441,
     "kind": "method",
     "name": "getTableProps",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9962,7 +9908,7 @@
     ]
   },
   {
-    "__docId__": 447,
+    "__docId__": 442,
     "kind": "method",
     "name": "filter",
     "memberof": "src/types/view/index.js~ViewType",
@@ -9995,7 +9941,7 @@
     }
   },
   {
-    "__docId__": 448,
+    "__docId__": 443,
     "kind": "method",
     "name": "asType",
     "memberof": "src/types/view/index.js~ViewType",
@@ -10022,7 +9968,7 @@
     }
   },
   {
-    "__docId__": 449,
+    "__docId__": 444,
     "kind": "file",
     "name": "src/types/view/utils.js",
     "content": "export function compareAll(cmp) {\n  return args => {\n    const previousValue = args.reduce((previousValue, value) => {\n      if (typeof previousValue == 'undefined') {\n        return undefined;\n      }\n      return cmp(previousValue, value) ?\n        value : undefined;\n    });\n\n    return typeof previousValue == 'undefined' ?\n      false : true;\n  };\n}\n\nexport function textDisplay(value) {\n  return value || '';\n}\n\nexport function numericalDisplay(value) {\n  return Number.isFinite(value) ?\n    value :\n    '';\n}\n\nexport function truthyDisplay(value) {\n  return value ?\n    'Yes' :\n    'No';\n}\n\n",
@@ -10033,7 +9979,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 450,
+    "__docId__": 445,
     "kind": "function",
     "name": "compareAll",
     "memberof": "src/types/view/utils.js",
@@ -10063,7 +10009,7 @@
     }
   },
   {
-    "__docId__": 451,
+    "__docId__": 446,
     "kind": "function",
     "name": "textDisplay",
     "memberof": "src/types/view/utils.js",
@@ -10093,7 +10039,7 @@
     }
   },
   {
-    "__docId__": 452,
+    "__docId__": 447,
     "kind": "function",
     "name": "numericalDisplay",
     "memberof": "src/types/view/utils.js",
@@ -10123,7 +10069,7 @@
     }
   },
   {
-    "__docId__": 453,
+    "__docId__": 448,
     "kind": "function",
     "name": "truthyDisplay",
     "memberof": "src/types/view/utils.js",
@@ -10153,7 +10099,7 @@
     }
   },
   {
-    "__docId__": 454,
+    "__docId__": 449,
     "kind": "file",
     "name": "src/types/view/value/computed.js",
     "content": "import {compareAll, numericalDisplay, textDisplay, truthyDisplay} from '../utils';\n\nimport {valueRenderers} from '~/renderers';\n\nimport ValueType from './';\n\n/**\n * @extends ValueType\n */\nexport default class ComputedType extends ValueType {\n  static typeName = 'computed';\n\n  static ops = {\n    '+': args => args.reduce((a, b) => a + b) || 0,\n    '-': args => args.reduce((a, b) => a - b) || 0,\n    '*': args => args.reduce((a, b) => a * b) || 0,\n    '/': args => args.reduce((a, b) => a / b) || 0,\n    '^': args => args.reduce((a, b) => Math.pow(a, b), 1),\n    '!': args => !args.get(0),\n    '>': compareAll((a, b) => a > b),\n    '<': compareAll((a, b) => a < b),\n    '>=': compareAll((a, b) => a >= b),\n    '<=': compareAll((a, b) => a <= b),\n    '=': compareAll((a, b) => a == b),\n    '!=': compareAll((a, b) => a != b),\n    'concat': args => args\n      .map((text = '') => (text !== null) ? `${text}` : '')\n      .join('')\n  };\n\n  static opDisplays = {\n    '+': numericalDisplay,\n    '-': numericalDisplay,\n    '*': numericalDisplay,\n    '/': numericalDisplay,\n    '^': numericalDisplay,\n    '!': truthyDisplay,\n    '>': truthyDisplay,\n    '<': truthyDisplay,\n    '>=': truthyDisplay,\n    '<=': truthyDisplay,\n    '=': truthyDisplay,\n    '!=': truthyDisplay,\n    'concat': textDisplay\n  };\n\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('args', this.parseOneOrMany(parseField));\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData, this.getArgs());\n  }\n\n  getOp() {\n    return this.options.get('op');\n  }\n\n  getArgs() {\n    return this.options.get('args');\n  }\n\n  getValue(renderData) {\n    const op = this.getOp();\n    const values = op == 'concat'\n      ? this.getChildDisplays(renderData, this.getArgs())\n      : this.getChildValues(renderData, this.getArgs());\n    const func = ComputedType.ops[op];\n    return func(values);\n  }\n\n  getDisplay(renderData) {\n    const value = this.getValue(renderData);\n    const func = ComputedType.opDisplays[this.getOp()];\n    return func(value);\n  }\n}\n\n",
@@ -10164,7 +10110,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 455,
+    "__docId__": 450,
     "kind": "class",
     "name": "ComputedType",
     "memberof": "src/types/view/value/computed.js",
@@ -10182,7 +10128,7 @@
     ]
   },
   {
-    "__docId__": 456,
+    "__docId__": 451,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/value/computed.js~ComputedType",
@@ -10199,7 +10145,7 @@
     }
   },
   {
-    "__docId__": 457,
+    "__docId__": 452,
     "kind": "member",
     "name": "ops",
     "memberof": "src/types/view/value/computed.js~ComputedType",
@@ -10216,7 +10162,7 @@
     }
   },
   {
-    "__docId__": 458,
+    "__docId__": 453,
     "kind": "member",
     "name": "opDisplays",
     "memberof": "src/types/view/value/computed.js~ComputedType",
@@ -10233,7 +10179,7 @@
     }
   },
   {
-    "__docId__": 459,
+    "__docId__": 454,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/value/computed.js~ComputedType",
@@ -10266,7 +10212,7 @@
     }
   },
   {
-    "__docId__": 460,
+    "__docId__": 455,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/value/computed.js~ComputedType",
@@ -10289,7 +10235,7 @@
     "return": null
   },
   {
-    "__docId__": 461,
+    "__docId__": 456,
     "kind": "method",
     "name": "getOp",
     "memberof": "src/types/view/value/computed.js~ComputedType",
@@ -10309,7 +10255,7 @@
     }
   },
   {
-    "__docId__": 462,
+    "__docId__": 457,
     "kind": "method",
     "name": "getArgs",
     "memberof": "src/types/view/value/computed.js~ComputedType",
@@ -10329,7 +10275,7 @@
     }
   },
   {
-    "__docId__": 463,
+    "__docId__": 458,
     "kind": "method",
     "name": "getValue",
     "memberof": "src/types/view/value/computed.js~ComputedType",
@@ -10356,7 +10302,7 @@
     }
   },
   {
-    "__docId__": 464,
+    "__docId__": 459,
     "kind": "method",
     "name": "getDisplay",
     "memberof": "src/types/view/value/computed.js~ComputedType",
@@ -10383,7 +10329,7 @@
     }
   },
   {
-    "__docId__": 465,
+    "__docId__": 460,
     "kind": "file",
     "name": "src/types/view/value/condition.js",
     "content": "import {compareAll} from '../utils';\n\nimport {valueRenderers} from '~/renderers';\n\nimport ValueType from './';\n\n/**\n * @extends ValueType\n */\nexport default class ConditionType extends ValueType {\n  static typeName = 'condition';\n\n  static ops = {\n    '=': compareAll((a, b) => a == b),\n    '!=': compareAll((a, b) => a != b),\n    '>': compareAll((a, b) => a > b),\n    '>=': compareAll((a, b) => a >= b),\n    '<': compareAll((a, b) => a < b),\n    '<=': compareAll((a, b) => a <= b),\n    '!': args => !args.get(0),\n    '&&': args => args.every(arg => !!arg),\n    '||': args => args.some(arg => !!arg),\n    'hasValue': (args, rawArgs, renderData) => {\n      const {field, value} = rawArgs.get(0).getFieldAndValue(renderData);\n      return field && field.hasValue(value);\n    }\n  };\n\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('args', this.parseOneOrMany(parseField))\n      .update('trueType', parseField)\n      .update('falseType', field => field && parseField(field));\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData, this.getArgs());\n    super.initialize(renderData, this.getTrueType());\n    super.initialize(renderData, this.getFalseType());\n  }\n\n  getOp() {\n    return this.options.get('op');\n  }\n\n  getArgs() {\n    return this.options.get('args');\n  }\n\n  getTrueType() {\n    return this.options.get('trueType');\n  }\n\n  getFalseType() {\n    return this.options.get('falseType');\n  }\n\n  /**\n   * Returns true or false based on the input render data.\n   * @param {RenderData} renderData - The data to test.\n   * @return {bool} `true` if the render data matches the conditions in the options.\n   */\n  test(renderData) {\n    const rawArgs = this.getArgs()\n      .map(arg => valueRenderers.parseViewType(arg, renderData));\n    const func = ConditionType.ops[this.getOp()];\n    const values = this.getChildValues(renderData, rawArgs);\n    return func(values, rawArgs, renderData);\n  }\n\n  getValue(renderData) {\n    const trueType = this.getTrueType();\n    const falseType = this.getFalseType();\n\n    return this.test(renderData)\n      ? valueRenderers.getValue(trueType, renderData)\n      : falseType && valueRenderers.getValue(falseType, renderData);\n  }\n\n  getDisplay(renderData) {\n    const trueType = this.getTrueType();\n    const falseType = this.getFalseType();\n\n    return this.test(renderData)\n      ? valueRenderers.getDisplay(trueType, renderData)\n      : falseType && valueRenderers.getDisplay(falseType, renderData);\n  }\n}\n\n",
@@ -10394,7 +10340,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 466,
+    "__docId__": 461,
     "kind": "class",
     "name": "ConditionType",
     "memberof": "src/types/view/value/condition.js",
@@ -10412,7 +10358,7 @@
     ]
   },
   {
-    "__docId__": 467,
+    "__docId__": 462,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10429,7 +10375,7 @@
     }
   },
   {
-    "__docId__": 468,
+    "__docId__": 463,
     "kind": "member",
     "name": "ops",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10446,7 +10392,7 @@
     }
   },
   {
-    "__docId__": 469,
+    "__docId__": 464,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10479,7 +10425,7 @@
     }
   },
   {
-    "__docId__": 470,
+    "__docId__": 465,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10502,7 +10448,7 @@
     "return": null
   },
   {
-    "__docId__": 471,
+    "__docId__": 466,
     "kind": "method",
     "name": "getOp",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10522,7 +10468,7 @@
     }
   },
   {
-    "__docId__": 472,
+    "__docId__": 467,
     "kind": "method",
     "name": "getArgs",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10542,7 +10488,7 @@
     }
   },
   {
-    "__docId__": 473,
+    "__docId__": 468,
     "kind": "method",
     "name": "getTrueType",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10562,7 +10508,7 @@
     }
   },
   {
-    "__docId__": 474,
+    "__docId__": 469,
     "kind": "method",
     "name": "getFalseType",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10582,7 +10528,7 @@
     }
   },
   {
-    "__docId__": 475,
+    "__docId__": 470,
     "kind": "method",
     "name": "test",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10615,7 +10561,7 @@
     }
   },
   {
-    "__docId__": 476,
+    "__docId__": 471,
     "kind": "method",
     "name": "getValue",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10642,7 +10588,7 @@
     }
   },
   {
-    "__docId__": 477,
+    "__docId__": 472,
     "kind": "method",
     "name": "getDisplay",
     "memberof": "src/types/view/value/condition.js~ConditionType",
@@ -10669,7 +10615,7 @@
     }
   },
   {
-    "__docId__": 478,
+    "__docId__": 473,
     "kind": "file",
     "name": "src/types/view/value/function.js",
     "content": "import {List} from 'immutable';\nimport moment from 'moment';\n\nimport {numericalDisplay, textDisplay} from '../utils';\n\nimport ValueType from './';\n\n/**\n * @extends ValueType\n */\nexport default class FunctionType extends ValueType {\n  static typeName = 'function';\n\n  static fns = {\n    ceil: value => Math.ceil(value),\n    floor: value => Math.floor(value),\n    round: value => Math.round(value),\n\n    list: (...values) => List(values)\n      .filter(value => value),\n\n    formatDate: (value, format) => moment(value * 1000)\n      .format(format),\n\n    addDate: (value, dateString) => moment(value * 1000)\n      .add(...(dateString || '').split(' '))\n      .valueOf() / 1000,\n\n    countDays: (endTimes, startTimes, addOne = true) => startTimes\n      .map((startTime, index) => {\n        const rawEndTime = endTimes.get(index);\n        const endTime = (rawEndTime === null || typeof rawEndTime == 'undefined') ?\n          (Date.now() / 1000) :\n          endTimes.get(index);\n        return endTime - startTime;\n      })\n      .map(time => time / (60 * 60 * 24))\n      .map(days => Math.floor(days + (addOne ? 1 : 0)))\n      .reduce((totalDays, days) => totalDays + days, 0)\n  };\n\n  static fnDisplays = {\n    ceil: numericalDisplay,\n    floor: numericalDisplay,\n    round: numericalDisplay,\n    formatDate: textDisplay,\n    addDate: textDisplay,\n    countDays: numericalDisplay\n  };\n\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('args', List(), this.parseOneOrMany(parseField));\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData, this.getArgs());\n  }\n\n  getFn() {\n    return this.options.get('fn');\n  }\n\n  getArgs() {\n    return this.options.get('args');\n  }\n\n  getValue(renderData) {\n    const values = this.getChildValues(renderData, this.getArgs());\n    const func = FunctionType.fns[this.getFn()];\n    return func(...values.toArray());\n  }\n\n  getDisplay(renderData) {\n    const value = this.getValue(renderData);\n    const func = FunctionType.fnDisplays[this.getFn()];\n    return func(value);\n  }\n}\n\n",
@@ -10680,7 +10626,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 479,
+    "__docId__": 474,
     "kind": "class",
     "name": "FunctionType",
     "memberof": "src/types/view/value/function.js",
@@ -10698,7 +10644,7 @@
     ]
   },
   {
-    "__docId__": 480,
+    "__docId__": 475,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/value/function.js~FunctionType",
@@ -10715,7 +10661,7 @@
     }
   },
   {
-    "__docId__": 481,
+    "__docId__": 476,
     "kind": "member",
     "name": "fns",
     "memberof": "src/types/view/value/function.js~FunctionType",
@@ -10732,7 +10678,7 @@
     }
   },
   {
-    "__docId__": 482,
+    "__docId__": 477,
     "kind": "member",
     "name": "fnDisplays",
     "memberof": "src/types/view/value/function.js~FunctionType",
@@ -10749,7 +10695,7 @@
     }
   },
   {
-    "__docId__": 483,
+    "__docId__": 478,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/value/function.js~FunctionType",
@@ -10782,7 +10728,7 @@
     }
   },
   {
-    "__docId__": 484,
+    "__docId__": 479,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/value/function.js~FunctionType",
@@ -10805,7 +10751,7 @@
     "return": null
   },
   {
-    "__docId__": 485,
+    "__docId__": 480,
     "kind": "method",
     "name": "getFn",
     "memberof": "src/types/view/value/function.js~FunctionType",
@@ -10825,7 +10771,7 @@
     }
   },
   {
-    "__docId__": 486,
+    "__docId__": 481,
     "kind": "method",
     "name": "getArgs",
     "memberof": "src/types/view/value/function.js~FunctionType",
@@ -10845,7 +10791,7 @@
     }
   },
   {
-    "__docId__": 487,
+    "__docId__": 482,
     "kind": "method",
     "name": "getValue",
     "memberof": "src/types/view/value/function.js~FunctionType",
@@ -10872,7 +10818,7 @@
     }
   },
   {
-    "__docId__": 488,
+    "__docId__": 483,
     "kind": "method",
     "name": "getDisplay",
     "memberof": "src/types/view/value/function.js~FunctionType",
@@ -10899,7 +10845,7 @@
     }
   },
   {
-    "__docId__": 489,
+    "__docId__": 484,
     "kind": "file",
     "name": "src/types/view/value/index.js",
     "content": "import {List} from 'immutable';\n\nimport {valueRenderers} from '~/renderers';\n\nimport ViewType from '../';\n\n/**\n * @extends ViewType\n */\nexport default class ValueType extends ViewType {\n  static typeName = 'value';\n\n  /**\n   * Parses either a single or a list of children view types into their\n   * associated values.\n   * @param {RenderData} renderData - The render data to compute over.\n   * @param {ViewType|List.<ViewType>} children - The child or children to parse.\n   * @return {object} The computed data.\n   */\n  getChildValues(renderData, children) {\n    return List.isList(children) ?\n      children.map(child => valueRenderers.getValue(child, renderData)) :\n      valueRenderers.getValue(children, renderData);\n  }\n\n  getChildDisplays(renderData, children) {\n    return List.isList(children) ?\n      children.map(child => valueRenderers.getDisplay(child, renderData)) :\n      valueRenderers.getDisplay(children, renderData)\n  }\n\n  /**\n   * Returns the raw underlying value of this view type.\n   * @param {RenderData} renderData - The data to compute on.\n   * @return {object} The computed value.\n   */\n  getValue(renderData) {\n    return this.options.get('value', null);\n  }\n\n  /**\n   * Returns the underlying value of this view type in a human consumable form.\n   * @param {RenderData} renderData - The data to compute on.\n   * @return {object} The computed value.\n   */\n  getDisplay(renderData) {\n    return this.getValue(renderData);\n  }\n\n  filter(filterValue, rowValue) {\n    const filterString = `${filterValue}`.toLowerCase();\n    const rowString = `${rowValue}`.toLowerCase();\n    return rowString.indexOf(filterString) >= 0;\n  }\n}\n\n",
@@ -10910,7 +10856,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 490,
+    "__docId__": 485,
     "kind": "class",
     "name": "ValueType",
     "memberof": "src/types/view/value/index.js",
@@ -10928,7 +10874,7 @@
     ]
   },
   {
-    "__docId__": 491,
+    "__docId__": 486,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/value/index.js~ValueType",
@@ -10945,7 +10891,7 @@
     }
   },
   {
-    "__docId__": 492,
+    "__docId__": 487,
     "kind": "method",
     "name": "getChildValues",
     "memberof": "src/types/view/value/index.js~ValueType",
@@ -10989,7 +10935,7 @@
     }
   },
   {
-    "__docId__": 493,
+    "__docId__": 488,
     "kind": "method",
     "name": "getChildDisplays",
     "memberof": "src/types/view/value/index.js~ValueType",
@@ -11022,7 +10968,7 @@
     }
   },
   {
-    "__docId__": 494,
+    "__docId__": 489,
     "kind": "method",
     "name": "getValue",
     "memberof": "src/types/view/value/index.js~ValueType",
@@ -11055,7 +11001,7 @@
     }
   },
   {
-    "__docId__": 495,
+    "__docId__": 490,
     "kind": "method",
     "name": "getDisplay",
     "memberof": "src/types/view/value/index.js~ValueType",
@@ -11088,7 +11034,7 @@
     }
   },
   {
-    "__docId__": 496,
+    "__docId__": 491,
     "kind": "method",
     "name": "filter",
     "memberof": "src/types/view/value/index.js~ValueType",
@@ -11121,7 +11067,7 @@
     }
   },
   {
-    "__docId__": 497,
+    "__docId__": 492,
     "kind": "file",
     "name": "src/types/view/value/method.js",
     "content": "import {List} from 'immutable';\n\nimport {valueRenderers} from '~/renderers';\n\nimport ValueType from './';\n\n/**\n * @extends ValueType\n */\nexport default class MethodType extends ValueType {\n  static typeName = 'method';\n\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('obj', parseField)\n      .update('args', List(), this.parseOneOrMany(parseField));\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData, this.getArgs());\n    super.initialize(renderData, this.getObj());\n  }\n\n  getObj() {\n    return this.options.get('obj');\n  }\n\n  getMethod() {\n    return this.options.get('method');\n  }\n\n  getArgs() {\n    return this.options.get('args');\n  }\n\n  getValue(renderData) {\n    const obj = valueRenderers.getValue(this.getObj(), renderData);\n    if (!obj) {\n      return null;\n    }\n\n    const values = this.getChildValues(renderData, this.getArgs());\n    return obj[this.getMethod()](...values.toArray());\n  }\n}\n\n",
@@ -11132,7 +11078,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 498,
+    "__docId__": 493,
     "kind": "class",
     "name": "MethodType",
     "memberof": "src/types/view/value/method.js",
@@ -11150,7 +11096,7 @@
     ]
   },
   {
-    "__docId__": 499,
+    "__docId__": 494,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/value/method.js~MethodType",
@@ -11167,7 +11113,7 @@
     }
   },
   {
-    "__docId__": 500,
+    "__docId__": 495,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/value/method.js~MethodType",
@@ -11200,7 +11146,7 @@
     }
   },
   {
-    "__docId__": 501,
+    "__docId__": 496,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/value/method.js~MethodType",
@@ -11223,7 +11169,7 @@
     "return": null
   },
   {
-    "__docId__": 502,
+    "__docId__": 497,
     "kind": "method",
     "name": "getObj",
     "memberof": "src/types/view/value/method.js~MethodType",
@@ -11243,7 +11189,7 @@
     }
   },
   {
-    "__docId__": 503,
+    "__docId__": 498,
     "kind": "method",
     "name": "getMethod",
     "memberof": "src/types/view/value/method.js~MethodType",
@@ -11263,7 +11209,7 @@
     }
   },
   {
-    "__docId__": 504,
+    "__docId__": 499,
     "kind": "method",
     "name": "getArgs",
     "memberof": "src/types/view/value/method.js~MethodType",
@@ -11283,7 +11229,7 @@
     }
   },
   {
-    "__docId__": 505,
+    "__docId__": 500,
     "kind": "method",
     "name": "getValue",
     "memberof": "src/types/view/value/method.js~MethodType",
@@ -11310,7 +11256,7 @@
     }
   },
   {
-    "__docId__": 506,
+    "__docId__": 501,
     "kind": "file",
     "name": "src/types/view/value/property.js",
     "content": "import {valueRenderers} from '~/renderers';\n\nimport ValueType from './';\n\n/**\n * @extends ValueType\n */\nexport default class PropertyType extends ValueType {\n  static typeName = 'property';\n\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('obj', parseField);\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData, this.getObj());\n  }\n\n  getObj() {\n    return this.options.get('obj');\n  }\n\n  getProperty() {\n    return this.options.get('property');\n  }\n\n  getValue(renderData) {\n    const obj = valueRenderers.getValue(this.getObj(), renderData);\n    return obj ?\n      obj[this.getProperty()] :\n      null;\n  }\n}\n\n",
@@ -11321,7 +11267,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 507,
+    "__docId__": 502,
     "kind": "class",
     "name": "PropertyType",
     "memberof": "src/types/view/value/property.js",
@@ -11339,7 +11285,7 @@
     ]
   },
   {
-    "__docId__": 508,
+    "__docId__": 503,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/value/property.js~PropertyType",
@@ -11356,7 +11302,7 @@
     }
   },
   {
-    "__docId__": 509,
+    "__docId__": 504,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/value/property.js~PropertyType",
@@ -11389,7 +11335,7 @@
     }
   },
   {
-    "__docId__": 510,
+    "__docId__": 505,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/value/property.js~PropertyType",
@@ -11412,7 +11358,7 @@
     "return": null
   },
   {
-    "__docId__": 511,
+    "__docId__": 506,
     "kind": "method",
     "name": "getObj",
     "memberof": "src/types/view/value/property.js~PropertyType",
@@ -11432,7 +11378,7 @@
     }
   },
   {
-    "__docId__": 512,
+    "__docId__": 507,
     "kind": "method",
     "name": "getProperty",
     "memberof": "src/types/view/value/property.js~PropertyType",
@@ -11452,7 +11398,7 @@
     }
   },
   {
-    "__docId__": 513,
+    "__docId__": 508,
     "kind": "method",
     "name": "getValue",
     "memberof": "src/types/view/value/property.js~PropertyType",
@@ -11479,7 +11425,7 @@
     }
   },
   {
-    "__docId__": 514,
+    "__docId__": 509,
     "kind": "file",
     "name": "src/types/view/value/switch.js",
     "content": "import {valueRenderers} from '~/renderers';\n\nimport ValueType from './';\n\n/**\n * @extends ValueType\n */\nexport default class SwitchType extends ValueType {\n  static typeName = 'switch';\n\n  static parseOptions(field, parseField) {\n    return super.parseOptions(field, parseField)\n      .update('switch', parseField)\n      .update('cases', cases => cases\n        .map(caseField => caseField\n          .update('case', parseField)\n          .update('display', parseField)\n        )\n      )\n      .update('defaultDisplay', field => field && parseField(field));\n  }\n\n  initialize(renderData) {\n    super.initialize(renderData, this.getSwitch());\n    super.initialize(renderData, this.getCases()\n      .map(caseField => caseField.get('case'))\n    );\n\n    // Allow some case displays to fail since they may not be intended for the\n    // current value. However, since not all data may have been loaded yet, due\n    // to this terrible initialize scheme, we cannot tell which case displays\n    // to load, so we have to try to load them all.\n    this.getCases()\n      .map(caseField => caseField.get('display'))\n      .forEach(display => {\n        try {\n          valueRenderers.initialize(display, renderData);\n        } catch (e) {}\n      });\n\n    super.initialize(renderData, this.getDefaultDisplay());\n  }\n\n  getSwitch() {\n    return this.options.get('switch');\n  }\n\n  getCases() {\n    return this.options.get('cases');\n  }\n\n  getDefaultDisplay() {\n    const defaultDisplay = this.options.get('defaultDisplay');\n    return defaultDisplay || null;\n  }\n\n  /**\n   * Returns the appropriate switch case based on the input render data.\n   * @param {RenderData} renderData - The data to switch over.\n   * @return {ViewType} The resulting view type from the switch statement.\n   */\n  switch(renderData) {\n    const switchValue = valueRenderers.getValue(this.getSwitch(), renderData);\n    const caseField = this.getCases()\n      .find(caseField =>\n        valueRenderers.getValue(caseField.get('case'), renderData) == switchValue\n      );\n\n    if (caseField) {\n      return caseField.get('display');\n    }\n\n    return this.getDefaultDisplay();\n  }\n\n  getValue(renderData) {\n    const display = this.switch(renderData);\n    return display ?\n      valueRenderers.getValue(display, renderData) :\n      null;\n  }\n\n  getDisplay(renderData) {\n    const display = this.switch(renderData);\n    return display ?\n      valueRenderers.getDisplay(display, renderData) :\n      null;\n  }\n}\n\n",
@@ -11490,7 +11436,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 515,
+    "__docId__": 510,
     "kind": "class",
     "name": "SwitchType",
     "memberof": "src/types/view/value/switch.js",
@@ -11508,7 +11454,7 @@
     ]
   },
   {
-    "__docId__": 516,
+    "__docId__": 511,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/value/switch.js~SwitchType",
@@ -11525,7 +11471,7 @@
     }
   },
   {
-    "__docId__": 517,
+    "__docId__": 512,
     "kind": "method",
     "name": "parseOptions",
     "memberof": "src/types/view/value/switch.js~SwitchType",
@@ -11558,7 +11504,7 @@
     }
   },
   {
-    "__docId__": 518,
+    "__docId__": 513,
     "kind": "method",
     "name": "initialize",
     "memberof": "src/types/view/value/switch.js~SwitchType",
@@ -11581,7 +11527,7 @@
     "return": null
   },
   {
-    "__docId__": 519,
+    "__docId__": 514,
     "kind": "method",
     "name": "getSwitch",
     "memberof": "src/types/view/value/switch.js~SwitchType",
@@ -11601,7 +11547,7 @@
     }
   },
   {
-    "__docId__": 520,
+    "__docId__": 515,
     "kind": "method",
     "name": "getCases",
     "memberof": "src/types/view/value/switch.js~SwitchType",
@@ -11621,7 +11567,7 @@
     }
   },
   {
-    "__docId__": 521,
+    "__docId__": 516,
     "kind": "method",
     "name": "getDefaultDisplay",
     "memberof": "src/types/view/value/switch.js~SwitchType",
@@ -11641,7 +11587,7 @@
     }
   },
   {
-    "__docId__": 522,
+    "__docId__": 517,
     "kind": "method",
     "name": "switch",
     "memberof": "src/types/view/value/switch.js~SwitchType",
@@ -11674,7 +11620,7 @@
     }
   },
   {
-    "__docId__": 523,
+    "__docId__": 518,
     "kind": "method",
     "name": "getValue",
     "memberof": "src/types/view/value/switch.js~SwitchType",
@@ -11701,7 +11647,7 @@
     }
   },
   {
-    "__docId__": 524,
+    "__docId__": 519,
     "kind": "method",
     "name": "getDisplay",
     "memberof": "src/types/view/value/switch.js~SwitchType",
@@ -11728,7 +11674,7 @@
     }
   },
   {
-    "__docId__": 525,
+    "__docId__": 520,
     "kind": "file",
     "name": "src/types/view/value/template.js",
     "content": "import parseTemplate from '~/template';\n\nimport ValueType from './';\n\n/**\n * @extends ValueType\n * @deprecated\n */\nexport default class TemplateType extends ValueType {\n  static typeName = 'template';\n\n  getTemplate() {\n    return this.options.get('template');\n  }\n\n  getValue(renderData) {\n    return parseTemplate(this.getTemplate(), renderData);\n  }\n}\n\n",
@@ -11739,7 +11685,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 526,
+    "__docId__": 521,
     "kind": "class",
     "name": "TemplateType",
     "memberof": "src/types/view/value/template.js",
@@ -11758,7 +11704,7 @@
     ]
   },
   {
-    "__docId__": 527,
+    "__docId__": 522,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/value/template.js~TemplateType",
@@ -11775,7 +11721,7 @@
     }
   },
   {
-    "__docId__": 528,
+    "__docId__": 523,
     "kind": "method",
     "name": "getTemplate",
     "memberof": "src/types/view/value/template.js~TemplateType",
@@ -11795,7 +11741,7 @@
     }
   },
   {
-    "__docId__": 529,
+    "__docId__": 524,
     "kind": "method",
     "name": "getValue",
     "memberof": "src/types/view/value/template.js~TemplateType",
@@ -11822,7 +11768,7 @@
     }
   },
   {
-    "__docId__": 530,
+    "__docId__": 525,
     "kind": "file",
     "name": "src/types/view/value/variable.js",
     "content": "import ValueType from './';\n\n/**\n * @extends ValueType\n */\nexport default class VariableType extends ValueType {\n  static typeName = 'variable';\n\n  static variables = {\n    now: () => Date.now() / 1000\n  };\n\n  static variableDisplays = {\n    now: value => (new Date(value)).toLocaleString()\n  };\n\n  getVariable() {\n    return this.options.get('name');\n  }\n\n  getValue(renderData) {\n    const func = VariableType.variables[this.getVariable()];\n    return func();\n  }\n\n  getDisplay(renderData) {\n    const value = this.getValue(renderData);\n    const func = VariableType.variableDisplays[this.getVariable()];\n    return func(value);\n  }\n}\n\n",
@@ -11833,7 +11779,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 531,
+    "__docId__": 526,
     "kind": "class",
     "name": "VariableType",
     "memberof": "src/types/view/value/variable.js",
@@ -11851,7 +11797,7 @@
     ]
   },
   {
-    "__docId__": 532,
+    "__docId__": 527,
     "kind": "member",
     "name": "typeName",
     "memberof": "src/types/view/value/variable.js~VariableType",
@@ -11868,7 +11814,7 @@
     }
   },
   {
-    "__docId__": 533,
+    "__docId__": 528,
     "kind": "member",
     "name": "variables",
     "memberof": "src/types/view/value/variable.js~VariableType",
@@ -11885,7 +11831,7 @@
     }
   },
   {
-    "__docId__": 534,
+    "__docId__": 529,
     "kind": "member",
     "name": "variableDisplays",
     "memberof": "src/types/view/value/variable.js~VariableType",
@@ -11902,7 +11848,7 @@
     }
   },
   {
-    "__docId__": 535,
+    "__docId__": 530,
     "kind": "method",
     "name": "getVariable",
     "memberof": "src/types/view/value/variable.js~VariableType",
@@ -11922,7 +11868,7 @@
     }
   },
   {
-    "__docId__": 536,
+    "__docId__": 531,
     "kind": "method",
     "name": "getValue",
     "memberof": "src/types/view/value/variable.js~VariableType",
@@ -11949,7 +11895,7 @@
     }
   },
   {
-    "__docId__": 537,
+    "__docId__": 532,
     "kind": "method",
     "name": "getDisplay",
     "memberof": "src/types/view/value/variable.js~VariableType",
@@ -11976,7 +11922,7 @@
     }
   },
   {
-    "__docId__": 538,
+    "__docId__": 533,
     "kind": "file",
     "name": "src/utils.js",
     "content": "import moment from 'moment';\n\nexport function convertDate(value, toType, options) {\n  if (!options || !options.type) {\n    throw new Error('`options.type` is a required options');\n  }\n\n  const fromType =\n    typeof value == 'string'\n      ? 'string'\n      : value instanceof Date || value instanceof moment\n        ? 'datetime'\n        : 'unix';\n\n  return conversions[fromType][toType](value, options);\n}\n\nconst unixToDatetime = (value, options) => {\n  if (value === null) {\n    return moment(null);\n  }\n\n  if (options.type == 'time') {\n    return moment.utc(value * 1000);\n  } else {\n    return moment(value * 1000);\n  }\n};\n\nconst unixToString = (value, options) => {\n  const datetime = unixToDatetime(value, options);\n  return datetimeToString(datetime, options);\n};\n\nconst datetimeToUnix = (value, options) => {\n  if (!value || !value.isValid()) {\n    return null;\n  }\n\n  if (options.type == 'time') {\n    return value.hours() * 3600 + value.minutes() * 60 + value.seconds();\n  } else {\n    return value.valueOf() / 1000;\n  }\n};\n\nconst datetimeToString = (value, options) => {\n  if (value && value.isValid()) {\n    return value.format(options.format);\n  }\n  return '';\n};\n\nconst stringToUnix = (value, options) => {\n  if (options.type == 'time') {\n    const today = moment.utc(value, options.format);\n    return datetimeToUnix(today, options);\n  } else {\n    const datetime = stringToDatetime(value, options);\n    return datetimeToUnix(datetime, options);\n  }\n};\n\nconst stringToDatetime = (value, options) => {\n  if (options.type == 'time') {\n    const today = moment.utc(value, options.format);\n    const unixTime = datetimeToUnix(today, options);\n    return unixToDatetime(unixTime, options);\n  } else {\n    return moment(new Date(value).valueOf());\n  }\n};\n\nconst stringToString = (value, options) => {\n  return datetimeToString(stringToDatetime(value, options), options);\n};\n\nconst conversions = {\n  unix: {\n    unix: value => value,\n    datetime: unixToDatetime,\n    string: unixToString,\n  },\n  datetime: {\n    unix: datetimeToUnix,\n    datetime: value => value,\n    string: datetimeToString,\n  },\n  string: {\n    unix: stringToUnix,\n    datetime: stringToDatetime,\n    string: stringToString,\n  },\n};\n\n",
@@ -11987,7 +11933,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 539,
+    "__docId__": 534,
     "kind": "function",
     "name": "convertDate",
     "memberof": "src/utils.js",
@@ -12029,7 +11975,7 @@
     }
   },
   {
-    "__docId__": 540,
+    "__docId__": 535,
     "kind": "function",
     "name": "unixToDatetime",
     "memberof": "src/utils.js",
@@ -12066,7 +12012,7 @@
     "ignore": true
   },
   {
-    "__docId__": 541,
+    "__docId__": 536,
     "kind": "function",
     "name": "unixToString",
     "memberof": "src/utils.js",
@@ -12103,7 +12049,7 @@
     "ignore": true
   },
   {
-    "__docId__": 542,
+    "__docId__": 537,
     "kind": "function",
     "name": "datetimeToUnix",
     "memberof": "src/utils.js",
@@ -12140,7 +12086,7 @@
     "ignore": true
   },
   {
-    "__docId__": 543,
+    "__docId__": 538,
     "kind": "function",
     "name": "datetimeToString",
     "memberof": "src/utils.js",
@@ -12177,7 +12123,7 @@
     "ignore": true
   },
   {
-    "__docId__": 544,
+    "__docId__": 539,
     "kind": "function",
     "name": "stringToUnix",
     "memberof": "src/utils.js",
@@ -12214,7 +12160,7 @@
     "ignore": true
   },
   {
-    "__docId__": 545,
+    "__docId__": 540,
     "kind": "function",
     "name": "stringToDatetime",
     "memberof": "src/utils.js",
@@ -12251,7 +12197,7 @@
     "ignore": true
   },
   {
-    "__docId__": 546,
+    "__docId__": 541,
     "kind": "function",
     "name": "stringToString",
     "memberof": "src/utils.js",
@@ -12288,7 +12234,7 @@
     "ignore": true
   },
   {
-    "__docId__": 547,
+    "__docId__": 542,
     "kind": "variable",
     "name": "conversions",
     "memberof": "src/utils.js",
@@ -12318,7 +12264,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"formatron\",\n  \"version\": \"0.0.73\",\n  \"description\": \"A library that generates forms based on JSON schema.\",\n  \"main\": \"./lib\",\n  \"scripts\": {\n    \"doc\": \"esdoc && git add docs/ && git commit -m 'Updated docs'\",\n    \"test\": \"karma start\",\n    \"test:watch\": \"karma start --no-single-run --auto-watch\",\n    \"start\": \"webpack-dev-server --env.dev --hot --inline --content-base example/ --port 8080\",\n    \"start:lib:js\": \"babel --watch src --out-dir lib\",\n    \"build\": \"npm run build:lib && npm run build:dist\",\n    \"build:lib\": \"npm run build:lib:js && npm run build:lib:css && npm run build:lib:assets\",\n    \"build:lib:js\": \"babel src --out-dir lib\",\n    \"build:lib:css\": \"node-sass --load-path=./node_modules --output lib src\",\n    \"build:lib:assets\": \"cp src/theme/*.png lib/theme/\",\n    \"build:dist\": \"webpack --env.prod\",\n    \"clean\": \"rm -r lib/* dist/*\",\n    \"preversion\": \"echo 'tests go here' && npm run doc\",\n    \"version\": \"npm run clean && npm run build\",\n    \"postversion\": \"git push && git push --tags\",\n    \"format\": \"prettier --trailing-comma es5 --no-bracket-spacing --single-quote true --write\"\n  },\n  \"author\": \"Andrew Russell\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"classnames\": \"^2.2.5\",\n    \"debounce\": \"^1.0.2\",\n    \"es6-error\": \"^4.0.2\",\n    \"font-awesome\": \"^4.7.0\",\n    \"font-awesome-webpack-2\": \"^1.0.0\",\n    \"google-libphonenumber\": \"^1.0.27\",\n    \"immutable\": \"^4.0.0-rc.2\",\n    \"less\": \"^2.7.2\",\n    \"moment\": \"^2.0.0\",\n    \"react\": \"^15.0.0\",\n    \"react-currency-input\": \"^1.0.4\",\n    \"react-debounce-input\": \"^2.4.2\",\n    \"react-dropzone\": \"^3.9.2\",\n    \"react-immutable-proptypes\": \"^2.1.0\",\n    \"react-maskedinput\": \"^3.2.4\",\n    \"react-portal\": \"^3.0.0\",\n    \"react-rte\": \"^0.11.0\",\n    \"react-select\": \"^1.0.0-rc.3\",\n    \"react-tabs\": \"^0.7.0\",\n    \"react-tether\": \"^0.5.6\",\n    \"react-virtualized\": \"^9.0.0\",\n    \"react-virtualized-select\": \"^3.1.0\",\n    \"yet-another-datetime-picker\": \"^1.0.4\"\n  },\n  \"devDependencies\": {\n    \"autoprefixer\": \"^7.1.1\",\n    \"babel-core\": \"^6.18.0\",\n    \"babel-generator\": \"^6.11.0\",\n    \"babel-loader\": \"^6.2.7\",\n    \"babel-plugin-import-rename\": \"^1.0.1\",\n    \"babel-plugin-react-require\": \"^3.0.0\",\n    \"babel-plugin-transform-class-properties\": \"^6.24.1\",\n    \"babel-polyfill\": \"^6.16.0\",\n    \"babel-preset-es2015\": \"^6.18.0\",\n    \"babel-preset-react\": \"^6.5.0\",\n    \"babel-preset-stage-2\": \"^6.5.0\",\n    \"babel-root-import\": \"^4.1.8\",\n    \"chai\": \"^4.0.2\",\n    \"chai-enzyme\": \"^0.8.0\",\n    \"css-loader\": \"^0.27.3\",\n    \"enzyme\": \"^2.9.1\",\n    \"esdoc\": \"^1.0.4\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-jsx-plugin\": \"^1.0.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"file-loader\": \"^0.10.1\",\n    \"html-webpack-plugin\": \"^2.28.0\",\n    \"karma\": \"^1.7.0\",\n    \"karma-chai\": \"^0.1.0\",\n    \"karma-chrome-launcher\": \"^2.2.0\",\n    \"karma-ie-launcher\": \"^1.0.0\",\n    \"karma-mocha\": \"^1.3.0\",\n    \"karma-sinon\": \"^1.0.5\",\n    \"karma-webpack\": \"^2.0.3\",\n    \"mocha\": \"^3.4.2\",\n    \"node-sass\": \"^4.1.1\",\n    \"postcss\": \"^6.0.1\",\n    \"postcss-loader\": \"^2.0.5\",\n    \"prettier\": \"^1.5.3\",\n    \"react-dom\": \"^15.3.2\",\n    \"react-hot-loader\": \"^1.3.1\",\n    \"react-test-renderer\": \"^15.6.1\",\n    \"sass-loader\": \"^6.0.3\",\n    \"sinon\": \"^2.3.6\",\n    \"style-loader\": \"^0.15.0\",\n    \"url-loader\": \"^0.5.8\",\n    \"webpack\": \"^2.2.1\",\n    \"webpack-dev-server\": \"^2.4.2\"\n  }\n}\n",
+    "content": "{\n  \"name\": \"formatron\",\n  \"version\": \"0.0.74\",\n  \"description\": \"A library that generates forms based on JSON schema.\",\n  \"main\": \"./lib\",\n  \"scripts\": {\n    \"doc\": \"esdoc && git add docs/ && git commit -m 'Updated docs'\",\n    \"test\": \"karma start\",\n    \"test:watch\": \"karma start --no-single-run --auto-watch\",\n    \"start\": \"webpack-dev-server --env.dev --hot --inline --content-base example/ --port 8080\",\n    \"start:lib:js\": \"babel --watch src --out-dir lib\",\n    \"build\": \"npm run build:lib && npm run build:dist\",\n    \"build:lib\": \"npm run build:lib:js && npm run build:lib:css && npm run build:lib:assets\",\n    \"build:lib:js\": \"babel src --out-dir lib\",\n    \"build:lib:css\": \"node-sass --load-path=./node_modules --output lib src\",\n    \"build:lib:assets\": \"cp src/theme/*.png lib/theme/\",\n    \"build:dist\": \"webpack --env.prod\",\n    \"clean\": \"rm -r lib/* dist/*\",\n    \"preversion\": \"echo 'tests go here' && npm run doc\",\n    \"version\": \"npm run clean && npm run build\",\n    \"postversion\": \"git push && git push --tags\",\n    \"format\": \"prettier --trailing-comma es5 --no-bracket-spacing --single-quote true --write\"\n  },\n  \"author\": \"Andrew Russell\",\n  \"license\": \"MIT\",\n  \"dependencies\": {\n    \"classnames\": \"^2.2.5\",\n    \"debounce\": \"^1.0.2\",\n    \"es6-error\": \"^4.0.2\",\n    \"font-awesome\": \"^4.7.0\",\n    \"font-awesome-webpack-2\": \"^1.0.0\",\n    \"google-libphonenumber\": \"^1.0.27\",\n    \"immutable\": \"^4.0.0-rc.2\",\n    \"less\": \"^2.7.2\",\n    \"moment\": \"^2.0.0\",\n    \"react\": \"^15.0.0\",\n    \"react-currency-input\": \"^1.0.4\",\n    \"react-debounce-input\": \"^2.4.2\",\n    \"react-dropzone\": \"^3.9.2\",\n    \"react-immutable-proptypes\": \"^2.1.0\",\n    \"react-maskedinput\": \"^3.2.4\",\n    \"react-portal\": \"^3.0.0\",\n    \"react-rte\": \"^0.11.0\",\n    \"react-select\": \"^1.0.0-rc.3\",\n    \"react-tabs\": \"^0.7.0\",\n    \"react-tether\": \"^0.5.6\",\n    \"react-virtualized\": \"^9.0.0\",\n    \"react-virtualized-select\": \"^3.1.0\",\n    \"yet-another-datetime-picker\": \"^1.0.4\"\n  },\n  \"devDependencies\": {\n    \"autoprefixer\": \"^7.1.1\",\n    \"babel-core\": \"^6.18.0\",\n    \"babel-generator\": \"^6.11.0\",\n    \"babel-loader\": \"^6.2.7\",\n    \"babel-plugin-import-rename\": \"^1.0.1\",\n    \"babel-plugin-react-require\": \"^3.0.0\",\n    \"babel-plugin-transform-class-properties\": \"^6.24.1\",\n    \"babel-polyfill\": \"^6.16.0\",\n    \"babel-preset-es2015\": \"^6.18.0\",\n    \"babel-preset-react\": \"^6.5.0\",\n    \"babel-preset-stage-2\": \"^6.5.0\",\n    \"babel-root-import\": \"^4.1.8\",\n    \"chai\": \"^4.0.2\",\n    \"chai-enzyme\": \"^0.8.0\",\n    \"css-loader\": \"^0.27.3\",\n    \"enzyme\": \"^2.9.1\",\n    \"esdoc\": \"^1.0.4\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-jsx-plugin\": \"^1.0.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"file-loader\": \"^0.10.1\",\n    \"html-webpack-plugin\": \"^2.28.0\",\n    \"karma\": \"^1.7.0\",\n    \"karma-chai\": \"^0.1.0\",\n    \"karma-chrome-launcher\": \"^2.2.0\",\n    \"karma-ie-launcher\": \"^1.0.0\",\n    \"karma-mocha\": \"^1.3.0\",\n    \"karma-sinon\": \"^1.0.5\",\n    \"karma-webpack\": \"^2.0.3\",\n    \"mocha\": \"^3.4.2\",\n    \"node-sass\": \"^4.1.1\",\n    \"postcss\": \"^6.0.1\",\n    \"postcss-loader\": \"^2.0.5\",\n    \"prettier\": \"^1.5.3\",\n    \"react-dom\": \"^15.3.2\",\n    \"react-hot-loader\": \"^1.3.1\",\n    \"react-test-renderer\": \"^15.6.1\",\n    \"sass-loader\": \"^6.0.3\",\n    \"sinon\": \"^2.3.6\",\n    \"style-loader\": \"^0.15.0\",\n    \"url-loader\": \"^0.5.8\",\n    \"webpack\": \"^2.2.1\",\n    \"webpack-dev-server\": \"^2.4.2\"\n  }\n}\n",
     "longname": "/home/russell/code/formatron/package.json",
     "name": "package.json",
     "static": true,

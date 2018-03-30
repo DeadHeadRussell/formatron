@@ -2226,24 +2226,6 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/types/view/data/dropdown.js~dropdowntype#autoload",
-    "class/src/types/view/data/dropDown.js~DropDownType.html#instance-method-autoload",
-    "src/types/view/data/dropDown.js~DropDownType#autoload",
-    "method"
-  ],
-  [
-    "src/types/view/data/dropdown.js~dropdowntype#autoloaded",
-    "class/src/types/view/data/dropDown.js~DropDownType.html#instance-member-autoloaded",
-    "src/types/view/data/dropDown.js~DropDownType#autoloaded",
-    "member"
-  ],
-  [
-    "src/types/view/data/dropdown.js~dropdowntype#constructor",
-    "class/src/types/view/data/dropDown.js~DropDownType.html#instance-constructor-constructor",
-    "src/types/view/data/dropDown.js~DropDownType#constructor",
-    "method"
-  ],
-  [
     "src/types/view/data/dropdown.js~dropdowntype#getfilteroptions",
     "class/src/types/view/data/dropDown.js~DropDownType.html#instance-method-getFilterOptions",
     "src/types/view/data/dropDown.js~DropDownType#getFilterOptions",
