@@ -8,34 +8,8 @@ import DataType from './';
 export default class DropDownType extends DataType {
   static typeName = 'dropDown';
 
-  constructor(options) {
-    super(options);
-    this.autoloaded = false;
-  }
-
   initialize(renderData) {
     super.initialize(renderData);
-    this.autoload(renderData);
-  }
-
-  // We autoload the values for async dropdowns that use their own cache
-  // since the `react-select` component is not playing well with our
-  // caches and is firing the autoload request everytime the component
-  // is reloaded.
-  autoload(renderData) {
-    if (!this.autoloaded) {
-      const {field, value} = this.getFieldAndValue(renderData);
-      if (field && field.getValuesCache && this.isAsync(field) && renderData.options.component == 'form') {
-        field.getValues('', renderData.options)
-          .then(results => {
-            this.autoloaded = true;
-            const cache = field.getValuesCache();
-            cache[''] = results.options;
-          });
-      } else {
-        this.autoloaded = true;
-      }
-    }
   }
 
   /**
@@ -80,8 +54,7 @@ export default class DropDownType extends DataType {
     const field = this.getField(renderData);
     if (field && field.getValues) {
       if (this.isAsync(field)) {
-        this.autoload(renderData);
-        return (this.autoloaded || typeof input == 'string')
+        return (typeof input == 'string' && input.length > 0)
           ? field.getValues(input, renderData.options)
           : Promise.resolve({complete: false, options: []});
       } else {

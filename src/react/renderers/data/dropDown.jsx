@@ -66,18 +66,21 @@ class MultiDropDown extends BaseDropDown {
     const {viewType, renderData, field, value, placeholder, disabled, onChange, onBlur} = this.props;
     const isAsync = viewType.isAsync(field);
 
+    const defaultPlaceholder = isAsync
+      ? 'Type to search...'
+      : 'Click to select...';
+
     return <Select
       className='formatron-input formatron-dropdown formatron-multi'
       tetheredClassName='formatron-dropdown-tether'
       async={isAsync}
       value={value ? value.toJS() : []}
-      placeholder={placeholder || 'Select...'}
+      placeholder={placeholder || defaultPlaceholder}
       disabled={disabled}
       multi={true}
       filterOptions={viewType.getFilterOptions(field)}
       options={this.getOptions()}
       loadOptions={isAsync && this.loadOptions}
-      autoload={true}
       cache={isAsync && this.getCache()}
       onChange={options => onChange(List(options)
         .map(parseOption)
@@ -108,17 +111,20 @@ class SingleDropDown extends BaseDropDown {
     const {viewType, renderData, field, value, placeholder, disabled, onChange, onBlur} = this.props;
     const isAsync = viewType.isAsync(field);
 
+    const defaultPlaceholder = isAsync
+      ? 'Type to search...'
+      : 'Click to select...';
+
     return <Select
       className='formatron-input formatron-dropdown formatron-single'
       tetheredClassName='formatron-dropdown-tether'
       async={isAsync}
       value={value === null ? '' : value}
-      placeholder={placeholder || 'Select...'}
+      placeholder={placeholder || defaultPlaceholder}
       disabled={disabled}
       filterOptions={viewType.getFilterOptions(field)}
       options={this.getOptions()}
       loadOptions={isAsync && this.loadOptions}
-      autoload={true}
       cache={isAsync && this.getCache()}
       onChange={option => onChange(parseOption(option))}
       onBlur={onBlur}
