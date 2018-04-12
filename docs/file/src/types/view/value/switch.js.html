@@ -126,24 +126,28 @@ export default class SwitchType extends ValueType {
   }
 
   initialize(renderData) {
-    super.initialize(renderData, this.getSwitch());
-    super.initialize(renderData, this.getCases()
-      .map(caseField =&gt; caseField.get(&apos;case&apos;))
-    );
+    return Promise.all([
+      super.initialize(renderData, this.getSwitch()),
+      super.initialize(renderData, this.getCases()
+        .map(caseField =&gt; caseField.get(&apos;case&apos;))
+      ),
+      super.initialize(renderData, this.getDefaultDisplay()),
 
-    // Allow some case displays to fail since they may not be intended for the
-    // current value. However, since not all data may have been loaded yet, due
-    // to this terrible initialize scheme, we cannot tell which case displays
-    // to load, so we have to try to load them all.
-    this.getCases()
-      .map(caseField =&gt; caseField.get(&apos;display&apos;))
-      .forEach(display =&gt; {
-        try {
-          valueRenderers.initialize(display, renderData);
-        } catch (e) {}
-      });
-
-    super.initialize(renderData, this.getDefaultDisplay());
+      // Allow some case displays to fail since they may not be intended for the
+      // current value. However, since not all data may have been loaded yet, due
+      // to this terrible initialize scheme, we cannot tell which case displays
+      // to load, so we have to try to load them all.
+      ...this.getCases()
+        .map(caseField =&gt; caseField.get(&apos;display&apos;))
+        .map(display =&gt; {
+          try {
+            return valueRenderers.initialize(display, renderData);
+          } catch (e) {
+            return Promise.resolve();
+          }
+        })
+        .toArray()
+    ]);
   }
 
   getSwitch() {

@@ -139,9 +139,11 @@ export default class ConditionType extends ValueType {
   }
 
   initialize(renderData) {
-    super.initialize(renderData, this.getArgs());
-    super.initialize(renderData, this.getTrueType());
-    super.initialize(renderData, this.getFalseType());
+    return Promise.all([
+      super.initialize(renderData, this.getArgs()),
+      super.initialize(renderData, this.getTrueType()),
+      super.initialize(renderData, this.getFalseType())
+    ]);
   }
 
   getOp() {

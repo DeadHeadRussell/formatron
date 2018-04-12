@@ -2244,12 +2244,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/types/view/data/dropdown.js~dropdowntype#initialize",
-    "class/src/types/view/data/dropDown.js~DropDownType.html#instance-method-initialize",
-    "src/types/view/data/dropDown.js~DropDownType#initialize",
-    "method"
-  ],
-  [
     "src/types/view/data/dropdown.js~dropdowntype#isasync",
     "class/src/types/view/data/dropDown.js~DropDownType.html#instance-method-isAsync",
     "src/types/view/data/dropDown.js~DropDownType#isAsync",
@@ -2571,6 +2565,12 @@ window.esdocSearchIndex = [
     "src/types/view/display/tabs.js~tabstype#initialize",
     "class/src/types/view/display/tabs.js~TabsType.html#instance-method-initialize",
     "src/types/view/display/tabs.js~TabsType#initialize",
+    "method"
+  ],
+  [
+    "src/types/view/display/tabs.js~tabstype#loadtab",
+    "class/src/types/view/display/tabs.js~TabsType.html#instance-method-loadTab",
+    "src/types/view/display/tabs.js~TabsType#loadTab",
     "method"
   ],
   [
