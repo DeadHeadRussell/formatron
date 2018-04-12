@@ -27,10 +27,12 @@ export default class ImmutableListType extends ImmutableDataType {
 
   initialize(value, renderOptions) {
     const field = this.getItemType();
-    if (field.initialize) {
-      this.getValue(value)
-        .forEach(item => field.initialize(item, renderOptions));
-    }
+    return field.initialize
+      ? Promise.all(this.getValue(value)
+        .map(item => field.initialize(item, renderOptions))
+        .toArray()
+      )
+      : Promise.resolve();
   }
 
   isOfType(value) {

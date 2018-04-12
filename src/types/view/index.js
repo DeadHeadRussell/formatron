@@ -31,19 +31,20 @@ export default class ViewType extends Type {
    * @param {ViewType|List<ViewType>} children - a single view type or a list of view types to call initialize on
    */
   initialize(renderData, children) {
-    if (List.isList(children)) {
-      children
-        .forEach(child => valueRenderers
-          .initialize(child, renderData)
-        );
-    } else if (children) {
-      valueRenderers.initialize(children, renderData);
-    }
-
     const label = this.options.get('label');
-    if (label instanceof ViewType) {
-      valueRenderers.initialize(label, renderData);
-    }
+    const labelPromise = label instanceof ViewType
+      ? valueRenderers.initialize(label, renderData)
+      : null;
+
+    const childrenPromises = List.isList(children)
+      ? children
+        .map(child => valueRenderers.initialize(child, renderData))
+        .toArray()
+      : children
+        ? [valueRenderers.initialize(children, renderData)]
+        : [];
+
+    return Promise.all([...childrenPromises, labelPromise]);
   }
 
   /**

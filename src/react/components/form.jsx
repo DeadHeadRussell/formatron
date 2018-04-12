@@ -19,6 +19,8 @@ export default class Form extends React.Component {
     const defaultValue = this.updateRefs(props.defaultValue);
     const disabled = this.updateRefs(props.disabled);
     return {
+      loading: false,
+      loadingError: null,
       changes: Map(),
       dirty: Map(),
       errors: Map(),
@@ -31,7 +33,7 @@ export default class Form extends React.Component {
   }
 
   componentDidMount() {
-    reactRenderers.initialize(this.props.viewType, this.createRenderData(this.props));
+    this.initialize(this.props);
   }
 
   componentWillReceiveProps(newProps) {
@@ -42,8 +44,15 @@ export default class Form extends React.Component {
     }
 
     if (newProps.viewType != this.props.viewType) {
-      reactRenderers.initialize(newProps.viewType, this.createRenderData(newProps));
+      this.initialize(newProps);
     }
+  }
+
+  initialize(props) {
+    this.setState({loading: true});
+    reactRenderers.initialize(props.viewType, this.createRenderData(props))
+      .then(value => this.setState({loading: false}))
+      .catch(err => this.setState({loading: false, loadingError: err}));
   }
 
   updateRefs(values) {
@@ -230,6 +239,8 @@ export default class Form extends React.Component {
 
     const validationErrors = this.state.errors;
 
+    const loadingError = this.state.loadingError;
+
     return (errors.length > 0 || validationErrors.size > 0) ? (
       <div className='formatron-form-errors'>
         {errors
@@ -237,6 +248,10 @@ export default class Form extends React.Component {
             <p key={i} className='formatron-form-error'>{error.message}</p>
           ))
         }
+
+        {loadingError ? (
+          <p className='formatron-form-error'>Error loading form data: {loadingError.message}</p>
+        ) : null}
 
         {(this.props.showRefErrorList && validationErrors.size > 0) ? (
           <div className='formatron-form-error'>
@@ -266,7 +281,7 @@ export default class Form extends React.Component {
 
   renderAction() {
     return <div className={this.props.actionsClassName}>
-      {this.props.loading ? (
+      {(this.props.loading || this.state.loading) ? (
         <div className='formatron-loading'>
           <Loading />
         </div>

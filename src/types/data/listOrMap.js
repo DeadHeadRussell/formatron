@@ -41,9 +41,9 @@ export default class ImmutableListOrMapType extends ImmutableDataType {
   }
 
   initialize(value, renderOptions) {
-    if (this.type.initialize) {
-      this.type.initialize(this.getValue(value), renderOptions);
-    }
+    return this.type.initialize
+      ? this.type.initialize(this.getValue(value), renderOptions)
+      : Promise.resolve();
   }
 
   isMulti() {
@@ -72,7 +72,7 @@ export default class ImmutableListOrMapType extends ImmutableDataType {
         .map(value => this.getMapDisplay(value, renderOptions))
         .join(', ');
     } else {
-      return this.getMapDisplay(value, renderOptions);
+      return this.getMapDisplay(model, renderOptions);
     }
   }
 

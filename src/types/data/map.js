@@ -37,14 +37,15 @@ export default class ImmutableMapType extends ImmutableDataType {
 
   initialize(value, renderOptions) {
     value = this.getValue(value);
-    this.getData()
-      .forEach(fieldData => {
+    return Promise.all(this.getData()
+      .map(fieldData => {
         const field = fieldData.get('field');
         const path = fieldData.get('path');
-        if (field.initialize) {
-          field.initialize(value.getIn(path), renderOptions);
-        }
-      });
+        return field.initialize
+          ? field.initialize(value.getIn(path), renderOptions)
+          : Promise.resolve();
+      })
+    );
   }
 
   getDefaultValue() {

@@ -96,6 +96,7 @@ export default class Renderers {
    * normally to call the required API calls before the data is display.
    * @params {ViewType} viewType - The view type to render.
    * @params {RenderData} renderData - The data to render.
+   * @returns {Promise} - Resolved upon completion, rejected if error loading.
    */
   initialize(viewType, renderData) {
     viewType = this.parseViewType(viewType, renderData);

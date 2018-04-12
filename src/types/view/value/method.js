@@ -17,8 +17,10 @@ export default class MethodType extends ValueType {
   }
 
   initialize(renderData) {
-    super.initialize(renderData, this.getArgs());
-    super.initialize(renderData, this.getObj());
+    return Promise.all([
+      super.initialize(renderData, this.getArgs()),
+      super.initialize(renderData, this.getObj())
+    ]);
   }
 
   getObj() {

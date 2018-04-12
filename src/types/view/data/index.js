@@ -34,9 +34,9 @@ export default class DataType extends ViewType {
 
   initialize(renderData) {
     const {field, value} = this.getFieldAndValue(renderData);
-    if (field && field.initialize) {
-      field.initialize(value, renderData.options);
-    }
+    return field && field.initialize
+      ? field.initialize(value, renderData.options)
+      : Promise.resolve();
   }
 
   /**

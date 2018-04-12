@@ -50,7 +50,7 @@ export default class ComputedType extends ValueType {
   }
 
   initialize(renderData) {
-    super.initialize(renderData, this.getArgs());
+    return super.initialize(renderData, this.getArgs());
   }
 
   getOp() {

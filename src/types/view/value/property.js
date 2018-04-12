@@ -14,7 +14,7 @@ export default class PropertyType extends ValueType {
   }
 
   initialize(renderData) {
-    super.initialize(renderData, this.getObj());
+    return super.initialize(renderData, this.getObj());
   }
 
   getObj() {

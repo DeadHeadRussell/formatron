@@ -54,7 +54,7 @@ export default class FunctionType extends ValueType {
   }
 
   initialize(renderData) {
-    super.initialize(renderData, this.getArgs());
+    return super.initialize(renderData, this.getArgs());
   }
 
   getFn() {

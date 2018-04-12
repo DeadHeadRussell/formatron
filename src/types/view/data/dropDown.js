@@ -8,10 +8,6 @@ import DataType from './';
 export default class DropDownType extends DataType {
   static typeName = 'dropDown';
 
-  initialize(renderData) {
-    super.initialize(renderData);
-  }
-
   /**
    * Supports async loading of options. The `getOptions` method will then be
    * passed a second argument of the current drop down text input. The return

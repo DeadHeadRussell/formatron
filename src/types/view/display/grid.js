@@ -18,7 +18,7 @@ export default class GridType extends DisplayType {
   }
 
   initialize(renderData) {
-    super.initialize(renderData, this.getChildren()
+    return super.initialize(renderData, this.getChildren()
       .flatten(true)
     );
   }

@@ -12,7 +12,7 @@ export default class StaticType extends DisplayType {
   }
 
   initialize(renderData) {
-    super.initialize(renderData, this.getDisplay());
+    return super.initialize(renderData, this.getDisplay());
   }
 
   getDisplay() {

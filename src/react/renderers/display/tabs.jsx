@@ -11,10 +11,22 @@ import ReactRenderer from '../reactRenderer';
 class FormatronTabs extends React.Component {
   componentDidMount() {
     window.addEventListener('hashchange', this.onHashChange);
+    this.loadSelectedTab();
   }
 
   componentWillUnmount() {
     window.removeEventListener('hashchange', this.onHashChange);
+  }
+
+  getSelectedTabIndex() {
+    const hash = window.location.hash.slice(1);
+    return (hash.includes('_') && Number(hash.split('_')[1])) || 0;
+  }
+
+  loadSelectedTab() {
+    const {viewType, renderData} = this.props;
+    const tabIndex = this.getSelectedTabIndex();
+    viewType.loadTab(tabIndex, renderData);
   }
 
   onHashChange = e => {
@@ -23,6 +35,7 @@ class FormatronTabs extends React.Component {
 
   onTabSelect = index => {
     window.location.hash = `tab_${index}`;
+    this.loadSelectedTab();
   }
 
   render() {
@@ -30,8 +43,7 @@ class FormatronTabs extends React.Component {
 
     const tabs = viewType.getTabs();
 
-    const hash = window.location.hash.slice(1);
-    const selected = (hash.includes('_') && Number(hash.split('_')[1])) || 0;
+    const selected = this.getSelectedTabIndex();
 
     return (
       <div className='formatron-tabs'>
