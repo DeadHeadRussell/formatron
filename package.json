@@ -4,7 +4,7 @@
   "description": "A library that generates forms based on JSON schema.",
   "main": "./lib",
   "scripts": {
-    "doc": "esdoc && git add docs/ && git commit -m 'Updated docs'",
+    "doc": "esdoc && git add docs/ && git diff-index --quiet HEAD || git commit -m 'Updated docs'",
     "test": "karma start",
     "test:watch": "karma start --no-single-run --auto-watch",
     "start": "webpack-dev-server --env.dev --hot --inline --content-base example/ --port 8080",
