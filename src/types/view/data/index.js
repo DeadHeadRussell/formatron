@@ -100,7 +100,7 @@ export default class DataType extends ViewType {
    * @return {DataType} The underlying data type.
    */
   getField(renderData) {
-    return renderData.dataType.getField(this.getRef(), renderData.options);
+    return this.getFieldAndValue(renderData).field;
   }
 
   /**

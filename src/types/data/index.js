@@ -71,7 +71,7 @@ export default class DataType extends Type {
   }
 
   getOptions() {
-    return this.options();
+    return this.options;
   }
 
   isRequired() {
