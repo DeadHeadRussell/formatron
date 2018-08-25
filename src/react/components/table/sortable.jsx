@@ -47,6 +47,10 @@ export default function sortableTable(Table) {
       );
     }
 
+    isInfiniteSort = () => {
+      return this.props.initialLoad && !!this.props.onSort;
+    }
+
     onSort = props => {
       if (this.props.onSort) {
         this.props.onSort(props);
@@ -127,7 +131,20 @@ export default function sortableTable(Table) {
     }
 
     render() {
-      if (this.isSortable()) {
+      if (this.isInfiniteSort()) {
+        const mergedProps = this.mergeProps({
+          getColumnProps: this.getColumnProps,
+          sort: this.onSort,
+          sortBy: this.getSortBy(),
+          sortDirection: this.getSortDirection()
+        });
+        return (
+          <Table
+            ref={table => this.table = table}
+            {...mergedProps}
+          />
+        );
+      } else if (isSortable()) {
         const mergedProps = this.mergeProps({
           getColumnProps: this.getColumnProps,
           rowsModifier: this.rowsModifier,
