@@ -144,7 +144,7 @@ export default function sortableTable(Table) {
             {...mergedProps}
           />
         );
-      } else if (isSortable()) {
+      } else if (this.isSortable()) {
         const mergedProps = this.mergeProps({
           getColumnProps: this.getColumnProps,
           rowsModifier: this.rowsModifier,
