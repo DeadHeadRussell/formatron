@@ -1,4 +1,4 @@
-import {List} from 'immutable';
+import {isImmutable, List} from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Select from '~/react/components/tetheredSelect';
@@ -20,6 +20,17 @@ const DropDownFilter = ({viewType, renderData}) => (
 );
 
 export class BaseDropDown extends React.Component {
+  shouldComponentUpdate(newProps, newState) {
+    const valuesEqual = isImmutable(newProps.value)
+      ? newProps.value && newProps.value.equals(this.props.value)
+      : newProps.value == this.props.value;
+
+    return newProps.field.name != this.props.field.name ||
+      newProps.disabled != this.props.disabled ||
+      newProps.placeholder != this.props.placeholder ||
+      !valuesEqual;
+  }
+
   createLoadingOptions(value) {
     return [{
       value,

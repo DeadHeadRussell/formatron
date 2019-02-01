@@ -1,4 +1,4 @@
-import {Map} from 'immutable';
+import Immutable, {Map} from 'immutable';
 import Column from 'react-virtualized/dist/commonjs/Table/Column';
 
 import reactRenderers from '~/react/renderers';
@@ -28,7 +28,7 @@ export default function editableTable(Table) {
     }
 
     componentWillReceiveProps(newProps) {
-      if (newProps.models && newProps.models != this.props.models) {
+      if (!Immutable.is(newProps.models, this.props.models)) {
         this.setState(this.createInitialState(newProps));
       }
     }
