@@ -80,6 +80,10 @@ export default class BaseTable extends PureComponent {
     return this.table && this.table.forceUpdateGrid();
   }
 
+  setModels(models) {
+    return this.table && this.table.setModels(models);
+  }
+
   getRows() {
     return this.table && this.table.getRows();
   }

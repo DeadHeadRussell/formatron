@@ -68,7 +68,7 @@ export default class DropDownType extends DataType {
 
     const label = dataType.getDisplay(value, renderData.options);
     if (!label) {
-      return null;
+      return [];
     }
     return [{
       value,

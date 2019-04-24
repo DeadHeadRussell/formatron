@@ -131,16 +131,18 @@ export default function editableTable(Table) {
           const renderData = this.createRenderData(oldModel, index);
           const newModel = this.props.dataType
             .setValue(oldModel, ref, value, renderData.options);
+          const newModels = this.state.models.set(index, newModel);
 
+          this.setModels(newModels);
           this.setState({
             changes: this.state.changes.setIn([index, ref], value),
             dirty: this.state.dirty.setIn([index, ref], true),
-            models: this.state.models.set(index, newModel)
+            models: newModels
+          }, () => {
+            // TODO: See if there is a way to just update the contents of the
+            // cell.
+            this.forceUpdateGrid();
           });
-
-          // TODO: See if there is a way to just update the contents of the
-          // cell.
-          this.forceUpdateGrid();
 
           if (this.props.onChange) {
             this.props.onChange(index, newModel);

@@ -108,6 +108,10 @@ export default class SchemaTable extends BaseTable {
       }, 0);
   }
 
+  setModels(models) {
+    this.models = models;
+  }
+
   getRows() {
     return this.models;
   }
@@ -405,7 +409,7 @@ export default class SchemaTable extends BaseTable {
 
   render() {
     const models = this.rowsModifier(this.props.models);
-    this.models = models;
+    this.setModels(models);
 
     return this.props.infiniteLoad
       ? (
